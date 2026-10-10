@@ -428,6 +428,29 @@ The repository owner accepted `KR-BINC-001-019`, "Add repository Makefile for lo
 
 `B-INC-001-AC-19` (documentation and workflow match actual behavior) stays open: this task contributes to it, but other B-INC-001 tasks are also linked to it.
 
+## 3I. PB-010 — B-INC-001 Batch A Plan and Readiness Record
+
+| Field | Value |
+|---|---|
+| Change ID | PB-010 |
+| Date | 2026-10-10 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+
+Reason: the next B-INC-001 work is the decision and security-policy batch (`KR-BINC-001-005`, `KR-BINC-001-001`, `KR-BINC-001-002`, `KR-BINC-001-008`). The sequencing and the record location were aligned in the external review chat "Raas Implementation" before any commit.
+
+| Item | Result |
+|---|---|
+| Order | 005, then 001, then 002 (needs 001 approved), then 008 (needs a real scanner evaluation and synthetic detection). 008 is held out of the first series until a comparative evaluation is done |
+| Commits | One atomic commit per task, using the existing `GIT_COMMIT_STEP.md` text; no combined commit or combined approval |
+| Record location | `docs/planning/backend/increments/B-INC-001-SECURE-FOUNDATION/decisions/`, one record per task, plus `IMPLEMENTATION_READINESS.md` |
+| Readiness decision | Blocked for stack-dependent implementation until `KR-BINC-001-001` and `KR-BINC-001-002` are approved; `KR-BE-1-001` stays blocked |
+| Deferred to Batch B | `KR-BINC-001-003` (HTTP framework) and `KR-BINC-001-004` (migration tool) |
+| SYS-ADR-004 | Recorded as a prerequisite for B-INC-002 only; B-INC-001 does not close it |
+| Trace review | The four task traces equal the union of their linked acceptance criteria (confirmed in the review chat) |
+
+No task status changes in this entry. A decision record committed as Proposed is not an approval.
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

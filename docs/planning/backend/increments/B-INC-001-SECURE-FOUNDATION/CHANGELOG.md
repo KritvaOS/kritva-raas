@@ -87,6 +87,21 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-10 — Batch A decisions and readiness planned
+
+- **State:** PLANNED
+- **Tasks:** `KR-BINC-001-001`, `KR-BINC-001-002`, `KR-BINC-001-005`, `KR-BINC-001-008`
+- **Increment ACs:** `B-INC-001-AC-01`, `B-INC-001-AC-02`, `B-INC-001-AC-04`, `B-INC-001-AC-12`, `B-INC-001-AC-14`, `B-INC-001-AC-16`
+- **Program acceptance:** Not assessed
+- **Tests:** `BTS-001`, `BTS-002`, `BTS-003`, `BTS-009`, `BTS-010`, `BTS-036` — NOT RUN (planning only)
+- **Security gates:** `SEC-GATE-002`, `SEC-GATE-003`, `SEC-GATE-004`, `SEC-GATE-008`, `SEC-GATE-009`, `SEC-GATE-010`, `SEC-GATE-013` — not assessed
+- **Findings/risks:** Not assessed
+- **Files changed:** `decisions/IMPLEMENTATION_READINESS.md`; see `../../BACKEND_CHANGELOG.md` PB-010
+- **Commit:** Pending
+- **Evidence:** `check_docs.py` and `check_backend_traceability.py` results recorded in the commit
+- **Reviewer role:** External review; owner approval pending
+- **Decision and follow-up:** Readiness is Blocked for stack-dependent implementation until `KR-BINC-001-001` and `KR-BINC-001-002` are approved. `KR-BINC-001-008` is held out of the first commit series until a comparative scanner evaluation is done. Batch B covers `KR-BINC-001-003` and `KR-BINC-001-004`.
+
 ### 2026-10-10 — KR-BINC-001-018 source header standard accepted
 
 - **State:** ACCEPTED
