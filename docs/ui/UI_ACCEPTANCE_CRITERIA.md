@@ -1267,6 +1267,7 @@ F-M02 passes when:
 - [ ] Local source remains local.
 - [ ] Account settings work.
 - [ ] Accessibility review passes.
+- [ ] Coding Agent panel meets `docs/ui/UI_SPECIFICATION.md` Section 175 for the first provider (consent and withdrawal, two modes, isolation badge, approvals, change review with conflicts, revert, recovery).
 - [ ] E2E login/project/platform selection flow passes.
 
 # 73. F-M03 BUILD & ARTIFACT Acceptance
@@ -1282,6 +1283,7 @@ F-M03 passes when:
 - [ ] Source privacy evidence passes.
 - [ ] Artifact security evidence passes.
 - [ ] Build logs perform acceptably.
+- [ ] Both coding-agent providers are selectable; MCP approval requests and the agent-assisted badge work.
 - [ ] E2E artifact flow passes.
 
 # 74. F-M04 BOOKING Acceptance

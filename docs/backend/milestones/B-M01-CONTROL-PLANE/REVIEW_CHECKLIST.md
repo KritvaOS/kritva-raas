@@ -224,6 +224,17 @@ Architect verifies:
 - absence of premature microservices;
 - absence of business logic in controllers.
 
+## 7.13 Coding-Agent Policy Tests
+
+Verify:
+
+- default policy response;
+- versioned update with `If-Match` and conflict on a stale version;
+- non-administrator denial;
+- cross-tenant denial;
+- rejection of content fields and `require_consent: false`;
+- audit event content.
+
 ---
 
 # 8 Demo Script

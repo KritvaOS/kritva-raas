@@ -740,6 +740,38 @@ The membership operation MUST validate both resource identities and the caller's
 
 Membership changes MUST NOT grant permissions beyond the role or policy authorized by the operation.
 
+### 25.4 Organization coding-agent policy
+
+| Method | Path | Scope | Success |
+|---|---|---|---|
+| GET | `/organizations/{organization_id}/coding-agent-policy` | `organizations:read` | 200 |
+| PUT | `/organizations/{organization_id}/coding-agent-policy` | `organizations:write` (organization administrator role required) | 200 |
+
+The policy governs the use of coding agents in Studio. Architecture: `docs/architecture/CODING_AGENT_INTEGRATION.md` Section 8.1. The policy resource MUST contain:
+
+| Field | Type | Requirement |
+|---|---|---|
+| `organization_id` | string | Required |
+| `enabled` | boolean | Required |
+| `allowed_providers` | array of string | Required; each value MUST be a `provider_id` from Section 27.4 |
+| `max_permission_mode` | string | Required; `READ_ONLY` or `PROPOSE`. `WORKSPACE_WRITE` is reserved and MUST be rejected until enabled by a decision record |
+| `require_consent` | boolean | Required; MUST be `true` |
+| `mcp_enabled` | boolean | Required |
+| `allowed_mcp_tools` | array of string | Required; each value MUST be a documented Kritva Studio MCP tool name |
+| `min_isolation_tier` | string | Required; `A` or `C` |
+| `require_config_isolation` | boolean | Required |
+| `max_cache_age_seconds` | integer | Required; 300 to 604800 |
+| `configured` | boolean | Required; server-assigned. `false` only when no administrator has ever set a policy |
+| `policy_version` | integer | Required; server-assigned, incremented on every change |
+| `updated_at` | string | Required |
+| `updated_by` | string | Required |
+
+When no policy has been set, `GET` MUST return 200 with `configured: false`, `policy_version` = 0 and the default field values (`docs/architecture/CODING_AGENT_INTEGRATION.md` Section 8.1). Under the recommended SYS-ADR-007 Option 2, `enabled` is `false` in this response. A client MUST treat `configured: false` as `POLICY_UNCONFIGURED` and MUST treat any error response or transport failure as `POLICY_UNAVAILABLE`; it MUST NOT infer one from the other. The response MUST include an `ETag`. `configured` is read-only and MUST be rejected in `PUT`.
+
+`PUT` MUST require `If-Match`, MUST validate every provider and tool identifier, and MUST reject `require_consent: false`. It MUST emit an audit event containing the previous and new policy.
+
+The server MUST reject any request field not listed above. Source code, prompts, transcripts, diffs, file names and paths MUST never be accepted by this resource.
+
 ## 26. Project endpoints
 
 | Method | Path | Scope | Success |
@@ -852,6 +884,30 @@ A client MUST NOT be able to assert that a physical resource is safe or availabl
 `GET /api/v1/platforms/{platform_id}/capabilities` MUST return a representation of the capabilities currently registered for the platform.
 
 The response MUST distinguish declared capabilities from dynamically observed availability when both are represented.
+
+### 27.4 Coding-agent provider metadata
+
+| Method | Path | Scope | Success |
+|---|---|---|---|
+| GET | `/coding-agent-providers` | `platforms:read` | 200 |
+| GET | `/coding-agent-providers/{provider_id}` | `platforms:read` | 200 |
+| PUT | `/coding-agent-providers/{provider_id}` | `platforms:write` (platform operator) | 200 |
+
+Coding-agent providers are not execution platforms. They MUST NOT appear in `/platforms` responses or in platform compatibility results. Architecture: `docs/architecture/CODING_AGENT_INTEGRATION.md` Section 8.2. Each provider resource MUST contain:
+
+| Field | Type | Requirement |
+|---|---|---|
+| `provider_id` | string | Required; stable, for example `claude-code` or `openai-codex` |
+| `display_name` | string | Required |
+| `status` | string | Required; one of `SUPPORTED`, `DEPRECATED`, `BLOCKED` |
+| `adapter_versions` | string | Required; semver range of supported Kritva adapters |
+| `cli_version_range` | string | Required; supported provider CLI versions |
+| `capabilities` | object | Required; `permission_modes`, `supports_mcp`, `supports_streaming`, `supports_resume`, `change_reporting` |
+| `disclosure_version` | string | Required; version of the consent and disclosure text Studio must show |
+| `documentation_url` | string | Optional |
+| `updated_at` | string | Required |
+
+Collection responses MUST be cacheable (`ETag`). Changes MUST be audited.
 
 ## 28. Artifact endpoints
 

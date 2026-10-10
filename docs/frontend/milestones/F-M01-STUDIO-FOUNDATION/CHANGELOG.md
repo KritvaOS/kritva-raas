@@ -14,6 +14,18 @@ Milestone: F-M01 — Studio Foundation
 
 ## Changed
 
+- Date: 2026-10-10
+- Change: Revised coding-agent scope after external review CA-REV-001 to CA-REV-012 (staging workspace and change sets, isolation tiers, journal and recovery, MCP execution contract, consent lifecycle, policy cache rules); added KR-CA-035; updated acceptance and review items.
+- Task: KR-CA-035
+- Author: Planning update
+- Evidence: `docs/architecture/CODING_AGENT_INTEGRATION.md` revision 2
+
+- Date: 2026-10-10
+- Change: Added coding-agent integration foundation scope (Section 2.5, deliverable 21, tasks KR-CA-001 to KR-CA-005, acceptance Section 6.14, review Section 7.11) per SYS-ADR-007 (Proposed).
+- Task: KR-CA-001 to KR-CA-005
+- Author: Planning update
+- Evidence: `docs/architecture/CODING_AGENT_INTEGRATION.md`
+
 - Date:
 - Change:
 - Task:

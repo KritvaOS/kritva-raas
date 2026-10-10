@@ -535,6 +535,31 @@ Controls:
 - Lab Agent policy;
 - resource limits.
 
+## TB-08: Studio Local Runtime to Coding-Agent Provider
+
+Studio launches a third-party coding-agent CLI (Claude Code, OpenAI Codex) on the user's workspace. The CLI sends workspace content to the provider under the user's own account. Architecture: `docs/architecture/CODING_AGENT_INTEGRATION.md`.
+
+Threats include:
+
+- prompt injection from workspace content or dependencies steering the agent;
+- agent writes outside the workspace or destructive edits;
+- theft of Kritva tokens or signing material from the agent environment;
+- agent use of Studio tools to sign, upload, book, spend credits or command robots;
+- disclosure of source to a provider without informed consent;
+- a compromised or spoofed provider CLI binary.
+
+Controls:
+
+- sanitized agent environment (SEC-182);
+- workspace-scoped execution with escape detection (SEC-186);
+- staging workspace, explicit apply and revert (SEC-184);
+- declared isolation tiers (SEC-186);
+- no permission-bypass modes (SEC-185);
+- per-project consent and disclosure (SEC-183);
+- restricted local MCP tool catalogue (SEC-187);
+- allowlisted CLI path and version check;
+- organization policy (SEC-188).
+
 # 14. System Context Diagram
 
     +-----------------------+
@@ -1537,7 +1562,151 @@ Attacker gains access to database or object-storage backups.
 - retention controls;
 - restoration testing.
 
-# 62. Security Control Matrix
+# 62. Coding-Agent Attack Scenarios
+
+These scenarios cover trust boundary TB-08.
+
+## AS-031: Prompt Injection Triggers Artifact Publication
+
+### Attack
+
+A dependency README contains instructions telling the agent to sign and upload the current build and to book a robot.
+
+### Objective
+
+Publish an unreviewed artifact and spend the customer's credits.
+
+### Mitigations
+
+- the MCP catalogue excludes signing, upload, booking, credit, Job, Run and robot operations;
+- signing and upload stay human-initiated in Studio;
+- per-call approval for build, test and package tools.
+
+### Expected Result
+
+The agent cannot reach any publishing or spending operation.
+
+### Residual Risk
+
+A user could manually approve a harmful build that the agent prepared.
+
+### Verification
+
+MCP negative tests and the prompt-injection fixture (`CODING_AGENT_INTEGRATION.md` Section 11).
+
+## AS-032: Credential Harvesting from Agent Environment
+
+### Attack
+
+The agent is induced to print environment variables or read Studio configuration files.
+
+### Objective
+
+Obtain the Kritva session token or signing material.
+
+### Mitigations
+
+- environment sanitizer;
+- Studio credentials stored in the OS keychain, outside the workspace;
+- workspace-scoped file access.
+
+### Expected Result
+
+No Kritva credential is reachable from the agent process.
+
+### Residual Risk
+
+An OS-level compromise is out of scope.
+
+### Verification
+
+Environment inspection test (SEC-182).
+
+## AS-033: Workspace Escape
+
+### Attack
+
+The agent writes to the user's home directory or another project.
+
+### Objective
+
+Persist malware or tamper with other projects.
+
+### Mitigations
+
+- provider sandbox and Kritva permission mode;
+- post-session escape detection by the workspace guard;
+- staging workspace, explicit apply and revert.
+
+### Expected Result
+
+The session fails and the user is alerted with the affected paths.
+
+### Residual Risk
+
+Detection is after the fact where the OS cannot enforce confinement.
+
+### Verification
+
+Workspace-escape test (SEC-186).
+
+## AS-034: Spoofed Provider CLI
+
+### Attack
+
+A malicious binary named like the provider CLI appears earlier on PATH.
+
+### Objective
+
+Capture workspace content or execute code under Studio.
+
+### Mitigations
+
+- allowlisted resolution path;
+- version and identity check;
+- user-visible resolved path in provider status.
+
+### Expected Result
+
+Studio refuses an unrecognized binary.
+
+### Residual Risk
+
+A user who deliberately installs a malicious binary at the allowlisted path is not fully protected.
+
+### Verification
+
+Discovery tests with spoofed binaries.
+
+## AS-035: Uninformed Third-Party Disclosure
+
+### Attack
+
+A user starts a session without realizing that the provider receives project content, or an organization prohibits it.
+
+### Objective
+
+Disclosure against user or organization intent.
+
+### Mitigations
+
+- mandatory per-project consent with versioned disclosure;
+- organization policy to disable agents or providers;
+- no session starts without recorded consent.
+
+### Expected Result
+
+Sessions start only after consent and within policy.
+
+### Residual Risk
+
+Policy is enforced client-side and is not a boundary against a user who controls the machine.
+
+### Verification
+
+Consent and policy E2E tests (SEC-183, SEC-188).
+
+# 63. Security Control Matrix
 
 | Threat Area | Primary Control | Secondary Control |
 |---|---|---|
@@ -1555,7 +1724,7 @@ Attacker gains access to database or object-storage backups.
 | Audit | Audit records | Protected storage |
 | Supply chain | Scanning | Provenance/signing |
 
-# 63. Security Assumptions
+# 64. Security Assumptions
 
 The system assumes:
 
@@ -1572,7 +1741,7 @@ The system assumes:
 
 These assumptions shall be documented and periodically reassessed.
 
-# 64. Residual Risk Model
+# 65. Residual Risk Model
 
 Not every risk can be eliminated.
 
@@ -1593,7 +1762,7 @@ Residual risk categories include:
 
 Residual risks shall be explicitly accepted by the appropriate owner.
 
-# 65. Risk Rating
+# 66. Risk Rating
 
 Threats shall be evaluated using:
 
@@ -1630,7 +1799,7 @@ Risk score:
 
 Critical and high risks shall require documented mitigation before Production.
 
-# 66. Security Requirements Traceability
+# 67. Security Requirements Traceability
 
 Threats shall trace to security requirements.
 
@@ -1662,7 +1831,7 @@ Example:
         +--> SEC-110
         +--> SEC-111
 
-# 67. Phase Mapping
+# 68. Phase Mapping
 
 | Phase | Threat-Model Activity |
 |---|---|
@@ -1676,7 +1845,7 @@ Example:
 | Phase 7 | Results, video, telemetry, audit threats |
 | Phase 8 | Production, compliance, penetration testing |
 
-# 68. Phase 0 Threat Activities
+# 69. Phase 0 Threat Activities
 
 Required:
 
@@ -1692,7 +1861,7 @@ Deliverable:
 
     docs/security/THREAT_MODEL.md
 
-# 69. Phase 1 Threat Activities
+# 70. Phase 1 Threat Activities
 
 Focus:
 
@@ -1710,7 +1879,7 @@ Required evidence:
 - negative access tests;
 - MFA design.
 
-# 70. Phase 2 Threat Activities
+# 71. Phase 2 Threat Activities
 
 Focus:
 
@@ -1727,7 +1896,7 @@ Required evidence:
 - storage access review;
 - secret scanning.
 
-# 71. Phase 3 Threat Activities
+# 72. Phase 3 Threat Activities
 
 Focus:
 
@@ -1744,7 +1913,7 @@ Required evidence:
 - malformed artifact tests;
 - compatibility tests.
 
-# 72. Phase 4 Threat Activities
+# 73. Phase 4 Threat Activities
 
 Focus:
 
@@ -1761,7 +1930,7 @@ Required evidence:
 - authorization tests;
 - idempotency tests.
 
-# 73. Phase 5 Threat Activities
+# 74. Phase 5 Threat Activities
 
 Focus:
 
@@ -1778,7 +1947,7 @@ Required evidence:
 - Run provenance tests;
 - failure tests.
 
-# 74. Phase 6 Threat Activities
+# 75. Phase 6 Threat Activities
 
 Focus:
 
@@ -1796,7 +1965,7 @@ Required evidence:
 - failure injection;
 - safety review.
 
-# 75. Phase 7 Threat Activities
+# 76. Phase 7 Threat Activities
 
 Focus:
 
@@ -1813,7 +1982,7 @@ Required evidence:
 - audit integrity tests;
 - stream authorization tests.
 
-# 76. Phase 8 Threat Activities
+# 77. Phase 8 Threat Activities
 
 Focus:
 
@@ -1833,7 +2002,7 @@ Required evidence:
 - access review;
 - security sign-off.
 
-# 77. Threat-Model Review Cadence
+# 78. Threat-Model Review Cadence
 
 The threat model shall be reviewed:
 
@@ -1848,7 +2017,7 @@ The threat model shall be reviewed:
 - at least quarterly during active development;
 - at least annually after Production stabilization.
 
-# 78. Event-Driven Threat Review
+# 79. Event-Driven Threat Review
 
 An immediate review shall be triggered by:
 
@@ -1863,7 +2032,7 @@ An immediate review shall be triggered by:
 - new cross-tenant data path;
 - introduction of source-code cloud storage.
 
-# 79. Threat-Model Change Process
+# 80. Threat-Model Change Process
 
 A security-impacting change shall follow:
 
@@ -1892,7 +2061,7 @@ A security-impacting change shall follow:
 
 Threat-model changes shall be version controlled.
 
-# 80. Security Review Ownership
+# 81. Security Review Ownership
 
 Recommended ownership:
 
@@ -1910,7 +2079,7 @@ Recommended ownership:
 | Audit | Backend/Security |
 | Threat Model | Security/Architecture |
 
-# 81. Security Verification Methods
+# 82. Security Verification Methods
 
 Verification shall use multiple methods:
 
@@ -1930,7 +2099,7 @@ Verification shall use multiple methods:
 | Failure Injection | Resilience |
 | Human Safety Review | Physical deployment safety |
 
-# 82. Acceptance Criteria: Assets
+# 83. Acceptance Criteria: Assets
 
 - [ ] All security-relevant assets are inventoried.
 - [ ] Asset owners are identified.
@@ -1940,7 +2109,7 @@ Verification shall use multiple methods:
 - [ ] Signing keys are explicitly modeled.
 - [ ] Robot-control interfaces are explicitly modeled.
 
-# 83. Acceptance Criteria: Actors
+# 84. Acceptance Criteria: Actors
 
 - [ ] Legitimate actors are identified.
 - [ ] Adversarial actors are identified.
@@ -1950,7 +2119,7 @@ Verification shall use multiple methods:
 - [ ] Compromised service identities are modeled.
 - [ ] Rogue Lab Agents are modeled.
 
-# 84. Acceptance Criteria: Trust Boundaries
+# 85. Acceptance Criteria: Trust Boundaries
 
 - [ ] Studio boundary is documented.
 - [ ] Local Runtime boundary is documented.
@@ -1962,7 +2131,7 @@ Verification shall use multiple methods:
 - [ ] Robot/runtime boundary is documented.
 - [ ] Physical safety boundary is documented.
 
-# 85. Acceptance Criteria: Data Flows
+# 86. Acceptance Criteria: Data Flows
 
 - [ ] Local development flow is documented.
 - [ ] Artifact upload flow is documented.
@@ -1972,7 +2141,7 @@ Verification shall use multiple methods:
 - [ ] Security-sensitive data crossings are identified.
 - [ ] Trust changes are identified.
 
-# 86. Acceptance Criteria: STRIDE
+# 87. Acceptance Criteria: STRIDE
 
 - [ ] Studio STRIDE analysis exists.
 - [ ] Local Runtime STRIDE analysis exists.
@@ -1986,7 +2155,7 @@ Verification shall use multiple methods:
 - [ ] Web Console threats are modeled.
 - [ ] Queue/worker threats are modeled.
 
-# 87. Acceptance Criteria: Attack Scenarios
+# 88. Acceptance Criteria: Attack Scenarios
 
 - [ ] Cross-tenant access is modeled.
 - [ ] Artifact substitution is modeled.
@@ -2009,7 +2178,7 @@ Verification shall use multiple methods:
 - [ ] Denial of service is modeled.
 - [ ] Safety communication loss is modeled.
 
-# 88. Acceptance Criteria: Mitigations
+# 89. Acceptance Criteria: Mitigations
 
 - [ ] Every high-risk threat has a mitigation.
 - [ ] Critical threats have defense in depth.
@@ -2019,7 +2188,7 @@ Verification shall use multiple methods:
 - [ ] Security ownership is assigned.
 - [ ] Production-blocking risks are identified.
 
-# 89. Acceptance Criteria: Physical Safety
+# 90. Acceptance Criteria: Physical Safety
 
 - [ ] Cloud is not the physical safety authority.
 - [ ] Emergency stop remains local.
@@ -2031,7 +2200,7 @@ Verification shall use multiple methods:
 - [ ] Physical safety review remains mandatory.
 - [ ] Software acceptance is not treated as safety certification.
 
-# 90. Acceptance Criteria: Review Cadence
+# 91. Acceptance Criteria: Review Cadence
 
 - [ ] Quarterly review is defined for active development.
 - [ ] Annual review is defined for Production.
@@ -2042,7 +2211,7 @@ Verification shall use multiple methods:
 - [ ] Signing-key changes trigger review.
 - [ ] Threat-model changes are version controlled.
 
-# 91. Final Threat-Model Invariants
+# 92. Final Threat-Model Invariants
 
 The following invariants are mandatory:
 
@@ -2069,7 +2238,7 @@ The following invariants are mandatory:
 21. New security boundaries require threat-model review.
 22. Production deployment requires security verification appropriate to the risk.
 
-# 92. Final Security Architecture View
+# 93. Final Security Architecture View
 
 The complete security model is:
 

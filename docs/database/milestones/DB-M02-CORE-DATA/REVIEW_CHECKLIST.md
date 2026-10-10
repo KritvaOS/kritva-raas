@@ -227,6 +227,16 @@ Expected result:
 - reconciliation produces deterministic outcome;
 - no silent data loss occurs.
 
+### 7.14 Coding-agent schema tests
+
+Verify:
+
+- seed migration on a fresh database;
+- `require_consent` constraint;
+- foreign-key validity of `allowed_providers`;
+- cross-tenant policy access denied by RLS;
+- column review confirming no content fields.
+
 ---
 
 ## 8 Demo script

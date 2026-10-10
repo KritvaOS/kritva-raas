@@ -303,6 +303,14 @@ Initial targets:
 
 Targets must be measured under representative load.
 
+## 7.17 Coding-Agent Provider Metadata Tests
+
+Verify:
+
+- read and detail responses against the contract;
+- operator-only writes with audit;
+- platform and compatibility separation (negative tests).
+
 ---
 
 # 8 Demo Script

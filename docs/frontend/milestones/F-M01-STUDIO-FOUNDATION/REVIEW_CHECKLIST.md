@@ -180,6 +180,16 @@ Required reviews:
 - security review;
 - QA review.
 
+## 7.11 Coding-Agent Foundation Verification
+
+Verify:
+
+- adapter contract suite passes against the mock provider;
+- environment inspection test shows no Kritva credential in the agent process;
+- workspace-guard test detects an out-of-workspace write;
+- IPC review confirms there is no generic command-execution path;
+- Studio passes its normal E2E suite with no provider installed.
+
 ---
 
 # 8. Demo Script

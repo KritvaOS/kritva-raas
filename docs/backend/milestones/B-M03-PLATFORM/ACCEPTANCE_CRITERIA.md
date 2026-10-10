@@ -180,11 +180,21 @@ Milestone: B-M03 — Platform
 
 ## 6.15 Integration
 
-- [ ] F-M03 can retrieve platform catalog.
-- [ ] F-M04 can retrieve resource information.
-- [ ] F-M05 can use compatibility.
-- [ ] F-M06 can use WebSocket infrastructure.
+- [ ] F-M02 PROJECTS can retrieve the platform catalog.
+- [ ] F-M04 BOOKING can retrieve resource information.
+- [ ] F-M03 BUILD & ARTIFACT and F-M05 EXECUTION can use compatibility.
+- [ ] F-M05 EXECUTION and F-M06 LIVE can use WebSocket infrastructure.
+- [ ] Studio can retrieve coding-agent provider metadata.
 - [ ] Future Lab Agent integration has stable contracts.
 - [ ] API and WebSocket contracts are documented.
 
+## 6.16 Coding-Agent Provider Metadata
+
+- [ ] `GET /coding-agent-providers` and `GET /coding-agent-providers/{provider_id}` return the fields in `docs/protocol/API_CONTRACT.md` Section 27.4.
+- [ ] `claude-code` and `openai-codex` are present.
+- [ ] Only platform operators can update provider records, and updates are audited.
+- [ ] Responses include an `ETag`.
+- [ ] Providers never appear in platform, capability, configuration, resource or compatibility responses.
+
 ---
+

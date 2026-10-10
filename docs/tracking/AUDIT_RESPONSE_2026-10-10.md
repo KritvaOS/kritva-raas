@@ -57,6 +57,34 @@ The second external review reused the identifiers RAAS-010 and RAAS-011, which t
 | Result | 324 documents checked, 0 errors, 1810 warnings |
 | Warnings | All are bare `Phase N` labels, summarised as 85 per-file lines across architecture (14 files), cloud (14), database (13), protocol (10), security (10), backend (7), development (6), frontend (6) and ui (5). They are the RAAS-012 domain-owner remapping backlog. |
 
+## 4.2 Findings Raised During Coding-Agent Planning (CR-2026-001)
+
+| ID | Severity | Finding | Action | Status |
+|---|---|---|---|---|
+| RAAS-015 | Medium | 204 task IDs are reused between phase-dossier and domain-milestone `TASKS.md` registers. For example, KR-FE-1-001 is a different task in PHASE-1-STUDIO and in F-M02 PROJECTS. | New coding-agent tasks use the unique `KR-CA-nnn` namespace. The checker reports reused IDs as a warning and rejects duplicate `KR-CA` IDs. Renumbering the existing registers needs an owner decision on the namespace scheme. | Open: planning owner |
+| RAAS-016 | Low | The F-M02 PROJECTS changelog notes and the B-M03 PLATFORM integration acceptance items used superseded frontend milestone numbers. | Corrected to canonical milestone names. | Closed |
+
+## 4.3 External Review of the Coding-Agent Integration (CA-REV-001 to CA-REV-012)
+
+The external review assessed `docs/architecture/CODING_AGENT_INTEGRATION.md` revision 1. Its verdict: accept the direction, with corrections required before SYS-ADR-007 approval. Revision 2 addressed every finding. The reviewer's follow-up assessed 11 of 12 as closed at planning level, CA-REV-001 as partially closed, and recommended Option 2 for decision A. Revision 3 addresses the follow-up. The reviewer's revision 3 assessment closed CA-REV-001 at planning level after the no-silent-downgrade rule was added, kept CA-REV-012 provisional, and found no reason to reopen the other ten findings.
+
+| ID | Severity | Finding | Correction (architecture section) | Status |
+|---|---|---|---|---|
+| CA-REV-001 | High | Isolation mechanism unspecified; the workspace guard is not a boundary | Isolation tiers A, B and C with separate read, write and network boundaries; tier C disclosed; policy `min_isolation_tier`; escape test list (5.4; SEC-186; R-SEC-015) | Closed in plan (revision 3). Revision 2 was partially closed: tier C outside-read semantics needed clarification. Revision 3 adds tier rules in 5.4: tier C makes no isolation claim; per-session disclosure and acknowledgement that any user-readable file may be read; policy requiring tier A rejects tier C regardless of consent; tier A listed only after CAT-03 enforcement tests per OS and provider plus a session-start probe; combinations below the required tier shown unsupported; a failed tier A probe never silently downgrades (rule 6) (SEC-186, CAT-03). Reviewer confirmed closure at planning level on 2026-10-10; tier A qualification per combination remains a release verification obligation |
+| CA-REV-002 | High | Direct workspace writes weaken review guarantees | Per-session staging workspace; immutable change sets with content hashes; conflict detection; atomic idempotent apply; `WORKSPACE_WRITE` deferred (5.3, 5.5; SEC-184, SEC-185) | Closed in plan |
+| CA-REV-003 | High | Build, test and package side effects underspecified | Saved-profile-only inputs; staging-only execution with manual-build limits; build-definition changes highlighted; bound approvals, including the build-profile and test-target definition version hash (revision 3); package never signs or uploads (7.2, 7.5; SEC-192, CAT-09) | Closed in plan |
+| CA-REV-004 | High | Consent and privacy scope imprecise | Guarantee limited to Kritva-operated services; egress inventory with negative tests; consent contents and lifecycle including withdrawal (4.1 to 4.3; SEC-190) | Closed in plan |
+| CA-REV-005 | High | Policy cache and offline behaviour incomplete | Unconfigured states; monotonic-clock cache age; checksum; revalidation before consequential calls; deterministic effect on active sessions (8.2 to 8.4; SEC-191, SEC-195) | Closed in plan. Revision 3 separates `POLICY_UNCONFIGURED` from `POLICY_UNAVAILABLE` in UI, IPC, audit, API (`configured` field) and remediation, and makes the pre-P3 local default restrictive. Default for a never-configured organization: Option 2 recommended, awaiting product-owner decision in SYS-ADR-007 |
+| CA-REV-006 | High | Checkpoint and recovery imprecise | Restore point scope; durable session journal; cross-process lock; crash, full-disk and corruption recovery; honest cancellation reporting (5.6) | Closed in plan |
+| CA-REV-007 | High | PRI-1 needs P1 and P2 exit gates | Exit gates in architecture Section 12, referenced from PHASES.md and the PHASE-1 and PHASE-2 acceptance criteria | Closed in plan |
+| CA-REV-008 | Medium | Adapter capability negotiation and errors | Capability verification handshake; CLI re-check; normalized error taxonomy; configuration isolation (5.2, 5.8, 5.9; SEC-194) | Closed in plan |
+| CA-REV-009 | Medium | MCP schemas, transport and indirect injection | Per-tool schemas and limits; stdio preferred; loopback token and replay protection; AND-of-controls authorization; output hygiene (7.1, 7.4 to 7.6; SEC-193) | Closed in plan |
+| CA-REV-010 | Medium | Provenance ambiguous | Content-hash registry; deterministic flag; not an attestation (9; ARTIFACT_MANIFEST Section 13) | Closed in plan |
+| CA-REV-011 | Medium | Test plan not measurable | Test matrix CAT-01 to CAT-13 with suite, expected result, evidence and blocking milestone (`TESTING_STRATEGY.md` Section 37.1) | Closed in plan |
+| CA-REV-012 | Medium | Cross-document consistency | Checker run on the full checkout (0 errors); KR-CA IDs unique (checker rule 18); DB-M02 stays in P3; P1 and P2 safe without the P3 policy (default local policy); SYS-ADR-007 gate is a task dependency of F-M02 | Provisionally closed: open decisions A to E now have accountable owners and resolution gates (architecture Section 13); final closure needs the product owner's SYS-ADR-007 disposition, ADR conditions and phase and milestone references consistent with it, and a retained full-checkout checker run with task-ID uniqueness. Reviewer agreed with provisional status on 2026-10-10 |
+
+New tasks: KR-CA-035 (F-M01), KR-CA-036 to KR-CA-038 (F-M02), KR-CA-039 (F-M03). "Closed in plan" means the planning documents are corrected. Implementation evidence is still required at the exit gates.
+
 ## 5. Remaining Actions Before an Approved Implementation Baseline
 
 1. Disposition SYS-ADR-001 to SYS-ADR-006 (RAAS-004). The tracker gate in `DECISIONS.md` Section 4.2.1 stays in force.
@@ -64,3 +92,5 @@ The second external review reused the identifiers RAAS-010 and RAAS-011, which t
 3. Domain owners reconcile the legacy phase-to-scope mappings in architecture, protocol, security and schema documents (RAAS-012). Afterwards, promote the `Phase N` warnings to errors and add domain-specific mapping checks.
 4. Approve the corrections recorded in `PHASES.md` Section 25.
 5. Add `python3 scripts/docs/check_docs.py` to CI and record each run's result here or in `STATUS.md`.
+6. Decide the task-ID namespace scheme and renumber reused task IDs (RAAS-015).
+7. Disposition SYS-ADR-007 and CR-2026-001 (coding-agent integration) before F-M02 PROJECTS coding-agent work starts, including the default for a never-configured organization (Option 2 recommended). Name owners for open decisions B to E (architecture Section 13); no provider and OS combination is released while B or D is open for it.

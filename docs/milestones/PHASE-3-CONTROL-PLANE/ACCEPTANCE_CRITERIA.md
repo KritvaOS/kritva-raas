@@ -178,6 +178,7 @@ Milestone: PHASE-3-CONTROL-PLANE — Identity, Projects, Platforms and Artifacts
 - [ ] Artifact upload works.
 - [ ] Artifact status is displayed.
 - [ ] Backend errors are rendered correctly.
+- [ ] Studio applies the organization coding-agent policy and provider metadata from the Control Plane, with cache expiry and offline fallback to `READ_ONLY`.
 
 ### 6.15 Demo-0
 
@@ -211,6 +212,8 @@ P3 CONTROL PLANE shall not close if:
 - [ ] source upload is required;
 - [ ] object storage and database state can silently diverge;
 - [ ] authorization exists only in Studio;
+- [ ] the coding-agent policy or provider APIs accept source, prompts, transcripts, diffs, file names or paths;
+- [ ] coding-agent providers appear in platform or compatibility results;
 - [ ] Demo-0 cannot complete end-to-end.
 
 ---

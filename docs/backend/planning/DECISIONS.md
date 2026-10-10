@@ -302,6 +302,7 @@ Each entry MUST be completed, rejected, withdrawn, or removed from the active in
 | BE-ADR-008 | Backend events and realtime integration | Proposed | Event publication and gateway implementation | Section 13 |
 | BE-ADR-009 | Backend testing and quality gates | Proposed | Verification and CI | Section 14 |
 | BE-ADR-010 | Backend observability and performance | Proposed | Diagnostics and runtime efficiency | Section 15 |
+| BE-ADR-011 | Coding-agent policy and provider metadata services | Proposed | Organization policy (B-M01) and provider metadata (B-M03) | Section 16 |
 
 These entries identify areas requiring explicit decisions. They MUST NOT be interpreted as a mandate to adopt any particular framework, database access library, queue, or observability vendor.
 
@@ -764,9 +765,41 @@ Product-level service objectives remain in the relevant product/system documents
 
 Review this decision if production incidents cannot be diagnosed reliably, telemetry creates excessive overhead, or measured performance contradicts the assumptions behind the implementation.
 
-## 16. Backend Decision Workflow
+## 16. BE-ADR-011 — Coding-Agent Policy and Provider Metadata Services
 
-### 16.1 Proposal
+**Status:** Proposed  
+**Scope:** Control Plane implementation of the coding-agent organization policy and provider metadata  
+**Implements:** SYS-ADR-007 (`docs/planning/DECISIONS.md`); architecture in `docs/architecture/CODING_AGENT_INTEGRATION.md` Section 8
+
+### 16.1 Context
+
+Organizations need to govern customer use of coding agents in Studio, and Studio needs authoritative provider support data. The Control Plane must not execute, proxy or observe agent sessions.
+
+### 16.2 Proposed Decision
+
+- The organization coding-agent policy MUST be implemented in the B-M01 CONTROL PLANE organization module as a versioned, audited resource that only organization administrators can change.
+- Provider metadata MUST be implemented in the B-M03 PLATFORM module as a resource separate from robot platforms, capabilities and resources. Platform compatibility queries MUST NOT return coding-agent providers.
+- Neither module may accept source, prompts, transcripts, diffs, file names or paths. Request validation MUST reject unknown fields.
+- Policy reads MUST be cacheable by Studio (ETag and `policyVersion`). Policy changes MUST emit an audit event.
+- No session telemetry endpoint is implemented. Adding one requires a new decision record.
+
+### 16.3 Rationale
+
+Placing the policy with the organization and the metadata with the platform catalogue reuses existing authorization, audit and caching patterns while keeping coding agents distinct from execution platforms.
+
+### 16.4 Consequences
+
+- New endpoints in `docs/protocol/API_CONTRACT.md` Sections 25.4 and 27.4.
+- New persistence in DB-M02 CORE DATA (DB-ADR-011).
+- Contract tests prove that payloads containing content fields are rejected.
+
+### 16.5 Review Triggers
+
+Review this decision if server-side enforcement or usage reporting is proposed, or if provider metadata needs per-organization overrides.
+
+## 17. Backend Decision Workflow
+
+### 17.1 Proposal
 
 A proposal MUST identify:
 
@@ -783,7 +816,7 @@ A proposal MUST identify:
 
 A proposal MUST distinguish a verified technical constraint from an assumption.
 
-### 16.2 Review
+### 17.2 Review
 
 The backend owner responsible for the affected implementation area MUST review the proposal.
 
@@ -791,7 +824,7 @@ Other domain owners SHOULD participate when the decision affects their contracts
 
 A decision that changes product-wide behavior MUST be escalated to `docs/planning/DECISIONS.md`.
 
-### 16.3 Acceptance
+### 17.3 Acceptance
 
 A decision MAY be marked Accepted only after approval by the authorized backend owner.
 
@@ -799,7 +832,7 @@ Acceptance MUST identify the selected choice and any material conditions.
 
 A proposal dependent on unresolved product/system approval MUST remain Proposed.
 
-### 16.4 Implementation
+### 17.4 Implementation
 
 Implementation MUST follow the accepted decision or record a justified deviation for review.
 
@@ -807,7 +840,7 @@ The relevant backend architecture document SHOULD be updated to describe the res
 
 The decision record MUST NOT substitute for implementation instructions or task acceptance criteria.
 
-### 16.5 Verification
+### 17.5 Verification
 
 Verification MUST confirm that the implementation satisfies the decision's stated requirements.
 
@@ -815,7 +848,7 @@ Evidence MAY include tests, measurements, architecture checks, code review, or i
 
 Milestone completion MUST follow the applicable authoritative milestone dossier.
 
-### 16.6 Closure
+### 17.6 Closure
 
 A decision MAY be marked implemented when the required implementation and validation are complete.
 
@@ -823,9 +856,9 @@ The record SHOULD link to the relevant implementation revision and evidence.
 
 Implementation completion does not prevent a future decision from superseding the choice.
 
-## 17. Relationship to Phases and Milestones
+## 18. Relationship to Phases and Milestones
 
-### 17.1 Phase Authority
+### 18.1 Phase Authority
 
 `docs/planning/PHASES.md` is the canonical source for phase definitions.
 
@@ -833,7 +866,7 @@ This register MUST NOT redefine phase meaning or use phase references to expand 
 
 Backend decisions MAY reference phases to indicate applicability or expected delivery context.
 
-### 17.2 Canonical Phases
+### 18.2 Canonical Phases
 
 | Phase | Canonical name |
 |---|---|
@@ -849,7 +882,7 @@ Backend decisions MAY reference phases to indicate applicability or expected del
 
 These names MUST be used exactly whenever phases are referenced in this register.
 
-### 17.3 Backend Milestones
+### 18.3 Backend Milestones
 
 | Milestone | Canonical name | Phase mapping |
 |---|---|---|
@@ -863,7 +896,7 @@ These names MUST be used exactly whenever phases are referenced in this register
 
 Backend milestone scope and acceptance MUST be taken from the authoritative dossiers under `docs/backend/milestones/`.
 
-### 17.4 Cross-Domain Milestone References
+### 18.4 Cross-Domain Milestone References
 
 Backend decisions MAY affect frontend, database, or cloud implementation milestones.
 
@@ -873,7 +906,7 @@ This register MUST NOT reproduce frontend, database, or cloud milestone scope.
 
 Each domain dossier remains authoritative for its own acceptance criteria.
 
-### 17.5 Milestone Traceability
+### 18.5 Milestone Traceability
 
 When a backend decision is required to deliver a milestone, the relevant milestone dossier SHOULD reference the decision ID.
 
@@ -881,9 +914,9 @@ When implementation reveals that an accepted decision must change, the decision 
 
 A decision's presence in a milestone dossier does not automatically make it Accepted or implemented.
 
-## 18. Change Control and Supersession
+## 19. Change Control and Supersession
 
-### 18.1 Changes to Accepted Decisions
+### 19.1 Changes to Accepted Decisions
 
 An accepted decision MUST NOT be silently changed to represent a materially different choice.
 
@@ -891,7 +924,7 @@ A material change MUST create a successor decision or use an explicit review pro
 
 The record MUST preserve the previous decision and explain the change.
 
-### 18.2 Supersession
+### 19.2 Supersession
 
 A superseding decision MUST:
 
@@ -905,7 +938,7 @@ A superseding decision MUST:
 
 The previous record MUST remain available for historical traceability.
 
-### 18.3 Rejected Decisions
+### 19.3 Rejected Decisions
 
 A rejected decision MUST remain distinguishable from an accepted decision.
 
@@ -913,13 +946,13 @@ The rejection rationale SHOULD be recorded so that future proposals can reuse th
 
 A rejected ID MUST NOT be reused.
 
-### 18.4 Withdrawn Decisions
+### 19.4 Withdrawn Decisions
 
 A decision MAY be withdrawn when its context no longer applies and no direct successor is required.
 
 The withdrawal MUST state why the decision is no longer relevant.
 
-### 18.5 Conflicting Records
+### 19.5 Conflicting Records
 
 If a backend implementation document conflicts with an accepted backend decision, the backend owner MUST resolve the inconsistency.
 
@@ -927,9 +960,9 @@ If a backend decision conflicts with a product/system decision, the product/syst
 
 A copied description in another document MUST NOT override the authoritative decision record.
 
-## 19. Review and Maintenance
+## 20. Review and Maintenance
 
-### 19.1 Decision Ownership
+### 20.1 Decision Ownership
 
 Every backend decision MUST have an accountable owner.
 
@@ -937,7 +970,7 @@ The owner is responsible for status, rationale, references, and review triggers.
 
 The owner SHOULD ensure that current backend architecture documents reflect the accepted choice without duplicating the complete decision record.
 
-### 19.2 Review Triggers
+### 20.2 Review Triggers
 
 Backend decisions SHOULD be reviewed when:
 
@@ -951,7 +984,7 @@ Backend decisions SHOULD be reviewed when:
 - A product/system decision changes.
 - A milestone dossier identifies a blocker requiring a backend architecture change.
 
-### 19.3 Periodic Review
+### 20.3 Periodic Review
 
 The backend decision register SHOULD be reviewed at major backend architecture and release checkpoints.
 
@@ -966,7 +999,7 @@ The review SHOULD identify:
 
 Periodic review MUST NOT become a duplicate review of every implementation detail.
 
-### 19.4 Decision Quality
+### 20.4 Decision Quality
 
 A backend decision SHOULD be:
 
@@ -978,7 +1011,7 @@ A backend decision SHOULD be:
 - Traceable to affected backend architecture.
 - Consistent with product/system and protocol contracts.
 
-### 19.5 Exceptions
+### 20.5 Exceptions
 
 A deviation from an accepted backend decision MUST be documented when it materially affects architecture, reliability, security, or compatibility.
 
@@ -986,9 +1019,9 @@ The exception MUST identify the scope, rationale, owner, and review date.
 
 A temporary deviation MUST NOT silently become the permanent implementation.
 
-## 20. Backend Decision Register Checklist
+## 21. Backend Decision Register Checklist
 
-### 20.1 Ownership
+### 21.1 Ownership
 
 - [ ] Backend-specific decisions are recorded here.
 - [ ] Product/system decisions link to `docs/planning/DECISIONS.md`.
@@ -1000,7 +1033,7 @@ A temporary deviation MUST NOT silently become the permanent implementation.
 - [ ] Cloud implementation and infrastructure-security decisions remain with the cloud architecture owners.
 - [ ] No product-wide decision content has been duplicated.
 
-### 20.2 Record Quality
+### 21.2 Record Quality
 
 - [ ] Every accepted decision has a stable ID.
 - [ ] Status and date are explicit.
@@ -1011,7 +1044,7 @@ A temporary deviation MUST NOT silently become the permanent implementation.
 - [ ] Review triggers are defined.
 - [ ] Superseded decisions identify their successors.
 
-### 20.3 Implementation and Verification
+### 21.3 Implementation and Verification
 
 - [ ] Accepted decisions are reflected in current backend architecture documents.
 - [ ] Required implementation work is traceable.
@@ -1021,7 +1054,7 @@ A temporary deviation MUST NOT silently become the permanent implementation.
 - [ ] External contract compatibility is preserved.
 - [ ] Failure handling, observability, and security implications are considered where applicable.
 
-### 20.4 Phase and Milestone Traceability
+### 21.4 Phase and Milestone Traceability
 
 - [ ] Phase references use the canonical model in `docs/planning/PHASES.md`.
 - [ ] Backend milestone identifiers and names use the frozen canonical model.
@@ -1029,7 +1062,7 @@ A temporary deviation MUST NOT silently become the permanent implementation.
 - [ ] Cross-domain impacts link to relevant domain dossiers.
 - [ ] Milestone acceptance criteria are not duplicated in this register.
 
-## 21. Definition of Done
+## 22. Definition of Done
 
 The backend decision register is ready for ongoing use when:
 

@@ -298,7 +298,8 @@ B-M01 includes:
 - repository tests;
 - API tests;
 - authorization tests;
-- tenant-isolation tests.
+- tenant-isolation tests;
+- organization coding-agent policy (Section 2.7).
 
 ## 2.2 Explicitly Out of Scope
 
@@ -322,7 +323,8 @@ B-M01 does not implement:
 - physical robot control;
 - physical E-stop;
 - production payment provider integration;
-- advanced analytics.
+- advanced analytics;
+- any execution, proxying or observation of coding-agent sessions, and any coding-agent session telemetry.
 
 ## 2.3 Authentication Boundary
 
@@ -378,6 +380,25 @@ They must not accept:
 - local workspace paths for server storage;
 - credentials;
 - arbitrary source blobs.
+
+## 2.7 Organization Coding-Agent Policy
+
+B-M01 provides the organization policy that Studio applies to coding-agent sessions. Architecture: `docs/architecture/CODING_AGENT_INTEGRATION.md` Section 8.1. Decisions: SYS-ADR-007, BE-ADR-011. Persistence: DB-M02 CORE DATA (DB-ADR-011).
+
+Scope:
+
+- `GET` and `PUT /api/v1/organizations/{organization_id}/coding-agent-policy` as defined in `docs/protocol/API_CONTRACT.md` Section 25.4;
+- the default policy returned when none is set (`policy_version` = 0);
+- organization-administrator authorization for changes, using `If-Match` and an incremented `policy_version`;
+- validation of provider IDs against B-M03 PLATFORM provider metadata and of MCP tool names against the documented catalogue;
+- an audit event with the previous and new policy on every change;
+- rejection of unknown fields and of `require_consent: false`.
+
+Boundary:
+
+- The Control Plane never launches, proxies or observes coding-agent sessions.
+- The policy API accepts no source, prompts, transcripts, diffs, file names or paths.
+- Policy is enforced by Studio. Administrator documentation MUST state that it is a governance control, not a security boundary.
 
 ---
 
@@ -555,7 +576,8 @@ Error response:
 - organization service;
 - membership service;
 - organization APIs;
-- tenant context resolution.
+- tenant context resolution;
+- organization coding-agent policy resource, service and API (`docs/protocol/API_CONTRACT.md` Section 25.4).
 
 ## 4.7 Project Deliverables
 
@@ -810,6 +832,12 @@ Concrete implementations remain infrastructure concerns.
 - change tracking;
 - milestone acceptance.
 
+## 9.16 R-BM01-016 — Policy Misread as Enforcement
+
+**Risk:** Administrators assume the coding-agent policy is enforced server-side and cannot be bypassed.
+
+**Mitigation:** Administrator documentation and UI state that Studio enforces the policy on the user's machine. Related: R-SEC-012.
+
 ---
 
 # 10 Exit Criteria
@@ -828,6 +856,7 @@ Concrete implementations remain infrastructure concerns.
 - [ ] Repositories work.
 - [ ] Audit foundation works.
 - [ ] Idempotency foundation works.
+- [ ] Organization coding-agent policy GET/PUT works, with default, versioning and audit.
 
 ## 10.2 Database Exit
 
@@ -848,6 +877,7 @@ Concrete implementations remain infrastructure concerns.
 - [ ] Secret handling verified.
 - [ ] Sensitive logging reviewed.
 - [ ] Administrative authorization reviewed.
+- [ ] Coding-agent policy API rejects content fields and `require_consent: false`.
 
 ## 10.4 API Exit
 

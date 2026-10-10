@@ -747,6 +747,37 @@ The expected invariant is:
         v
     Signed .krv
 
+Coding-agent sessions follow the same invariant (`docs/architecture/CODING_AGENT_INTEGRATION.md` Section 11):
+
+- Network capture during agent sessions shows no source, prompt, transcript or diff sent to any Kritva endpoint.
+- The agent process environment contains no Kritva credential.
+- Every adapter passes one shared contract suite against the deterministic mock provider in CI.
+- Real-provider contract tests run against dedicated test accounts and non-confidential fixture projects, on a scheduled job for each supported CLI version.
+- MCP negative tests and a prompt-injection fixture prove that signing, upload, booking, credit, Job, Run and robot operations are unreachable.
+- The primary product path E2E suite also runs with no coding-agent provider installed.
+
+## 37.1 Coding-Agent Test Matrix
+
+This matrix is the release-gating evidence for `docs/architecture/CODING_AGENT_INTEGRATION.md` Section 11. Real-provider rows run against dedicated test accounts and non-confidential fixture projects. A pass against the mock provider is never counted as real-provider evidence.
+
+Dimensions for rows marked "per combination": supported OS × provider (Claude Code, OpenAI Codex) × supported CLI version × permission mode (`READ_ONLY`, `PROPOSE`) × isolation tier.
+
+| ID | Area | Cases | Suite | Expected result | Evidence retained | Blocks exit |
+|---|---|---|---|---|---|---|
+| CAT-01 | Adapter contract | Discovery statuses, capability verification, error taxonomy, mode mapping (per combination) | Adapter contract suite | All cases pass; unsupported mode refused | CI report per CLI version | F-M02 (first provider), F-M03 (both) |
+| CAT-02 | Environment | Inspect agent process environment | Runtime security suite | No Kritva token, key, credential or signing material | Test log | F-M01, F-M02 |
+| CAT-03 | Isolation | Symlinks, path traversal, hard links, nested mounts, subprocesses, background processes, reads outside the read boundary, writes outside staging, network to non-allowed endpoints (per OS, provider and tier); session-start probe and its failure path (no silent downgrade: stop before agent work, reject when tier A is required, fresh acknowledgement otherwise); tier C per-session disclosure; policy requiring tier A rejects a tier-C-only combination despite consent | Isolation suite | Tier A enforcement proven by denied read, write and network operations, not by the handshake; tier C disclosed every session and writes detected; combination below the required tier shown unsupported | Per-OS and per-provider report; compatibility matrix entry | F-M02 |
+| CAT-04 | Change sets | Apply full, per file, per hunk; concurrent edit conflict; idempotent re-apply; revert | Change-set suite | Working tree changes only on apply; conflicts never overwritten | Test log | F-M02 |
+| CAT-05 | Recovery | Kill Studio during session and during apply; OS restart; disk full; corrupt journal | Fault-injection suite | No loss of pre-existing user work; user informed | Fault-injection report | F-M02 |
+| CAT-06 | Consent | First use; disclosure change; organization change; withdrawal during a session | E2E | Behaviour per architecture Sections 4.3 and 8.4 | E2E recording | F-M02 |
+| CAT-07 | Policy | Expiry, revocation and tool removal during a session; cache corruption; clock change; offline start; organization with no policy versus policy fetch failure | Policy suite | Calls denied immediately; session stopped within 10 s; `READ_ONLY` fallback on fetch failure; `POLICY_UNCONFIGURED` and `POLICY_UNAVAILABLE` distinguished in UI, IPC and audit | Test log | F-M02 (local), P3 CONTROL PLANE (server) |
+| CAT-08 | MCP tools | Positive and negative case per tool; schema rejection; unknown fields; oversize input | MCP suite | Only the catalogue is reachable; invalid input rejected | Test log | F-M03 |
+| CAT-09 | MCP authorization | Approval binding and invalidation, including a change to the staging workspace, the build profile or the test-target definition after approval; denial when any control denies; loopback token and replay | MCP security suite | All denials enforced | Test log | F-M03 |
+| CAT-10 | Prompt injection | Malicious instructions in source, build logs, test output, instruction files and generated artifacts; malicious build script; resource exhaustion | Adversarial suite | No signing, upload, booking, credit, Job, Run or robot effect; limits enforced | Fixture report | F-M03 |
+| CAT-11 | Egress | Every path in architecture Section 4.2 during agent sessions | Network-capture suite | No coding-agent content to Kritva | Capture summary | F-M02, F-M03 |
+| CAT-12 | Provenance | Applied, unapplied, manually edited, reverted, branch-switched builds | Build suite | `agent_assisted` deterministic per architecture Section 9 | Test log | F-M03 |
+| CAT-13 | No provider | Full primary product path with no provider installed, and with providers disabled by policy | E2E | Path passes | E2E report | Every phase exit from P1 STUDIO onward |
+
 # 38. Authentication Testing
 
 Authentication tests include:

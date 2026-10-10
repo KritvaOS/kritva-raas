@@ -63,6 +63,11 @@ Source of scope: [MILESTONE.md](MILESTONE.md)
 | KR-BE-1-052 | Performance baseline | 2d | Backend/QA | 049 | [ ] |
 | KR-BE-1-053 | Documentation update | 1.5d | Documentation | All | [ ] |
 | KR-BE-1-054 | Milestone acceptance/evidence | 1d | Architect/Product | All | [ ] |
+| KR-CA-022 | Implement organization coding-agent policy domain model and service | 1.5d | Backend | KR-BE-1-020, DB-M02 (KR-CA-031) | [ ] |
+| KR-CA-023 | Implement coding-agent policy GET/PUT API with ETag, If-Match and default policy | 1.5d | Backend | KR-CA-022 | [ ] |
+| KR-CA-024 | Validate policy provider IDs and MCP tool names; reject content fields | 1.0d | Backend | KR-CA-023, B-M03 (KR-CA-027) | [ ] |
+| KR-CA-025 | Emit audit events for policy changes | 0.5d | Backend | KR-CA-023 | [ ] |
+| KR-CA-026 | Add policy API, authorization, audit and negative contract tests | 1.5d | QA/Backend | KR-CA-022 to KR-CA-025 | [ ] |
 
 Estimates are engineering-day planning estimates and must be refined during
 task refinement.

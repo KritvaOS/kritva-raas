@@ -217,4 +217,20 @@ Milestone: B-M01 — Control Plane
 - [ ] Test strategy documented.
 - [ ] Milestone evidence recorded.
 
+## 6.16 Organization Coding-Agent Policy
+
+- [ ] `GET .../coding-agent-policy` returns the stored policy with `configured: true`, or, when no policy has ever been set, 200 with `configured: false`, `policy_version` = 0 and the default values (`enabled` follows the SYS-ADR-007 decision on the never-configured default).
+- [ ] A never-configured organization (`configured: false`) is distinguishable from a server error in the response, the audit log and the administrator remediation text; errors never return `configured: false`.
+- [ ] `PUT` requires the organization-administrator role and `If-Match`, and increments `policy_version`.
+- [ ] Unknown provider IDs and MCP tool names are rejected.
+- [ ] `require_consent: false` is rejected.
+- [ ] `max_permission_mode: WORKSPACE_WRITE` is rejected (reserved); `min_isolation_tier`, `require_config_isolation` and `max_cache_age_seconds` are validated.
+- [ ] `configured` is server-assigned and rejected in `PUT`.
+- [ ] Unknown fields, including any source, prompt, transcript, diff, file-name or path field, are rejected.
+- [ ] Every change emits an audit event with the previous and new policy.
+- [ ] Cross-tenant reads and writes are denied.
+- [ ] Responses include an `ETag` and are cacheable by Studio.
+- [ ] Administrator documentation states that Studio enforces the policy (governance control, not a security boundary).
+
 ---
+

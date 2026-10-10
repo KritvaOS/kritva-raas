@@ -14,6 +14,12 @@ Milestone: B-M03 — Platform
 
 ## Changed
 
+- Date: 2026-10-10
+- Change: Added coding-agent provider metadata scope (Section 2.7, exit Section 10.5a, risk R-BM03-015, tasks KR-CA-027 to KR-CA-030, acceptance Section 6.16, review Section 7.17) per SYS-ADR-007 and BE-ADR-011 (Proposed). Corrected the integration acceptance items, which used superseded frontend milestone numbers.
+- Task: KR-CA-027 to KR-CA-030
+- Author: Planning update
+- Evidence: `docs/architecture/CODING_AGENT_INTEGRATION.md`
+
 - Date:
 - Change:
 - Task:

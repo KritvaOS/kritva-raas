@@ -170,6 +170,7 @@ The scope includes:
 - Automated desktop and frontend validation.
 - Initial packaging configuration where required to prove the desktop build path.
 - Documentation discoverability for desktop contributors.
+- Coding-agent integration foundation and project-scoped coding-agent sessions (Section 2.10a).
 
 Detailed task ownership and acceptance conditions are maintained in the sibling files.
 
@@ -320,6 +321,15 @@ The foundation SHOULD establish how the UI determines whether the local runtime 
 The desktop shell MUST NOT silently take ownership of backend business logic or runtime behavior merely because it runs locally.
 
 The detailed runtime architecture, lifecycle semantics, and local service ownership belong to the applicable architecture and implementation documents.
+
+## 2.10a Coding-Agent Integration
+
+P1 STUDIO delivers the first part of the coding-agent capability (PRI-1; optional to use). Architecture: `docs/architecture/CODING_AGENT_INTEGRATION.md`. Decision: SYS-ADR-007, which MUST be dispositioned before F-M02 PROJECTS coding-agent work starts.
+
+- F-M01 STUDIO FOUNDATION: adapter trait, mock provider, session manager, journal and lock, environment sanitizer, workspace guard and `agent.*` IPC (KR-CA-001 to KR-CA-005, KR-CA-035).
+- F-M02 PROJECTS: discovery and capability verification, consent lifecycle, staging and change sets, recovery, isolation launcher, first provider and the default local policy (KR-CA-006 to KR-CA-014, KR-CA-036 to KR-CA-038).
+
+Provider processes are launched only by the Local Runtime. No project content reaches Kritva services.
 
 ## 2.11 Backend Communication Boundary
 

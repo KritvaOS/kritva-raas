@@ -59,6 +59,7 @@ Source of scope: [MILESTONE.md](MILESTONE.md)
 | KR-BE-3-048 | Execute security review | 1.0d | Security Architect | 042,043 | [ ] |
 | KR-BE-3-049 | Execute architecture review | 1.0d | System Architect | 001-047 | [ ] |
 | KR-BE-3-050 | Complete P3 CONTROL PLANE acceptance | 0.5d | Tech Lead | 048,049 | [ ] |
+| KR-CA-034 | Integrate Studio with Control Plane coding-agent policy and provider metadata (fetch, cache, expiry, offline `READ_ONLY` fallback) | 2.0d | Frontend/Rust | KR-CA-012, KR-CA-023, KR-CA-027 | [ ] |
 
 ### 5.2 Indicative effort
 

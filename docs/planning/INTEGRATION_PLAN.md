@@ -314,6 +314,9 @@ Maintain an inventory of interfaces that cross component boundaries.
 | Telemetry | Telemetry producer and data consumers | Schema, timestamps, units, ordering, and loss handling |
 | Results | Execution and results services, database, and Studio | Completion state, result identity, provenance, and retrieval |
 | Operational telemetry | Services and observability infrastructure | Metric names, labels, health indicators, and alert semantics |
+| Coding-agent adapter | Local Runtime and provider CLIs (Claude Code, OpenAI Codex) | Capability descriptor, permission-mode mapping, supported CLI versions, lifecycle, cancellation and errors |
+| Kritva Studio MCP tools | Local Runtime MCP server and connected agents | Tool catalogue, approvals, forbidden operations and audit |
+| Coding-agent policy and provider metadata | Control Plane and Studio | Policy and metadata wire format, caching, defaults and offline behavior |
 
 The inventory identifies contract categories. Detailed schemas and API definitions remain in the domain specifications.
 
@@ -502,6 +505,7 @@ Integrate desktop Studio workflows with their approved local and service depende
 - Define the frontend-facing contract assumptions needed for later backend integration.
 - Verify application startup, shutdown, and error reporting.
 - Ensure UI state does not falsely imply that a backend or runtime operation has succeeded.
+- Integrate coding-agent sessions through the adapter contract, first with the mock provider and then with the first real provider, including consent, staging, change-set review and apply, conflict handling, revert and recovery.
 - Establish automated tests for the critical Studio workflows.
 
 ### 10.3 Relevant Milestones
@@ -521,7 +525,8 @@ Use local development and CI with controlled local dependencies. Use contract fi
 - Local and service errors are surfaced accurately.
 - Frontend integration assumptions are documented and testable.
 - UI tests cover critical paths and relevant failure behavior.
-- Tests do not require uncontrolled production data or credentials.
+- Coding-agent sessions pass the adapter contract suite; no project content reaches Kritva endpoints; Studio works with no provider installed.
+- Tests do not require uncontrolled production data or credentials. Real-provider tests use dedicated test accounts and non-confidential fixture projects.
 
 ---
 
@@ -541,6 +546,7 @@ Integrate local build and artifact workflows across Studio, Local Runtime, artif
 - Integrate relevant CI and artifact storage capabilities.
 - Verify that frontend status accurately reflects the underlying operation.
 - Test compatibility between local build outputs and downstream consumers.
+- Integrate the second coding-agent provider and the Kritva Studio MCP server with the build, test, package and validate services.
 
 ### 11.3 Relevant Milestones
 
@@ -560,6 +566,7 @@ Use local development, contract tests, CI, and shared integration. Artifact stor
 - Failed or incomplete operations produce actionable diagnostics.
 - Artifact integrity and versioning behavior are tested.
 - Integration tests cover the applicable producer-consumer paths.
+- Both coding-agent providers pass the contract suite; MCP negative tests and the prompt-injection fixture pass.
 - The evidence is sufficient for the applicable milestone review.
 
 ---
@@ -581,6 +588,7 @@ Integrate backend services, identity, database behavior, and supporting cloud in
 - Integrate artifact-related services with the platform interfaces where applicable.
 - Validate frontend-to-backend contracts using both contract tests and actual integrated services.
 - Establish service-level observability for integration failures.
+- Integrate the coding-agent policy (B-M01) and provider metadata (B-M03) with Studio, replacing the default local policy.
 
 ### 12.3 Relevant Milestones
 
@@ -602,6 +610,7 @@ Use shared integration with controlled database instances, test identities, and 
 - Service failures produce diagnosable results.
 - Authorization and invalid-request paths are tested.
 - Relevant frontend and backend contracts are verified against integrated implementations.
+- Studio applies the Control Plane coding-agent policy, including cache expiry and offline fallback to `READ_ONLY`.
 - Environment configuration and secrets are controlled.
 - Required integration evidence is linked to the applicable milestone acceptance criteria.
 

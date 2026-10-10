@@ -64,6 +64,10 @@ Source of scope: [MILESTONE.md](MILESTONE.md)
 | KR-BE-2-105 | Architecture review | 2d | Architect | All | [ ] |
 | KR-BE-2-106 | Documentation update | 1.5d | Documentation | All | [ ] |
 | KR-BE-2-107 | Milestone acceptance/evidence | 1d | Architect/Product | All | [ ] |
+| KR-CA-027 | Implement coding-agent provider registry model, repository and read API | 2.0d | Backend | DB-M02 (KR-CA-032) | [ ] |
+| KR-CA-028 | Implement operator write API with audit for provider metadata | 1.0d | Backend | KR-CA-027 | [ ] |
+| KR-CA-029 | Seed `claude-code` and `openai-codex` provider records | 0.5d | Backend | KR-CA-027 | [ ] |
+| KR-CA-030 | Add provider metadata contract tests and platform-separation negative tests | 1.0d | QA | KR-CA-027 to KR-CA-029 | [ ] |
 
 Estimates are indicative engineering-day estimates and must be refined during
 task refinement.

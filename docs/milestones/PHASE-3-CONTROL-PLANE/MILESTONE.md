@@ -204,6 +204,7 @@ The scope includes:
 - Input validation and consistent error mapping.
 - Audit-relevant events for sensitive management operations where required.
 - API and persistence tests.
+- Organization coding-agent policy and coding-agent provider metadata, and Studio's switch from the default local policy to the Control Plane policy (`docs/architecture/CODING_AGENT_INTEGRATION.md` Section 8; KR-CA-022 to KR-CA-034).
 - Demo-0 integration evidence.
 
 The precise implementation tasks and acceptance conditions remain in the sibling files.

@@ -656,9 +656,58 @@ Clicking the indicator displays:
 
 - what remains local;
 - what data can leave the machine;
-- artifact upload boundary.
+- artifact upload boundary;
+- whether coding-agent sessions are enabled for the project, and with which provider.
 
-## 31. Build Screen
+When the project has consented to a coding-agent provider, the indicator reads:
+
+    Source: LOCAL ONLY (Kritva) · shared with <provider> during agent sessions
+
+The indicator MUST NOT state "LOCAL ONLY" without this qualification while agent consent exists (`docs/security/SOURCE_CODE_PRIVACY.md` Section 6.1).
+
+## 31. Coding Agent Panel
+
+The Coding Agent panel lets the user work with Claude Code or OpenAI Codex on the open project. Architecture: `docs/architecture/CODING_AGENT_INTEGRATION.md`. Milestones: F-M02 PROJECTS and F-M03 BUILD & ARTIFACT.
+
+Layout (docked panel in the project workspace):
+
+    +------------------------------------------------------+
+    | Coding Agent   [Provider: Claude Code v]  [Mode: v]  |
+    | Status: AVAILABLE                                    |
+    +------------------------------------------------------+
+    | Task: [ describe the change...                     ] |
+    |                                   [Start] [Cancel]   |
+    +------------------------------------------------------+
+    | Session output (redacted, agent-labelled)            |
+    | ! Approval requested: run `kritva.test.run`  [Allow] |
+    |                                             [Deny]   |
+    +------------------------------------------------------+
+    | Changes (3 files)          [Review diff] [Revert]    |
+    +------------------------------------------------------+
+
+Required elements:
+
+- **Provider picker.** Shows the status of every provider: available, not installed, not signed in, unsupported version, disabled by policy or error. Unavailable providers show setup guidance and are not selectable.
+- **Permission-mode selector.** `Read only` or `Propose changes` (recommended), limited by policy. Each mode has a one-line explanation. There is no mode that edits the working tree directly.
+- **Isolation badge.** Shows the verified isolation tier for this OS and provider: "Sandboxed" (tier A) or "Reduced assurance: not isolated" (tier C). Tier C is never described as sandboxed or isolated.
+- **Tier C acknowledgement.** Before every tier C session: "This agent is not isolated. It can read any file your account can read, including files outside this project. Changes outside the project are detected only after the session." Buttons: `Start without isolation` and `Cancel`. Not remembered across sessions. The same acknowledgement is shown, before any agent work, when a tier A isolation check fails at session start and policy permits tier C; when policy requires tier A, the session is rejected without offering tier C.
+- **Unsupported under policy.** When the organization requires a tier this OS and provider cannot reach, the provider shows "Unsupported under your organization's policy" and cannot be started. No user acknowledgement overrides this.
+- **Policy state.** "Coding agents are not enabled for your organization" when no policy has been set (administrators also see a link to the policy page); "Organization policy could not be loaded. Read only until it loads." with `Retry` when the fetch fails; "Local default policy (not set by your organization)" before the Control Plane policy exists.
+- **Consent dialog.** Shown before the first session with a provider in a project, and again when the disclosure version changes. It states, in plain words, that the provider receives the project content the agent reads, under the user's own provider account, and that Kritva receives none of it. Buttons: `Allow for this project` and `Cancel`. There is no "don't ask again for all projects".
+- **Session output.** Always labelled as agent output, never styled as a Studio build or test result.
+- **Approval requests.** Inline, with the exact tool or command, `Allow` and `Deny`. No auto-approval for build, test or package tools in `Propose changes` mode.
+- **Change review.** The agent works in a staging copy; nothing changes in the project until the user applies. Apply all, per file or per hunk; reject; conflicts (files the user changed meanwhile) are shown in a merge view and never overwritten; `Revert` undoes an applied change set.
+- **Recovery prompt.** After a crash, Studio lists interrupted sessions or applies and offers complete, roll back, review or discard.
+- **Consent withdrawal.** Available in the panel and in project settings; it stops active sessions.
+- **Agent-assisted badge.** On builds made after accepted agent changes.
+
+States: idle, starting, running, awaiting approval, completed, cancelled, failed, timed out, reviewing.
+
+Errors use the standard error pattern with recovery guidance, for example "Sign in using the provider's CLI, then retry".
+
+Accessibility: every control is keyboard reachable; the diff viewer announces file, hunk and change type to screen readers; approval requests move focus and are announced.
+
+## 32. Build Screen
 
 The Build screen is the primary local engineering screen.
 
@@ -686,7 +735,7 @@ Layout:
     Build Output
     [terminal/log area]
 
-## 32. Build Configuration
+## 33. Build Configuration
 
 Build configuration may include:
 
@@ -701,7 +750,7 @@ Build configuration may include:
 
 Only supported combinations may be selected.
 
-## 33. Local Build Flow
+## 34. Local Build Flow
 
     User presses Build
           |
@@ -726,7 +775,7 @@ Only supported combinations may be selected.
           v
     Artifact Candidate
 
-## 34. Build States
+## 35. Build States
 
 States include:
 
@@ -743,7 +792,7 @@ States include:
 
 The UI shall prevent duplicate builds unless explicitly requested.
 
-## 35. Build Failure
+## 36. Build Failure
 
 Build failure shall display:
 
@@ -761,7 +810,7 @@ Example:
 
     [View Full Log] [Retry]
 
-## 36. Artifact Screen
+## 37. Artifact Screen
 
 Artifacts represent packaged execution units.
 
@@ -776,7 +825,7 @@ Layout:
     | ...                                                        |
     +------------------------------------------------------------+
 
-## 37. Artifact Detail
+## 38. Artifact Detail
 
 Artifact detail displays:
 
@@ -794,7 +843,7 @@ Artifact detail displays:
 - creation time;
 - compatibility status.
 
-## 38. Artifact Security Presentation
+## 39. Artifact Security Presentation
 
 The artifact screen shall clearly show:
 
@@ -805,7 +854,7 @@ The artifact screen shall clearly show:
 
 A failure must block execution where the backend policy requires it.
 
-## 39. Artifact Upload
+## 40. Artifact Upload
 
 Upload flow:
 
@@ -825,7 +874,7 @@ Upload flow:
 
 The UI must not imply that source files are uploaded.
 
-## 40. Platform Screen
+## 41. Platform Screen
 
 The Platforms screen lists available robotic platforms.
 
@@ -847,7 +896,7 @@ Platform types:
 - simulated;
 - reference.
 
-## 41. Platform Detail
+## 42. Platform Detail
 
 Platform detail displays:
 
@@ -864,7 +913,7 @@ Platform detail displays:
 - credit rate;
 - documentation link.
 
-## 42. Platform Compatibility
+## 43. Platform Compatibility
 
 When an artifact is selected:
 
@@ -891,7 +940,7 @@ Example:
 
     [Choose Compatible Platform]
 
-## 43. Booking Screen
+## 44. Booking Screen
 
 Booking shall be a guided flow.
 
@@ -906,7 +955,7 @@ Steps:
     7. Review
     8. Confirm
 
-## 44. Booking Layout
+## 45. Booking Layout
 
     Book Robot
 
@@ -932,7 +981,7 @@ Steps:
 
     [Back] [Continue]
 
-## 45. Booking Availability
+## 46. Booking Availability
 
 Availability shall reflect:
 
@@ -945,7 +994,7 @@ Availability shall reflect:
 
 The UI shall not infer availability solely from stale cached data.
 
-## 46. Credit Rate Presentation
+## 47. Credit Rate Presentation
 
 The booking screen shall show:
 
@@ -967,7 +1016,7 @@ The booking screen shall show:
     Remaining:
         750 credits
 
-## 47. Booking Confirmation
+## 48. Booking Confirmation
 
 Confirmation must display:
 
@@ -987,7 +1036,7 @@ The final action should be:
 
     [Confirm Booking]
 
-## 48. Booking States
+## 49. Booking States
 
 UI states include:
 
@@ -1002,7 +1051,7 @@ UI states include:
 - expired;
 - completed.
 
-## 49. Booking Failure
+## 50. Booking Failure
 
 Example:
 
@@ -1015,7 +1064,7 @@ Example:
 
 The UI must never display a false confirmed state.
 
-## 50. Credits Screen
+## 51. Credits Screen
 
 The Credits screen displays platform-specific balances.
 
@@ -1037,7 +1086,7 @@ Layout:
 Credits are not globally interchangeable unless explicitly supported by
 commercial policy.
 
-## 51. Credit Detail
+## 52. Credit Detail
 
 Credit detail may display:
 
@@ -1049,7 +1098,7 @@ Credit detail may display:
 - ledger activity;
 - expiry where applicable.
 
-## 52. Credit Ledger View
+## 53. Credit Ledger View
 
 Ledger entries should show:
 
@@ -1063,7 +1112,7 @@ The UI is a presentation layer.
 
 The authoritative ledger remains server-side.
 
-## 53. Jobs Screen
+## 54. Jobs Screen
 
 Jobs represent execution requests.
 
@@ -1079,7 +1128,7 @@ Layout:
     | ...                                                         |
     +-------------------------------------------------------------+
 
-## 54. Job Detail
+## 55. Job Detail
 
 Job detail displays:
 
@@ -1098,7 +1147,7 @@ Job detail displays:
 - telemetry;
 - results.
 
-## 55. Job State Visualization
+## 56. Job State Visualization
 
 The job lifecycle is:
 
@@ -1136,7 +1185,7 @@ Failure states include:
 
 The UI must represent the current state and previous transitions where useful.
 
-## 56. Live Run Screen
+## 57. Live Run Screen
 
 The Live Run screen is the primary operational execution screen.
 
@@ -1158,7 +1207,7 @@ Layout:
     | [Stop Run]                                                    |
     +--------------------------------------------------------------+
 
-## 57. Live Video
+## 58. Live Video
 
 Video component shall support:
 
@@ -1179,7 +1228,7 @@ Example:
 
     [Reconnect Video]
 
-## 58. Telemetry
+## 59. Telemetry
 
 Telemetry panels may show:
 
@@ -1194,7 +1243,7 @@ Telemetry panels may show:
 
 High-frequency telemetry should be summarized rather than overwhelming the UI.
 
-## 59. Logs
+## 60. Logs
 
 Logs shall provide:
 
@@ -1209,7 +1258,7 @@ Logs shall provide:
 
 Sensitive information must be redacted server-side or before presentation.
 
-## 60. Run Stop Interaction
+## 61. Run Stop Interaction
 
 Stopping a run requires explicit confirmation unless an emergency or safety
 mechanism is invoked outside the UI.
@@ -1224,7 +1273,7 @@ Example:
 
 The Studio UI is not an emergency-stop replacement.
 
-## 61. Safety Indicator
+## 62. Safety Indicator
 
 Live Run shall clearly show:
 
@@ -1235,7 +1284,7 @@ The UI should explain:
 > Emergency stop and physical safety controls are provided locally by the
 > robot/lab safety system.
 
-## 62. Run Disconnect
+## 63. Run Disconnect
 
 If Studio loses connection:
 
@@ -1247,7 +1296,7 @@ If Studio loses connection:
 
 The UI must not automatically assume that the run stopped.
 
-## 63. Results Screen
+## 64. Results Screen
 
 Results provide post-run evidence.
 
@@ -1263,7 +1312,7 @@ Layout:
     | ...                                                          |
     +--------------------------------------------------------------+
 
-## 64. Result Detail
+## 65. Result Detail
 
 Result detail includes:
 
@@ -1281,7 +1330,7 @@ Result detail includes:
 - telemetry;
 - experiment association.
 
-## 65. Result States
+## 66. Result States
 
 Results may be:
 
@@ -1295,7 +1344,7 @@ Results may be:
 
 Processing state must explain what is occurring.
 
-## 66. Result Files
+## 67. Result Files
 
 Files may include:
 
@@ -1314,7 +1363,7 @@ Each file should display:
 - checksum where appropriate;
 - download action.
 
-## 67. Rerun
+## 68. Rerun
 
 Rerun should reuse prior configuration where valid.
 
@@ -1347,7 +1396,7 @@ A rerun creates a new Job/Run.
 
 Historical results must not be overwritten.
 
-## 68. Settings Screen
+## 69. Settings Screen
 
 Settings shall contain:
 
@@ -1363,7 +1412,7 @@ Settings shall contain:
 
 Only settings applicable to the current user role are shown.
 
-## 69. Account Settings
+## 70. Account Settings
 
 Account settings include:
 
@@ -1376,7 +1425,7 @@ Account settings include:
 
 Security-sensitive changes may require reauthentication.
 
-## 70. Organization Settings
+## 71. Organization Settings
 
 Where authorized:
 
@@ -1387,7 +1436,7 @@ Where authorized:
 
 Broader administration belongs in the web console.
 
-## 71. Studio Settings
+## 72. Studio Settings
 
 Studio settings may include:
 
@@ -1400,7 +1449,7 @@ Studio settings may include:
 - update channel;
 - proxy/network settings.
 
-## 72. Build Settings
+## 73. Build Settings
 
 Build settings include:
 
@@ -1413,7 +1462,7 @@ Build settings include:
 
 Invalid paths must be detected before build.
 
-## 73. Security Settings
+## 74. Security Settings
 
 Security settings may show:
 
@@ -1425,7 +1474,7 @@ Security settings may show:
 
 Secrets shall not be displayed in plaintext.
 
-## 74. Notifications
+## 75. Notifications
 
 Notifications may include:
 
@@ -1442,7 +1491,7 @@ Notifications may include:
 
 Notifications must not reveal sensitive source content.
 
-## 75. Admin Entry
+## 76. Admin Entry
 
 Administrative operations should primarily use the RaaS Web Console.
 
@@ -1468,7 +1517,7 @@ Admin capabilities include:
 - audit;
 - settings.
 
-## 76. Admin Access Control
+## 77. Admin Access Control
 
 The UI shall not rely solely on hiding navigation items.
 
@@ -1476,7 +1525,7 @@ The backend remains authoritative.
 
 Unauthorized requests must return appropriate authorization errors.
 
-## 77. Navigation Rules
+## 78. Navigation Rules
 
 Navigation shall preserve:
 
@@ -1487,7 +1536,7 @@ Navigation shall preserve:
 
 Navigating away from an active run must not stop the run.
 
-## 78. Breadcrumbs
+## 79. Breadcrumbs
 
 Project-context screens should use:
 
@@ -1499,7 +1548,7 @@ or:
 
 Breadcrumbs must be keyboard accessible.
 
-## 79. Search
+## 80. Search
 
 Global search may search:
 
@@ -1512,7 +1561,7 @@ Global search may search:
 Search must not search or upload local source contents to the server merely to
 provide global search.
 
-## 80. Filters
+## 81. Filters
 
 Filters should support:
 
@@ -1525,7 +1574,7 @@ Filters should support:
 
 Filter state should persist during navigation where useful.
 
-## 81. Tables
+## 82. Tables
 
 Tables must support:
 
@@ -1540,7 +1589,7 @@ Tables must support:
 
 Status must be represented through text as well as visual indicators.
 
-## 82. Forms
+## 83. Forms
 
 Forms shall:
 
@@ -1552,7 +1601,7 @@ Forms shall:
 - avoid ambiguous placeholders;
 - support keyboard submission.
 
-## 83. Buttons
+## 84. Buttons
 
 Primary action hierarchy:
 
@@ -1563,7 +1612,7 @@ Primary action hierarchy:
 
 A screen should normally have one visually dominant primary action.
 
-## 84. Destructive Actions
+## 85. Destructive Actions
 
 Destructive actions include:
 
@@ -1575,7 +1624,7 @@ Destructive actions include:
 
 Destructive actions require explicit consequences.
 
-## 85. Toasts
+## 86. Toasts
 
 Toasts are appropriate for:
 
@@ -1585,7 +1634,7 @@ Toasts are appropriate for:
 
 Critical errors should remain visible in the relevant screen.
 
-## 86. Modal Dialogs
+## 87. Modal Dialogs
 
 Modals should be used for:
 
@@ -1595,7 +1644,7 @@ Modals should be used for:
 
 Do not use modals for long workflows.
 
-## 87. Keyboard Requirements
+## 88. Keyboard Requirements
 
 Minimum keyboard support:
 
@@ -1611,7 +1660,7 @@ Minimum keyboard support:
 
 Platform-native conventions should be respected.
 
-## 88. Keyboard Navigation
+## 89. Keyboard Navigation
 
 Keyboard focus must:
 
@@ -1620,7 +1669,7 @@ Keyboard focus must:
 - never become trapped except inside intentional modal focus traps;
 - return to a sensible location after modal close.
 
-## 89. Accessibility Target
+## 90. Accessibility Target
 
 The UI should target WCAG 2.2 AA-level accessibility practices for applicable
 desktop UI components.
@@ -1637,7 +1686,7 @@ Requirements include:
 - scalable text;
 - reduced motion support.
 
-## 90. Screen Reader Requirements
+## 91. Screen Reader Requirements
 
 Important dynamic states shall be announced.
 
@@ -1653,7 +1702,7 @@ Examples:
 
 Use appropriate ARIA semantics where applicable.
 
-## 91. Color and Status
+## 92. Color and Status
 
 Do not communicate state using color alone.
 
@@ -1672,7 +1721,7 @@ Statuses should include text:
 - Warning;
 - Offline.
 
-## 92. Focus Management
+## 93. Focus Management
 
 After actions:
 
@@ -1681,14 +1730,14 @@ After actions:
 - errors should move or announce focus when appropriate;
 - navigation should focus the page heading where practical.
 
-## 93. Reduced Motion
+## 94. Reduced Motion
 
 Animations shall respect reduced-motion preferences.
 
 Execution dashboards should prioritize stable information over decorative
 animation.
 
-## 94. Responsive Desktop Behavior
+## 95. Responsive Desktop Behavior
 
 Studio is desktop-first.
 
@@ -1710,7 +1759,7 @@ At narrower widths:
 
 Critical actions must remain reachable.
 
-## 95. Window Management
+## 96. Window Management
 
 Studio should support:
 
@@ -1720,7 +1769,7 @@ Studio should support:
 - persistent reasonable dimensions;
 - restoration of previous layout where safe.
 
-## 96. Offline Behavior
+## 97. Offline Behavior
 
 When disconnected:
 
@@ -1736,7 +1785,7 @@ Example:
     Local builds remain available.
     Booking and remote execution require a connection.
 
-## 97. Reconnection
+## 98. Reconnection
 
 Connection state:
 
@@ -1754,7 +1803,7 @@ Connection state:
 
 Reconnection must not duplicate business operations.
 
-## 98. Idempotent UI Actions
+## 99. Idempotent UI Actions
 
 For operations such as:
 
@@ -1768,7 +1817,7 @@ the UI should use request identifiers or backend-supported idempotency mechanism
 
 Repeated clicks must not create duplicate operations.
 
-## 99. Long-Running Operations
+## 100. Long-Running Operations
 
 Long operations include:
 
@@ -1788,7 +1837,7 @@ The UI shall show:
 - cancellation where safe;
 - completion/error.
 
-## 100. Upload Progress
+## 101. Upload Progress
 
 Upload shall display:
 
@@ -1805,7 +1854,7 @@ Upload shall display:
 
 The UI must not claim success until server acknowledgement is received.
 
-## 101. Notifications and Background Operations
+## 102. Notifications and Background Operations
 
 Background operations may continue when navigating away.
 
@@ -1818,7 +1867,7 @@ Examples:
 
 The global status area should expose active operations.
 
-## 102. State Persistence
+## 103. State Persistence
 
 Persist locally where appropriate:
 
@@ -1832,7 +1881,7 @@ Do not persist sensitive tokens or secrets in plaintext.
 
 Use the OS credential store for sensitive credentials.
 
-## 103. Error Taxonomy
+## 104. Error Taxonomy
 
 UI errors should map to common classes:
 
@@ -1849,7 +1898,7 @@ UI errors should map to common classes:
 - local build;
 - filesystem.
 
-## 104. Error Interface
+## 105. Error Interface
 
 Conceptually:
 
@@ -1866,7 +1915,7 @@ Conceptually:
 
 The UI should map machine codes to consistent user-facing messages.
 
-## 105. Conflict Handling
+## 106. Conflict Handling
 
 For conflicts:
 
@@ -1878,7 +1927,7 @@ For conflicts:
 
 Do not silently overwrite remote state.
 
-## 106. Authorization Errors
+## 107. Authorization Errors
 
 For forbidden actions:
 
@@ -1890,7 +1939,7 @@ Where useful:
 
 Do not expose unnecessary internal authorization details.
 
-## 107. Security Error Handling
+## 108. Security Error Handling
 
 Security failures should be clear without revealing attack-sensitive details.
 
@@ -1900,7 +1949,7 @@ Example:
 
     Review the artifact validation report.
 
-## 108. Safety Error Handling
+## 109. Safety Error Handling
 
 Safety failures require strong visual and textual treatment.
 
@@ -1914,7 +1963,7 @@ Example:
 
 No automatic bypass is offered.
 
-## 109. Build Artifact Boundary UI
+## 110. Build Artifact Boundary UI
 
 The UI should visually separate:
 
@@ -1935,7 +1984,7 @@ from:
 
 This distinction is a core product concept.
 
-## 110. Project Context
+## 111. Project Context
 
 The current project should remain visible in the application header.
 
@@ -1945,7 +1994,7 @@ Example:
 
 Switching project should require deliberate selection.
 
-## 111. Platform Context
+## 112. Platform Context
 
 Platform context should display:
 
@@ -1963,7 +2012,7 @@ Prefer:
 
     "Kritva Reference Robot / v1.2 / ARM64"
 
-## 112. Booking Context
+## 113. Booking Context
 
 Booking screens should clearly distinguish:
 
@@ -1974,7 +2023,7 @@ Booking screens should clearly distinguish:
 
 The UI must not treat a requested slot as confirmed.
 
-## 113. Credit Context
+## 114. Credit Context
 
 Every credit-consuming operation should show:
 
@@ -1986,7 +2035,7 @@ Every credit-consuming operation should show:
 
 Unexpected charges should never be hidden.
 
-## 114. Job Context
+## 115. Job Context
 
 Every execution view should expose:
 
@@ -1998,7 +2047,7 @@ Every execution view should expose:
 
 This supports supportability and auditability.
 
-## 115. Result Context
+## 116. Result Context
 
 Every result should trace back to:
 
@@ -2019,7 +2068,7 @@ Every result should trace back to:
       v
     Platform / Resource
 
-## 116. UI Security Boundaries
+## 117. UI Security Boundaries
 
 Studio shall:
 
@@ -2031,7 +2080,7 @@ Studio shall:
 - sanitize displayed logs;
 - prevent unsafe command injection through UI inputs.
 
-## 117. Local Filesystem Security
+## 118. Local Filesystem Security
 
 The Rust layer shall mediate privileged filesystem operations.
 
@@ -2039,7 +2088,7 @@ The UI should not directly receive unrestricted filesystem access.
 
 Filesystem permissions should be limited to configured project/workspace areas.
 
-## 118. Artifact Security UI
+## 119. Artifact Security UI
 
 Artifact actions shall reflect:
 
@@ -2051,7 +2100,7 @@ Artifact actions shall reflect:
 
 Revoked or invalid artifacts must not be presented as executable.
 
-## 119. Telemetry Privacy
+## 120. Telemetry Privacy
 
 Telemetry and logs may contain sensitive operational data.
 
@@ -2062,7 +2111,7 @@ The UI shall:
 - redact sensitive content;
 - use secure transport.
 
-## 120. Performance Requirements
+## 121. Performance Requirements
 
 The UI should remain responsive during:
 
@@ -2076,7 +2125,7 @@ The UI should remain responsive during:
 CPU-intensive local operations belong in Rust/native workers or child processes,
 not on the React UI thread.
 
-## 121. Table Performance
+## 122. Table Performance
 
 Large tables should use:
 
@@ -2087,7 +2136,7 @@ Large tables should use:
 
 Do not render thousands of telemetry rows directly.
 
-## 122. Live Dashboard Performance
+## 123. Live Dashboard Performance
 
 Live execution should separate:
 
@@ -2101,14 +2150,14 @@ Live execution should separate:
 
 The UI should not attempt to render every raw telemetry sample.
 
-## 123. Video Performance
+## 124. Video Performance
 
 Video decoding should use appropriate native/platform capabilities where
 possible.
 
 UI overlays should not unnecessarily duplicate video frames.
 
-## 124. Build Log Performance
+## 125. Build Log Performance
 
 Build logs should support:
 
@@ -2120,7 +2169,7 @@ Build logs should support:
 
 The UI should avoid keeping unlimited logs in memory.
 
-## 125. UI Telemetry
+## 126. UI Telemetry
 
 Product telemetry should not capture:
 
@@ -2132,7 +2181,7 @@ Product telemetry should not capture:
 
 Operational analytics should use metadata where practical.
 
-## 126. Analytics
+## 127. Analytics
 
 Allowed product analytics may include:
 
@@ -2145,7 +2194,7 @@ Allowed product analytics may include:
 
 Analytics must respect privacy policy and organizational controls.
 
-## 127. Testing Strategy
+## 128. Testing Strategy
 
 UI testing shall include:
 
@@ -2157,7 +2206,7 @@ UI testing shall include:
 - E2E;
 - platform-specific desktop testing.
 
-## 128. Primary E2E Scenario
+## 129. Primary E2E Scenario
 
 The mandatory primary E2E flow is:
 
@@ -2187,7 +2236,7 @@ The mandatory primary E2E flow is:
       ->
     Rerun
 
-## 129. Accessibility Testing
+## 130. Accessibility Testing
 
 Accessibility testing shall verify:
 
@@ -2200,7 +2249,7 @@ Accessibility testing shall verify:
 - reduced motion;
 - screen-reader semantics.
 
-## 130. Error-State Testing
+## 131. Error-State Testing
 
 Every major screen must test:
 
@@ -2214,7 +2263,7 @@ Every major screen must test:
 - retry;
 - recovery.
 
-## 131. Security Testing
+## 132. Security Testing
 
 Studio security tests shall include:
 
@@ -2227,7 +2276,7 @@ Studio security tests shall include:
 - log sanitization;
 - malicious input handling.
 
-## 132. Local Build Testing
+## 133. Local Build Testing
 
 Build UI tests shall verify:
 
@@ -2240,7 +2289,7 @@ Build UI tests shall verify:
 - toolchain missing;
 - invalid workspace.
 
-## 133. Booking Testing
+## 134. Booking Testing
 
 Booking UI tests shall verify:
 
@@ -2253,7 +2302,7 @@ Booking UI tests shall verify:
 - expired booking;
 - server retry.
 
-## 134. Execution Testing
+## 135. Execution Testing
 
 Execution UI tests shall verify:
 
@@ -2269,7 +2318,7 @@ Execution UI tests shall verify:
 - reconnect;
 - duplicate start prevention.
 
-## 135. Result Testing
+## 136. Result Testing
 
 Result tests shall verify:
 
@@ -2282,7 +2331,7 @@ Result tests shall verify:
 - rerun;
 - historical immutability.
 
-## 136. Phase 0 UI Mapping
+## 137. Phase 0 UI Mapping
 
 Phase 0 establishes:
 
@@ -2303,7 +2352,7 @@ Required screens:
 - dashboard placeholder;
 - settings foundation.
 
-## 137. Phase 1 UI Mapping
+## 138. Phase 1 UI Mapping
 
 Phase 1 implements:
 
@@ -2323,7 +2372,7 @@ Primary screens:
 - Platforms;
 - Settings.
 
-## 138. Phase 2 UI Mapping
+## 139. Phase 2 UI Mapping
 
 Phase 2 implements:
 
@@ -2341,7 +2390,7 @@ Primary screens:
 - Artifacts;
 - Artifact Detail.
 
-## 139. Phase 3 UI Mapping
+## 140. Phase 3 UI Mapping
 
 Phase 3 implements:
 
@@ -2359,7 +2408,7 @@ Primary screens:
 - Live Run;
 - Results.
 
-## 140. Phase 4 UI Mapping
+## 141. Phase 4 UI Mapping
 
 Phase 4 implements:
 
@@ -2376,7 +2425,7 @@ Primary screens:
 - Booking;
 - Credits.
 
-## 141. Phase 5 UI Mapping
+## 142. Phase 5 UI Mapping
 
 Phase 5 implements:
 
@@ -2387,7 +2436,7 @@ Phase 5 implements:
 
 The UI shall clearly distinguish local safety authority from cloud status.
 
-## 142. Phase 6 UI Mapping
+## 143. Phase 6 UI Mapping
 
 Phase 6 implements:
 
@@ -2397,7 +2446,7 @@ Phase 6 implements:
 - audit-aware support information;
 - production error handling.
 
-## 143. Phase 7 UI Mapping
+## 144. Phase 7 UI Mapping
 
 Phase 7 implements:
 
@@ -2407,7 +2456,7 @@ Phase 7 implements:
 - performance improvements;
 - scalable result browsing.
 
-## 144. Phase 8 UI Mapping
+## 145. Phase 8 UI Mapping
 
 Phase 8 implements:
 
@@ -2418,7 +2467,7 @@ Phase 8 implements:
 - support diagnostics;
 - production rollout compatibility.
 
-## 145. UI Risks
+## 146. UI Risks
 
 | Risk | Impact | Mitigation |
 |---|---|---|
@@ -2438,7 +2487,7 @@ Phase 8 implements:
 | Cross-tenant data displayed | Critical | Backend authz + tenant-aware UI |
 | Cloud outage prevents safe robot stop | Critical | Local safety authority |
 
-## 146. Terminology Standards
+## 147. Terminology Standards
 
 Use:
 
@@ -2457,7 +2506,7 @@ Use:
 | Local Build | Cloud Build |
 | Live Run | Remote session |
 
-## 147. UI Content Rules
+## 148. UI Content Rules
 
 Messages shall be:
 
@@ -2469,7 +2518,7 @@ Messages shall be:
 
 Avoid exposing internal service names.
 
-## 148. Date and Time
+## 149. Date and Time
 
 All timestamps received from the backend should preserve timezone information.
 
@@ -2480,7 +2529,7 @@ The UI should:
 - preserve exact timestamp in detail views;
 - avoid silently changing booked times.
 
-## 149. Numeric and Unit Formatting
+## 150. Numeric and Unit Formatting
 
 Use consistent units for:
 
@@ -2494,7 +2543,7 @@ Use consistent units for:
 
 Robot telemetry units should follow platform metadata.
 
-## 150. Localization
+## 151. Localization
 
 Initial release may use English.
 
@@ -2502,7 +2551,7 @@ UI architecture should permit localization later.
 
 Do not concatenate user-visible strings in a way that prevents translation.
 
-## 151. Theme
+## 152. Theme
 
 Studio should support:
 
@@ -2512,7 +2561,7 @@ Studio should support:
 
 Status meaning must remain clear in both themes.
 
-## 152. Focused User Experience
+## 153. Focused User Experience
 
 The Studio should prioritize:
 
@@ -2527,7 +2576,7 @@ The Studio should prioritize:
 
 Administrative complexity should remain out of the primary development path.
 
-## 153. UI Navigation State
+## 154. UI Navigation State
 
 The UI should maintain navigation state independently from remote business
 state.
@@ -2541,7 +2590,7 @@ For example:
 
 Navigation does not mutate execution state.
 
-## 154. Session Expiration
+## 155. Session Expiration
 
 If the session expires during a long operation:
 
@@ -2551,7 +2600,7 @@ If the session expires during a long operation:
 - avoid duplicate submission;
 - recover operation status from server.
 
-## 155. Server Restart
+## 156. Server Restart
 
 If the Control Plane restarts:
 
@@ -2560,7 +2609,7 @@ If the Control Plane restarts:
 - preserve local source/build state;
 - do not duplicate operations.
 
-## 156. Lab Disconnect
+## 157. Lab Disconnect
 
 If the Lab Agent disconnects:
 
@@ -2578,7 +2627,7 @@ The UI should show:
 
 It must not claim that the robot stopped unless authoritative state confirms it.
 
-## 157. Booking Expiration
+## 158. Booking Expiration
 
 Expired bookings shall display:
 
@@ -2590,7 +2639,7 @@ and provide:
 
 No execution should be started from an expired booking.
 
-## 158. Insufficient Credits
+## 159. Insufficient Credits
 
 The booking UI should show:
 
@@ -2604,7 +2653,7 @@ Possible action:
 
     [View Credit Options]
 
-## 159. Incompatible Artifact
+## 160. Incompatible Artifact
 
 Execution should be blocked when required compatibility checks fail.
 
@@ -2617,7 +2666,7 @@ The user should see:
 
     [Choose Compatible Platform]
 
-## 160. Revoked Artifact
+## 161. Revoked Artifact
 
 A revoked artifact must display:
 
@@ -2629,7 +2678,7 @@ and:
 
 No retry button should imply that execution is possible without a new artifact.
 
-## 161. Build Toolchain Missing
+## 162. Build Toolchain Missing
 
 Example:
 
@@ -2640,7 +2689,7 @@ Example:
 
     [Configure Toolchain]
 
-## 162. Local Permission Failure
+## 163. Local Permission Failure
 
 Example:
 
@@ -2650,7 +2699,7 @@ Example:
 
     [Choose Project Folder]
 
-## 163. Network Failure
+## 164. Network Failure
 
 Example:
 
@@ -2660,7 +2709,7 @@ Example:
 
     [Retry Connection]
 
-## 164. Server Failure
+## 165. Server Failure
 
 Example:
 
@@ -2670,13 +2719,13 @@ Example:
 
     [Retry]
 
-## 165. Accessibility Acceptance
+## 166. Accessibility Acceptance
 
 A user must be able to complete the primary workflow using keyboard-only
 interaction except for operations inherently requiring pointer or native
 hardware interaction.
 
-## 166. Accessibility Focus Rules
+## 167. Accessibility Focus Rules
 
 All interactive elements must:
 
@@ -2686,7 +2735,7 @@ All interactive elements must:
 - expose keyboard behavior;
 - maintain visible focus.
 
-## 167. Accessibility Dynamic State
+## 168. Accessibility Dynamic State
 
 Dynamic state changes shall be exposed to assistive technologies where
 appropriate.
@@ -2699,7 +2748,7 @@ Examples:
 - connection status;
 - result availability.
 
-## 168. UI Acceptance Criteria — Architecture
+## 169. UI Acceptance Criteria — Architecture
 
 - [ ] Tauri is the desktop shell.
 - [ ] React/TypeScript is the UI layer.
@@ -2709,7 +2758,7 @@ Examples:
 - [ ] WebSocket is used for live updates where appropriate.
 - [ ] Backend remains authoritative for remote business state.
 
-## 169. UI Acceptance Criteria — Navigation
+## 170. UI Acceptance Criteria — Navigation
 
 - [ ] Global navigation exists.
 - [ ] Project context is visible.
@@ -2719,7 +2768,7 @@ Examples:
 - [ ] Unauthorized navigation is handled correctly.
 - [ ] Browser-like back/forward behavior is predictable where supported.
 
-## 170. UI Acceptance Criteria — Authentication
+## 171. UI Acceptance Criteria — Authentication
 
 - [ ] Login screen exists.
 - [ ] Password login is supported where configured.
@@ -2729,7 +2778,7 @@ Examples:
 - [ ] Session expiration is handled.
 - [ ] Credential secrets are protected.
 
-## 171. UI Acceptance Criteria — Dashboard
+## 172. UI Acceptance Criteria — Dashboard
 
 - [ ] Dashboard exists.
 - [ ] Projects are visible.
@@ -2740,7 +2789,7 @@ Examples:
 - [ ] Quick actions are available.
 - [ ] Empty state is implemented.
 
-## 172. UI Acceptance Criteria — Projects
+## 173. UI Acceptance Criteria — Projects
 
 - [ ] Project list exists.
 - [ ] Project creation exists.
@@ -2751,7 +2800,7 @@ Examples:
 - [ ] Project state is visible.
 - [ ] Project deletion is protected.
 
-## 173. UI Acceptance Criteria — Build
+## 174. UI Acceptance Criteria — Build
 
 - [ ] Build screen exists.
 - [ ] Build configuration is selectable.
@@ -2762,7 +2811,31 @@ Examples:
 - [ ] Build cancellation is supported where safe.
 - [ ] Build success creates an artifact candidate.
 
-## 174. UI Acceptance Criteria — Artifacts
+## 175. UI Acceptance Criteria — Coding Agents
+
+- [ ] The Coding Agent panel exists in the project workspace.
+- [ ] Every provider status is represented, with guidance.
+- [ ] The consent dialog appears before the first session per project and provider, and after disclosure changes.
+- [ ] The consent text names the provider and states that Kritva receives no project content.
+- [ ] The permission-mode selector respects policy limits.
+- [ ] Agent output is visually distinct from Studio build and test results.
+- [ ] Approval requests show the exact tool or command and require explicit action.
+- [ ] Only `Read only` and `Propose changes` modes are offered.
+- [ ] The isolation badge shows the verified tier; tier C is labelled reduced assurance, never sandboxed.
+- [ ] Every tier C session requires the per-session acknowledgement of outside-project reads, including after a failed tier A check; there is no silent downgrade.
+- [ ] A provider below the policy-required tier shows "Unsupported under your organization's policy" and cannot be started.
+- [ ] "Not enabled for your organization" and "policy could not be loaded" are distinct messages with distinct remediation.
+- [ ] Nothing changes in the project before apply; apply all, per file and per hunk work.
+- [ ] Conflicts with the user's own edits are shown in a merge view and never overwritten.
+- [ ] Revert undoes an applied change set.
+- [ ] Consent withdrawal stops active sessions.
+- [ ] The recovery prompt appears after an interrupted session or apply.
+- [ ] The source privacy indicator shows the provider qualification when consent exists.
+- [ ] The agent-assisted badge appears on builds after accepted agent changes.
+- [ ] The panel is fully keyboard and screen-reader accessible.
+- [ ] The Studio remains fully usable when no provider is available.
+
+## 176. UI Acceptance Criteria — Artifacts
 
 - [ ] Artifact list exists.
 - [ ] Artifact detail exists.
@@ -2774,7 +2847,7 @@ Examples:
 - [ ] Server validation is visible.
 - [ ] Revoked artifacts cannot be executed.
 
-## 175. UI Acceptance Criteria — Platforms
+## 177. UI Acceptance Criteria — Platforms
 
 - [ ] Platform list exists.
 - [ ] Platform detail exists.
@@ -2786,7 +2859,7 @@ Examples:
 - [ ] Availability is visible.
 - [ ] Compatibility is explicit.
 
-## 176. UI Acceptance Criteria — Booking
+## 178. UI Acceptance Criteria — Booking
 
 - [ ] Booking wizard exists.
 - [ ] Platform selection exists.
@@ -2800,7 +2873,7 @@ Examples:
 - [ ] Stale availability is handled.
 - [ ] Duplicate booking is prevented.
 
-## 177. UI Acceptance Criteria — Credits
+## 179. UI Acceptance Criteria — Credits
 
 - [ ] Platform-specific balances exist.
 - [ ] Credit rate is visible.
@@ -2810,7 +2883,7 @@ Examples:
 - [ ] Insufficient balance is actionable.
 - [ ] Credit-consuming operations show expected cost.
 
-## 178. UI Acceptance Criteria — Jobs
+## 180. UI Acceptance Criteria — Jobs
 
 - [ ] Job list exists.
 - [ ] Job detail exists.
@@ -2821,7 +2894,7 @@ Examples:
 - [ ] Errors are visible.
 - [ ] Retry/recovery follows backend policy.
 
-## 179. UI Acceptance Criteria — Live Run
+## 181. UI Acceptance Criteria — Live Run
 
 - [ ] Live Run screen exists.
 - [ ] Job ID is visible.
@@ -2836,7 +2909,7 @@ Examples:
 - [ ] Stop confirmation is explicit.
 - [ ] Local safety authority is visible.
 
-## 180. UI Acceptance Criteria — Results
+## 182. UI Acceptance Criteria — Results
 
 - [ ] Results list exists.
 - [ ] Result detail exists.
@@ -2848,7 +2921,7 @@ Examples:
 - [ ] Rerun is supported.
 - [ ] Historical results are preserved.
 
-## 181. UI Acceptance Criteria — Settings
+## 183. UI Acceptance Criteria — Settings
 
 - [ ] Account settings exist.
 - [ ] Organization context exists.
@@ -2858,7 +2931,7 @@ Examples:
 - [ ] Notification settings exist.
 - [ ] Credential secrets are not displayed.
 
-## 182. UI Acceptance Criteria — Admin
+## 184. UI Acceptance Criteria — Admin
 
 - [ ] Admin access is role controlled.
 - [ ] Unauthorized users cannot perform admin operations.
@@ -2866,7 +2939,7 @@ Examples:
 - [ ] Web Console remains the primary administration surface.
 - [ ] Studio can deep-link to authorized administration where appropriate.
 
-## 183. UI Acceptance Criteria — State Handling
+## 185. UI Acceptance Criteria — State Handling
 
 - [ ] Loading state exists on every remote screen.
 - [ ] Empty state exists on every list screen.
@@ -2876,7 +2949,7 @@ Examples:
 - [ ] Reconnecting state exists.
 - [ ] Stale data is distinguishable.
 
-## 184. UI Acceptance Criteria — Keyboard
+## 186. UI Acceptance Criteria — Keyboard
 
 - [ ] All primary actions are keyboard accessible.
 - [ ] Tab order is logical.
@@ -2888,7 +2961,7 @@ Examples:
 - [ ] Modal focus traps are correct.
 - [ ] Focus returns appropriately after dialogs.
 
-## 185. UI Acceptance Criteria — Accessibility
+## 187. UI Acceptance Criteria — Accessibility
 
 - [ ] Accessible names exist.
 - [ ] Semantic roles are correct.
@@ -2900,7 +2973,7 @@ Examples:
 - [ ] Screen-reader workflows are tested.
 - [ ] Primary workflow is keyboard completable.
 
-## 186. UI Acceptance Criteria — Security
+## 188. UI Acceptance Criteria — Security
 
 - [ ] Source is not uploaded as part of normal workflow.
 - [ ] Local filesystem access is mediated by Rust.
@@ -2911,7 +2984,7 @@ Examples:
 - [ ] Artifact security status is enforced.
 - [ ] Session handling is secure.
 
-## 187. UI Acceptance Criteria — Safety
+## 189. UI Acceptance Criteria — Safety
 
 - [ ] Local safety authority is explicitly represented.
 - [ ] UI does not claim emergency-stop capability.
@@ -2920,7 +2993,7 @@ Examples:
 - [ ] Stop behavior is explicit.
 - [ ] Safety errors cannot be bypassed through normal UI actions.
 
-## 188. UI Acceptance Criteria — Performance
+## 190. UI Acceptance Criteria — Performance
 
 - [ ] Build does not freeze UI.
 - [ ] Upload progress is responsive.
@@ -2930,7 +3003,7 @@ Examples:
 - [ ] Video does not unnecessarily block UI.
 - [ ] Navigation remains responsive during background operations.
 
-## 189. UI Acceptance Criteria — Testing
+## 191. UI Acceptance Criteria — Testing
 
 - [ ] Component tests exist.
 - [ ] Interaction tests exist.
@@ -2942,7 +3015,7 @@ Examples:
 - [ ] Error-state tests exist.
 - [ ] Platform-specific desktop tests exist.
 
-## 190. UI Acceptance Criteria — Primary MVP
+## 192. UI Acceptance Criteria — Primary MVP
 
 The following end-to-end scenario must be supported:
 
@@ -2962,7 +3035,7 @@ The following end-to-end scenario must be supported:
 - [ ] View Results.
 - [ ] Run Again.
 
-## 191. UI Acceptance Criteria — Final Invariants
+## 193. UI Acceptance Criteria — Final Invariants
 
 The following invariants are mandatory:
 
@@ -2995,7 +3068,7 @@ The following invariants are mandatory:
 25. The Studio UI remains a client of the authoritative Control Plane rather
     than becoming an independent source of business truth.
 
-## 192. Final UI Architecture
+## 194. Final UI Architecture
 
 The complete UI architecture is:
 
@@ -3035,7 +3108,7 @@ The complete UI architecture is:
                               v
                          Remote Robot
 
-## 193. Final UI Product Flow
+## 195. Final UI Product Flow
 
 The canonical product experience is:
 
@@ -3083,7 +3156,7 @@ The canonical product experience is:
        v
     Rerun
 
-## 194. Final Principle
+## 196. Final Principle
 
 > Kritva RaaS Studio shall provide a focused, production-grade developer
 > experience centered on the principle "Build locally. Book remotely. Run on

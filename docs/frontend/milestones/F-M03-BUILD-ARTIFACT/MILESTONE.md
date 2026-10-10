@@ -220,7 +220,10 @@ F-M03 includes:
 - error recovery;
 - automated tests;
 - security verification;
-- documentation.
+- documentation;
+- second coding-agent provider adapter (Section 2.6);
+- Kritva Studio MCP server and its tool catalogue (Section 2.6);
+- agent-to-build handoff and agent-assisted build provenance (Section 2.6).
 
 ## 2.2 Explicitly Out of Scope
 
@@ -242,7 +245,8 @@ F-M03 does not implement:
 - complete artifact malware sandboxing;
 - production artifact approval workflow;
 - production robot deployment;
-- fleet rollout.
+- fleet rollout;
+- any MCP tool for signing, upload, booking, credits, Jobs, Runs or robot commands (never in scope; see Section 2.6).
 
 Those functions belong to later milestones.
 
@@ -310,6 +314,22 @@ Where practical, the build records:
 - artifact digest.
 
 The source revision identifier must not require source upload.
+
+## 2.6 Coding-Agent Build Integration and MCP Tools
+
+F-M03 completes the coding-agent capability started in F-M02 PROJECTS. Architecture: `docs/architecture/CODING_AGENT_INTEGRATION.md` Sections 7 and 9. Decisions: SYS-ADR-007, FE-ADR-008, SEC-ADR-001.
+
+Scope:
+
+- **Second provider adapter.** Both Claude Code and OpenAI Codex are supported by F-M03 exit and pass the same contract suite.
+- **Kritva Studio MCP server.** A local-only MCP server that connected agents can call, exposing exactly: `kritva.project.info`, `kritva.platform.describe`, `kritva.build.run`, `kritva.test.run`, `kritva.artifact.package` (unsigned), `kritva.artifact.validate` and `kritva.build.logs`. Tools call the same Rust build, test and artifact services as the UI, with the same validation. Each tool has a published JSON schema with size limits. Agents select only saved build profiles and test targets by ID; they cannot supply commands, flags, environment variables or paths. Runs execute in the session's staging workspace with the manual-build limits and network policy. `kritva.build.run`, `kritva.test.run` and `kritva.artifact.package` require user approval per call; an approval is bound to the request, its arguments and the staging content hash, and highlights changed build-definition files. Stdio transport is preferred; loopback requires a per-session token and rejects replays. `kritva.build.logs` reads only the current session's runs.
+- **Handoff.** From a completed agent session, the user can run build and test directly. The agent's report of success is never shown as build success.
+- **Provenance.** Studio keeps a registry of content hashes produced by applied change sets. A build is "agent-assisted", and the manifest sets `build_metadata.agent_assisted`, if and only if a build-input file currently has a registered hash (`docs/protocol/ARTIFACT_MANIFEST.md` Section 13). The flag is informational, not an attestation.
+
+Invariants:
+
+- Signing, upload, booking, credits, Jobs, Runs, robot commands, Control Plane mutations, out-of-workspace file access and generic shell execution MUST NOT be reachable through the MCP server.
+- Agent-produced files receive no exemption from the privacy scan, allowlist, validation or signing.
 
 ---
 
@@ -426,7 +446,10 @@ F-M03 shall deliver:
 22. artifact lifecycle status;
 23. build/test/artifact history foundation;
 24. automated tests;
-25. security/privacy verification.
+25. security/privacy verification;
+26. second coding-agent provider adapter with contract-test evidence;
+27. Kritva Studio MCP server with the documented tool catalogue;
+28. agent-to-build handoff and `build_metadata.agent_assisted` provenance.
 
 ## 4.2 Build Screen
 
@@ -899,6 +922,18 @@ project workspace.
 - defer remote execution to later milestones;
 - explicit milestone boundaries.
 
+## 9.13 R-FM03-013 — Prompt Injection Through MCP Tools
+
+**Risk:** Workspace content instructs the agent to use Studio tools to publish an artifact, spend credits or affect a robot.
+
+**Mitigation:** The tool catalogue excludes all such operations; per-call approval for build, test and package; prompt-injection test fixture. Related: R-SEC-014, threat scenario AS-031.
+
+## 9.14 R-FM03-014 — Agent Success Mistaken for Build Acceptance
+
+**Risk:** Users treat the agent's claim of success as a passing build or a valid artifact.
+
+**Mitigation:** Studio shows only its own build, test and validation results as status; the agent output is labelled as agent output.
+
 ---
 
 # 10. Exit Criteria
@@ -922,6 +957,9 @@ project workspace.
 - [ ] Upload works.
 - [ ] Upload progress works.
 - [ ] Upload cancellation/retry works.
+- [ ] Both Claude Code and OpenAI Codex adapters pass the contract suite.
+- [ ] The Kritva Studio MCP server exposes exactly the documented tool catalogue.
+- [ ] Agent-to-build handoff and agent-assisted provenance work.
 
 ## 10.2 Source Privacy Exit
 
@@ -942,6 +980,7 @@ project workspace.
 - [ ] Allowlist validates.
 - [ ] Prohibited content is rejected.
 - [ ] Server-side artifact registration validates.
+- [ ] Signing and upload are unreachable through the MCP server.
 
 ## 10.4 Quality Exit
 

@@ -233,6 +233,8 @@ F-M01 STUDIO FOUNDATION begins during P0 FOUNDATION and continues into P1 STUDIO
 
 F-M02 PROJECTS depends on the application shell, authentication, organization context, and local workspace boundaries.
 
+Coding-agent integration (PRI-1, `docs/architecture/CODING_AGENT_INTEGRATION.md`) follows the same sequence. F-M01 delivers the adapter trait, mock provider, session manager, journal and lock, environment sanitizer, workspace guard and `agent.*` IPC. F-M02 then delivers the consent lifecycle, sessions in a staging workspace, change-set review and apply, recovery, isolation and the first provider. SYS-ADR-007 MUST be dispositioned before F-M02 coding-agent work starts.
+
 ### P1 Parallel Work
 
 The following may proceed in parallel:
@@ -243,6 +245,7 @@ The following may proceed in parallel:
 - Development environment automation.
 - API client scaffolding.
 - Platform contract preparation.
+- Coding-agent adapter contract and mock provider.
 
 ### P1 Critical Dependency
 
@@ -251,6 +254,8 @@ The most important P1 dependency is preservation of the source-code privacy boun
 Customer source code must remain local.
 
 Remote APIs must receive project metadata and approved artifacts, not normal project source.
+
+This includes coding-agent sessions: no source, prompt, transcript or diff is sent to Kritva services. Disclosure to the user's chosen provider requires per-project consent (`docs/security/SOURCE_CODE_PRIVACY.md` Section 6.1).
 
 ## 9. P2 BUILD & ARTIFACT Sequencing
 
@@ -303,6 +308,8 @@ The dependency sequence is:
 
 P2 must stabilize the artifact contract before remote execution implementation is integrated.
 
+In parallel, F-M03 BUILD & ARTIFACT adds the second coding-agent provider and the Kritva Studio MCP server. The MCP tools call the build, test, package and validate services above. They never call signing, upload or any Control Plane operation.
+
 ### P2 Critical Dependencies
 
 - Artifact manifest contract.
@@ -316,6 +323,7 @@ P2 must stabilize the artifact contract before remote execution implementation i
 - Artifact signature.
 - Artifact checksum.
 - Object storage metadata.
+- Coding-agent MCP tool catalogue (`docs/architecture/CODING_AGENT_INTEGRATION.md` Section 7).
 
 ### P2 BUILD & ARTIFACT Priority
 
@@ -1103,10 +1111,10 @@ The primary product path (MVP), as defined in `docs/planning/PHASES.md` Section 
     F-M01 STUDIO FOUNDATION
             |
             v
-    F-M02 PROJECTS
+    F-M02 PROJECTS (incl. coding-agent sessions)
             |
             v
-    F-M03 BUILD & ARTIFACT
+    F-M03 BUILD & ARTIFACT (incl. MCP tools, second provider)
             |
             v
     B-M02 ARTIFACT
@@ -1137,6 +1145,8 @@ The primary product path (MVP), as defined in `docs/planning/PHASES.md` Section 
 
 The database and cloud milestones supporting these steps must be completed to the required integration level.
 
+The coding-agent capability is on this path, but its runtime use is not. Every step MUST also pass with no coding-agent provider installed.
+
 ## 26. Priority Matrix
 
 | Work Area | Priority |
@@ -1160,6 +1170,9 @@ The database and cloud milestones supporting these steps must be completed to th
 | Remote execution | PRI-1 |
 | Live observation | PRI-1 |
 | Results | PRI-1 |
+| Coding-agent integration (Claude Code, OpenAI Codex, MCP tools) | PRI-1 |
+| Coding-agent source-privacy, credential and MCP-tool restrictions | PRI-0 |
+| Coding-agent policy and provider metadata | PRI-1 |
 | Experiments | PRI-2 |
 | Advanced comparison | PRI-2 |
 | Production scale optimization | PRI-2 |

@@ -2040,6 +2040,8 @@ These open questions do not change the core workflow.
 Where an implementation agent such as Codex or Claude is used, the same workflow
 applies.
 
+This section covers agents used by the Kritva team to build Kritva. The customer-facing coding-agent feature in Studio is a separate product capability, governed by `docs/architecture/CODING_AGENT_INTEGRATION.md` and SYS-ADR-007.
+
 The agent receives:
 
 - task;

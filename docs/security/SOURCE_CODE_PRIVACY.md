@@ -152,6 +152,7 @@ The system shall distinguish three categories:
 | Logs | Remote execution environment | Yes |
 | Video | Lab/remote execution environment | Yes |
 | Results | Remote execution environment | Yes |
+| Workspace content read by a user-chosen coding agent | Developer machine, then the third-party provider under the user's own account | Never to Kritva; to the provider only with per-project consent (Section 6.1) |
 
 The artifact itself may contain executable code derived from the source.
 
@@ -184,6 +185,21 @@ The source boundary is:
 
 The source boundary shall be enforced by architecture rather than by user
 instructions alone.
+
+## 6.1 Third-Party Coding-Agent Providers
+
+Studio can launch a coding agent (Claude Code or OpenAI Codex) on the local workspace. Architecture: `docs/architecture/CODING_AGENT_INTEGRATION.md`. Decision: SYS-ADR-007.
+
+The guarantee is precise: **Kritva-operated services do not receive customer source code, prompts, agent transcripts or diffs through the coding-agent capability.** A coding-agent provider is a third party that the user chooses. During a session, that provider receives whatever content the agent reads, and the provider CLI may have its own telemetry and network dependencies, which Kritva does not control. Every Kritva-controlled egress path is listed, with its rule and negative test, in `docs/architecture/CODING_AGENT_INTEGRATION.md` Section 4.2 (SEC-190).
+
+Rules:
+
+1. Studio MUST NOT send source, prompts, agent transcripts, diffs, file names or paths to any Kritva service, telemetry, log or crash report (SEC-181).
+2. Studio MUST obtain explicit per-project, per-provider consent before the first session, and again when the disclosure version changes (SEC-183).
+3. Organization policy can disable agents or restrict providers (SEC-188).
+4. Product copy MUST NOT state that source "never leaves your machine" when a coding agent is in use, unless it also names the provider exception.
+5. Agent-generated files receive no exemption from the privacy scanner, the package allowlist or upload validation.
+6. The artifact manifest MAY carry a boolean `build_metadata.agent_assisted` flag (`docs/protocol/ARTIFACT_MANIFEST.md` Section 13). It MUST NOT carry the provider name, file names, prompts or transcripts.
 
 # 7. Definitions
 

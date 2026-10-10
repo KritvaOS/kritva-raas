@@ -200,6 +200,7 @@ No cross-domain decision should be inferred solely from the existence of this in
 | SYS-ADR-004 | Cross-domain security boundary enforcement | Proposed | Frontend, backend, cloud, database, security | `docs/architecture/SECURITY_ARCHITECTURE.md` |
 | SYS-ADR-005 | Cross-domain compatibility and change coordination | Proposed | Frontend, backend, cloud, database | This document, Section 9 |
 | SYS-ADR-006 | System-wide operational evidence and acceptance traceability | Proposed | All domains | This document, Sections 8 and 10 |
+| SYS-ADR-007 | Coding-agent integration boundary (Claude Code, OpenAI Codex) | Proposed | Frontend, Local Runtime, backend, database, security | `docs/architecture/CODING_AGENT_INTEGRATION.md`; this document, Section 5.7 |
 
 These entries are proposed register placeholders, not evidence that the underlying decisions have been accepted. Each entry MUST be reviewed and either completed, rejected, or removed from the active index.
 
@@ -215,6 +216,7 @@ Every system-level decision in the index MUST carry an accountable owner, a requ
 | SYS-ADR-004 | Security Owner | Accept, reject, or supersede | Before P3 CONTROL PLANE identity and authorization implementation starts | None recorded | `docs/architecture/SECURITY_ARCHITECTURE.md`; `docs/security/DECISIONS.md` | Proposed — not approved |
 | SYS-ADR-005 | System Architecture Owner, with Integration Owner | Accept, reject, or supersede | P2 BUILD & ARTIFACT exit (artifact manifest and protocol compatibility) | None recorded | `docs/protocol/COMPATIBILITY.md`; `docs/protocol/VERSIONING.md` | Proposed — not approved |
 | SYS-ADR-006 | QA Owner, with Release Owner | Accept, reject, or supersede | P0 FOUNDATION exit | None recorded | `docs/tracking/STATUS.md`; this document, Sections 8 and 10 | Proposed — not approved |
+| SYS-ADR-007 | System Architecture Owner, with Security Owner | Accept, reject, or supersede | Before F-M02 PROJECTS coding-agent implementation starts (P1 STUDIO) | None recorded | `docs/architecture/CODING_AGENT_INTEGRATION.md` | Proposed — not approved |
 
 Baseline rule: the cross-domain architecture baseline MUST NOT be described as accepted, and the implementation plan MUST NOT be approved as a frozen implementation baseline, while any SYS-ADR entry whose gate has been reached remains Proposed. A decision approved in another register MAY be linked here, but its status in this index MUST be reconciled to that record and its approval evidence cited.
 
@@ -472,6 +474,60 @@ This approach preserves traceability from architectural intent to implementation
 #### Review Triggers
 
 Review this decision if the project changes its release governance, evidence-retention policy, or milestone acceptance process.
+
+### 5.7 SYS-ADR-007 — Coding-Agent Integration Boundary
+
+**Status:** Proposed  
+**Accountable owner:** System Architecture Owner, with Security Owner  
+**Disposition required before:** Before F-M02 PROJECTS coding-agent implementation starts (P1 STUDIO)  
+**Approval evidence:** None recorded  
+**Scope:** Integration of external coding agents (Claude Code, OpenAI Codex, future providers) into Studio  
+**Affected domains:** Frontend, Local Runtime, backend, database, security
+
+#### Context
+
+Customers want help from coding agents while developing robot applications in Studio. These agents run as provider CLIs under the user's own account and send project content to the provider. The integration crosses four existing invariants: Kritva never receives source, React never launches processes, only validated signed artifacts cross the remote boundary, and software success is not safety approval.
+
+#### Proposed Decision
+
+1. Coding agents run only on the developer's machine, launched and controlled by the Rust Local Runtime through a provider-neutral adapter contract. The Control Plane never launches, proxies or observes agent sessions.
+2. Claude Code and OpenAI Codex are the initial providers. The capability is PRI-1 (part of the primary product path); its use is optional for each user, and Studio works fully without any provider.
+3. Kritva never receives source, prompts, transcripts or diffs. Disclosure to the chosen provider requires explicit per-project consent.
+4. Agents work in a per-session staging workspace; changes reach the working tree only through an explicit, journaled apply and can be reverted. The first release offers `READ_ONLY` and `PROPOSE` only. Agent output receives no exemption from build, test, privacy-scan, validation or signing gates.
+5. A local Kritva Studio MCP server exposes read, build, test, package and validate tools only. Signing, upload, booking, credits, Jobs, Runs and robot commands are never exposed to agents.
+6. The Control Plane provides an organization policy (B-M01 CONTROL PLANE) and provider metadata (B-M03 PLATFORM), stored by DB-M02 CORE DATA. Policy is enforced by Studio and is a governance control, not a security boundary.
+
+The full architecture is in `docs/architecture/CODING_AGENT_INTEGRATION.md` (revision 3, after external review CA-REV-001 to CA-REV-012 and the reviewer's follow-up).
+
+#### Conditions for Acceptance
+
+The direction (items 1 to 6) is proposed for acceptance. Acceptance is conditional on these points:
+
+1. The first release offers `READ_ONLY` and `PROPOSE` only; `WORKSPACE_WRITE` requires a new decision record.
+2. Agents work in a staging workspace with change sets, explicit apply, restore points and journal recovery.
+3. Isolation tiers are declared per OS and provider. Tier A is listed only after enforcement tests pass. Tier C makes no isolation claim, is disclosed and acknowledged before every session, and is rejected when policy requires tier A, regardless of consent.
+4. MCP tools have schemas, saved-profile-only inputs, approvals bound to the staging content hash and the build-profile or test-target definition hash, and staging-only execution.
+5. The egress inventory, consent lifecycle and policy cache and revocation rules in the architecture apply.
+6. The P1 STUDIO and P2 BUILD & ARTIFACT exit gates in architecture Section 12 are part of phase acceptance.
+
+Decision required at acceptance: default for an organization that has never set a policy. Option 1: the default policy with `enabled: true`. Option 2: agents unavailable until an administrator initializes the policy. **Recommendation: Option 2** (external review 2026-10-10 and architecture team), pending the product owner's decision. In either option, an unconfigured organization (`POLICY_UNCONFIGURED`) and a failed policy fetch (`POLICY_UNAVAILABLE`) are distinct states, and the pre-P3 local default policy is restrictive (architecture Section 8.2).
+
+Open decisions B to E (provider terms, resumable sessions, CLI ranges and verified tier, resource estimate) have accountable owners and resolution gates in architecture Section 13. A provider and OS combination is not released while B or D is open for it.
+
+#### Rationale
+
+Local execution preserves the source-privacy guarantee for Kritva itself. A provider-neutral adapter avoids lock-in and contains provider differences. Limiting MCP tools stops prompt injection from spending credits, publishing artifacts or moving robots.
+
+#### Consequences
+
+- F-M01, F-M02 and F-M03 gain coding-agent scope; B-M01, B-M03 and DB-M02 gain policy and metadata scope.
+- `SOURCE_CODE_PRIVACY.md` gains a third-party-provider category.
+- New risks are tracked (R-SEC-011 to R-SEC-014, R-TECH-012, R-DEP-002, R-COMM-006).
+- Provider CLI changes require adapter compatibility maintenance.
+
+#### Review Triggers
+
+Review this decision if a provider changes its terms or CLI contract, if a new provider is proposed, if any cloud-side agent execution is proposed, or if usage telemetry is proposed.
 
 ## 6. Domain Decision Register Index
 

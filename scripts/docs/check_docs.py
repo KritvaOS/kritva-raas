@@ -204,6 +204,35 @@ for f in md:
         if re.search(r"product mvp|\bmvp (phase|milestone|stage)\b|\b(phase|milestone|stage) mvp\b", line, re.I):
             err(f"{rel(f)}:{i}: 'MVP' used as a phase, milestone or stage name: {line.strip()[:80]}")
 
+
+# 17 coding-agent integration invariants (SYS-ADR-007)
+CA_DOC = DOCS/"architecture/CODING_AGENT_INTEGRATION.md"
+if not CA_DOC.exists():
+    err("docs/architecture/CODING_AGENT_INTEGRATION.md is missing")
+if "SYS-ADR-007" not in text(DOCS/"planning/DECISIONS.md"):
+    err("docs/planning/DECISIONS.md: SYS-ADR-007 missing from the decision index")
+ALLOWED_MCP = {"kritva.project.info","kritva.platform.describe","kritva.build.run","kritva.test.run",
+               "kritva.artifact.package","kritva.artifact.validate","kritva.build.logs"}
+for f in md:
+    for i, line in enumerate(text(f).splitlines(), 1):
+        for tool in re.findall(r"`(kritva\.[a-z_]+(?:\.[a-z_]+)+)`", line):
+            if tool not in ALLOWED_MCP:
+                err(f"{rel(f)}:{i}: undocumented or forbidden Kritva Studio MCP tool `{tool}`")
+
+# 18 task identifiers: KR-CA-* must be unique; other duplicates are reported as one warning
+from collections import defaultdict
+ids = defaultdict(list)
+for f in DOCS.glob("**/TASKS.md"):
+    for line in text(f).splitlines():
+        m = re.match(r"^\| (KR-[A-Z]+-[0-9A-Z]+-\d{3}) \|", line)
+        if m: ids[m.group(1)].append(str(rel(f)))
+for tid, where in ids.items():
+    if len(where) > 1 and tid.startswith("KR-CA-"):
+        err(f"duplicate coding-agent task ID {tid} in {where}")
+dups = sorted(t for t, w in ids.items() if len(w) > 1 and not t.startswith("KR-CA-"))
+if dups:
+    warn(f"task-id: {len(dups)} task IDs are reused across TASKS.md registers (e.g. {', '.join(dups[:3])}); namespace phase-dossier and milestone task IDs")
+
 from collections import Counter
 for fname, n in sorted(Counter(w.split(":")[0] for w in warnings if "phase label" in w).items()):
     print(f"WARNING {fname}: {n} bare 'Phase N' label(s); use canonical 'PN NAME' (some sections follow a superseded phase model and need owner review)")

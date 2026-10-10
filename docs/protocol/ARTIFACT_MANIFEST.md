@@ -320,6 +320,7 @@ For format version `1.0`, it MUST contain:
 | `build_timestamp` | string | REQUIRED |
 | `source_revision` | string | REQUIRED |
 | `builder_id` | string | REQUIRED |
+| `agent_assisted` | boolean | OPTIONAL |
 
 `build_id`, `source_revision`, and `builder_id` MUST be non-empty strings without control characters. Each MUST be no longer than 256 characters.
 
@@ -328,6 +329,8 @@ For format version `1.0`, it MUST contain:
 The `source_revision` field identifies the source revision used to produce the artifact. It MUST NOT contain source code, source diffs, credentials, private repository tokens, or secret URLs.
 
 A public manifest MAY expose an opaque revision identifier when disclosing a repository revision would reveal sensitive information. Such an identifier MUST still provide an auditable reference to the build provenance available to authorized reviewers.
+
+`agent_assisted`, when present, is true if and only if at least one build-input file has a content hash that an applied coding-agent change set produced (`docs/architecture/CODING_AGENT_INTEGRATION.md` Section 9). It is a boolean only, informational, and not an attestation. The manifest MUST NOT record the provider, prompts, transcripts or file names. Absence means `false`. The field was added to format version `1.0` before any implementation existed, so no compatibility change is required.
 
 Build metadata MUST NOT be treated as trusted merely because it is present. It is authenticated only to the extent that the signed manifest and signing identity are trusted.
 
@@ -567,6 +570,9 @@ The schema uses JSON Schema Draft 2020-12.
                 "properties": {
                     "build_id": {
                         "$ref": "#/$defs/metadataString"
+                    },
+                    "agent_assisted": {
+                        "type": "boolean"
                     },
                     "build_timestamp": {
                         "type": "string",

@@ -258,6 +258,18 @@ Milestone: DB-M02-CORE-DATA — Platforms, Resources, Artifacts and Storage Meta
 - [ ] Repeated purge operations are idempotent.
 - [ ] Retention actions are auditable.
 
+### 6.22a Coding-agent catalogue and policy
+
+- [ ] `coding_agent_providers` exists with a stable `provider_id` key and the fields in DB-ADR-011.
+- [ ] `claude-code` and `openai-codex` are seeded by migration.
+- [ ] `organization_coding_agent_policies` holds one current policy per organization.
+- [ ] `allowed_providers` values reference existing providers.
+- [ ] `require_consent` cannot be false.
+- [ ] Organization policies are protected by tenant RLS.
+- [ ] Policy changes are captured by the DB-M01 FOUNDATION audit conventions.
+- [ ] No coding-agent table has a column for source, prompts, transcripts, diffs, file names or paths.
+- [ ] Coding-agent providers are not stored in platform, capability or compatibility tables.
+
 ### 6.23 No-go conditions
 
 DB-M02 shall not be accepted if:

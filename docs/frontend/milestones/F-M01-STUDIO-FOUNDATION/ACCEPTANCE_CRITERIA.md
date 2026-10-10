@@ -166,4 +166,18 @@ No screen may depend on an implicit loading state.
 - [ ] Formatting is clean.
 - [ ] Type checking is clean.
 
+## 6.14 Coding-Agent Foundation
+
+- [ ] The provider-neutral adapter trait and capability descriptor match `docs/architecture/CODING_AGENT_INTEGRATION.md` Section 5.1.
+- [ ] The mock provider passes the adapter contract tests.
+- [ ] The session manager implements the documented lifecycle states and timeouts.
+- [ ] The session journal is durable across Studio restarts, and the workspace lock prevents two agent sessions on one workspace across Studio processes.
+- [ ] Adapter errors map to the normalized taxonomy (`docs/architecture/CODING_AGENT_INTEGRATION.md` Section 5.9).
+- [ ] The agent process environment contains no Kritva session token, API key, Control Plane credential or signing material.
+- [ ] The workspace guard detects modifications outside the allowed root.
+- [ ] The `agent.*` IPC commands validate inputs and are covered by contract tests.
+- [ ] No generic command-execution IPC exists.
+- [ ] Studio starts and works normally with no coding-agent provider installed.
+
 ---
+

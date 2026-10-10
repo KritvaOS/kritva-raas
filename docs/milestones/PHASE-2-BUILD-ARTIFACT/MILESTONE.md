@@ -177,6 +177,7 @@ The scope includes:
 - Automated build and artifact tests.
 - Verification that source files are not uploaded during the defined workflow.
 - Documentation of supported inputs, prerequisites, and limitations.
+- Second coding-agent provider, the Kritva Studio MCP server and agent-assisted build provenance (F-M03 BUILD & ARTIFACT Section 2.6; KR-CA-015 to KR-CA-021, KR-CA-039).
 
 The precise implementation assignments and acceptance conditions remain in the sibling files.
 

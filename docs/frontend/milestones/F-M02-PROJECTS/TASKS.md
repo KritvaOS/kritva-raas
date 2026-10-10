@@ -40,6 +40,18 @@ Source of scope: [MILESTONE.md](MILESTONE.md)
 | KR-FE-1-029 | Update CI for project tests | 1.0d | DevOps | 024-028 | [ ] |
 | KR-FE-1-030 | Complete project documentation | 1.5d | Frontend/Docs | All | [ ] |
 | KR-FE-1-031 | Conduct F-M02 review | 1.0d | Architect | All | [ ] |
+| KR-CA-006 | Implement provider discovery and status panel | 1.5d | Frontend/Rust | F-M01 (KR-CA-005); SYS-ADR-007 accepted | [ ] |
+| KR-CA-007 | Implement per-project consent and disclosure flow | 1.5d | Frontend/UX/Security | KR-CA-006 | [ ] |
+| KR-CA-008 | Implement first provider adapter (choice recorded here: Claude Code or OpenAI Codex) with compatibility matrix | 3.0d | Rust | F-M01 (KR-CA-001) | [ ] |
+| KR-CA-009 | Implement restore points (all touched files incl. untracked, ignored, hidden, permissions, symlinks) and revert | 2.0d | Rust | F-M01 (KR-CA-003) | [ ] |
+| KR-CA-010 | Implement agent session view (task, mode, progress, approvals, cancel) | 2.5d | Frontend | KR-CA-006, KR-CA-008 | [ ] |
+| KR-CA-011 | Implement change-set review and apply (per file and per hunk) with conflict view | 2.5d | Frontend | KR-CA-009, KR-CA-010 | [ ] |
+| KR-CA-012 | Apply default local coding-agent policy | 1.0d | Rust | KR-CA-008 | [ ] |
+| KR-CA-013 | Add agent contract, consent, revert, escape and network-privacy tests | 2.5d | QA/Security | KR-CA-006 to KR-CA-012 | [ ] |
+| KR-CA-014 | Document coding-agent setup and troubleshooting for users | 1.0d | Docs | KR-CA-006 to KR-CA-012 | [ ] |
+| KR-CA-036 | Implement staging workspace and change-set service (hashes, conflicts, atomic idempotent apply) | 3.0d | Rust | F-M01 (KR-CA-035) | [ ] |
+| KR-CA-037 | Implement isolation launcher (tier A per supported OS and provider), configuration isolation and capability verification | 3.0d | Rust/Security | KR-CA-008 | [ ] |
+| KR-CA-038 | Implement consent withdrawal, policy-stop handling and journal recovery UI (`agent.recovery.*`) | 2.0d | Frontend/Rust | KR-CA-007, KR-CA-036 | [ ] |
 
 Estimates are engineering-day estimates and should be refined during task
 refinement.

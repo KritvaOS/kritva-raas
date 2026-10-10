@@ -14,6 +14,18 @@ Milestone: F-M02 — Projects
 
 ## Changed
 
+- Date: 2026-10-10
+- Change: Revised coding-agent scope after external review CA-REV-001 to CA-REV-012 (staging workspace and change sets, isolation tiers, journal and recovery, MCP execution contract, consent lifecycle, policy cache rules); added KR-CA-036 to KR-CA-038; updated acceptance and review items.
+- Task: KR-CA-036 to KR-CA-038
+- Author: Planning update
+- Evidence: `docs/architecture/CODING_AGENT_INTEGRATION.md` revision 2
+
+- Date: 2026-10-10
+- Change: Added coding-agent session scope (Section 2.5, deliverables 21-25, risks R-FM02-013 to R-FM02-015, tasks KR-CA-006 to KR-CA-014, acceptance Section 6.13, review Sections 7.13 and 8.12a) per SYS-ADR-007 (Proposed). Corrected the Notes, which referred to superseded milestone numbers.
+- Task: KR-CA-006 to KR-CA-014
+- Author: Planning update
+- Evidence: `docs/architecture/CODING_AGENT_INTEGRATION.md`
+
 - Date:
 - Change:
 - Task:
@@ -42,9 +54,10 @@ Milestone: F-M02 — Projects
 - Initial F-M02 milestone dossier.
 - No implementation is implied by this document.
 - F-M02 depends on the Studio foundation established by F-M01.
-- Build and artifact functionality belongs to F-M04.
-- Platform discovery is expanded in F-M03.
-- Booking and credits belong to F-M05.
+- Build and artifact functionality belongs to F-M03 BUILD & ARTIFACT.
+- Platform discovery and selection are part of F-M02 PROJECTS; the platform catalogue is served by B-M03 PLATFORM.
+- Booking and credits belong to F-M04 BOOKING.
+- Coding-agent sessions start in F-M02; the MCP server and second provider follow in F-M03 BUILD & ARTIFACT.
 
 ---
 

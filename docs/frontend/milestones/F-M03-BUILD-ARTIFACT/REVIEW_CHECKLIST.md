@@ -257,6 +257,21 @@ Verify:
 - secure signing integration;
 - upload.
 
+## 7.15 Coding-Agent and MCP Tests
+
+Verify:
+
+- the contract suite for both providers;
+- MCP catalogue enumeration matches the documented list exactly;
+- negative tests for each forbidden operation;
+- indirect prompt-injection fixtures in source, build logs, test output, instruction files and generated artifacts;
+- malicious build-script fixture and resource exhaustion;
+- approval invalidation when staging content changes;
+- loopback token and replay rejection;
+- per-call approval in `PROPOSE` mode;
+- provenance flag set only when accepted agent changes exist;
+- build-to-upload E2E still passes with no provider installed.
+
 ---
 
 # 8. Demo Script
@@ -411,6 +426,18 @@ Expected:
 - build does not report success;
 - user can restart.
 
+## 8.14a Step 13 — Agent-Assisted Build
+
+Ask a connected agent to fix a failing test, using MCP to run tests.
+
+Expected:
+
+- the agent's `kritva.test.run` call asks for approval;
+- the change is reviewed and accepted;
+- Studio's own build and tests pass;
+- the build shows "agent-assisted";
+- an agent attempt to sign or upload is refused because the tool does not exist.
+
 ## 8.15 Demo Success Criteria
 
 The demo passes when:
@@ -425,6 +452,7 @@ The demo passes when:
 - checksum is valid;
 - signing succeeds;
 - upload succeeds;
+- an agent-assisted build is demonstrated with MCP approvals;
 - source privacy is demonstrated.
 
 ---

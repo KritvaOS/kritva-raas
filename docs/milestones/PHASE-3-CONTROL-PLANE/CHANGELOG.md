@@ -14,6 +14,7 @@ Milestone: PHASE-3-CONTROL-PLANE — Identity, Projects, Platforms and Artifacts
 
 | Date | Change | Commit | Owner |
 |---|---|---|---|
+| 2026-10-10 | Planning: added coding-agent policy, provider metadata and Studio policy integration scope (KR-CA-034) per SYS-ADR-007 (Proposed). | | Planning update |
 | YYYY-MM-DD | | | |
 
 ### Fixed

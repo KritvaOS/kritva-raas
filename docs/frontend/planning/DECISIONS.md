@@ -284,6 +284,7 @@ The initial entries below are proposed placeholders for review. They do not impl
 | FE-ADR-005 | Shared component and design-system boundaries | Proposed | UI components, styling, and accessibility | This document, Section 10 |
 | FE-ADR-006 | Frontend testing and quality gates | Proposed | Frontend verification and CI quality controls | This document, Section 11 |
 | FE-ADR-007 | Frontend performance and observability strategy | Proposed | Runtime performance and client diagnostics | This document, Section 12 |
+| FE-ADR-008 | Coding-agent provider adapters and agent session UI | Proposed | Local Runtime adapters, agent IPC, session and diff-review UI | This document, Section 13 |
 
 Each proposed record MUST be reviewed and either completed, rejected, withdrawn, or removed from the active index.
 
@@ -602,9 +603,48 @@ Measurement provides evidence for prioritizing optimization, while carefully des
 
 Review this decision if user-perceived performance regresses, client diagnostics are insufficient for incident investigation, or observability introduces material privacy or cost concerns.
 
-## 13. Domain-Specific Decision Workflow
+## 13. FE-ADR-008 — Coding-Agent Provider Adapters and Agent Session UI
 
-### 13.1 Proposal
+**Status:** Proposed  
+**Scope:** Studio UI and Rust Local Runtime implementation of coding-agent integration  
+**Implements:** SYS-ADR-007 (`docs/planning/DECISIONS.md`); architecture in `docs/architecture/CODING_AGENT_INTEGRATION.md`
+
+### 13.1 Context
+
+Studio must support Claude Code and OpenAI Codex as optional coding agents (PRI-1), and later other providers. Provider CLIs differ in sign-in, permission, sandbox, output and MCP behaviour, and they change frequently.
+
+### 13.2 Proposed Decision
+
+- Provider integration MUST live in Rust adapters behind one provider-neutral trait in the Local Runtime. React MUST NOT reference provider-specific flags, binaries or output formats.
+- React MUST interact only through the typed `agent.*` IPC commands and events. There MUST NOT be a generic command-execution IPC.
+- Session state MUST be held in a dedicated agent-session store that is separate from project, build and server-derived state (FE-ADR-003). It MUST be scoped to the active project.
+- Agent changes MUST be produced in a staging workspace and presented as change sets; the UI MUST NOT offer a mode that writes the working tree directly in the first release.
+- Diff review MUST use a shared diff-viewer component that supports per-file and per-hunk accept or reject, and that is accessible by keyboard and screen reader (FE-ADR-005).
+- Every agent UI surface MUST handle all provider statuses (`AVAILABLE`, `NOT_INSTALLED`, `NOT_AUTHENTICATED`, `UNSUPPORTED_VERSION`, `DISABLED_BY_POLICY`, `ERROR`) without blocking non-agent workflows.
+- A mock provider adapter MUST exist, and MUST be used in component, integration and end-to-end tests (FE-ADR-006).
+
+### 13.3 Rationale
+
+Keeping provider logic in Rust preserves the process-security boundary and lets adapter changes ship without UI redesign.
+
+### 13.4 Consequences
+
+- Each new provider is an adapter plus contract-test evidence, not a UI feature.
+- UI copy for consent and disclosure is versioned so that consent can be requested again when it changes.
+- An adapter compatibility matrix (provider CLI version to supported modes) is maintained with the Local Runtime.
+
+### 13.5 Alternatives
+
+- Embedding provider SDKs in React: rejected, because it breaks the process and credential boundary.
+- Running agents in the cloud: rejected by SYS-ADR-007, because it breaks the source-privacy guarantee.
+
+### 13.6 Review Triggers
+
+Review this decision if a provider requires an in-process SDK instead of a CLI, if adapter maintenance cost becomes excessive, or if a third provider is added.
+
+## 14. Domain-Specific Decision Workflow
+
+### 14.1 Proposal
 
 A frontend decision proposal MUST identify:
 
@@ -620,7 +660,7 @@ A frontend decision proposal MUST identify:
 
 A proposal MUST distinguish a technical constraint from a preference.
 
-### 13.2 Review
+### 14.2 Review
 
 The review MUST include the frontend owner responsible for the affected area.
 
@@ -628,7 +668,7 @@ Other domain owners SHOULD participate when the proposal affects their contracts
 
 A product/system decision MUST be escalated to `docs/planning/DECISIONS.md` when the proposal would change a cross-domain architectural constraint.
 
-### 13.3 Acceptance
+### 14.3 Acceptance
 
 A decision MAY be marked Accepted only after the authorized frontend owner approves it.
 
@@ -636,7 +676,7 @@ Acceptance MUST identify the selected option and material conditions.
 
 If the choice depends on unresolved product/system approval, it MUST remain Proposed until that approval is obtained.
 
-### 13.4 Implementation
+### 14.4 Implementation
 
 Implementation MUST follow the accepted decision or record a justified deviation for review.
 
@@ -644,7 +684,7 @@ The relevant frontend architecture document SHOULD be updated to describe the re
 
 The decision record MUST NOT become a substitute for implementation instructions.
 
-### 13.5 Verification
+### 14.5 Verification
 
 Verification MUST confirm that the implemented approach satisfies the decision's intended outcome.
 
@@ -652,7 +692,7 @@ Evidence MAY include tests, measurements, architecture checks, or reviewed imple
 
 Milestone completion MUST continue to follow the authoritative milestone dossier.
 
-### 13.6 Closure
+### 14.6 Closure
 
 A frontend decision MAY be marked implemented when the implementation and required validation are complete.
 
@@ -660,9 +700,9 @@ The record SHOULD link to the implementation revision or relevant evidence.
 
 Implementation completion does not prevent a future decision from superseding the choice.
 
-## 14. Relationship to Phases and Milestones
+## 15. Relationship to Phases and Milestones
 
-### 14.1 Phase Authority
+### 15.1 Phase Authority
 
 `docs/planning/PHASES.md` is the canonical source for phase definitions.
 
@@ -670,7 +710,7 @@ This register MUST NOT redefine the phases or use phase references to expand mil
 
 Frontend decisions MAY reference phases to describe expected applicability or timing.
 
-### 14.2 Canonical Phases
+### 15.2 Canonical Phases
 
 | Phase | Canonical name |
 |---|---|
@@ -686,7 +726,7 @@ Frontend decisions MAY reference phases to describe expected applicability or ti
 
 These names MUST be used exactly whenever phases are referenced in this register.
 
-### 14.3 Frontend Milestones
+### 15.3 Frontend Milestones
 
 | Milestone | Canonical name | Phase mapping |
 |---|---|---|
@@ -700,7 +740,7 @@ These names MUST be used exactly whenever phases are referenced in this register
 
 Frontend milestone scope and acceptance MUST be taken from the authoritative dossiers under `docs/frontend/milestones/`.
 
-### 14.4 Cross-Domain Milestone References
+### 15.4 Cross-Domain Milestone References
 
 Frontend decisions MAY affect backend, database, or cloud implementation milestones.
 
@@ -710,7 +750,7 @@ This register MUST NOT reproduce backend, database, or cloud milestone scope.
 
 The relevant domain dossier remains authoritative for its acceptance criteria.
 
-### 14.5 Milestone Traceability
+### 15.5 Milestone Traceability
 
 When a frontend decision is required to deliver a milestone, the milestone dossier SHOULD reference the decision ID.
 
@@ -718,9 +758,9 @@ When a milestone implementation changes an accepted decision, the decision recor
 
 A decision's presence in a milestone dossier does not automatically make it accepted or implemented.
 
-## 15. Change Control and Supersession
+## 16. Change Control and Supersession
 
-### 15.1 Changes to Accepted Decisions
+### 16.1 Changes to Accepted Decisions
 
 An accepted decision MUST NOT be silently edited to represent a materially different choice.
 
@@ -728,7 +768,7 @@ A material change MUST create a successor decision or reopen the existing record
 
 The record MUST preserve the previous decision and explain the change.
 
-### 15.2 Supersession
+### 16.2 Supersession
 
 A superseding decision MUST:
 
@@ -742,7 +782,7 @@ A superseding decision MUST:
 
 The previous record MUST remain available for historical traceability.
 
-### 15.3 Rejected Decisions
+### 16.3 Rejected Decisions
 
 A rejected decision MUST remain distinguishable from an accepted decision.
 
@@ -750,13 +790,13 @@ The rejection reason SHOULD be recorded so that future proposals can reuse the p
 
 A rejected ID MUST NOT be reused.
 
-### 15.4 Withdrawn Decisions
+### 16.4 Withdrawn Decisions
 
 A decision MAY be withdrawn when its context no longer applies and no direct successor is required.
 
 The withdrawal MUST state why the decision is no longer relevant.
 
-### 15.5 Conflicting Records
+### 16.5 Conflicting Records
 
 If a frontend architecture document conflicts with an accepted frontend decision, the frontend owner MUST resolve the inconsistency.
 
@@ -764,9 +804,9 @@ If a frontend decision conflicts with a product/system decision, the product/sys
 
 A copied description in another document MUST NOT override the authoritative decision record.
 
-## 16. Review and Maintenance
+## 17. Review and Maintenance
 
-### 16.1 Decision Ownership
+### 17.1 Decision Ownership
 
 Every frontend decision MUST have an accountable owner.
 
@@ -774,7 +814,7 @@ The owner is responsible for the decision's status, rationale, references, and r
 
 The owner SHOULD ensure that implementation documents reflect the accepted architecture without copying the full decision record.
 
-### 16.2 Review Triggers
+### 17.2 Review Triggers
 
 Frontend decisions SHOULD be reviewed when:
 
@@ -788,7 +828,7 @@ Frontend decisions SHOULD be reviewed when:
 - A product/system decision changes.
 - A milestone dossier identifies a blocker requiring a frontend architecture change.
 
-### 16.3 Periodic Review
+### 17.3 Periodic Review
 
 The frontend decision register SHOULD be reviewed at major frontend architecture and release checkpoints.
 
@@ -803,7 +843,7 @@ The review SHOULD identify:
 
 Periodic review MUST NOT become a duplicate review of every implementation detail.
 
-### 16.4 Decision Quality
+### 17.4 Decision Quality
 
 A decision SHOULD be:
 
@@ -815,7 +855,7 @@ A decision SHOULD be:
 - Traceable to affected frontend architecture.
 - Consistent with product/system and protocol contracts.
 
-### 16.5 Exceptions
+### 17.5 Exceptions
 
 A deviation from an accepted frontend decision MUST be documented when it materially affects architecture or compatibility.
 
@@ -823,9 +863,9 @@ The exception MUST identify the scope, rationale, owner, and review date.
 
 A temporary deviation MUST NOT silently become the permanent implementation.
 
-## 17. Frontend Decision Register Checklist
+## 18. Frontend Decision Register Checklist
 
-### 17.1 Ownership
+### 18.1 Ownership
 
 - [ ] Frontend-specific decisions are recorded here.
 - [ ] Product/system decisions link to `docs/planning/DECISIONS.md`.
@@ -835,7 +875,7 @@ A temporary deviation MUST NOT silently become the permanent implementation.
 - [ ] API and event wire contracts remain in their protocol documents.
 - [ ] No product-wide ADR content has been duplicated.
 
-### 17.2 Record Quality
+### 18.2 Record Quality
 
 - [ ] Every accepted decision has a stable ID.
 - [ ] Status and date are explicit.
@@ -846,7 +886,7 @@ A temporary deviation MUST NOT silently become the permanent implementation.
 - [ ] Review triggers are defined.
 - [ ] Superseded decisions identify their successors.
 
-### 17.3 Implementation and Verification
+### 18.3 Implementation and Verification
 
 - [ ] Accepted decisions are reflected in current frontend architecture documents.
 - [ ] Required implementation work is traceable.
@@ -856,7 +896,7 @@ A temporary deviation MUST NOT silently become the permanent implementation.
 - [ ] Contract compatibility is preserved.
 - [ ] Accessibility, performance, and security implications are considered where applicable.
 
-### 17.4 Phase and Milestone Traceability
+### 18.4 Phase and Milestone Traceability
 
 - [ ] Phase references use the canonical model in `docs/planning/PHASES.md`.
 - [ ] Frontend milestone identifiers and names use the frozen canonical model.
@@ -864,7 +904,7 @@ A temporary deviation MUST NOT silently become the permanent implementation.
 - [ ] Cross-domain impacts link to the relevant domain dossiers.
 - [ ] No milestone acceptance criteria are duplicated in this register.
 
-## 18. Definition of Done
+## 19. Definition of Done
 
 The frontend decision register is ready for ongoing use when:
 

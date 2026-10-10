@@ -149,7 +149,8 @@ F-M02 includes:
 - project-level authorization handling;
 - project tests;
 - CI integration;
-- project documentation.
+- project documentation;
+- coding-agent sessions for the open project (Section 2.5): provider discovery and status, per-project consent, staging workspace and change sets, review and apply, recovery, session view, diff review, and the first provider adapter (Claude Code or OpenAI Codex).
 
 ## 2.2 Explicitly Out of Scope
 
@@ -175,6 +176,8 @@ F-M02 does not implement:
 - subscription management;
 - complete admin project management;
 - collaborative real-time editing.
+
+Also out of scope for F-M02: the second coding-agent provider adapter and the Kritva Studio MCP server (F-M03 BUILD & ARTIFACT), and the organization coding-agent policy and provider metadata services (B-M01 CONTROL PLANE, B-M03 PLATFORM).
 
 These capabilities are delivered in later milestones.
 
@@ -214,6 +217,25 @@ Project metadata may include:
 - project settings.
 
 Metadata must remain bounded and structured.
+
+## 2.5 Coding-Agent Sessions
+
+F-M02 delivers project-scoped coding-agent sessions on top of the F-M01 STUDIO FOUNDATION adapter foundation. Architecture: `docs/architecture/CODING_AGENT_INTEGRATION.md`. Decisions: SYS-ADR-007, FE-ADR-008, SEC-ADR-001. Priority: PRI-1; using it is optional for each user.
+
+Behaviour:
+
+- A session always belongs to the open project. The agent works in a per-session staging workspace, never in the user's working tree.
+- Studio lists providers with status (`AVAILABLE`, `NOT_INSTALLED`, `NOT_AUTHENTICATED`, `UNSUPPORTED_VERSION`, `DISABLED_BY_POLICY`, `ERROR`). A provider that is not available never blocks project workflows.
+- Capabilities are verified at session start (effective mode, configuration isolation, MCP connectivity); a mismatch refuses the session.
+- Before the first session with a provider in a project, Studio shows the consent screen defined in the architecture Section 4.3: provider, scope, mode, tools, isolation tier, configuration isolation, the provider's own terms and telemetry, and the disclosure version. A session cannot start without recorded consent. Consent can be withdrawn, and withdrawal stops active sessions.
+- The user selects `READ_ONLY` (default for first use) or `PROPOSE`. `WORKSPACE_WRITE` is not offered in the first release. Until the B-M01 CONTROL PLANE policy is available, the default local policy applies.
+- When the session completes, Studio computes a change set with base and new content hashes. The user applies it in full, per file or per hunk. A concurrent edit makes the affected operation a conflict; it is never overwritten. A restore point is taken before each apply. Apply and revert are idempotent and journaled.
+- After a crash or forced termination, Studio recovers from the session journal and shows the user what happened.
+- The isolation launcher uses tier A where the provider and OS support it, and otherwise tier C with disclosure.
+- Agent approval requests (to run a command or edit outside the proposed scope) are shown to the user and require an explicit decision.
+- The first provider adapter (Claude Code or OpenAI Codex, recorded in task KR-CA-008) is delivered here. The second follows in F-M03 BUILD & ARTIFACT.
+
+Source privacy: Section 2.3 applies unchanged to Kritva services. The provider exception is documented in `docs/security/SOURCE_CODE_PRIVACY.md` Section 6.1.
 
 ---
 
@@ -348,7 +370,12 @@ F-M02 shall deliver:
 17. project API client integration;
 18. local workspace Rust/Tauri integration;
 19. automated project tests;
-20. project documentation.
+20. project documentation;
+21. coding-agent provider discovery and status panel;
+22. per-project, per-provider consent and disclosure flow;
+23. agent session view (task input, permission mode, progress, approvals, cancellation);
+24. staging workspace, change sets, review and apply (per file and per hunk), conflict handling, restore points, revert and journal recovery;
+25. first coding-agent provider adapter with contract-test evidence.
 
 ## 4.2 Project List
 
@@ -625,6 +652,24 @@ configuration.
 - architecture review;
 - integration with future build milestones.
 
+## 9.13 R-FM02-013 — Uninformed Third-Party Disclosure
+
+**Risk:** A user starts an agent session without understanding that the provider receives project content.
+
+**Mitigation:** Mandatory versioned consent before the first session per project and provider; disclosure reviewed by Security and Legal. Related: R-SEC-012.
+
+## 9.14 R-FM02-014 — Harmful or Unwanted Agent Changes
+
+**Risk:** An agent makes destructive or incorrect edits to the workspace.
+
+**Mitigation:** Agents work in a staging workspace; only `READ_ONLY` and `PROPOSE` exist; explicit apply with conflict detection, restore points and revert. Related: R-SEC-011.
+
+## 9.15 R-FM02-015 — Provider CLI Changes
+
+**Risk:** A provider changes its CLI flags, output or sign-in, which breaks the adapter.
+
+**Mitigation:** Version range checks; `UNSUPPORTED_VERSION` status; contract tests per supported version. Related: R-TECH-012.
+
 ---
 
 # 10. Exit Criteria
@@ -642,6 +687,7 @@ configuration.
 - [ ] SDK version selection works.
 - [ ] Project settings foundation works.
 - [ ] Authorization behavior is correct.
+- [ ] Coding-agent sessions work end to end with the first provider and the mock provider (consent, session, approvals, diff review, accept, reject, revert).
 
 ## 10.2 Source Privacy Exit
 
@@ -650,6 +696,7 @@ configuration.
 - [ ] No source is logged.
 - [ ] Workspace operations remain local.
 - [ ] Network privacy tests pass.
+- [ ] No source, prompt, transcript or diff reaches any Kritva endpoint during agent sessions.
 
 ## 10.3 Architecture Exit
 
@@ -677,6 +724,7 @@ configuration.
 - [ ] Project authorization tested.
 - [ ] Workspace boundary reviewed.
 - [ ] Sensitive local data protected.
+- [ ] Agent consent, staging, change-set, recovery, isolation, workspace-escape and environment tests pass.
 - [ ] Security review completed.
 
 ## 10.6 Documentation Exit

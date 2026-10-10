@@ -510,6 +510,7 @@ already occurred.
 | R-TECH-009 | TECH | Queue/event delivery is lost or duplicated | P5 EXECUTION | 3 | 4 | 12 | High | At-least-once events, IDs, deduplication, durable state | Integration Owner | Event gap or duplicate processing | MITIGATION_PLANNED |
 | R-TECH-010 | TECH | WebSocket/telemetry channel cannot sustain required load | P7 LIVE & RESULTS | 3 | 3 | 9 | Medium | Load tests, backpressure, rate limits, specialized transport | Execution Owner | Dropped telemetry exceeds target | MITIGATION_PLANNED |
 | R-TECH-011 | TECH | Simulated Lab Agent and simulated robot do not exercise the real execution protocol, lifecycle and failure paths | P5 EXECUTION | 3 | 4 | 12 | High | Protocol-conformant simulator, fault injection, documented simulation limits, contract tests against the Lab protocol | Execution Owner | Simulated run passes while protocol or lifecycle conformance tests fail | MITIGATION_PLANNED |
+| R-TECH-012 | TECH | Coding-agent provider CLI changes (flags, output, sign-in, permission modes) break an adapter | P1 STUDIO; P2 BUILD & ARTIFACT | 4 | 3 | 12 | High | Version range checks, `UNSUPPORTED_VERSION` status, contract tests per supported CLI version, provider metadata from B-M03 | Local Runtime Owner | Contract test failure on a new provider CLI release | MITIGATION_PLANNED |
 
 ## 32. Risk Register — Security and Privacy
 
@@ -525,6 +526,11 @@ already occurred.
 | R-SEC-008 | SEC | Lab Agent identity or private key is compromised | P5 EXECUTION; P6 LAB & ROBOT | 2 | 5 | 10 | High | mTLS, local key protection, rotation/revocation | Lab Security Owner | Invalid Lab Agent identity | MITIGATION_PLANNED |
 | R-SEC-009 | SEC | Audit records can be modified or deleted improperly | P8 PRODUCTION | 2 | 4 | 8 | Medium | Append-oriented storage, access controls, tamper evidence | Security Owner | Audit integrity verification fails | MITIGATION_PLANNED |
 | R-SEC-010 | SEC | Vulnerable dependency reaches production | P8 PRODUCTION | 3 | 4 | 12 | High | SCA, SBOM, severity gates, patch process | Security Owner | High-severity dependency finding | MITIGATION_PLANNED |
+| R-SEC-011 | SEC | Coding agent makes destructive edits or writes outside the workspace | P1 STUDIO | 3 | 4 | 12 | High | Staging workspace with explicit apply, restore points and revert; READ_ONLY and PROPOSE only; isolation tiers; escape detection (SEC-184, SEC-185, SEC-186) | Security Owner | Escape detected or user reports unrecoverable change | MITIGATION_PLANNED |
+| R-SEC-012 | SEC | Workspace content disclosed to a coding-agent provider without informed consent, or against organization intent | P1 STUDIO; P3 CONTROL PLANE | 3 | 5 | 15 | Very High | Per-project versioned consent, plain-language disclosure, organization policy, qualified privacy indicator (SEC-183, SEC-188) | Security Owner | Session without recorded consent; customer complaint | MITIGATION_PLANNED |
+| R-SEC-013 | SEC | Kritva credentials or signing material exposed to the agent process | P1 STUDIO | 2 | 5 | 10 | High | Environment sanitizer, OS keychain storage, no credential IPC to agents (SEC-182) | Security Owner | Environment inspection test failure | MITIGATION_PLANNED |
+| R-SEC-014 | SEC | Prompt injection uses Studio tools to publish artifacts, spend credits or affect robots | P2 BUILD & ARTIFACT | 3 | 5 | 15 | Very High | Restricted MCP tool catalogue, per-call approvals, prompt-injection fixture (SEC-187) | Security Owner | MCP negative test failure | MITIGATION_PLANNED |
+| R-SEC-015 | SEC | In isolation tier C the agent can read files outside the project (for example credentials in the user's home directory) and send them to the provider | P1 STUDIO | 3 | 4 | 12 | High | Tier A where supported; tier C disclosure before consent; policy `min_isolation_tier`; sanitized environment (SEC-186, SEC-182) | Security Owner | Tier C used on a supported OS where tier A was expected | MITIGATION_PLANNED |
 
 ## 33. Risk Register — Safety
 
@@ -557,6 +563,7 @@ already occurred.
 | R-COMM-003 | COMM | Robot utilization is too low for viable RaaS economics | P8 PRODUCTION | 3 | 5 | 15 | Very High | Capacity analytics, platform selection, targeted demand generation | Business Owner | Utilization below threshold | MITIGATION_PLANNED |
 | R-COMM-004 | COMM | Users expect source-level remote development instead of artifact execution | P2 BUILD & ARTIFACT | 3 | 4 | 12 | High | Product messaging, local build UX, documentation | Product Owner | Repeated source-upload requests | MITIGATION_PLANNED |
 | R-COMM-005 | COMM | Subscription model does not align with platform usage | P4 BOOKING & COMMERCIAL | 3 | 4 | 12 | High | Separate access subscription and platform credits | Product Owner | High cancellation or low conversion | MITIGATION_PLANNED |
+| R-COMM-006 | COMM | Provider terms do not permit launching their CLI from Studio, or change after release | P1 STUDIO | 2 | 4 | 8 | Medium | Legal review of provider terms before F-M02 release; provider-neutral adapters allow disabling a provider through B-M03 status | Business/Legal Owner | Provider terms change or legal review fails | MITIGATION_PLANNED |
 
 ## 36. Risk Register — Regulatory and Compliance
 
@@ -577,6 +584,7 @@ already occurred.
 | R-QUAL-001 | QUAL | Automated tests miss cross-domain failures | P5 EXECUTION | 4 | 4 | 16 | Very High | Contract, integration, E2E, simulation and HIL tests | QA Owner | Production-like flow fails despite unit tests | MITIGATION_PLANNED |
 | R-QUAL-002 | QUAL | Release qualification does not represent production workloads | P8 PRODUCTION | 3 | 4 | 12 | High | Production-like environments and workload profiles | Release Owner | Production behavior differs materially | MITIGATION_PLANNED |
 | R-DEP-001 | DEP | External service outage blocks core workflow | P3 CONTROL PLANE | 3 | 4 | 12 | High | Adapter boundaries, retry, timeout, fallback, graceful degradation | Platform Owner | External dependency unavailable | MITIGATION_PLANNED |
+| R-DEP-002 | DEP | Coding-agent provider outage, rate limit or pricing change degrades the agent capability | P1 STUDIO; P8 PRODUCTION | 3 | 3 | 9 | Medium | Failure isolation (Studio works without providers), two providers, status messaging | Product Owner | Provider outage or pricing notice | MITIGATION_PLANNED |
 
 ## 38. Risk Count
 

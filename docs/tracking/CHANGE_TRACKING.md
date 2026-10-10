@@ -374,8 +374,11 @@ the already approved planning and architecture baseline.
 | ID | Date | Category | Title | Priority | Impact | Requestor | Owner | Status | Phase | Milestone |
 |---|---|---|---|---|---|---|---|---|---|---|
 | None | 2026-10-08 | - | No active change request declared | - | - | - | TBD | OPEN_BASELINE | 0 | Planning |
+| CR-2026-001 | 2026-10-10 | SCOPE | Add coding-agent integration (Claude Code, OpenAI Codex, Kritva Studio MCP tools, organization policy, provider metadata) to the primary product path | PRI-1 | High | Product Owner | System Architecture Owner | APPROVAL_PENDING | P1 STUDIO; P2 BUILD & ARTIFACT; P3 CONTROL PLANE | F-M01, F-M02, F-M03, B-M01, B-M03, DB-M02 |
 
 The baseline row is informational and is not a change request.
+
+CR-2026-001 is the planning change for SYS-ADR-007. Architecture: `docs/architecture/CODING_AGENT_INTEGRATION.md`. Affected documents and tasks KR-CA-001 to KR-CA-034 are listed in the milestone changelogs. Implementation must not start until SYS-ADR-007 and CR-2026-001 are approved.
 
 ## 20. Change Request Structure
 

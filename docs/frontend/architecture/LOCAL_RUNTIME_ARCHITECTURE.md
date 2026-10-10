@@ -1288,7 +1288,36 @@ Before upload the UI/runtime should confirm:
 - runtime/SDK known;
 - size acceptable.
 
-## 71. Error Model
+## 71. Coding-Agent Manager
+
+The Coding-Agent Manager runs external coding agents (Claude Code, OpenAI Codex) on the open workspace. Architecture: `docs/architecture/CODING_AGENT_INTEGRATION.md`. Decisions: SYS-ADR-007, FE-ADR-008, SEC-ADR-001.
+
+Components:
+
+| Component | Responsibility |
+|---|---|
+| Provider adapters | One Rust adapter per provider behind a provider-neutral trait; discovery, capability descriptor, permission-mode mapping, launch arguments, output parsing |
+| Mock provider | Deterministic adapter for tests |
+| Session manager | Lifecycle state machine and timeouts |
+| Session journal and workspace lock | Durable on-disk journal of sessions, approvals, change sets, applies and restore points; OS-level lock allowing one agent session per workspace across Studio processes; start-up recovery |
+| Staging and change-set service | Per-session staging workspace; change sets with base and new content hashes; conflict detection; atomic idempotent apply; restore points; revert |
+| Isolation launcher | Launches the provider at isolation tier A where supported, otherwise tier C; resource limits; provider configuration isolation |
+| Environment sanitizer | Builds the agent environment without Kritva tokens, API keys, Control Plane credentials or signing material |
+| Workspace guard | Post-session detection (not enforcement) of modifications outside the staging workspace |
+| Policy evaluator | Applies the organization policy (cached) or the default local policy |
+| Kritva Studio MCP server | Local tool server exposing the allowed tool catalogue; calls the existing build, test and artifact managers |
+
+Process rules follow Section 37 (Process Execution Security):
+
+- executable resolved from an allowlisted path with a version check;
+- working directory = workspace root;
+- arguments built from typed requests;
+- process tree tracked for cancellation;
+- output redacted before streaming.
+
+The MCP server calls the same Build Manager, Test Manager and Artifact Manager entry points as the UI, with the same validation. It never calls Artifact Signing, the Upload Boundary or any Control Plane client.
+
+## 72. Error Model
 
 The Local Runtime uses structured errors.
 
@@ -1309,7 +1338,7 @@ Categories include:
     IPC
     Resource
 
-## 72. Error Structure
+## 73. Error Structure
 
 Conceptual error:
 
@@ -1325,7 +1354,7 @@ Error codes are stable machine-readable identifiers.
 
 Messages are human-readable and may evolve.
 
-## 73. Local Error Codes
+## 74. Local Error Codes
 
 Baseline codes include:
 
@@ -1351,7 +1380,7 @@ Baseline codes include:
     LOCAL_OPERATION_CONFLICT
     LOCAL_CONFIGURATION_INVALID
 
-## 74. Error Mapping
+## 75. Error Mapping
 
 Rust errors are mapped before crossing the IPC boundary.
 
@@ -1371,7 +1400,7 @@ Rust errors are mapped before crossing the IPC boundary.
 
 Raw OS errors should not become the public frontend contract.
 
-## 75. Retry Policy
+## 76. Retry Policy
 
 Retry is operation-specific.
 
@@ -1391,7 +1420,7 @@ Do not blindly retry:
 
 A retry must not produce ambiguous outputs.
 
-## 76. Operation Manager
+## 77. Operation Manager
 
 Long-running local operations should have:
 
@@ -1416,7 +1445,7 @@ Example states:
     CANCELLED
     TIMEOUT
 
-## 77. Operation Registry
+## 78. Operation Registry
 
 The runtime maintains an in-memory registry for active operations.
 
@@ -1434,7 +1463,7 @@ Example:
 Completed operations should be removed from active state after their results
 are safely delivered.
 
-## 78. Runtime Startup
+## 79. Runtime Startup
 
 Startup sequence:
 
@@ -1461,7 +1490,7 @@ Startup sequence:
         v
     READY
 
-## 79. Runtime Shutdown
+## 80. Runtime Shutdown
 
 Shutdown sequence:
 
@@ -1487,7 +1516,7 @@ Shutdown sequence:
 
 The runtime must avoid leaving orphaned child processes.
 
-## 80. Crash Recovery
+## 81. Crash Recovery
 
 After an unexpected Studio termination:
 
@@ -1497,7 +1526,7 @@ After an unexpected Studio termination:
 - incomplete artifacts should be ignored;
 - diagnostics should record abnormal termination.
 
-## 81. Local Persistence
+## 82. Local Persistence
 
 The Local Runtime may persist:
 
@@ -1515,7 +1544,7 @@ It must not persist:
 - credentials;
 - source snapshots unnecessarily.
 
-## 82. Cache Strategy
+## 83. Cache Strategy
 
 Toolchain and non-sensitive metadata may be cached.
 
@@ -1528,7 +1557,7 @@ Cache entries require:
 
 Caches must never become authoritative for security decisions.
 
-## 83. Configuration Precedence
+## 84. Configuration Precedence
 
 Recommended precedence:
 
@@ -1545,7 +1574,7 @@ Recommended precedence:
 
 Security restrictions always override user configuration.
 
-## 84. Resource Limits
+## 85. Resource Limits
 
 The Local Runtime should define:
 
@@ -1559,7 +1588,7 @@ The Local Runtime should define:
 Limits should be configurable by supported policy without allowing unsafe
 unbounded values.
 
-## 85. Disk Space
+## 86. Disk Space
 
 Before build/package operations the runtime should check available disk space
 where practical.
@@ -1570,7 +1599,7 @@ Failure should produce:
 
 rather than a generic build failure when the condition can be identified.
 
-## 86. File Permissions
+## 87. File Permissions
 
 Generated files should use appropriate platform permissions.
 
@@ -1578,7 +1607,7 @@ Sensitive temporary files should not be world-readable.
 
 Unix-specific permissions must be applied where supported.
 
-## 87. Symlink Handling
+## 88. Symlink Handling
 
 Symlinks require explicit policy.
 
@@ -1587,7 +1616,7 @@ without explicit approval and validation.
 
 This prevents path escape during artifact packaging.
 
-## 88. Archive Security
+## 89. Archive Security
 
 If packaging uses an archive format, the runtime must protect against:
 
@@ -1598,7 +1627,7 @@ If packaging uses an archive format, the runtime must protect against:
 - malformed archives;
 - decompression/resource bombs.
 
-## 89. Supply-Chain Validation
+## 90. Supply-Chain Validation
 
 Toolchains and packaging utilities should be identified by:
 
@@ -1609,7 +1638,7 @@ Toolchains and packaging utilities should be identified by:
 
 The runtime should provide diagnostics when an unexpected executable is selected.
 
-## 90. Build Reproducibility
+## 91. Build Reproducibility
 
 The runtime should capture:
 
@@ -1624,7 +1653,7 @@ The runtime should capture:
 
 This information becomes part of build metadata.
 
-## 91. Build-to-Artifact Traceability
+## 92. Build-to-Artifact Traceability
 
 A generated artifact should be traceable to:
 
@@ -1644,7 +1673,7 @@ A generated artifact should be traceable to:
 
 This enables debugging and experiment reproducibility.
 
-## 92. Artifact-to-Run Traceability
+## 93. Artifact-to-Run Traceability
 
 Remote execution records should reference:
 
@@ -1664,7 +1693,7 @@ Remote execution records should reference:
 
 The Local Runtime contributes the immutable artifact identity.
 
-## 93. Diagnostics
+## 94. Diagnostics
 
 Diagnostics should expose:
 
@@ -1681,7 +1710,7 @@ Diagnostics should expose:
 
 Secrets must be excluded.
 
-## 94. Health State
+## 95. Health State
 
 The runtime may expose:
 
@@ -1699,7 +1728,7 @@ Example degraded conditions:
 Critical native failures may prevent specific operations without necessarily
 making Studio unusable.
 
-## 95. Observability
+## 96. Observability
 
 Local runtime telemetry may include:
 
@@ -1714,7 +1743,7 @@ Local runtime telemetry may include:
 
 Telemetry must not include source code or secrets.
 
-## 96. Privacy
+## 97. Privacy
 
 The runtime should minimize collection.
 
@@ -1728,7 +1757,7 @@ It should not automatically upload:
 
 Diagnostic data should be explicitly classified before remote submission.
 
-## 97. Logging Security
+## 98. Logging Security
 
 Logs must redact:
 
@@ -1741,14 +1770,14 @@ Logs must redact:
 
 Redaction should occur before logs cross the UI or diagnostic boundary.
 
-## 98. Build Environment Isolation
+## 99. Build Environment Isolation
 
 The runtime should isolate build environment variables from the Studio process
 where practical.
 
 A failed build must not mutate Studio's own process environment.
 
-## 99. Process Tree Management
+## 100. Process Tree Management
 
 Build and test operations may create child processes.
 
@@ -1766,7 +1795,7 @@ Example:
 
 Cancellation must not terminate unrelated user processes.
 
-## 100. Platform Abstraction
+## 101. Platform Abstraction
 
 The Local Runtime should expose platform-neutral services:
 
@@ -1779,7 +1808,7 @@ The Local Runtime should expose platform-neutral services:
 
 Platform-specific implementation remains behind Rust traits/interfaces.
 
-## 101. Native Interface Example
+## 102. Native Interface Example
 
 Conceptual interface:
 
@@ -1791,7 +1820,7 @@ Conceptual interface:
 
 The exact implementation may differ, but the boundary should remain explicit.
 
-## 102. Filesystem Interface
+## 103. Filesystem Interface
 
 Conceptual responsibilities:
 
@@ -1806,7 +1835,7 @@ Conceptual responsibilities:
 
 The interface must enforce workspace policy.
 
-## 103. Toolchain Interface
+## 104. Toolchain Interface
 
 Conceptual responsibilities:
 
@@ -1824,7 +1853,7 @@ Providers may exist for:
 - ROS2;
 - Kritva SDK.
 
-## 104. Build Interface
+## 105. Build Interface
 
 Conceptual interface:
 
@@ -1837,7 +1866,7 @@ Conceptual interface:
 
 The service owns build orchestration, not React.
 
-## 105. Test Interface
+## 106. Test Interface
 
 Conceptual interface:
 
@@ -1850,7 +1879,7 @@ Conceptual interface:
 
 Test execution should reuse Process Manager infrastructure.
 
-## 106. Artifact Interface
+## 107. Artifact Interface
 
 Conceptual interface:
 
@@ -1864,7 +1893,7 @@ Conceptual interface:
 
 Signing must remain isolated from ordinary packaging logic.
 
-## 107. Cancellation Interface
+## 108. Cancellation Interface
 
 Conceptual interface:
 
@@ -1877,7 +1906,7 @@ Conceptual interface:
 Cancellation tokens must propagate to all layers participating in an
 operation.
 
-## 108. Event Model
+## 109. Event Model
 
 Local events may include:
 
@@ -1901,7 +1930,7 @@ Local events may include:
 
 Events are local IPC events and must not be confused with remote RaaS events.
 
-## 109. Local Event Delivery
+## 110. Local Event Delivery
 
 Local events should be:
 
@@ -1913,7 +1942,7 @@ Local events should be:
 
 The UI must tolerate missed transient events by querying operation status.
 
-## 110. State Recovery
+## 111. State Recovery
 
 If an event is missed:
 
@@ -1930,7 +1959,7 @@ If an event is missed:
 
 The runtime should expose authoritative operation status for active operations.
 
-## 111. Workspace Locking
+## 112. Workspace Locking
 
 The runtime should prevent conflicting operations against the same workspace.
 
@@ -1944,7 +1973,7 @@ Potential policy:
 
 Read-only inspection may continue concurrently where safe.
 
-## 112. Build and Package Ordering
+## 113. Build and Package Ordering
 
 Packaging should require a known build result.
 
@@ -1960,7 +1989,7 @@ Preferred:
 
 A stale build output should not silently become the new artifact.
 
-## 113. Stale Output Detection
+## 114. Stale Output Detection
 
 The runtime should identify stale outputs using appropriate metadata such as:
 
@@ -1972,7 +2001,7 @@ The runtime should identify stale outputs using appropriate metadata such as:
 If freshness cannot be established, the UI should request a rebuild or explicit
 confirmation.
 
-## 114. Artifact Validation Before Upload
+## 115. Artifact Validation Before Upload
 
 Minimum local checks:
 
@@ -1987,7 +2016,7 @@ Minimum local checks:
 
 Remote validation remains mandatory.
 
-## 115. Signing Failure
+## 116. Signing Failure
 
 If signing fails:
 
@@ -2005,7 +2034,7 @@ If signing fails:
 An unsigned artifact may be allowed for development only if policy explicitly
 permits it.
 
-## 116. Local Development Mode
+## 117. Local Development Mode
 
 Development mode may relax selected production constraints.
 
@@ -2018,7 +2047,7 @@ Examples:
 Development mode must be explicitly identifiable and must not silently apply
 production trust.
 
-## 117. Production Mode
+## 118. Production Mode
 
 Production mode requires stricter policy:
 
@@ -2029,7 +2058,7 @@ Production mode requires stricter policy:
 - approved SDK;
 - prohibited content checks.
 
-## 118. Security Policy Separation
+## 119. Security Policy Separation
 
 Policy should distinguish:
 
@@ -2045,7 +2074,7 @@ The UI may display the current policy mode.
 
 The Local Runtime enforces the policy.
 
-## 119. Failure Recovery
+## 120. Failure Recovery
 
 For a failed operation:
 
@@ -2061,7 +2090,7 @@ For a failed operation:
 
 Failure recovery must not leave the workspace permanently locked.
 
-## 120. Timeout
+## 121. Timeout
 
 Operations may have timeouts.
 
@@ -2081,7 +2110,7 @@ A timeout results in:
 Timeout does not automatically imply that all child processes were successfully
 terminated until cleanup confirms it.
 
-## 121. Resource Cleanup
+## 122. Resource Cleanup
 
 Cleanup is required for:
 
@@ -2101,7 +2130,7 @@ Cleanup must run on:
 - timeout;
 - runtime shutdown.
 
-## 122. Testing Strategy
+## 123. Testing Strategy
 
 Local Runtime testing includes:
 
@@ -2125,7 +2154,7 @@ Local Runtime testing includes:
         v
     Studio E2E
 
-## 123. Unit Testing
+## 124. Unit Testing
 
 Unit tests cover:
 
@@ -2139,7 +2168,7 @@ Unit tests cover:
 - cancellation;
 - compatibility.
 
-## 124. Process Testing
+## 125. Process Testing
 
 Integration tests should use controlled test executables.
 
@@ -2155,7 +2184,7 @@ Test:
 - child processes;
 - output flooding.
 
-## 125. Filesystem Testing
+## 126. Filesystem Testing
 
 Test:
 
@@ -2170,7 +2199,7 @@ Test:
 
 Tests should use isolated temporary directories.
 
-## 126. Artifact Testing
+## 127. Artifact Testing
 
 Test:
 
@@ -2184,7 +2213,7 @@ Test:
 - path traversal;
 - symlink escape.
 
-## 127. Signing Testing
+## 128. Signing Testing
 
 Test:
 
@@ -2196,7 +2225,7 @@ Test:
 - development signing;
 - production signing policy.
 
-## 128. Cancellation Testing
+## 129. Cancellation Testing
 
 Test:
 
@@ -2208,7 +2237,7 @@ Test:
 - child-process cleanup;
 - cancellation during packaging.
 
-## 129. IPC Testing
+## 130. IPC Testing
 
 Test:
 
@@ -2221,7 +2250,7 @@ Test:
 - event delivery;
 - status reconciliation.
 
-## 130. Cross-Platform Testing
+## 131. Cross-Platform Testing
 
 Minimum supported host categories should be validated independently:
 
@@ -2234,7 +2263,7 @@ Planned:
 
 Additional platforms require explicit support qualification.
 
-## 131. Phase Mapping
+## 132. Phase Mapping
 
 | Phase | Local Runtime Scope |
 |---|---|
@@ -2248,7 +2277,7 @@ Additional platforms require explicit support qualification.
 | Phase 7 | Live/result integration |
 | Phase 8 | Production hardening |
 
-## 132. P0 FOUNDATION — Native Foundation
+## 133. P0 FOUNDATION — Native Foundation
 
 Implement:
 
@@ -2266,7 +2295,7 @@ Gate:
 - IPC command works;
 - no arbitrary shell API exists.
 
-## 133. P1 STUDIO Integration
+## 134. P1 STUDIO Integration
 
 Implement:
 
@@ -2281,7 +2310,7 @@ Gate:
 
 - Studio reliably communicates with Rust runtime.
 
-## 134. P2 BUILD & ARTIFACT — Local Development
+## 135. P2 BUILD & ARTIFACT — Local Development
 
 Implement:
 
@@ -2311,7 +2340,7 @@ Gate:
       v
     Signed / Validated
 
-## 135. P3 CONTROL PLANE
+## 136. P3 CONTROL PLANE
 
 Implement:
 
@@ -2325,7 +2354,7 @@ Gate:
 
 - validated local `.krv` can be uploaded without source directory transfer.
 
-## 136. P4 BOOKING & COMMERCIAL — Booking and Credits
+## 137. P4 BOOKING & COMMERCIAL — Booking and Credits
 
 Implement Studio integration for:
 
@@ -2338,7 +2367,7 @@ Implement Studio integration for:
 The Local Runtime itself remains primarily local; remote commercial state remains
 owned by the Control Plane.
 
-## 137. P5 EXECUTION — Remote Execution
+## 138. P5 EXECUTION — Remote Execution
 
 Integrate:
 
@@ -2350,7 +2379,7 @@ Integrate:
 
 Local Runtime provides the artifact; the Control Plane owns remote execution.
 
-## 138. P6 LAB & ROBOT
+## 139. P6 LAB & ROBOT
 
 Support frontend/runtime diagnostics for:
 
@@ -2362,7 +2391,7 @@ Support frontend/runtime diagnostics for:
 
 The Local Runtime does not directly control remote robots.
 
-## 139. P7 LIVE & RESULTS
+## 140. P7 LIVE & RESULTS
 
 The Local Runtime supports:
 
@@ -2373,7 +2402,7 @@ The Local Runtime supports:
 Live telemetry, video, and remote logs are handled by Studio's remote
 communication architecture rather than by the Local Runtime.
 
-## 140. P8 PRODUCTION
+## 141. P8 PRODUCTION
 
 Complete:
 
@@ -2387,7 +2416,7 @@ Complete:
 - production test suite;
 - operational documentation.
 
-## 141. Risks and Mitigations
+## 142. Risks and Mitigations
 
 | Risk | Impact | Mitigation |
 |---|---|---|
@@ -2406,7 +2435,7 @@ Complete:
 | Cross-platform differences | High | Platform abstraction/tests |
 | UI/runtime desynchronization | High | Operation status reconciliation |
 
-## 142. Risk — Arbitrary Execution
+## 143. Risk — Arbitrary Execution
 
 A generic command API could turn Studio into an unrestricted local execution
 broker.
@@ -2419,7 +2448,7 @@ Mitigation:
 - controlled working directories;
 - explicit operation types.
 
-## 143. Risk — Source Leakage
+## 144. Risk — Source Leakage
 
 Packaging could accidentally include source or secrets.
 
@@ -2433,7 +2462,7 @@ Mitigation:
 - explicit upload;
 - remote validation.
 
-## 144. Risk — Signing Key Exposure
+## 145. Risk — Signing Key Exposure
 
 A compromised signing key could allow unauthorized artifacts.
 
@@ -2446,7 +2475,7 @@ Mitigation:
 - revocation;
 - signing audit metadata.
 
-## 145. Risk — Orphaned Processes
+## 146. Risk — Orphaned Processes
 
 A failed Studio process could leave compiler/test processes running.
 
@@ -2458,7 +2487,7 @@ Mitigation:
 - cancellation tests;
 - platform-specific process-group handling.
 
-## 146. Risk — Build Reproducibility
+## 147. Risk — Build Reproducibility
 
 Local environments vary substantially.
 
@@ -2471,7 +2500,7 @@ Mitigation:
 - report environment metadata;
 - avoid claiming deterministic builds without evidence.
 
-## 147. Risk — Long Build Output
+## 148. Risk — Long Build Output
 
 A compiler can produce millions of log lines.
 
@@ -2483,7 +2512,7 @@ Mitigation:
 - UI virtualization;
 - configurable verbosity.
 
-## 148. Risk — Filesystem Race
+## 149. Risk — Filesystem Race
 
 Files may change during packaging.
 
@@ -2495,7 +2524,7 @@ Mitigation:
 - atomic package generation;
 - lock or snapshot strategy where required.
 
-## 149. Open Questions
+## 150. Open Questions
 
 1. Which exact Tauri version will be standardized?
 2. Which Rust version/toolchain will be pinned?
@@ -2523,7 +2552,7 @@ Mitigation:
 24. What exact diagnostics can be uploaded with user consent?
 25. What exact crash recovery behavior is required for active builds?
 
-## 150. Full Acceptance Criteria — Runtime Foundation
+## 151. Full Acceptance Criteria — Runtime Foundation
 
 - [ ] Rust Local Runtime exists.
 - [ ] Tauri IPC boundary exists.
@@ -2536,7 +2565,7 @@ Mitigation:
 - [ ] Runtime lifecycle is defined.
 - [ ] Runtime diagnostics exist.
 
-## 151. Full Acceptance Criteria — Workspace
+## 152. Full Acceptance Criteria — Workspace
 
 - [ ] Project creation works.
 - [ ] Project opening works.
@@ -2549,7 +2578,7 @@ Mitigation:
 - [ ] Workspace conflicts are detected.
 - [ ] Temporary workspace state is cleaned.
 
-## 152. Full Acceptance Criteria — Toolchain
+## 153. Full Acceptance Criteria — Toolchain
 
 - [ ] Supported tools are discoverable.
 - [ ] Tool versions are captured.
@@ -2562,7 +2591,7 @@ Mitigation:
 - [ ] Environment handling is controlled.
 - [ ] Toolchain diagnostics are available.
 
-## 153. Full Acceptance Criteria — Build
+## 154. Full Acceptance Criteria — Build
 
 - [ ] Build configuration is validated.
 - [ ] Build operation receives an operation ID.
@@ -2575,7 +2604,7 @@ Mitigation:
 - [ ] Child processes are cleaned.
 - [ ] Build results are structured.
 
-## 154. Full Acceptance Criteria — Tests
+## 155. Full Acceptance Criteria — Tests
 
 - [ ] Tests can be discovered.
 - [ ] Tests can be selected.
@@ -2588,7 +2617,7 @@ Mitigation:
 - [ ] Failed tests are distinguishable from infrastructure failures.
 - [ ] Test logs are bounded.
 
-## 155. Full Acceptance Criteria — Logging
+## 156. Full Acceptance Criteria — Logging
 
 - [ ] stdout is captured.
 - [ ] stderr is captured.
@@ -2601,7 +2630,7 @@ Mitigation:
 - [ ] Long logs do not cause unbounded memory growth.
 - [ ] Log cleanup is implemented.
 
-## 156. Full Acceptance Criteria — Cancellation
+## 157. Full Acceptance Criteria — Cancellation
 
 - [ ] Operations expose cancellation.
 - [ ] Cancellation is idempotent.
@@ -2614,7 +2643,7 @@ Mitigation:
 - [ ] Temporary resources are cleaned.
 - [ ] UI receives final authoritative operation state.
 
-## 157. Full Acceptance Criteria — Artifact
+## 158. Full Acceptance Criteria — Artifact
 
 - [ ] `.krv` packaging exists.
 - [ ] Packaging uses an allowlist.
@@ -2627,7 +2656,7 @@ Mitigation:
 - [ ] Package creation is atomic.
 - [ ] Package size is checked.
 
-## 158. Full Acceptance Criteria — Signing
+## 159. Full Acceptance Criteria — Signing
 
 - [ ] Signing service is isolated.
 - [ ] Development and production trust are distinguishable.
@@ -2640,7 +2669,7 @@ Mitigation:
 - [ ] Signing metadata is recorded.
 - [ ] Production policy can require signatures.
 
-## 159. Full Acceptance Criteria — Validation
+## 160. Full Acceptance Criteria — Validation
 
 - [ ] Workspace validation exists.
 - [ ] Toolchain validation exists.
@@ -2653,7 +2682,7 @@ Mitigation:
 - [ ] Target compatibility is checked.
 - [ ] Remote validation remains mandatory.
 
-## 160. Full Acceptance Criteria — Security
+## 161. Full Acceptance Criteria — Security
 
 - [ ] IPC commands are explicit.
 - [ ] IPC arguments are validated.
@@ -2666,7 +2695,7 @@ Mitigation:
 - [ ] Archive traversal is blocked.
 - [ ] Signing keys are protected.
 
-## 161. Full Acceptance Criteria — Error Model
+## 162. Full Acceptance Criteria — Error Model
 
 - [ ] Errors have stable codes.
 - [ ] Errors contain operation IDs where applicable.
@@ -2679,7 +2708,7 @@ Mitigation:
 - [ ] Permission failures are distinguishable.
 - [ ] UI-safe messages are available.
 
-## 162. Full Acceptance Criteria — Lifecycle
+## 163. Full Acceptance Criteria — Lifecycle
 
 - [ ] Runtime startup is deterministic.
 - [ ] Runtime shutdown is deterministic.
@@ -2692,7 +2721,7 @@ Mitigation:
 - [ ] Startup recovery exists.
 - [ ] Stale operation state is not treated as active.
 
-## 163. Full Acceptance Criteria — Persistence
+## 164. Full Acceptance Criteria — Persistence
 
 - [ ] Only approved metadata is persisted.
 - [ ] Tokens are not stored in ordinary files.
@@ -2705,7 +2734,7 @@ Mitigation:
 - [ ] Persistence failures are recoverable.
 - [ ] Sensitive metadata is protected.
 
-## 164. Full Acceptance Criteria — Performance
+## 165. Full Acceptance Criteria — Performance
 
 - [ ] Build execution does not block UI rendering.
 - [ ] Test execution does not block UI rendering.
@@ -2718,7 +2747,7 @@ Mitigation:
 - [ ] Long operations are tested.
 - [ ] Performance regressions are reviewed.
 
-## 165. Full Acceptance Criteria — Testing
+## 166. Full Acceptance Criteria — Testing
 
 - [ ] Unit tests exist.
 - [ ] Filesystem tests exist.
@@ -2731,7 +2760,7 @@ Mitigation:
 - [ ] Cross-platform tests exist.
 - [ ] Studio E2E covers the critical local workflow.
 
-## 166. Full Acceptance Criteria — Integration
+## 167. Full Acceptance Criteria — Integration
 
 - [ ] Studio can open a local project.
 - [ ] Studio can detect the toolchain.
@@ -2744,7 +2773,7 @@ Mitigation:
 - [ ] Studio can associate artifact identity with remote execution.
 - [ ] Studio never requires uploading the source directory for normal execution.
 
-## 167. Architectural Invariants
+## 168. Architectural Invariants
 
 The following are mandatory:
 
@@ -2774,7 +2803,7 @@ The following are mandatory:
 24. Local Stop/Cancel controls are not physical safety controls.
 25. The Local Runtime remains independently testable from the React UI.
 
-## 168. Final Architecture
+## 169. Final Architecture
 
 The production Local Runtime architecture is:
 

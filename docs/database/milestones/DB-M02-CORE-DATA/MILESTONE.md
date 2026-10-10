@@ -642,6 +642,17 @@ It must also identify the schema conventions that later database milestones must
 
 Task breakdown, detailed acceptance evidence, review execution, change history, and commit procedure remain in sibling files.
 
+#### 2.1.34 Coding-agent provider catalogue and organization policy
+
+DB-M02 stores the data behind the coding-agent capability. Architecture: `docs/architecture/CODING_AGENT_INTEGRATION.md` Section 8. Decisions: SYS-ADR-007, BE-ADR-011, DB-ADR-011.
+
+- `coding_agent_providers`: a global catalogue, read-only to tenants. It holds `provider_id` (stable key), display name, status, adapter version range, CLI version range, capabilities as schema-validated JSON, disclosure version, documentation link and timestamps.
+- `organization_coding_agent_policies`: one current policy per organization. It holds `enabled`, `allowed_providers` (each must exist in `coding_agent_providers`), `max_permission_mode` (`READ_ONLY` or `PROPOSE`), `require_consent` (constrained to true), `mcp_enabled`, `allowed_mcp_tools`, `min_isolation_tier`, `require_config_isolation`, `max_cache_age_seconds`, `policy_version`, `updated_at` and `updated_by`.
+- Policy history uses the audit conventions of DB-M01 FOUNDATION (P0-P3).
+- Organization policies are protected by tenant RLS.
+- Neither table has, or may gain without a new decision record, any column for source, prompts, transcripts, diffs, file names or paths.
+- These tables are separate from platform, capability, configuration, resource and compatibility tables.
+
 ### 2.2 Explicit non-scope
 
 The following are outside DB-M02 CORE DATA unless an approved scope change explicitly assigns them to this milestone:
@@ -738,6 +749,7 @@ All DB-M02 implementations must preserve these invariants:
 - **Domain ownership:** booking and execution schemas remain with their respective database milestones.
 - **No implied runtime state:** registered metadata does not prove that a resource or stored object is currently available.
 - **Documented limitations:** the schema does not claim guarantees that depend on unimplemented services or infrastructure.
+- **Coding-agent separation:** coding-agent providers are never stored as platforms or capabilities, and no coding-agent table holds customer content.
 
 ---
 

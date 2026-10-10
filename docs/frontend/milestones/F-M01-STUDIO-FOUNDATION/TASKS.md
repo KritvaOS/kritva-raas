@@ -43,6 +43,12 @@ The following task IDs are milestone-scoped.
 | KR-FE-0-030 | Add Studio CI pipeline | 2.0d | DevOps | 025-029 | [ ] |
 | KR-FE-0-031 | Complete Studio documentation | 1.5d | Frontend/Docs | All | [ ] |
 | KR-FE-0-032 | Conduct milestone review | 1.0d | Architect | All | [ ] |
+| KR-CA-001 | Define provider-neutral coding-agent adapter trait and capability descriptor | 1.5d | Rust/Architect | KR-FE-0-002 | [ ] |
+| KR-CA-002 | Implement deterministic mock coding-agent provider | 1.0d | Rust | KR-CA-001 | [ ] |
+| KR-CA-003 | Implement agent session manager skeleton (lifecycle, timeouts, single write session) | 2.0d | Rust | KR-CA-001 | [ ] |
+| KR-CA-004 | Implement agent environment sanitizer and workspace guard | 1.5d | Rust/Security | KR-CA-003 | [ ] |
+| KR-CA-005 | Define and contract-test `agent.*` IPC commands and events | 1.5d | Rust/Frontend | KR-CA-001 to KR-CA-004 | [ ] |
+| KR-CA-035 | Implement session journal, cross-process workspace lock and normalized adapter error taxonomy | 2.0d | Rust | KR-CA-003 | [ ] |
 
 Estimates are engineering-day estimates and should be refined during task
 refinement.

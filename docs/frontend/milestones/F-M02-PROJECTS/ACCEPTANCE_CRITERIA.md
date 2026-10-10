@@ -157,4 +157,25 @@ Milestone: F-M02 — Projects
 - [ ] CI passes.
 - [ ] Documentation is updated.
 
+## 6.13 Coding-Agent Sessions
+
+- [ ] Provider list shows every documented status, and unavailable providers never block project workflows.
+- [ ] Capabilities (effective mode, configuration isolation, MCP connectivity) are verified at session start; a mismatch refuses the session.
+- [ ] A session cannot start without recorded consent for the current disclosure version, organization and provider account.
+- [ ] The consent screen shows provider, scope, mode, tools, isolation tier, configuration isolation, the provider's own terms and telemetry, and the disclosure version.
+- [ ] Withdrawing consent stops active sessions with that provider for the project.
+- [ ] Only `READ_ONLY` (first-use default) and `PROPOSE` are offered.
+- [ ] The agent works in a staging workspace; the working tree is unchanged until the user applies a change set.
+- [ ] Change sets record base and new content hashes; concurrent edits produce conflicts and are never overwritten.
+- [ ] Apply (full, per file, per hunk) is atomic per file and idempotent; a restore point is taken before each apply; revert restores it.
+- [ ] Agent approval requests show the exact tool or command and require an explicit decision.
+- [ ] Cancellation stops the provider process tree; an unterminated process is reported, not hidden.
+- [ ] Killing Studio during a session or during an apply is recovered from the journal without loss of pre-existing user work.
+- [ ] The isolation tier claimed for each supported OS passes its isolation and escape tests; tier C is disclosed.
+- [ ] No Kritva credential is present in the agent process environment.
+- [ ] Every Kritva-controlled egress path in the architecture Section 4.2 passes its negative test during agent sessions.
+- [ ] Policy expiry, offline start and policy change during a session follow the architecture Sections 8.3 and 8.4.
+- [ ] The first provider adapter passes the contract suite for its supported CLI versions; mock results are not counted as real-provider evidence.
+- [ ] The session view and change review are keyboard and screen-reader accessible.
+
 ---

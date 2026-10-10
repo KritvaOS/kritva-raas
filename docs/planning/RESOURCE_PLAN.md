@@ -230,8 +230,8 @@ The table below gives an indicative staffing range for the active phase team. It
 | Phase | Primary capability | Indicative active team | Main hiring emphasis | Resource gate |
 |---|---|---:|---|---|
 | P0 FOUNDATION | Engineering foundations | 3-5 FTE | Leadership, architecture, core engineering, DevOps | Scope and development environment established |
-| P1 STUDIO | Desktop Studio | 4-6 FTE | Frontend and desktop integration | Studio workflows demonstrated |
-| P2 BUILD & ARTIFACT | Local build and artifact | 4-7 FTE | Build integration, artifact handling, test automation | Repeatable local build and artifact evidence |
+| P1 STUDIO | Desktop Studio | 5-7 FTE | Frontend, desktop and Local Runtime (incl. coding-agent adapters) | Studio workflows demonstrated |
+| P2 BUILD & ARTIFACT | Local build and artifact | 5-8 FTE | Build integration, artifact handling, test automation | Repeatable local build and artifact evidence |
 | P3 CONTROL PLANE | Backend, identity, and data | 5-8 FTE | Backend, database, identity, platform integration | Core service and data contracts validated |
 | P4 BOOKING & COMMERCIAL | Resources and financial systems | 5-8 FTE | Commercial workflows, booking, data integrity | Booking and financial flows validated |
 | P5 EXECUTION | Remote execution on simulated robots | 6-9 FTE | Execution integration, simulation, QA | Repeatable simulated remote execution |
@@ -337,8 +337,10 @@ Staff the desktop Studio experience and the initial project workflows without pr
 | QA / UI automation | 0.5-0.75 | Shared or growing role | Workflow tests and regression coverage |
 | DevOps / developer productivity | 0.25-0.5 | Shared | Build, packaging, and development automation |
 | Product coordination | 0.25-0.5 | Shared | Requirements, prioritization, and acceptance review |
+| Local Runtime / coding-agent integration engineer (Rust) | 0.5-1.0 | Core engineer | Provider adapters, session manager, checkpoint, environment sanitizer (`docs/architecture/CODING_AGENT_INTEGRATION.md`) |
+| Security review (coding agents) | 0.1-0.25 | Specialist review | Consent, environment, workspace-escape and privacy review |
 
-Indicative active team: 4-6 FTE.
+Indicative active team: 5-7 FTE.
 
 ### 6.3 Hiring Gate
 
@@ -362,6 +364,7 @@ Before hiring, confirm:
 - Local test services and controlled test data.
 - Application crash reporting for development and test environments, where justified.
 - Secure handling of local configuration and credentials.
+- Dedicated Claude Code and OpenAI Codex test accounts for contract tests, isolated from production and customer data.
 
 ### 6.5 Budget Categories
 
@@ -370,6 +373,7 @@ Before hiring, confirm:
 - Desktop test machines and peripherals.
 - Build, packaging, and CI capacity.
 - Development licenses and collaboration services.
+- Coding-agent provider subscriptions or usage for development and CI contract tests.
 - Test automation and regression maintenance.
 - Contingency for platform-specific behavior and UI rework.
 
@@ -399,8 +403,9 @@ Provide the engineering capacity to implement local build and artifact workflows
 | QA / automation engineer | 0.5-1.0 | Shared or dedicated as workload grows | Repeatability, regression, and failure-path tests |
 | DevOps / CI engineer | 0.5-1.0 | Shared | Build runners, caching, artifact storage integration |
 | Security / supply-chain specialist | 0.1-0.25 | Specialist review | Dependency and artifact integrity guidance |
+| Local Runtime / coding-agent integration engineer (Rust) | 0.5-1.0 | Continuing from P1 STUDIO | Second provider adapter and Kritva Studio MCP server |
 
-Indicative active team: 4-7 FTE.
+Indicative active team: 5-8 FTE.
 
 ### 7.3 Hiring Gate
 

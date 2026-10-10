@@ -308,6 +308,7 @@ Each entry MUST be completed, rejected, withdrawn, or removed from the active in
 | DB-ADR-008 | Connection pooling and lifecycle | Proposed | Connection management | Section 13 |
 | DB-ADR-009 | Backup, restore, and database recovery | Proposed | Recovery implementation | Section 14 |
 | DB-ADR-010 | Database upgrade and migration safety | Proposed | Compatibility and operational upgrades | Section 15 |
+| DB-ADR-011 | Coding-agent policy and provider catalogue storage | Proposed | DB-M02 CORE DATA schema additions | Section 16 |
 
 These entries identify decision areas that may need explicit records. They MUST NOT be interpreted as a mandate to adopt any particular database extension, migration framework, pooling service, or schema design.
 
@@ -796,9 +797,35 @@ Application compatibility requirements belong to the relevant system and backend
 
 Review this decision when the database support window changes, an extension becomes incompatible, upgrade tests reveal regressions, or the existing recovery path no longer supports the planned transition.
 
-## 16. Database Decision Workflow
+## 16. DB-ADR-011 — Coding-Agent Policy and Provider Catalogue Storage
 
-### 16.1 Proposal
+**Status:** Proposed  
+**Scope:** Persistence of the coding-agent organization policy and provider metadata  
+**Implements:** SYS-ADR-007, BE-ADR-011
+
+### 16.1 Context
+
+B-M01 CONTROL PLANE and B-M03 PLATFORM need durable storage for the organization coding-agent policy and the provider catalogue.
+
+### 16.2 Proposed Decision
+
+- DB-M02 CORE DATA owns two schema additions: `coding_agent_providers` (global catalogue: provider ID, status, adapter and CLI version ranges, capabilities as validated JSON, disclosure version) and `organization_coding_agent_policies` (one current row per organization with a version, plus history through the audit conventions of DB-M01 FOUNDATION).
+- `organization_coding_agent_policies` MUST be protected by the tenant RLS conventions of DB-M01 FOUNDATION. `coding_agent_providers` is global, read-only to tenants.
+- Neither table may contain columns for source, prompts, transcripts, diffs, file names or paths.
+- `requireConsent` MUST be constrained to true.
+
+### 16.3 Consequences
+
+- Migration, RLS and constraint tests are added to the DB-M02 CORE DATA acceptance criteria.
+- The tables are separate from platform, capability and resource tables.
+
+### 16.4 Review Triggers
+
+Review this decision if usage reporting or per-organization provider overrides are proposed.
+
+## 17. Database Decision Workflow
+
+### 17.1 Proposal
 
 A database decision proposal MUST identify:
 
@@ -816,7 +843,7 @@ A database decision proposal MUST identify:
 
 A proposal MUST distinguish measured facts from estimates and assumptions.
 
-### 16.2 Review
+### 17.2 Review
 
 The database owner responsible for the affected implementation MUST review the proposal.
 
@@ -824,7 +851,7 @@ Backend, cloud, and security owners SHOULD participate when the decision affects
 
 A proposal that changes product-wide data authority or another cross-domain constraint MUST be escalated to `docs/planning/DECISIONS.md`.
 
-### 16.3 Acceptance
+### 17.3 Acceptance
 
 A decision MAY be marked Accepted only after approval by the authorized database owner.
 
@@ -832,7 +859,7 @@ Acceptance MUST identify the selected approach and any material conditions.
 
 A decision dependent on unresolved product/system approval MUST remain Proposed.
 
-### 16.4 Implementation
+### 17.4 Implementation
 
 Implementation MUST follow the accepted decision or record a justified deviation for review.
 
@@ -840,7 +867,7 @@ The database implementation architecture and migration artifacts SHOULD be updat
 
 Database configuration and migration scripts MUST NOT silently override an accepted decision.
 
-### 16.5 Verification
+### 17.5 Verification
 
 Verification MUST confirm that the implementation satisfies the decision's stated requirements.
 
@@ -848,7 +875,7 @@ Evidence MAY include migration tests, integrity checks, transaction tests, query
 
 Milestone completion MUST follow the applicable authoritative milestone dossier.
 
-### 16.6 Closure
+### 17.6 Closure
 
 A decision MAY be marked implemented when the required database changes and validation are complete.
 
@@ -856,9 +883,9 @@ The record SHOULD link to the relevant migration revision, configuration change,
 
 Implementation completion does not prevent a future decision from superseding the choice.
 
-## 17. Relationship to Phases and Milestones
+## 18. Relationship to Phases and Milestones
 
-### 17.1 Phase Authority
+### 18.1 Phase Authority
 
 `docs/planning/PHASES.md` is the canonical source for phase definitions.
 
@@ -866,7 +893,7 @@ This register MUST NOT redefine phase meaning or use phase references to expand 
 
 Database decisions MAY reference phases to indicate applicability or expected delivery context.
 
-### 17.2 Canonical Phases
+### 18.2 Canonical Phases
 
 | Phase | Canonical name |
 |---|---|
@@ -882,7 +909,7 @@ Database decisions MAY reference phases to indicate applicability or expected de
 
 These names MUST be used exactly whenever phases are referenced in this register.
 
-### 17.3 Database Milestones
+### 18.3 Database Milestones
 
 | Milestone | Canonical name | Phase mapping |
 |---|---|---|
@@ -893,7 +920,7 @@ These names MUST be used exactly whenever phases are referenced in this register
 
 Database milestone scope and acceptance MUST be taken from the authoritative dossiers under `docs/database/milestones/`.
 
-### 17.4 Cross-Domain Milestone References
+### 18.4 Cross-Domain Milestone References
 
 Database decisions MAY affect frontend, backend, or cloud implementation milestones.
 
@@ -903,7 +930,7 @@ This register MUST NOT reproduce frontend, backend, or cloud milestone scope.
 
 Each domain dossier remains authoritative for its own acceptance criteria.
 
-### 17.5 Milestone Traceability
+### 18.5 Milestone Traceability
 
 When a database decision is required to deliver a milestone, the relevant milestone dossier SHOULD reference the decision ID.
 
@@ -911,9 +938,9 @@ When implementation reveals that an accepted decision must change, the decision 
 
 A decision's presence in a milestone dossier does not automatically make it Accepted or implemented.
 
-## 18. Change Control and Supersession
+## 19. Change Control and Supersession
 
-### 18.1 Changes to Accepted Decisions
+### 19.1 Changes to Accepted Decisions
 
 An accepted decision MUST NOT be silently changed to represent a materially different choice.
 
@@ -921,7 +948,7 @@ A material change MUST create a successor decision or use an explicit review pro
 
 The record MUST preserve the previous decision and explain the change.
 
-### 18.2 Supersession
+### 19.2 Supersession
 
 A superseding decision MUST:
 
@@ -935,7 +962,7 @@ A superseding decision MUST:
 
 The previous record MUST remain available for historical traceability.
 
-### 18.3 Rejected Decisions
+### 19.3 Rejected Decisions
 
 A rejected decision MUST remain distinguishable from an accepted decision.
 
@@ -943,13 +970,13 @@ The rejection rationale SHOULD be recorded so future proposals can reuse the ana
 
 A rejected ID MUST NOT be reused.
 
-### 18.4 Withdrawn Decisions
+### 19.4 Withdrawn Decisions
 
 A decision MAY be withdrawn when its context no longer applies and no direct successor is required.
 
 The withdrawal MUST state why the decision is no longer relevant.
 
-### 18.5 Conflicting Records
+### 19.5 Conflicting Records
 
 If the database implementation architecture conflicts with an accepted database decision, the database owner MUST resolve the inconsistency.
 
@@ -957,9 +984,9 @@ If a database decision conflicts with a product/system decision, the product/sys
 
 A migration script or copied description in another document MUST NOT override the authoritative decision record.
 
-## 19. Review and Maintenance
+## 20. Review and Maintenance
 
-### 19.1 Decision Ownership
+### 20.1 Decision Ownership
 
 Every database decision MUST have an accountable owner.
 
@@ -967,7 +994,7 @@ The owner is responsible for status, rationale, references, validation evidence,
 
 The owner SHOULD ensure that the current database architecture reflects accepted decisions without duplicating the complete decision record.
 
-### 19.2 Review Triggers
+### 20.2 Review Triggers
 
 Database decisions SHOULD be reviewed when:
 
@@ -982,7 +1009,7 @@ Database decisions SHOULD be reviewed when:
 - A product/system decision changes.
 - A milestone dossier identifies a blocker requiring a database architecture change.
 
-### 19.3 Periodic Review
+### 20.3 Periodic Review
 
 The database decision register SHOULD be reviewed at major database architecture and release checkpoints.
 
@@ -997,7 +1024,7 @@ The review SHOULD identify:
 
 Periodic review MUST NOT become a duplicate review of every table or query.
 
-### 19.4 Decision Quality
+### 20.4 Decision Quality
 
 A database decision SHOULD be:
 
@@ -1010,7 +1037,7 @@ A database decision SHOULD be:
 - Consistent with product/system and protocol contracts.
 - Explicit about migration and recovery implications.
 
-### 19.5 Exceptions
+### 20.5 Exceptions
 
 A deviation from an accepted database decision MUST be documented when it materially affects data integrity, security, performance, recovery, or compatibility.
 
@@ -1018,9 +1045,9 @@ The exception MUST identify the scope, rationale, owner, approval, and review da
 
 A temporary deviation MUST NOT silently become the permanent database design.
 
-## 20. Database Decision Register Checklist
+## 21. Database Decision Register Checklist
 
-### 20.1 Ownership
+### 21.1 Ownership
 
 - [ ] Database-specific decisions are recorded here.
 - [ ] Product/system decisions link to `docs/planning/DECISIONS.md`.
@@ -1032,7 +1059,7 @@ A temporary deviation MUST NOT silently become the permanent database design.
 - [ ] API, event, and artifact contracts remain in their protocol documents.
 - [ ] No product-wide decision content has been duplicated.
 
-### 20.2 Record Quality
+### 21.2 Record Quality
 
 - [ ] Every accepted decision has a stable ID.
 - [ ] Status and date are explicit.
@@ -1043,7 +1070,7 @@ A temporary deviation MUST NOT silently become the permanent database design.
 - [ ] Review triggers are defined.
 - [ ] Superseded decisions identify their successors.
 
-### 20.3 Implementation and Verification
+### 21.3 Implementation and Verification
 
 - [ ] Accepted decisions are reflected in the current database architecture.
 - [ ] Migration artifacts are consistent with accepted decisions.
@@ -1053,7 +1080,7 @@ A temporary deviation MUST NOT silently become the permanent database design.
 - [ ] Data integrity and concurrency implications are considered.
 - [ ] Security, recovery, and performance implications are considered where applicable.
 
-### 20.4 Phase and Milestone Traceability
+### 21.4 Phase and Milestone Traceability
 
 - [ ] Phase references use the canonical model in `docs/planning/PHASES.md`.
 - [ ] Database milestone identifiers and names use the frozen canonical model.
@@ -1061,7 +1088,7 @@ A temporary deviation MUST NOT silently become the permanent database design.
 - [ ] Cross-domain impacts link to relevant domain dossiers.
 - [ ] Milestone acceptance criteria are not duplicated in this register.
 
-## 21. Definition of Done
+## 22. Definition of Done
 
 The database decision register is ready for ongoing use when:
 

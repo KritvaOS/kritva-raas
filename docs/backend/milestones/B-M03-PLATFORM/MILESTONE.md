@@ -316,7 +316,8 @@ B-M03 includes:
 - reconnect/resynchronization contract;
 - backpressure;
 - connection cleanup;
-- WebSocket integration tests.
+- WebSocket integration tests;
+- coding-agent provider metadata registry and API (Section 2.7).
 
 ## 2.2 Explicitly Out of Scope
 
@@ -336,7 +337,8 @@ B-M03 does not implement:
 - full telemetry processing;
 - result processing;
 - experiment comparison;
-- artifact packaging.
+- artifact packaging;
+- coding-agent sessions, adapters or provider credentials (Studio Local Runtime only).
 
 ## 2.3 Platform vs Resource
 
@@ -410,6 +412,25 @@ It must not become:
 - a source of truth for booking;
 - a replacement for REST;
 - a replacement for safety systems.
+
+## 2.7 Coding-Agent Provider Metadata
+
+B-M03 publishes the catalogue of supported coding-agent providers that Studio uses to decide whether a provider and CLI version are supported. Architecture: `docs/architecture/CODING_AGENT_INTEGRATION.md` Section 8.2. Decisions: SYS-ADR-007, BE-ADR-011. Persistence: DB-M02 CORE DATA (DB-ADR-011). Wire format: `docs/protocol/API_CONTRACT.md` Section 27.4.
+
+Scope:
+
+- provider registry with `provider_id`, display name, status (`SUPPORTED`, `DEPRECATED`, `BLOCKED`), supported adapter versions, supported CLI version range, capabilities, disclosure version and documentation link;
+- read API for authenticated Studio users; write API for platform operators, with audit events;
+- initial records for `claude-code` and `openai-codex`.
+
+Boundary (mandatory, following Section 2.3):
+
+| Concept | Meaning |
+|---|---|
+| Platform | Logical robotic product that runs `.krv` artifacts |
+| Coding-agent provider | Developer tool that edits local source; never an execution target |
+
+Providers MUST NOT appear in `/platforms`, capability, configuration, resource or compatibility results, and the compatibility service MUST NOT consider them.
 
 ---
 
@@ -1012,6 +1033,12 @@ mechanism.
 - no unsafe reuse;
 - historical references.
 
+## 9.15 R-BM03-015 — Provider Metadata Conflated with Platforms
+
+**Risk:** Coding-agent providers are modelled as platforms or capabilities, which corrupts compatibility results.
+
+**Mitigation:** A separate resource and table; a negative test that platform and compatibility endpoints never return providers.
+
 ---
 
 # 10 Exit Criteria
@@ -1065,6 +1092,13 @@ mechanism.
 - [ ] Unknown state works.
 - [ ] Incompatible state works.
 - [ ] Compatibility is server-authoritative.
+- [ ] Coding-agent providers never appear in platform or compatibility results.
+
+## 10.5a Coding-Agent Provider Metadata Exit
+
+- [ ] Provider list and detail APIs work for `claude-code` and `openai-codex`.
+- [ ] Status, version ranges, capabilities and disclosure version are served.
+- [ ] Operator updates are authorized and audited.
 
 ## 10.6 WebSocket Exit
 

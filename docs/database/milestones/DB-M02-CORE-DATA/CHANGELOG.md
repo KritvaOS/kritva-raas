@@ -18,6 +18,7 @@ Milestone: DB-M02-CORE-DATA — Platforms, Resources, Artifacts and Storage Meta
 
 | Date | Change | Commit | Owner |
 |---|---|---|---|
+| 2026-10-10 | Planning: added coding-agent provider catalogue and organization policy scope (Section 2.1.34, tasks KR-CA-031 to KR-CA-033, acceptance Section 6.22a, review Section 7.14) per SYS-ADR-007 and DB-ADR-011 (Proposed). | | Planning update |
 | YYYY-MM-DD | | | |
 
 ### Fixed

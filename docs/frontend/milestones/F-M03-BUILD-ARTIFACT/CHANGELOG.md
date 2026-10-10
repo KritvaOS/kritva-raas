@@ -14,6 +14,18 @@ Milestone: F-M03 — Build & Artifact
 
 ## Changed
 
+- Date: 2026-10-10
+- Change: Revised coding-agent scope after external review CA-REV-001 to CA-REV-012 (staging workspace and change sets, isolation tiers, journal and recovery, MCP execution contract, consent lifecycle, policy cache rules); added KR-CA-039; updated acceptance and review items.
+- Task: KR-CA-039
+- Author: Planning update
+- Evidence: `docs/architecture/CODING_AGENT_INTEGRATION.md` revision 2
+
+- Date: 2026-10-10
+- Change: Added coding-agent build integration and MCP scope (Section 2.6, deliverables 26-28, risks R-FM03-013 and R-FM03-014, tasks KR-CA-015 to KR-CA-021, acceptance Section 6.16, review Sections 7.15 and 8.14a) per SYS-ADR-007 (Proposed).
+- Task: KR-CA-015 to KR-CA-021
+- Author: Planning update
+- Evidence: `docs/architecture/CODING_AGENT_INTEGRATION.md`
+
 - Date:
 - Change:
 - Task:

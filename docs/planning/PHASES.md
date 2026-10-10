@@ -68,7 +68,7 @@ The phase model is:
 
 ### 3.1 Primary Product Path (MVP)
 
-The primary product path, also referred to as the MVP, is the end-to-end customer flow: Build Locally, Book Remotely, Run, Observe, and Results. It is a product-scope concept used for priority (PRI-1 in `docs/planning/IMPLEMENTATION_ROADMAP.md`) and acceptance traceability.
+The primary product path, also referred to as the MVP, is the end-to-end customer flow: Develop Locally (optionally assisted by a coding agent), Build Locally, Book Remotely, Run, Observe, and Results. The coding-agent capability (`docs/architecture/CODING_AGENT_INTEGRATION.md`, SYS-ADR-007) is part of the path, so its delivery is PRI-1. Using it is optional for each user, and the path MUST pass without any coding-agent provider installed. It is a product-scope concept used for priority (PRI-1 in `docs/planning/IMPLEMENTATION_ROADMAP.md`) and acceptance traceability.
 
 It is not a phase, a milestone, or a substitute for either. It spans P1 STUDIO through P7 LIVE & RESULTS, and its scope is defined by the milestone dossiers it crosses. "MVP" MUST NOT be used as a phase name or as a milestone name.
 
@@ -296,6 +296,7 @@ Establish the RaaS Studio application foundation and project workspace required 
 - Establish platform-aware project configuration.
 - Establish API client integration.
 - Establish local runtime integration boundaries.
+- Establish coding-agent integration: adapter foundation, consent lifecycle, project-scoped sessions in a staging workspace, change-set review and apply, recovery, isolation, and the first provider (Claude Code or OpenAI Codex).
 - Establish loading, error, and empty states.
 - Establish initial cross-platform Studio build support.
 
@@ -317,6 +318,7 @@ Establish the RaaS Studio application foundation and project workspace required 
 - Local workspace boundary.
 - API client foundation.
 - Local runtime boundary.
+- Coding-agent sessions with the first provider.
 - Initial Studio test coverage.
 
 ### 8.5 Dependencies
@@ -335,6 +337,7 @@ Establish the RaaS Studio application foundation and project workspace required 
 - Platform metadata drift.
 - Native/runtime boundary instability.
 - Cross-platform build differences.
+- Uninformed disclosure of workspace content to a coding-agent provider, or harmful agent edits.
 
 ### 8.7 Demo
 
@@ -348,7 +351,8 @@ Demonstrate:
 6. Configure target platform.
 7. Restart Studio.
 8. Restore authenticated session and project context.
-9. Confirm source remains local.
+9. Run a coding-agent session in `PROPOSE` mode, apply part of the change set, show a conflict after a manual edit, and revert.
+10. Confirm source remains local (no project content reaches Kritva services).
 
 ### 8.8 Exit Criteria
 
@@ -359,6 +363,7 @@ Demonstrate:
 - Organization context is enforced.
 - Project metadata is persisted correctly.
 - API and IPC boundaries are tested.
+- The coding-agent P1 STUDIO exit gate in `docs/architecture/CODING_AGENT_INTEGRATION.md` Section 12 is met, with evidence for test-matrix rows CAT-01 to CAT-07, CAT-11 and CAT-13 (`docs/development/TESTING_STRATEGY.md` Section 37.1).
 - P1 evidence is recorded.
 
 ### 8.9 Acceptance Checklist
@@ -371,6 +376,7 @@ Demonstrate:
 - [ ] Project selection works.
 - [ ] Local workspace works.
 - [ ] Source privacy tests pass.
+- [ ] Coding-agent consent, staging, change-set, conflict, revert, recovery, isolation and environment tests pass.
 - [ ] Studio build passes on supported development targets.
 - [ ] P1 evidence is recorded.
 
@@ -398,6 +404,7 @@ Establish the trusted local build and artifact workflow from source code to a va
 - Upload artifact metadata and artifact content without source code.
 - Register artifact versions.
 - Establish artifact compatibility metadata.
+- Add the second coding-agent provider and the Kritva Studio MCP server (project, platform, build, test, package and validate tools only).
 
 ### 9.3 Inputs
 
@@ -418,6 +425,7 @@ Establish the trusted local build and artifact workflow from source code to a va
 - Artifact registry integration.
 - Compatibility metadata.
 - Source-privacy evidence.
+- Both coding-agent providers and the Kritva Studio MCP server.
 
 ### 9.5 Dependencies
 
@@ -455,6 +463,7 @@ Demonstrate:
 10. Verify that source files were not uploaded.
 11. Register artifact version.
 12. Validate compatibility with a platform version.
+13. Have an agent fix a failing test through MCP tools, then build an agent-assisted artifact through the normal pipeline.
 
 ### 9.8 Exit Criteria
 
@@ -466,6 +475,8 @@ Demonstrate:
 - Signature validation works.
 - Artifact registry accepts valid artifacts.
 - Invalid artifacts are rejected.
+- Agent-produced changes pass through the unchanged build, privacy-scan, validation and signing gates.
+- The coding-agent P2 BUILD & ARTIFACT exit gate in `docs/architecture/CODING_AGENT_INTEGRATION.md` Section 12 is met, with evidence for test-matrix rows CAT-01 and CAT-08 to CAT-13.
 - P2 evidence is recorded.
 
 ### 9.9 Acceptance Checklist
@@ -479,6 +490,8 @@ Demonstrate:
 - [ ] Invalid artifact tests pass.
 - [ ] Compatibility validation passes.
 - [ ] Artifact upload does not upload source.
+- [ ] Claude Code and OpenAI Codex adapters pass the contract suite.
+- [ ] MCP negative tests and the prompt-injection fixture pass.
 - [ ] P2 evidence is recorded.
 
 ## 10. P3 CONTROL PLANE
@@ -500,6 +513,7 @@ Establish the authoritative Control Plane interfaces and services required to op
 - Establish audit foundations.
 - Establish idempotency foundations.
 - Establish WebSocket infrastructure.
+- Establish the organization coding-agent policy and the coding-agent provider metadata.
 - Establish service configuration.
 - Establish authoritative business-state interfaces.
 
@@ -525,6 +539,7 @@ Establish the authoritative Control Plane interfaces and services required to op
 - Authorization enforcement.
 - Audit foundation.
 - WebSocket foundation.
+- Coding-agent policy and provider metadata APIs.
 
 ### 10.5 Dependencies
 
@@ -585,6 +600,7 @@ Demonstrate:
 - [ ] Platform discovery works.
 - [ ] Artifact compatibility works.
 - [ ] Idempotency tests pass.
+- [ ] Coding-agent policy and provider metadata APIs pass contract and negative tests, and Studio applies the Control Plane policy.
 - [ ] P3 evidence is recorded.
 
 ## 11. P4 BOOKING & COMMERCIAL

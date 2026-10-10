@@ -14,6 +14,7 @@ Milestone: PHASE-2-BUILD-ARTIFACT — Local Build and Secure `.krv` Artifact
 
 | Date | Change | Commit | Owner |
 |---|---|---|---|
+| 2026-10-10 | Planning: added coding-agent MCP tools, second provider and provenance scope; added no-go conditions per SYS-ADR-007 (Proposed). | | Planning update |
 | YYYY-MM-DD | | | |
 
 ### Fixed

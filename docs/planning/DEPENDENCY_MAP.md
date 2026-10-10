@@ -216,6 +216,7 @@ Critical dependencies include:
 - Tauri IPC
 - project metadata
 - local source boundary
+- coding-agent adapter contract and SYS-ADR-007 disposition
 
 P1 STUDIO does not require P3 CONTROL PLANE to complete all local Studio work, provided approved interfaces and controlled development substitutes are available.
 
@@ -677,6 +678,8 @@ Primary dependency:
 
 - F-M01 STUDIO FOUNDATION → F-M02 PROJECTS → F-M03 BUILD & ARTIFACT
 
+The Local Runtime also hosts coding-agent adapters and the Kritva Studio MCP server (IP-12).
+
 ## 22. Integration Point IP-02: Studio to Control Plane
 
 Required integration:
@@ -927,7 +930,40 @@ Production integrates:
 
 Production readiness depends on integrated evidence from all applicable upstream phases.
 
-## 32. Critical Path
+## 32. Integration Point IP-12: Studio to Coding-Agent Provider
+
+Architecture: `docs/architecture/CODING_AGENT_INTEGRATION.md`. Decision: SYS-ADR-007.
+
+Required integration:
+
+    Studio UI
+      |
+      | Tauri IPC (agent.*)
+      v
+    Local Runtime ---- Provider adapter ----> Provider CLI ----> Provider service
+      |                                          |                (user's account)
+      +<--------- Kritva Studio MCP server <-----+
+      |
+      | HTTPS (policy and provider metadata only)
+      v
+    Control Plane (B-M01 policy, B-M03 provider metadata)
+
+Critical properties:
+
+- no source, prompt, transcript or diff reaches Kritva services
+- per-project consent before third-party disclosure
+- sanitized agent environment
+- staging workspace, explicit apply, restore points and revert
+- MCP tools limited to project, platform, build, test, package and validate
+- Studio works with no provider installed
+
+Dependency chain:
+
+- F-M01 STUDIO FOUNDATION (adapter foundation) → F-M02 PROJECTS (sessions, first provider) → F-M03 BUILD & ARTIFACT (MCP server, second provider)
+- DB-M02 CORE DATA → B-M03 PLATFORM (provider metadata) → B-M01 CONTROL PLANE (policy) → Studio policy enforcement
+- P1 STUDIO and P2 BUILD & ARTIFACT use the default local policy until the P3 CONTROL PLANE policy is available.
+
+## 33. Critical Path
 
 The primary critical path is:
 
@@ -990,7 +1026,7 @@ At milestone level, the critical path is approximately:
 
 Supporting database and cloud milestones must complete their required portions before the corresponding integration gates.
 
-## 33. Critical Path Dependencies
+## 34. Critical Path Dependencies
 
 The highest-impact dependencies are:
 
@@ -1009,7 +1045,7 @@ The highest-impact dependencies are:
 | DEP-11 | B-M07 PRODUCTION → P8 PRODUCTION | Blocks backend production |
 | DEP-12 | C-M04 PRODUCTION → P8 PRODUCTION | Blocks production infrastructure |
 
-## 34. Parallelization Opportunities
+## 35. Parallelization Opportunities
 
 The following work may proceed in parallel where contracts are stable:
 
@@ -1028,7 +1064,7 @@ The following work may proceed in parallel where contracts are stable:
 
 Parallelization must not bypass hard dependencies.
 
-## 35. Dependency Verification
+## 36. Dependency Verification
 
 A dependency is considered satisfied only when the consuming team verifies it.
 
@@ -1047,7 +1083,7 @@ Verification may include:
 
 A producer declaring a dependency complete is not sufficient.
 
-## 36. Dependency Failure Handling
+## 37. Dependency Failure Handling
 
 When a dependency fails:
 
@@ -1071,7 +1107,7 @@ Workarounds must not weaken:
 - artifact security
 - physical safety
 
-## 37. Contract Dependencies
+## 38. Contract Dependencies
 
 The most important contract dependencies are:
 
@@ -1102,7 +1138,7 @@ A contract change requires:
 - test updates
 - documentation updates
 
-## 38. Database Dependency Rules
+## 39. Database Dependency Rules
 
 Database dependencies require:
 
@@ -1122,7 +1158,7 @@ Critical database dependencies include:
 
 Database schema changes must not silently break downstream services.
 
-## 39. Cloud Dependency Rules
+## 40. Cloud Dependency Rules
 
 Cloud dependencies must remain provider-neutral.
 
@@ -1155,7 +1191,7 @@ Cloud readiness includes:
 
 Cloud failure must not become Robot safety authority.
 
-## 40. Security Dependency Rules
+## 41. Security Dependency Rules
 
 Security dependencies are mandatory across all phases.
 
@@ -1172,7 +1208,7 @@ Required relationships include:
 
 Security blockers must be escalated immediately.
 
-## 41. Financial Dependency Rules
+## 42. Financial Dependency Rules
 
 Financial dependencies include:
 
@@ -1205,7 +1241,7 @@ Credit reservations and ledger operations must be idempotent.
 
 Historical financial records must not be silently rewritten.
 
-## 42. Safety Dependency Rules
+## 43. Safety Dependency Rules
 
 Physical Robot execution requires:
 
@@ -1221,7 +1257,7 @@ Physical Robot execution requires:
 
 No cloud dependency may supersede local safety authority.
 
-## 43. Integration Gate Dependencies
+## 44. Integration Gate Dependencies
 
 | Gate | Required dependencies |
 |---|---|
@@ -1237,7 +1273,7 @@ No cloud dependency may supersede local safety authority.
 
 A gate is passed only when required dependencies are verified.
 
-## 44. Dependency Ownership
+## 45. Dependency Ownership
 
 Every dependency should have an accountable owner.
 
@@ -1262,7 +1298,7 @@ Recommended ownership:
 
 Cross-domain dependencies require joint ownership where no single domain can independently satisfy the dependency.
 
-## 45. Dependency Status Lifecycle
+## 46. Dependency Status Lifecycle
 
 Dependencies should follow:
 
@@ -1301,7 +1337,7 @@ Status is maintained in:
 
     docs/tracking/DEPENDENCY_TRACKING.md
 
-## 46. Dependency Acceptance Checklist
+## 47. Dependency Acceptance Checklist
 
 - [ ] Dependency has a unique identifier.
 - [ ] Producer is identified.
@@ -1319,7 +1355,7 @@ Status is maintained in:
 - [ ] Downstream integration tests pass.
 - [ ] Documentation is updated.
 
-## 47. Program-Level Dependency Acceptance
+## 48. Program-Level Dependency Acceptance
 
 - [ ] P0 FOUNDATION dependencies are satisfied.
 - [ ] P1 STUDIO dependencies are satisfied.
@@ -1341,7 +1377,7 @@ Status is maintained in:
 - [ ] Safety dependencies are verified.
 - [ ] Production dependencies are verified.
 
-## 48. Final Dependency Invariants
+## 49. Final Dependency Invariants
 
 1. `docs/planning/PHASES.md` is the canonical phase definition.
 2. This document defines dependency relationships without redefining phase scope.
@@ -1364,7 +1400,7 @@ Status is maintained in:
 19. Dependency status is evidence-based.
 20. Dependency changes require controlled review.
 
-## 49. Changelog
+## 50. Changelog
 
 ### Current Baseline
 

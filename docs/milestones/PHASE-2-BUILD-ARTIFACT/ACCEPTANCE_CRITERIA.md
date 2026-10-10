@@ -287,6 +287,10 @@ P2 BUILD & ARTIFACT shall not close if:
 - [ ] cross-organization artifact access succeeds;
 - [ ] artifact compatibility is not checked;
 - [ ] failed builds can produce APPROVED artifacts;
-- [ ] upload success is assumed without server confirmation.
+- [ ] upload success is assumed without server confirmation;
+- [ ] any signing, upload, booking, credit, Job, Run or robot operation is reachable through the Kritva Studio MCP server;
+- [ ] agent-produced files bypass the privacy scan, allowlist, validation or signing;
+- [ ] either the Claude Code or the OpenAI Codex adapter fails the contract suite;
+- [ ] the coding-agent P2 BUILD & ARTIFACT exit gate (`docs/architecture/CODING_AGENT_INTEGRATION.md` Section 12) is not met.
 
 ---

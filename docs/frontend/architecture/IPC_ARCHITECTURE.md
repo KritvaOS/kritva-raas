@@ -953,7 +953,39 @@ Verification confirms:
 
 Verification must not silently repair or modify the artifact.
 
-## 52. System Commands
+## 52. Coding-Agent Commands
+
+Coding-agent commands let Studio drive an external coding agent (Claude Code, OpenAI Codex) through the Local Runtime. Architecture and lifecycle: `docs/architecture/CODING_AGENT_INTEGRATION.md`. Decisions: SYS-ADR-007, FE-ADR-008.
+
+Commands:
+
+| Command | Input | Output | Notes |
+|---|---|---|---|
+| `agent.providers.list` | none | Providers with capability descriptor, verified isolation tier and status, including "unsupported under policy" | Never returns credentials |
+| `agent.policy.status` | none | Effective policy, source (`ORGANIZATION`, `CACHED`, `LOCAL_DEFAULT`, `POLICY_UNCONFIGURED`, `POLICY_UNAVAILABLE`), cache age and last error category | Unconfigured and unavailable are never merged |
+| `agent.consent.get` | project ID, provider ID | Consent state and disclosure version | |
+| `agent.consent.record` | project ID, provider ID, disclosure version | Recorded consent | Stored locally per user, organization, project and provider |
+| `agent.consent.withdraw` | project ID, provider ID | Acknowledgement | Stops active sessions with that provider for the project |
+| `agent.session.start` | project ID, provider ID, permission mode (`READ_ONLY` or `PROPOSE`), task text, optional file scope, tier C acknowledgement | Session ID | Fails closed on consent, policy, capability verification, staging or lock errors; a tier C session without the per-session acknowledgement fails with `CONSENT_REQUIRED`; a tier below the policy minimum fails with `POLICY_DENIED` regardless of consent |
+| `agent.session.status` | session ID | Lifecycle state | |
+| `agent.session.respond` | session ID, approval request ID, decision | Acknowledgement | Approval is bound to the request ID |
+| `agent.session.cancel` | session ID | Acknowledgement | Terminates the process tree; reports unterminated processes |
+| `agent.changes.get` | session ID | Change set: operations, base and new hashes, conflicts | |
+| `agent.changes.apply` | session ID, change-set ID, selection (all, operations, hunks) | Applied result with per-operation status | Atomic per file; idempotent; restore point first |
+| `agent.changes.revert` | session ID, change-set ID | Reverted result | Uses the restore point |
+| `agent.recovery.list` | none | Interrupted sessions and applies found in the journal | |
+| `agent.recovery.resolve` | session ID, resolution | Result | Complete, roll back, review or discard |
+
+Events: `agent.session.state`, `agent.session.output` (redacted, bounded), `agent.session.approvalRequested`, `agent.session.changes`, `agent.session.policyStopped`.
+
+Rules:
+
+- There is no generic command-execution IPC. Task text is data passed to the adapter; it never becomes a shell string.
+- Each command validates the project ID against the open workspace. Requests for other projects are rejected.
+- Errors use the standard IPC error model with the normalized coding-agent taxonomy (`docs/architecture/CODING_AGENT_INTEGRATION.md` Section 5.9) plus `POLICY_DENIED`, `CONSENT_REQUIRED`, `STAGING_FAILED` and `WORKSPACE_LOCKED`.
+- Agent IPC commands are versioned with the rest of the contract. Adding a provider never changes the IPC surface.
+
+## 53. System Commands
 
 Baseline:
 
@@ -972,7 +1004,7 @@ System information may include:
 
 Sensitive system information must be filtered.
 
-## 53. Error Model
+## 54. Error Model
 
 Every IPC failure must map to a stable error code.
 
@@ -990,7 +1022,7 @@ The `message` is not a machine-readable contract.
 
 The `code` is the machine-readable contract.
 
-## 54. Error Categories
+## 55. Error Categories
 
 Baseline categories:
 
@@ -1010,7 +1042,7 @@ Baseline categories:
 | Conflict | `LOCAL_OPERATION_CONFLICT` |
 | Runtime | `LOCAL_RUNTIME_UNAVAILABLE` |
 
-## 55. Error Mapping
+## 56. Error Mapping
 
 Rust implementation errors follow:
 
@@ -1030,7 +1062,7 @@ Rust implementation errors follow:
 
 Raw filesystem or process errors must not become the long-term IPC contract.
 
-## 56. Retryability
+## 57. Retryability
 
 Errors should identify whether retry is safe.
 
@@ -1047,7 +1079,7 @@ Examples:
 
 Retry behavior remains operation-specific.
 
-## 57. Error Details
+## 58. Error Details
 
 Details may include:
 
@@ -1061,7 +1093,7 @@ Details may include:
 
 Sensitive details must be redacted.
 
-## 58. Log Streaming Architecture
+## 59. Log Streaming Architecture
 
 The log path is:
 
@@ -1088,7 +1120,7 @@ The log path is:
                 v
               React
 
-## 59. Log Event Schema
+## 60. Log Event Schema
 
 Conceptual:
 
@@ -1103,7 +1135,7 @@ Conceptual:
 
 Logs must be safe to render and must not contain executable interpretation.
 
-## 60. Log Batching
+## 61. Log Batching
 
 High-volume logs should be batched.
 
@@ -1123,7 +1155,7 @@ the runtime may use:
 
 Batch size and latency must remain bounded.
 
-## 61. Log Backpressure
+## 62. Log Backpressure
 
 When the consumer is slower than the producer:
 
@@ -1139,7 +1171,7 @@ When the consumer is slower than the producer:
 
 Critical error messages must not be silently discarded.
 
-## 62. Log Redaction
+## 63. Log Redaction
 
 Before UI delivery, logs should be checked for:
 
@@ -1150,7 +1182,7 @@ Before UI delivery, logs should be checked for:
 
 Redaction is defense in depth; build tools should also avoid printing secrets.
 
-## 63. Cancellation Interface
+## 64. Cancellation Interface
 
 All cancellable commands should accept an operation ID.
 
@@ -1174,7 +1206,7 @@ The cancellation path is:
       v
     Final State
 
-## 64. Permission Model
+## 65. Permission Model
 
 Tauri capabilities define what the application can access.
 
@@ -1190,7 +1222,7 @@ Capabilities should be scoped by:
 - dialog;
 - shell/native API where required.
 
-## 65. Filesystem Permissions
+## 66. Filesystem Permissions
 
 Studio requires controlled access to user-selected project directories.
 
@@ -1209,7 +1241,7 @@ Recommended policy:
 The exact Tauri capability configuration must reflect the supported Tauri
 version.
 
-## 66. Process Permissions
+## 67. Process Permissions
 
 Process execution should be restricted to approved operation paths.
 
@@ -1223,7 +1255,7 @@ Rust services determine:
 - working directory;
 - environment.
 
-## 67. Dialog Permissions
+## 68. Dialog Permissions
 
 User-driven directory/file selection may use native dialogs.
 
@@ -1231,7 +1263,7 @@ Dialog results must still be validated by Rust.
 
 A user-selected path is not automatically a trusted path.
 
-## 68. Capability Separation
+## 69. Capability Separation
 
 Where practical, capabilities should be separated between:
 
@@ -1249,7 +1281,7 @@ Where practical, capabilities should be separated between:
 
 React should not directly access the more privileged capability set.
 
-## 69. Capability Failure
+## 70. Capability Failure
 
 If a native capability is unavailable:
 
@@ -1267,7 +1299,7 @@ If a native capability is unavailable:
 The application must fail safely rather than attempting a broader fallback
 privilege.
 
-## 70. Security Boundary
+## 71. Security Boundary
 
 The security boundary is:
 
@@ -1287,7 +1319,7 @@ The security boundary is:
 
 Validation must happen even if the UI already validated the input.
 
-## 71. Versioning
+## 72. Versioning
 
 IPC contracts require explicit versioning.
 
@@ -1301,7 +1333,7 @@ Major changes indicate incompatible contract behavior.
 
 Minor changes indicate backward-compatible additions.
 
-## 72. Version Negotiation
+## 73. Version Negotiation
 
 At runtime initialization:
 
@@ -1320,7 +1352,7 @@ At runtime initialization:
 The Studio application should fail clearly if its UI and Rust runtime are
 incompatible.
 
-## 73. Command Compatibility
+## 74. Command Compatibility
 
 Adding an optional field should normally be compatible.
 
@@ -1335,7 +1367,7 @@ may be breaking.
 
 Breaking IPC changes require a versioned migration.
 
-## 74. Event Compatibility
+## 75. Event Compatibility
 
 Event consumers should tolerate additive fields.
 
@@ -1344,7 +1376,7 @@ Unknown event types should be handled safely.
 Unknown fields should be ignored unless the contract marks them mandatory for
 correct interpretation.
 
-## 75. Contract Version Header
+## 76. Contract Version Header
 
 Every canonical IPC request/response/event should identify its protocol
 version.
@@ -1357,7 +1389,7 @@ The transport implementation may omit redundant fields internally where the
 version is guaranteed by the registered contract, but the semantic version
 remains explicit.
 
-## 76. Version Migration
+## 77. Version Migration
 
 Preferred migration:
 
@@ -1378,7 +1410,7 @@ Preferred migration:
 A breaking v2 contract requires explicit migration rather than silent behavior
 change.
 
-## 77. Deprecation
+## 78. Deprecation
 
 Deprecated commands/events should have:
 
@@ -1393,7 +1425,7 @@ Example:
         deprecated in 1.2
         replacement: artifact.sign
 
-## 78. Contract Validation
+## 79. Contract Validation
 
 CI should validate:
 
@@ -1406,7 +1438,7 @@ CI should validate:
 
 A contract-breaking change requires explicit review.
 
-## 79. TypeScript API Wrapper
+## 80. TypeScript API Wrapper
 
 React should consume typed functions such as:
 
@@ -1417,7 +1449,7 @@ React should consume typed functions such as:
 
 rather than raw Tauri invocation calls scattered throughout components.
 
-## 80. Rust Handler Wrapper
+## 81. Rust Handler Wrapper
 
 Rust should register explicit handlers that delegate to services.
 
@@ -1432,7 +1464,7 @@ Conceptual:
 
 The handler should not contain the build implementation.
 
-## 81. Frontend IPC Service
+## 82. Frontend IPC Service
 
 Recommended architecture:
 
@@ -1452,7 +1484,7 @@ Recommended architecture:
 
 This provides a stable frontend boundary.
 
-## 82. IPC Client Responsibilities
+## 83. IPC Client Responsibilities
 
 The TypeScript IPC client handles:
 
@@ -1466,7 +1498,7 @@ The TypeScript IPC client handles:
 
 It should not implement build or packaging logic.
 
-## 83. Rust IPC Layer Responsibilities
+## 84. Rust IPC Layer Responsibilities
 
 The Rust IPC layer handles:
 
@@ -1478,7 +1510,7 @@ The Rust IPC layer handles:
 - output serialization;
 - error translation.
 
-## 84. Request Validation
+## 85. Request Validation
 
 Validation order:
 
@@ -1501,7 +1533,7 @@ Validation order:
 
 Invalid requests must fail before privileged operations begin.
 
-## 85. Response Validation
+## 86. Response Validation
 
 Responses emitted by Rust should conform to the canonical schema.
 
@@ -1513,14 +1545,14 @@ Tests should verify:
 - error structure;
 - operation identity.
 
-## 86. Event Validation
+## 87. Event Validation
 
 Events must be generated from typed Rust structures where practical.
 
 The TypeScript consumer must validate or safely parse event payloads at the
 boundary rather than trusting arbitrary data.
 
-## 87. Command Timeout
+## 88. Command Timeout
 
 Not every command requires a timeout.
 
@@ -1540,7 +1572,7 @@ Example:
        v
     final result
 
-## 88. UI Reload Behavior
+## 89. UI Reload Behavior
 
 If React reloads while Rust remains active:
 
@@ -1560,7 +1592,7 @@ If React reloads while Rust remains active:
 
 This is important for long-running builds and tests.
 
-## 89. Runtime Restart Behavior
+## 90. Runtime Restart Behavior
 
 If Rust runtime restarts:
 
@@ -1571,7 +1603,7 @@ If Rust runtime restarts:
 
 Production behavior must define recovery policy explicitly.
 
-## 90. IPC Security Logging
+## 91. IPC Security Logging
 
 Audit/debug logs may record:
 
@@ -1589,7 +1621,7 @@ They must not record:
 - full source;
 - secret environment variables.
 
-## 91. Performance
+## 92. Performance
 
 IPC must remain lightweight.
 
@@ -1605,7 +1637,7 @@ Targets:
 
 These are engineering targets subject to profiling.
 
-## 92. Memory Management
+## 93. Memory Management
 
 The IPC layer must avoid:
 
@@ -1616,7 +1648,7 @@ The IPC layer must avoid:
 
 Large data must use controlled streams/files/references.
 
-## 93. Concurrency
+## 94. Concurrency
 
 Concurrent commands are allowed only where safe.
 
@@ -1631,7 +1663,7 @@ Examples:
     build.start + artifact.package same build output
         = conflict unless explicitly coordinated
 
-## 94. Operation Locking
+## 95. Operation Locking
 
 The runtime should expose conflict errors such as:
 
@@ -1641,7 +1673,7 @@ The UI can then display:
 
     A build is already running for this project.
 
-## 95. Atomic Operations
+## 96. Atomic Operations
 
 Operations affecting final artifacts should use atomic commit semantics.
 
@@ -1657,7 +1689,7 @@ For example:
 
 A partial `.krv` must never be reported as complete.
 
-## 96. Cancellation and Events
+## 97. Cancellation and Events
 
 Cancellation should emit:
 
@@ -1672,7 +1704,7 @@ If cancellation fails:
 
 The final operation status remains authoritative.
 
-## 97. Error and Event Relationship
+## 98. Error and Event Relationship
 
 An operation failure should provide both:
 
@@ -1683,7 +1715,7 @@ An operation failure should provide both:
 Events may notify the UI immediately, but the final status query remains
 authoritative.
 
-## 98. IPC Testing Strategy
+## 99. IPC Testing Strategy
 
 Testing layers:
 
@@ -1704,7 +1736,7 @@ Testing layers:
         v
     Studio E2E
 
-## 99. Contract Tests
+## 100. Contract Tests
 
 Contract tests verify:
 
@@ -1716,7 +1748,7 @@ Contract tests verify:
 - enum compatibility;
 - versioning.
 
-## 100. Rust Handler Tests
+## 101. Rust Handler Tests
 
 Rust tests verify:
 
@@ -1727,7 +1759,7 @@ Rust tests verify:
 - cancellation;
 - operation state.
 
-## 101. TypeScript Tests
+## 102. TypeScript Tests
 
 TypeScript tests verify:
 
@@ -1738,7 +1770,7 @@ TypeScript tests verify:
 - listener cleanup;
 - operation reconciliation.
 
-## 102. Integration Tests
+## 103. Integration Tests
 
 Integration tests should execute real Tauri IPC where practical.
 
@@ -1751,7 +1783,7 @@ Examples:
     build.cancel
     artifact.inspect
 
-## 103. Security Tests
+## 104. Security Tests
 
 Security tests must verify:
 
@@ -1764,7 +1796,7 @@ Security tests must verify:
 - capability denial;
 - secret redaction.
 
-## 104. Fuzz Testing
+## 105. Fuzz Testing
 
 Suitable IPC inputs should be fuzz-tested for:
 
@@ -1777,7 +1809,7 @@ Suitable IPC inputs should be fuzz-tested for:
 The goal is to prevent malformed input from causing crashes or privilege
 escalation.
 
-## 105. Cross-Platform IPC Testing
+## 106. Cross-Platform IPC Testing
 
 IPC behavior must be tested on supported host platforms.
 
@@ -1792,7 +1824,7 @@ Planned:
 
 Platform-specific filesystem and process semantics must be covered.
 
-## 106. Diagnostics
+## 107. Diagnostics
 
 `system.info` should provide safe runtime information.
 
@@ -1809,7 +1841,7 @@ Example:
 
 No credentials or private paths should be exposed unnecessarily.
 
-## 107. Health
+## 108. Health
 
 The IPC runtime may expose:
 
@@ -1828,7 +1860,7 @@ Examples:
     ERROR
       native runtime cannot safely execute required operations
 
-## 108. Runtime Initialization
+## 109. Runtime Initialization
 
 Initialization flow:
 
@@ -1852,7 +1884,7 @@ Initialization flow:
         v
     READY
 
-## 109. Runtime Shutdown
+## 110. Runtime Shutdown
 
 Shutdown flow:
 
@@ -1876,7 +1908,7 @@ Shutdown flow:
         v
     Exit
 
-## 110. Protocol Documentation
+## 111. Protocol Documentation
 
 IPC contracts should be documented in:
 
@@ -1889,7 +1921,7 @@ while architecture remains documented under:
 Implementation-specific Rust details belong under the Studio source tree and
 development documentation.
 
-## 111. Phase Mapping
+## 112. Phase Mapping
 
 | Phase | IPC Work |
 |---|---|
@@ -1903,7 +1935,7 @@ development documentation.
 | Phase 7 | Live/results integration |
 | Phase 8 | Production hardening |
 
-## 112. P0 FOUNDATION — IPC Foundation
+## 113. P0 FOUNDATION — IPC Foundation
 
 Implement:
 
@@ -1922,7 +1954,7 @@ Acceptance:
 - malformed request is rejected;
 - arbitrary shell command is impossible through IPC.
 
-## 113. P1 STUDIO — Project and Runtime
+## 114. P1 STUDIO — Project and Runtime
 
 Implement:
 
@@ -1939,7 +1971,7 @@ Acceptance:
 - paths are validated;
 - runtime diagnostics work.
 
-## 114. P2 BUILD & ARTIFACT — Build/Test/Artifact
+## 115. P2 BUILD & ARTIFACT — Build/Test/Artifact
 
 Implement:
 
@@ -1974,7 +2006,7 @@ Acceptance:
       v
     Sign
 
-## 115. P3 CONTROL PLANE Boundary
+## 116. P3 CONTROL PLANE Boundary
 
 IPC remains local while Studio integrates the resulting artifact with the
 Control Plane.
@@ -1988,7 +2020,7 @@ Implement local support for:
 
 The IPC layer must not become a proxy for REST.
 
-## 116. P4 BOOKING & COMMERCIAL — Booking
+## 117. P4 BOOKING & COMMERCIAL — Booking
 
 The local runtime supplies:
 
@@ -2006,7 +2038,7 @@ The boundary is:
        |
        +--> API Client for booking state
 
-## 117. P5 EXECUTION
+## 118. P5 EXECUTION
 
 The Local Runtime supports artifact readiness and diagnostics.
 
@@ -2022,7 +2054,7 @@ Remote job operations remain:
 
 The Local Runtime does not directly start remote robot processes.
 
-## 118. P6 LAB & ROBOT
+## 119. P6 LAB & ROBOT
 
 IPC provides local compatibility and artifact information.
 
@@ -2031,7 +2063,7 @@ Remote robot state remains outside the local IPC boundary.
 No local IPC command should bypass the Control Plane to access a production
 robot.
 
-## 119. P7 LIVE & RESULTS
+## 120. P7 LIVE & RESULTS
 
 Live video, telemetry, and remote logs use the remote communication architecture.
 
@@ -2041,7 +2073,7 @@ Local IPC continues to support:
 - artifact metadata;
 - local build provenance.
 
-## 120. P8 PRODUCTION
+## 121. P8 PRODUCTION
 
 Complete:
 
@@ -2055,7 +2087,7 @@ Complete:
 - version migration;
 - operational diagnostics.
 
-## 121. Risks and Mitigations
+## 122. Risks and Mitigations
 
 | Risk | Impact | Mitigation |
 |---|---|---|
@@ -2072,7 +2104,7 @@ Complete:
 | Large payloads | Medium | File/reference transport |
 | Duplicate cancellation | Medium | Idempotent operation control |
 
-## 122. Risk — Generic Shell API
+## 123. Risk — Generic Shell API
 
 A generic command such as:
 
@@ -2087,7 +2119,7 @@ Mitigation:
 - Rust constructs executable and arguments;
 - capability restrictions.
 
-## 123. Risk — Contract Drift
+## 124. Risk — Contract Drift
 
 React and Rust may evolve independently.
 
@@ -2099,7 +2131,7 @@ Mitigation:
 - contract tests;
 - CI compatibility validation.
 
-## 124. Risk — Event Flood
+## 125. Risk — Event Flood
 
 Large builds may produce huge logs.
 
@@ -2111,7 +2143,7 @@ Mitigation:
 - disk-backed logs;
 - severity-aware handling.
 
-## 125. Risk — Capability Escalation
+## 126. Risk — Capability Escalation
 
 A future Tauri plugin could accidentally grant broad permissions.
 
@@ -2123,7 +2155,7 @@ Mitigation:
 - security tests;
 - CI configuration audit.
 
-## 126. Risk — Version Mismatch
+## 127. Risk — Version Mismatch
 
 React bundle and Rust binary may not support the same IPC contract.
 
@@ -2135,7 +2167,7 @@ Mitigation:
 - migration policy;
 - fail-safe incompatibility behavior.
 
-## 127. Open Questions
+## 128. Open Questions
 
 1. Which exact Tauri version will be pinned?
 2. Which exact Rust toolchain will be pinned?
@@ -2163,7 +2195,7 @@ Mitigation:
 24. What exact crash-recovery behavior will be guaranteed?
 25. Which IPC performance thresholds become release gates?
 
-## 128. Full Acceptance Criteria — Contract
+## 129. Full Acceptance Criteria — Contract
 
 - [ ] IPC contract is documented.
 - [ ] Command names are stable.
@@ -2176,7 +2208,7 @@ Mitigation:
 - [ ] Contract source of truth exists.
 - [ ] Contract compatibility is CI-tested.
 
-## 129. Full Acceptance Criteria — Commands
+## 130. Full Acceptance Criteria — Commands
 
 - [ ] `studio.project.create` exists.
 - [ ] `studio.project.open` exists.
@@ -2195,7 +2227,7 @@ Mitigation:
 - [ ] `artifact.sign` exists.
 - [ ] `system.info` exists.
 
-## 130. Full Acceptance Criteria — Operations
+## 131. Full Acceptance Criteria — Operations
 
 - [ ] Long-running commands return operation IDs.
 - [ ] Operation state is queryable.
@@ -2208,7 +2240,7 @@ Mitigation:
 - [ ] Operation status survives UI reload where runtime remains active.
 - [ ] Orphaned operations are handled safely.
 
-## 131. Full Acceptance Criteria — Events
+## 132. Full Acceptance Criteria — Events
 
 - [ ] Events have stable names.
 - [ ] Events have event IDs.
@@ -2221,7 +2253,7 @@ Mitigation:
 - [ ] Event ordering rules are documented.
 - [ ] High-volume events are bounded.
 
-## 132. Full Acceptance Criteria — Logs
+## 133. Full Acceptance Criteria — Logs
 
 - [ ] stdout is captured.
 - [ ] stderr is captured.
@@ -2234,7 +2266,7 @@ Mitigation:
 - [ ] Secrets are redacted.
 - [ ] Large logs do not exhaust UI memory.
 
-## 133. Full Acceptance Criteria — Typing
+## 134. Full Acceptance Criteria — Typing
 
 - [ ] TypeScript types are generated or validated.
 - [ ] Rust types are generated or validated.
@@ -2247,7 +2279,7 @@ Mitigation:
 - [ ] Contract drift fails CI.
 - [ ] Breaking changes require explicit review.
 
-## 134. Full Acceptance Criteria — Security
+## 135. Full Acceptance Criteria — Security
 
 - [ ] IPC input is untrusted.
 - [ ] Input validation occurs in Rust.
@@ -2260,7 +2292,7 @@ Mitigation:
 - [ ] Secrets are not logged.
 - [ ] Sensitive capabilities are not exposed directly to React.
 
-## 135. Full Acceptance Criteria — Error Model
+## 136. Full Acceptance Criteria — Error Model
 
 - [ ] Errors use stable codes.
 - [ ] Messages are user-readable.
@@ -2273,7 +2305,7 @@ Mitigation:
 - [ ] Artifact failures are structured.
 - [ ] Permission failures are structured.
 
-## 136. Full Acceptance Criteria — Versioning
+## 137. Full Acceptance Criteria — Versioning
 
 - [ ] IPC protocol version exists.
 - [ ] Version compatibility is checked.
@@ -2286,7 +2318,7 @@ Mitigation:
 - [ ] React/Rust version mismatch is detected.
 - [ ] Contract versions are visible in diagnostics.
 
-## 137. Full Acceptance Criteria — Permissions
+## 138. Full Acceptance Criteria — Permissions
 
 - [ ] Tauri capabilities are explicitly configured.
 - [ ] Filesystem capability is restricted.
@@ -2299,7 +2331,7 @@ Mitigation:
 - [ ] Capability changes are tested.
 - [ ] Capability inventory is documented.
 
-## 138. Full Acceptance Criteria — Testing
+## 139. Full Acceptance Criteria — Testing
 
 - [ ] Contract tests exist.
 - [ ] Rust handler tests exist.
@@ -2312,7 +2344,7 @@ Mitigation:
 - [ ] Fuzz tests exist for selected inputs.
 - [ ] Cross-platform tests exist.
 
-## 139. Full Acceptance Criteria — Lifecycle
+## 140. Full Acceptance Criteria — Lifecycle
 
 - [ ] Runtime startup is defined.
 - [ ] Runtime shutdown is defined.
@@ -2325,7 +2357,7 @@ Mitigation:
 - [ ] UI reload behavior is supported.
 - [ ] Crash recovery is tested.
 
-## 140. Full Acceptance Criteria — Integration
+## 141. Full Acceptance Criteria — Integration
 
 - [ ] React invokes commands through typed wrappers.
 - [ ] Components do not call raw Tauri APIs directly.
@@ -2338,7 +2370,7 @@ Mitigation:
 - [ ] Remote execution does not bypass the Control Plane.
 - [ ] Local IPC and remote protocol remain separate boundaries.
 
-## 141. Architectural Invariants
+## 142. Architectural Invariants
 
 The following rules are mandatory:
 
@@ -2363,7 +2395,7 @@ The following rules are mandatory:
 19. Remote execution remains outside the local IPC boundary.
 20. Local IPC cannot bypass backend authorization or robot safety architecture.
 
-## 142. Final Architecture
+## 143. Final Architecture
 
 The production IPC architecture is:
 

@@ -228,6 +228,22 @@ Measure:
 
 The UI must remain responsive while network operations execute.
 
+## 7.13 Coding-Agent Session Tests
+
+Verify, with the mock provider and the first real provider:
+
+- provider status handling (each status simulated);
+- consent required, recorded, re-requested after a disclosure version change and withdrawn during a session;
+- staging isolation of the working tree, accept per hunk, conflict on concurrent edit, reject, revert;
+- fault injection: Studio killed during a session and during an apply, then recovered from the journal;
+- isolation tier tests per supported OS (symlinks, traversal, hard links, reads outside the workspace);
+- policy expiry and policy change during a session;
+- cancellation during a running session;
+- workspace-escape detection;
+- environment inspection (no Kritva credentials);
+- network capture during a session (no content to Kritva endpoints);
+- normal project E2E flow with no provider installed.
+
 ---
 
 # 8. Demo Script
@@ -357,6 +373,19 @@ Expected:
 - source text is absent;
 - local workspace remains local.
 
+## 8.12a Step 11 — Agent-Assisted Change
+
+Open the project, select the available provider, accept the disclosure, choose `PROPOSE`, and ask the agent to make a small change.
+
+Expected:
+
+- consent is requested before the first session;
+- the diff is shown before anything is written;
+- one hunk is accepted and one rejected;
+- a manual edit before apply produces a conflict, not an overwrite;
+- revert restores the pre-apply state;
+- network diagnostics show no project content sent to Kritva.
+
 ## 8.13 Demo Success Criteria
 
 The demo passes when:
@@ -369,6 +398,7 @@ The demo passes when:
 - KritvaOS version is selected;
 - SDK version is selected;
 - metadata persists;
+- an agent-assisted change is proposed, reviewed and reverted;
 - privacy boundary remains intact.
 
 ---

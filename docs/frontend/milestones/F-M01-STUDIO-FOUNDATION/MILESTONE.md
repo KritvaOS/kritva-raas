@@ -164,7 +164,8 @@ F-M01 includes:
 - responsive window behavior;
 - test infrastructure;
 - CI integration for Studio;
-- basic diagnostics/logging.
+- basic diagnostics/logging;
+- coding-agent integration foundation: provider adapter trait, mock provider, agent session manager skeleton, environment sanitizer, workspace guard and the `agent.*` IPC contract (`docs/architecture/CODING_AGENT_INTEGRATION.md`).
 
 ## 2.2 Explicitly Out of Scope
 
@@ -193,7 +194,10 @@ F-M01 does not implement:
 - payment processing;
 - subscription management;
 - production billing;
-- physical Lab Agent integration.
+- physical Lab Agent integration;
+- real coding-agent provider sessions, consent and diff review (F-M02 PROJECTS);
+- the Kritva Studio MCP server and the second provider adapter (F-M03 BUILD & ARTIFACT);
+- organization coding-agent policy and provider metadata services (B-M01 CONTROL PLANE, B-M03 PLATFORM).
 
 Those capabilities belong to later milestones.
 
@@ -219,6 +223,20 @@ The Studio UI must nevertheless establish the architectural rule that:
 
 Future execution controls must respect local runtime and laboratory safety
 boundaries.
+
+## 2.5 Coding-Agent Integration Boundary
+
+Studio offers external coding agents (Claude Code, OpenAI Codex) as a PRI-1 capability; using them is optional for each user. Architecture: `docs/architecture/CODING_AGENT_INTEGRATION.md`. Decisions: SYS-ADR-007, FE-ADR-008, SEC-ADR-001.
+
+F-M01 establishes only the foundation that later milestones build on:
+
+- a provider-neutral adapter trait in the Rust Local Runtime and a deterministic mock provider;
+- an agent session manager skeleton with the lifecycle states defined in the architecture, a durable session journal, a cross-process workspace lock and the normalized error taxonomy;
+- an environment sanitizer that removes Kritva session tokens, API keys, Control Plane credentials and signing material from any agent process environment;
+- a workspace guard that detects file modifications outside an allowed root;
+- the versioned `agent.*` IPC contract (`docs/frontend/architecture/IPC_ARCHITECTURE.md` Section 52).
+
+F-M01 STUDIO FOUNDATION MUST NOT add a generic process-execution IPC, and MUST NOT store or read provider credentials. Studio MUST remain fully usable when no provider is installed.
 
 ---
 
@@ -327,7 +345,8 @@ F-M01 shall deliver:
 17. Tauri IPC abstraction;
 18. test foundation;
 19. CI build/test workflow;
-20. Studio developer documentation.
+20. Studio developer documentation;
+21. coding-agent integration foundation (Section 2.5).
 
 ## 4.2 Screen Deliverables
 
@@ -521,6 +540,12 @@ F-M01 may use contract fixtures if the live Platform API is not available.
 - security verification;
 - demo script.
 
+## 9.13 R-FM01-013 — Agent Process Boundary Weakened
+
+**Risk:** Agent integration introduces a generic command-execution path or leaks Studio credentials into agent processes.
+
+**Mitigation:** Typed `agent.*` IPC only; environment sanitizer with tests; security review of the adapter trait before F-M02 PROJECTS starts. Related: R-SEC-013 in `docs/tracking/RISK_REGISTER.md`.
+
 ---
 
 # 10. Exit Criteria
@@ -550,6 +575,7 @@ F-M01 may transition to ACCEPTED only when all required conditions are satisfied
 - [ ] Secure session storage abstraction exists.
 - [ ] Native capabilities are restricted.
 - [ ] Source privacy boundary is preserved.
+- [ ] Coding-agent adapter trait, mock provider and `agent.*` IPC contract exist and are reviewed.
 
 ## 10.3 Quality Exit
 
@@ -569,6 +595,8 @@ F-M01 may transition to ACCEPTED only when all required conditions are satisfied
 - [ ] Protected routes verified.
 - [ ] IPC reviewed.
 - [ ] Secrets excluded from builds.
+- [ ] Agent environment sanitizer verified (no Kritva credential in agent process environment).
+- [ ] No generic command-execution IPC exists.
 - [ ] Security review completed.
 
 ## 10.5 UI Exit

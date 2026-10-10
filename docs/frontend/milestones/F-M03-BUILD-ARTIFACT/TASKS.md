@@ -42,6 +42,14 @@ Source of scope: [MILESTONE.md](MILESTONE.md)
 | KR-FE-2-031 | Update CI pipeline | 1.5d | DevOps | 025-030 | [ ] |
 | KR-FE-2-032 | Complete documentation | 1.5d | Frontend/Docs | All | [ ] |
 | KR-FE-2-033 | Conduct milestone review | 1.0d | Architect | All | [ ] |
+| KR-CA-015 | Implement second provider adapter with compatibility matrix | 3.0d | Rust | F-M02 (KR-CA-008) | [ ] |
+| KR-CA-016 | Implement local Kritva Studio MCP server (transport, session binding, audit log) | 3.0d | Rust | F-M01 (KR-CA-003) | [ ] |
+| KR-CA-017 | Implement MCP tools: project.info, platform.describe, build.logs | 1.5d | Rust | KR-CA-016 | [ ] |
+| KR-CA-018 | Implement MCP tools: build.run, test.run, artifact.package, artifact.validate with approvals | 2.5d | Rust | KR-CA-016 | [ ] |
+| KR-CA-019 | Implement agent-to-build handoff UI and agent-assisted provenance | 1.5d | Frontend/Rust | KR-CA-018 | [ ] |
+| KR-CA-020 | Add MCP negative tests and prompt-injection fixture | 2.0d | Security/QA | KR-CA-017, KR-CA-018 | [ ] |
+| KR-CA-021 | Add two-provider contract and E2E tests | 2.0d | QA | KR-CA-015, KR-CA-019 | [ ] |
+| KR-CA-039 | Publish MCP tool schemas; implement approval binding, loopback token and replay protection, output hygiene and the provenance hash registry | 3.0d | Rust/Security | KR-CA-016 to KR-CA-019 | [ ] |
 
 Estimates are engineering-day estimates and must be refined during task
 refinement.

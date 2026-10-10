@@ -56,6 +56,9 @@ Source of scope: [MILESTONE.md](MILESTONE.md)
 | KR-DB-1-045 | Add index/query-plan validation | 1.5d | Database Engineer | 010,019,031 | [ ] |
 | KR-DB-1-046 | Validate schema documentation | 1.0d | Database Engineer | 037-045 | [ ] |
 | KR-DB-1-047 | Complete DB-M02 architecture review | 1.0d | Database Architect | 046 | [ ] |
+| KR-CA-031 | Create `organization_coding_agent_policies` schema, constraints and RLS | 1.0d | Database Engineer | KR-DB-1-003 | [ ] |
+| KR-CA-032 | Create `coding_agent_providers` catalogue schema and seed migration | 1.0d | Database Engineer | KR-DB-1-003 | [ ] |
+| KR-CA-033 | Add coding-agent schema tests (constraints, RLS, separation from platform tables) | 1.0d | QA Engineer | KR-CA-031, KR-CA-032 | [ ] |
 
 ### 5.2 Estimation convention
 

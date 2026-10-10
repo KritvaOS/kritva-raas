@@ -14,6 +14,12 @@ Milestone: B-M01 — Control Plane
 
 ## Changed
 
+- Date: 2026-10-10
+- Change: Added organization coding-agent policy scope (Section 2.7, risk R-BM01-016, tasks KR-CA-022 to KR-CA-026, acceptance Section 6.16, review Section 7.13) per SYS-ADR-007 and BE-ADR-011 (Proposed).
+- Task: KR-CA-022 to KR-CA-026
+- Author: Planning update
+- Evidence: `docs/architecture/CODING_AGENT_INTEGRATION.md`
+
 - Date:
 - Change:
 - Task:

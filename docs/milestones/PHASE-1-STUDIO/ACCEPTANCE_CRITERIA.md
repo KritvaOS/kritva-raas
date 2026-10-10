@@ -258,6 +258,9 @@ Acceptance requires:
 - [ ] Local Runtime IPC works.
 - [ ] Errors remain correctly scoped.
 - [ ] Source remains local.
+- [ ] A coding-agent session (mock provider in CI, first real provider in the review environment) can be started, reviewed and reverted inside the flow.
+- [ ] The full flow also passes with no coding-agent provider installed.
+- [ ] The coding-agent P1 STUDIO exit gate (`docs/architecture/CODING_AGENT_INTEGRATION.md` Section 12) is met with test-matrix evidence.
 - [ ] CI validates the full Studio flow.
 
 ### 6.19 No-go conditions
@@ -270,6 +273,8 @@ P1 STUDIO shall not close if:
 - [ ] project APIs upload source;
 - [ ] frontend bypasses backend authorization;
 - [ ] IPC allows arbitrary privileged operations;
+- [ ] any project content, prompt, transcript or diff reaches a Kritva service during a coding-agent session;
+- [ ] a coding-agent session can start without consent or with Kritva credentials in its environment, or can change the working tree without an explicit apply;
 - [ ] CI does not validate Studio;
 - [ ] critical desktop startup failure remains;
 - [ ] cross-domain smoke flow fails.

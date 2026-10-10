@@ -204,4 +204,24 @@ Milestone: F-M03 — Build & Artifact
 - [ ] Windows verification passes.
 - [ ] CI passes.
 
+## 6.16 Coding-Agent Build Integration and MCP Tools
+
+- [ ] Claude Code and OpenAI Codex adapters both pass the adapter contract suite for their supported CLI versions.
+- [ ] The MCP server is local-only and bound to a single session.
+- [ ] The MCP server exposes exactly the documented tool catalogue.
+- [ ] Signing, upload, booking, credit, Job, Run, robot, Control Plane mutation, out-of-workspace file and generic shell operations are unreachable through MCP.
+- [ ] Every tool has a published schema; unknown fields and oversize inputs are rejected.
+- [ ] Agents can select only saved build profiles and test targets; commands, flags, environment variables and paths cannot be supplied.
+- [ ] Build, test and package runs execute in the staging workspace with manual-build limits; outputs stay in the staging build-output directory; symlinked outputs are rejected.
+- [ ] `kritva.build.run`, `kritva.test.run` and `kritva.artifact.package` require per-call approval bound to request, arguments and staging content hash; changed build-definition files are highlighted.
+- [ ] Loopback transport (where used) requires the per-session token and rejects replays.
+- [ ] `kritva.build.logs` cannot read other sessions or projects; outputs are bounded and redacted.
+- [ ] MCP tools apply the same validation as the UI paths.
+- [ ] Every MCP tool call is logged locally with tool, argument summary, outcome and duration.
+- [ ] The prompt-injection fixture cannot trigger signing, upload, booking or robot commands.
+- [ ] Agent-reported success is never shown as build, test or validation success.
+- [ ] `build_metadata.agent_assisted` is set if and only if a build-input file has a hash registered by an applied change set; manual edits, reverts and branch switches change the result deterministically.
+- [ ] Agent-produced files receive no privacy-scan, allowlist or validation exemption.
+
 ---
+
