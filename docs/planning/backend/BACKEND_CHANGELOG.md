@@ -345,10 +345,16 @@ Commit-trace exception for KR-BINC-001-018: the initial implementation was pushe
 
 Validation on the working tree: 19 checker unit tests OK; strict tracked-file check PASSED; `check_docs.py` and `check_backend_traceability.py` report 0 problems.
 
-Remaining before `B-INC-001-AC-21` and `BAC-039` can be accepted:
-- green workflow runs on the pushed correction commit;
-- a controlled failing run on a disposable branch;
-- verified branch protection with both checks required.
+Acceptance evidence for `B-INC-001-AC-21` and `BAC-039`, recorded against `350b6b754b78f47592059fe498dfa8692b43c822`:
+
+| Evidence | Status | Reference |
+|---|---|---|
+| Source Header Check green on `350b6b7` | Verified. Steps "Test source header checker" and "Check source headers" both succeeded. | Run [38051684790](https://github.com/KritvaOS/kritva-raas/actions/runs/38051684790) |
+| docs-check green on `350b6b7` | Verified. Steps "Run documentation checker" and "Run backend traceability checker" both succeeded. | Run [38051684651](https://github.com/KritvaOS/kritva-raas/actions/runs/38051684651) |
+| Controlled failing run on a disposable branch | Pending (owner action) | Push a branch whose only change is a malformed header, confirm Source Header Check fails at the "Check source headers" step (not at setup or checkout), record the run URL here, then delete the branch. |
+| Both checks required for `main` | Not configured. On 2026-10-10 the GitHub branch API reported `main` unprotected, with no required status checks. | Owner action: add a branch protection rule or ruleset for `main` requiring `source-header-check` and `docs-check`, then record the evidence here. |
+
+`KR-BINC-001-018`, `B-INC-001-AC-21` and `BAC-039` stay open until the last two rows are complete.
 
 ## 4. Future Entries
 
