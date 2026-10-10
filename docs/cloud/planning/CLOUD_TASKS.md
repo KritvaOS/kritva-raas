@@ -597,7 +597,7 @@ Acceptance:
 - [ ] C01-007 complete.
 - [ ] C01-008 complete.
 - [ ] C01-009 complete.
-- [ ] no unresolved P0 security blocker exists.
+- [ ] no unresolved PRI-0 security blocker exists.
 
 ## 25. C-M02 Development
 

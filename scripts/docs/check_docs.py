@@ -168,9 +168,47 @@ for f in (DOCS/"planning").glob("*.md"):
         if "MVP" in line and "primary product path" not in line.lower() and not re.search(r'"?MVP"? MUST NOT', line):
             err(f"{rel(f)}:{i}: 'MVP' used outside the primary product path definition")
 
+
+# 14 retired program-stage sequences and canonical phase order in diagrams
+for f in md:
+    lines = text(f).splitlines()
+    for i, line in enumerate(lines, 1):
+        if re.match(r"^\s+(Core Platform|Product MVP)\s*$", line, re.I):
+            err(f"{rel(f)}:{i}: retired program-stage label in a sequence diagram: '{line.strip()}'; reference PHASES.md / IMPLEMENTATION_ROADMAP.md instead")
+    seq = []
+    def flush():
+        if len(seq) > 1 and seq != sorted(seq):
+            err(f"{rel(f)}: phase sequence diagram out of canonical order: {['P%d' % n for n in seq]}")
+        seq.clear()
+    for line in lines:
+        m = re.match(r"^\s+P([0-8]) [A-Z][A-Z &]+\s*$", line)
+        if m: seq.append(int(m.group(1)))
+        elif re.match(r"^\s*(\||v|->|-->|\+-+.*)?\s*$", line): continue
+        else: flush()
+    flush()
+
+# 15 priority prose must use PRI-n (strict in planning, tracking, development, deployment and milestones)
+PRIO_PROSE = [r"\belevated to P[0-4]\b", r"\bnon-P[0-4]\b", r"\bunresolved P[0-4]\b(?! [A-Z]{3,})", r"\bdefer P[0-4]",
+              r"\bP[0-4](/P[0-4])? (?![A-Z]{3,})(issue|issues|defect|defects|blocker|blockers|review target|milestone PR|open|Promotion)\b",
+              r"^\| S[0-4] \| P[0-4]"]
+STRICT_PRIO = STRICT + [DOCS/"development", DOCS/"cloud/deployment"]
+for f in md:
+    strict = any(s == f.parent or s in f.parents for s in STRICT_PRIO)
+    for i, line in enumerate(text(f).splitlines(), 1):
+        if any(re.search(pat, line) for pat in PRIO_PROSE):
+            (err if strict else warn)(f"{rel(f)}:{i}: priority uses phase-like notation; use PRI-n: {line.strip()[:80]}")
+
+# 16 MVP must never stand in for a phase, milestone or stage anywhere in docs/
+for f in md:
+    for i, line in enumerate(text(f).splitlines(), 1):
+        if re.search(r"product mvp|\bmvp (phase|milestone|stage)\b|\b(phase|milestone|stage) mvp\b", line, re.I):
+            err(f"{rel(f)}:{i}: 'MVP' used as a phase, milestone or stage name: {line.strip()[:80]}")
+
 from collections import Counter
-for fname, n in sorted(Counter(w.split(":")[0] for w in warnings).items()):
+for fname, n in sorted(Counter(w.split(":")[0] for w in warnings if "phase label" in w).items()):
     print(f"WARNING {fname}: {n} bare 'Phase N' label(s); use canonical 'PN NAME' (some sections follow a superseded phase model and need owner review)")
 for e in errors: print(e)
+for w in warnings:
+    if "phase label" not in w: print("WARNING", w)
 print(f"{len(md)} docs checked, {len(errors)} problems, {len(warnings)} warnings")
 sys.exit(1 if errors else 0)

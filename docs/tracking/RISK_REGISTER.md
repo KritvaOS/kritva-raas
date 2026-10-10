@@ -1106,33 +1106,41 @@ Critical tasks must not remain ownerless.
 
 ## 67. Risk and Schedule
 
-Schedule risk should be measured against the critical path:
+Schedule risk is measured against the canonical program sequence and critical path. This register does not define its own sequence:
 
-    Foundation
+- Phase sequence (P0 FOUNDATION through P8 PRODUCTION): `docs/planning/PHASES.md`, Sections 3 and 5.
+- Milestone critical path: `docs/planning/IMPLEMENTATION_ROADMAP.md`, Section 25.
+- Cross-domain dependencies: `docs/planning/DEPENDENCY_MAP.md`.
+
+For reference only, the canonical phase order is:
+
+    P0 FOUNDATION
         |
         v
-    Core Platform
+    P1 STUDIO
         |
         v
-    Product MVP
+    P2 BUILD & ARTIFACT
         |
         v
-    Remote Execution
+    P3 CONTROL PLANE
         |
         v
-    Booking + Commercial
+    P4 BOOKING & COMMERCIAL
         |
         v
-    Physical Lab
+    P5 EXECUTION
         |
         v
-    Production Security
+    P6 LAB & ROBOT
         |
         v
-    Scale
+    P7 LIVE & RESULTS
         |
         v
-    Launch
+    P8 PRODUCTION
+
+Risk-specific schedule dependencies (for example, physical robot availability for P6 LAB & ROBOT, R-SCH-003) are recorded on the individual risk rows, not by altering this sequence.
 
 Parallel work should be used where dependencies permit.
 

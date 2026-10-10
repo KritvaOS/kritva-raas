@@ -123,7 +123,7 @@ A PRI-1 task may occur in P0 FOUNDATION, P1 STUDIO, or a later phase if it is re
 
 Milestone priority is assigned from actual delivery criticality using the Priority Matrix (Section 26); not every milestone is PRI-0.
 
-Security, tenant isolation, source privacy, artifact integrity, financial integrity, and physical safety requirements may be elevated to P0 regardless of feature classification.
+Security, tenant isolation, source privacy, artifact integrity, financial integrity, and physical safety requirements may be elevated to PRI-0 regardless of feature classification.
 
 ## 6. Program Sequencing Strategy
 
@@ -383,7 +383,7 @@ The following may proceed concurrently:
 - Frontend API client integration.
 - Cloud development environment automation.
 
-### P3 Critical Invariants
+### P3 CONTROL PLANE Critical Invariants
 
 - Organization tenant isolation.
 - Authorization enforcement.

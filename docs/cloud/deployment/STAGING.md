@@ -1277,7 +1277,7 @@ A Staging release candidate may be promoted only when:
 - migration is validated;
 - observability is healthy;
 - backup/recovery requirements are satisfied;
-- no unresolved P0/P1 blocker remains;
+- no unresolved PRI-0/PRI-1 blocker remains;
 - release documentation is complete.
 
 ## 72. Promotion Gate
@@ -1315,18 +1315,18 @@ The gate is:
 
 Any mandatory gate failure blocks promotion.
 
-## 73. P0/P1 Promotion Rules
+## 73. PRI-0/PRI-1 Promotion Rules
 
 | Issue | Promotion |
 |---|---|
-| P0 open | Block |
+| PRI-0 issue open | Block |
 | Critical security finding | Block |
 | Broken E2E flow | Block |
 | Data corruption | Block |
 | Incorrect credit accounting | Block |
 | Overbooking | Block |
 | Unsafe Lab behavior | Block |
-| P1 functional defect | Normally block |
+| PRI-1 functional defect | Normally block |
 | Minor UI defect | Case-by-case |
 | Non-critical observability improvement | May defer |
 | Optimization opportunity | May defer |
@@ -2071,7 +2071,7 @@ Before Production promotion:
 - [ ] Performance tests pass.
 - [ ] Resilience tests pass.
 - [ ] Observability is healthy.
-- [ ] No P0 defect remains.
+- [ ] No PRI-0 defect remains.
 - [ ] No critical security issue remains.
 - [ ] Credit ledger validation passes.
 - [ ] Booking concurrency validation passes.

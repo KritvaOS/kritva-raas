@@ -1083,7 +1083,7 @@ Recommended targets:
 | Review Type | Initial Response |
 |---|---:|
 | Normal PR | 1 business day |
-| P1/P0 milestone PR | Same business day |
+| PRI-0/PRI-1 milestone PR | Same business day |
 | Security-critical | 4 business hours where practical |
 | Release-blocking | 4 business hours |
 | Production hotfix | 1 hour where practical |
@@ -2136,7 +2136,7 @@ These do not change the core review principles.
 # 131. Full Acceptance Criteria — Review SLA
 
 - [ ] Normal review target is defined.
-- [ ] P0/P1 review target is defined.
+- [ ] PRI-0/PRI-1 review target is defined.
 - [ ] Security review target is defined.
 - [ ] Release-blocking target is defined.
 - [ ] Hotfix target is defined.

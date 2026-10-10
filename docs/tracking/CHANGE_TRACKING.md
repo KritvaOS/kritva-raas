@@ -1424,11 +1424,11 @@ Schedule impact should identify:
 When a change threatens schedule, possible actions are:
 
 - parallelize work;
-- reduce non-P0 scope;
+- reduce non-PRI-0 scope;
 - use simulation;
 - add resources;
 - change dependency order;
-- defer P2/P3 scope;
+- defer PRI-2/PRI-3 scope;
 - use approved alternative dependency.
 
 Schedule recovery must not remove mandatory safety/security controls.
@@ -1456,13 +1456,12 @@ A change affecting critical-path work requires:
 - resource assessment;
 - escalation.
 
-## 93. Change and Product MVP
+## 93. Change and the Primary Product Path (MVP)
 
-MVP changes require explicit product approval.
+Changes to the primary product path (MVP), defined in `docs/planning/PHASES.md` Section 3.1, require explicit product approval. The MVP is a product-scope concept, not a phase or milestone.
 
-MVP scope is:
+The primary product path is:
 
-    Primary MVP:
     Login
       ->
     Create Project

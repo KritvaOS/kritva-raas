@@ -261,7 +261,7 @@ P0 exits when:
 - Cloud foundation exists for required environments.
 - Documentation governance is operational.
 - Tracking structures are available.
-- No unresolved P0 blocker prevents P1 implementation.
+- No unresolved P0 FOUNDATION blocker prevents P1 STUDIO implementation.
 
 ### 7.9 Acceptance Checklist
 

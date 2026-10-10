@@ -236,7 +236,7 @@ Acceptance requires:
 
 ### 6.16 Quality gates
 
-- [ ] No unresolved P0 architecture defect.
+- [ ] No unresolved PRI-0 architecture defect.
 - [ ] No unresolved critical security defect.
 - [ ] No unresolved critical CI defect.
 - [ ] No known broken clean-machine bootstrap.

@@ -896,11 +896,11 @@ A release must include:
 - SBOM/provenance where required;
 - rollback plan.
 
-## 53. P0 Promotion Rules
+## 53. PRI-0 Promotion Rules
 
 Production promotion is blocked by:
 
-- unresolved P0;
+- unresolved PRI-0 issue;
 - critical security vulnerability;
 - data corruption;
 - credit accounting failure;
@@ -911,9 +911,9 @@ Production promotion is blocked by:
 - failed mandatory migration;
 - failed recovery validation.
 
-## 54. P1 Promotion Rules
+## 54. PRI-1 Promotion Rules
 
-P1 issues normally block promotion when they affect:
+PRI-1 issues normally block promotion when they affect:
 
 - customer execution;
 - financial state;

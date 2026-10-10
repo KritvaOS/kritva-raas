@@ -298,11 +298,11 @@ milestone.
 
 | Severity | Typical Priority |
 |---|---|
-| S0 | P0 |
-| S1 | P0/P1 |
-| S2 | P1/P2 |
-| S3 | P2/P3 |
-| S4 | P3/P4 |
+| S0 | PRI-0 |
+| S1 | PRI-0/PRI-1 |
+| S2 | PRI-1/PRI-2 |
+| S3 | PRI-2/PRI-3 |
+| S4 | PRI-3/PRI-4 |
 
 The mapping is guidance, not an automatic rule.
 
