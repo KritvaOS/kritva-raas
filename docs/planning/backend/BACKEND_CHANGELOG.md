@@ -475,6 +475,29 @@ Evidence for PR #5: Source Header Check run 38068101282 and docs-check run 38068
 
 No task status changes in this entry. `KR-BINC-001-001`, `KR-BINC-001-002` and `KR-BINC-001-005` stay In Review, and `KR-BINC-001-008` stays on hold.
 
+## 3K. PB-012 — Backend Decision-Approval Packages
+
+| Field | Value |
+|---|---|
+| Change ID | PB-012 |
+| Date | 2026-10-10 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Follows | PR #6 (merge `8bc4558`) |
+
+Reason: three B-INC-001 decision records wait for owner approval, and later increments will need the same workflow. This change adds one shared, validated place for the review requests, after alignment with the external reviewer on location, naming, source of truth and vocabulary.
+
+| Item | Disposition |
+|---|---|
+| Shared location | `docs/planning/backend/decisions/` with `README.md` and `approvals/`. Decision records stay in their increment `decisions/` directories |
+| Packages | Draft packages for `KR-BINC-001-001`, `KR-BINC-001-002` and `KR-BINC-001-005`, named `APPROVAL-<DECISION-ID>-<slug>.md` |
+| Source of truth | The decision record Approval Record table is the only place for the final disposition. A package links to it and never records an outcome |
+| Vocabularies | Package workflow: Draft, Requested, Closed, Withdrawn. Decision disposition: Proposed, Approved, Rejected, Returned for revision, Superseded. Task statuses are unchanged |
+| Validation | `scripts/docs/check_backend_approvals.py` with unit tests in `tests/backend_approvals/`, run by `make check` and the `docs-check` workflow. The existing checkers are not changed |
+| Compatibility evidence | The runtime package records declared Node.js and TypeScript ranges from npm registry metadata for candidate tools. It is declared metadata, not an executed test. `typescript-eslint` declares TypeScript `>=4.8.4 <6.1.0`, which supports the 6.0.3 baseline and excludes 7.0.x |
+
+No task status changes in this entry. `KR-BINC-001-001`, `KR-BINC-001-002` and `KR-BINC-001-005` stay In Review, their records stay Proposed, and `KR-BINC-001-008` stays on hold. No decision is approved by creating a package, merging this change or a passing check. The `Claude-Session` trailer decision from PB-011 is still open.
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:
