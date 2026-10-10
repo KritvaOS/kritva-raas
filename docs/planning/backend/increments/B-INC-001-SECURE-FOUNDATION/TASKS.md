@@ -202,6 +202,7 @@ All new tasks below have an estimate of **TBD**. Each must be refined and approv
 - **Linked AC:** B-INC-001-AC-01, B-INC-001-AC-02.
 - **Linked tests:** BTS-001, BTS-036.
 - **Linked security gates:** SEC-GATE-003, SEC-GATE-004, SEC-GATE-013.
+- **Status:** In Review. Recommendation record [`decisions/KR-BINC-001-002-package-manager-lockfile.md`](decisions/KR-BINC-001-002-package-manager-lockfile.md) is Proposed; it depends on `KR-BINC-001-001` approval and Backend Technical Lead approval. Not Accepted.
 
 ### KR-BINC-001-003 — Decide HTTP framework
 

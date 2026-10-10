@@ -87,6 +87,21 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-10 — KR-BINC-001-002 package manager recommendation proposed
+
+- **State:** IMPLEMENTED (decision record Proposed; not approved)
+- **Tasks:** `KR-BINC-001-002`
+- **Increment ACs:** `B-INC-001-AC-01`, `B-INC-001-AC-02`
+- **Program acceptance:** Not assessed
+- **Tests:** `BTS-001`, `BTS-036` — NOT RUN (decision record only)
+- **Security gates:** `SEC-GATE-003`, `SEC-GATE-004`, `SEC-GATE-013` — not assessed
+- **Findings/risks:** Lockfile and clean-install behavior not yet demonstrated (record Section 6)
+- **Files changed:** `decisions/KR-BINC-001-002-package-manager-lockfile.md`; `TASKS.md` status
+- **Commit:** Pending
+- **Evidence:** npm registry and Node.js release list queried 2026-10-10 (record Section 3)
+- **Reviewer role:** Backend Technical Lead (approval pending; depends on `KR-BINC-001-001`)
+- **Decision and follow-up:** Recommend npm with a committed `package-lock.json` and `npm ci`; pnpm is the alternative. Next: `KR-BINC-001-008`.
+
 ### 2026-10-10 — KR-BINC-001-001 runtime and language recommendation proposed
 
 - **State:** IMPLEMENTED (decision record Proposed; not approved)
