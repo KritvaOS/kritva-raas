@@ -87,6 +87,32 @@ class SourceHeaderTests(unittest.TestCase):
         text = header("//", "a.ts").replace("Copyright (c) 2026 KritvaOS", "Copyright ACME")
         self.assertIn("HEADER-003", self.ids(self.check("a.ts", text)))
 
+    def test_spdx_must_be_exact(self):
+        text = header("//", "a.ts").replace(chk.LICENSE_ID, chk.LICENSE_ID + "-INVALID")
+        self.assertIn("HEADER-001", self.ids(self.check("a.ts", text)))
+
+    def test_duplicate_spdx_rejected(self):
+        line = f"// SPDX-License-Identifier: {chk.LICENSE_ID}\n"
+        text = header("//", "a.ts").replace(line, line + "// SPDX-License-Identifier: Apache-2.0\n")
+        self.assertIn("HEADER-001", self.ids(self.check("a.ts", text)))
+
+    def test_copyright_must_be_exact(self):
+        text = header("//", "a.ts").replace(
+            "Copyright (c) 2026 KritvaOS", "Copyright (c) 2026 KritvaOS and ACME")
+        self.assertIn("HEADER-003", self.ids(self.check("a.ts", text)))
+
+    def test_duplicate_field_rejected(self):
+        text = header("//", "a.ts").replace("// Module", "// Layer       : Service\n// Module")
+        self.assertIn("HEADER-004", self.ids(self.check("a.ts", text)))
+
+    def test_author_must_be_canonical(self):
+        self.assertIn("HEADER-007", self.ids(self.check("a.ts", header("//", "a.ts", Author="Unknown"))))
+
+    def test_header_must_start_at_top(self):
+        self.assertEqual(self.ids(self.check("a.ts", "\n" + header("//", "a.ts"))), {"HEADER-008"})
+        self.assertEqual(self.ids(self.check(
+            "run.sh", "#!/usr/bin/env bash\n\n" + header("#", "run.sh"))), {"HEADER-008"})
+
     def test_missing_field(self):
         self.assertIn("HEADER-004", self.ids(self.check("a.ts", header("//", "a.ts", API=None))))
 
@@ -116,6 +142,10 @@ class SourceHeaderTests(unittest.TestCase):
         self.assertEqual(ok.returncode, 0, ok.stdout)
         self.assertEqual(fail.returncode, 1, fail.stdout)
         self.assertIn("HEADER-008", fail.stdout)
+        report = subprocess.run([sys.executable, str(script), "--mode", "files",
+                                 "--files", "good.ts", "bad.ts"], capture_output=True, text=True)
+        self.assertEqual(report.returncode, 0, report.stdout)
+        self.assertIn("report-only", report.stdout)
 
     def test_vocabulary(self):
         self.assertIn("HEADER-007", self.ids(self.check("a.ts", header("//", "a.ts", Component="Backend"))))
@@ -126,8 +156,9 @@ class SourceHeaderTests(unittest.TestCase):
                      "node_modules/x/a.js", "dist/a.js", "target/a.rs", "requirements.txt"):
             with self.subTest(name=name):
                 self.assertEqual(chk.classify(Path(name)), "skip")
+        self.assertEqual(chk.classify(Path("tests/source_header_check/fixtures/bad.ts")), "skip")
         for name in ("a.ts", "types.d.ts", "a.rs", "db/001_init.sql", ".githooks/pre-commit",
-                     ".github/workflows/x.yaml"):
+                     ".github/workflows/x.yaml", "tests/source_header_check/test_check_source_headers.py"):
             with self.subTest(name=name):
                 self.assertEqual(chk.classify(Path(name)), "source")
 

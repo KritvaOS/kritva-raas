@@ -69,8 +69,12 @@ EXEMPT_DIRS = {
     ".github/agents",
     ".github/instructions",
     "docs/development/templates",
-    "tests/source_header_check",
+    # Only deliberately malformed fixtures are exempt; the test module itself
+    # (tests/source_header_check/test_check_source_headers.py) is checked.
+    "tests/source_header_check/fixtures",
 }
+
+AUTHOR = "KritvaOS"
 
 
 def classify(path: Path) -> str:
@@ -98,31 +102,38 @@ def classify(path: Path) -> str:
 
 
 def _header_block(text: str):
+    """Return the header lines, which must start on line 1 (or line 2 after a shebang)."""
     lines = text.splitlines()
     index = 1 if lines and lines[0].startswith("#!") else 0
 
-    while index < len(lines) and not lines[index].strip():
-        index += 1
-
-    if index >= len(lines):
-        return None
-
-    first = lines[index].lstrip()
-    if not first.startswith(COMMENT_PREFIXES):
+    if index >= len(lines) or not lines[index].lstrip().startswith(COMMENT_PREFIXES):
         return None
 
     block = []
     while index < len(lines):
-        line = lines[index]
-        stripped = line.lstrip()
-        if not stripped:
+        stripped = lines[index].lstrip()
+        if not stripped or not stripped.startswith(COMMENT_PREFIXES):
             break
-        if not stripped.startswith(COMMENT_PREFIXES):
-            break
-        block.append(line)
+        block.append(stripped)
         index += 1
+    return block or None
 
-    return "\n".join(block) if block else None
+
+def _strip_marker(line: str) -> str:
+    for prefix in COMMENT_PREFIXES:
+        if line.startswith(prefix):
+            return line[len(prefix):].strip()
+    return line.strip()
+
+
+def _fields(block: list[str]) -> dict[str, list[str]]:
+    """Map each 'Name : value' line in the header to its values (duplicates kept)."""
+    found: dict[str, list[str]] = {}
+    for raw in block:
+        m = re.fullmatch(r"([A-Za-z][A-Za-z-]*)\s*:\s*(.*)", _strip_marker(raw))
+        if m:
+            found.setdefault(m.group(1), []).append(m.group(2).strip())
+    return found
 
 
 def validate_file(path: Path) -> list[str]:
@@ -139,58 +150,55 @@ def validate_file(path: Path) -> list[str]:
         return [f"{path}: [HEADER-008] missing or malformed leading header block"]
 
     errors = []
+    fields = _fields(block)
+    contents = [_strip_marker(line) for line in block]
 
-    if f"SPDX-License-Identifier: {LICENSE_ID}" not in block:
+    spdx = fields.get("SPDX-License-Identifier", [])
+    if spdx != [LICENSE_ID]:
         errors.append(
-            f"{path}: [HEADER-001] missing SPDX-License-Identifier: {LICENSE_ID}"
+            f"{path}: [HEADER-001] SPDX-License-Identifier must appear once with the exact value {LICENSE_ID}"
         )
 
-    if COPYRIGHT not in block:
+    copyright_lines = [c for c in contents if c.startswith("Copyright")]
+    if copyright_lines != [COPYRIGHT]:
         errors.append(
-            f"{path}: [HEADER-003] missing {COPYRIGHT}"
+            f"{path}: [HEADER-003] header must contain exactly one line '{COPYRIGHT}'"
         )
 
+    value = {}
     for field in REQUIRED_FIELDS:
-        pattern = rf"^\s*(?:#|//|--)\s*{re.escape(field)}\s*:\s*(.*?)\s*$"
-        match = re.search(pattern, block, re.MULTILINE)
-        if not match or not match.group(1).strip():
-            errors.append(
-                f"{path}: [HEADER-004] missing or empty required field '{field}'"
-            )
+        values = fields.get(field, [])
+        if len(values) != 1 or not values[0]:
+            reason = "duplicated" if len(values) > 1 else "missing or empty"
+            errors.append(f"{path}: [HEADER-004] {reason} required field '{field}'")
+            value[field] = ""
+        else:
+            value[field] = values[0]
 
-    def value(field: str):
-        m = re.search(
-            rf"^\s*(?:#|//|--)\s*{re.escape(field)}\s*:\s*(.*?)\s*$",
-            block, re.MULTILINE)
-        return m.group(1).strip() if m else ""
-
-    file_value = value("File")
-    if file_value and file_value not in (path.name, path.as_posix()):
+    if value["File"] and value["File"] not in (path.name, path.as_posix()):
         errors.append(
-            f"{path}: [HEADER-005] File field '{file_value}' does not match "
+            f"{path}: [HEADER-005] File field '{value['File']}' does not match "
             f"the file name or repository-relative path"
         )
 
-    component = value("Component")
-    if component and component not in COMPONENTS:
+    if value["Component"] and value["Component"] not in COMPONENTS:
         errors.append(
-            f"{path}: [HEADER-007] Component '{component}' is not in the approved vocabulary"
+            f"{path}: [HEADER-007] Component '{value['Component']}' is not in the approved vocabulary"
         )
-    layer = value("Layer")
-    if layer and layer not in LAYERS:
+    if value["Layer"] and value["Layer"] not in LAYERS:
         errors.append(
-            f"{path}: [HEADER-007] Layer '{layer}' is not in the approved vocabulary"
+            f"{path}: [HEADER-007] Layer '{value['Layer']}' is not in the approved vocabulary"
+        )
+    if value["Author"] and value["Author"] != AUTHOR:
+        errors.append(
+            f"{path}: [HEADER-007] Author must be '{AUTHOR}', found '{value['Author']}'"
         )
 
-    created = re.search(
-        r"^\s*(?:#|//|--)\s*Created\s*:\s*(\S+)\s*$",
-        block,
-        re.MULTILINE,
-    )
-    created_ok = bool(created and re.fullmatch(r"\d{2}-\d{2}-\d{4}", created.group(1)))
+    created = value["Created"]
+    created_ok = bool(re.fullmatch(r"\d{2}-\d{2}-\d{4}", created))
     if created_ok:
         try:
-            datetime.datetime.strptime(created.group(1), "%d-%m-%Y")
+            datetime.datetime.strptime(created, "%d-%m-%Y")
         except ValueError:
             created_ok = False
     if not created_ok:
@@ -212,7 +220,10 @@ def tracked_files() -> list[Path]:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        description="Validate Kritva RaaS source headers. Without --strict, "
+        "violations are reported but the exit status is 0 (report-only); "
+        "CI and the pre-commit hook use --strict, which exits 1 on any violation.")
     parser.add_argument("--mode", choices=["tracked", "files"], default="tracked")
     parser.add_argument("--files", nargs="*")
     parser.add_argument("--strict", action="store_true")
@@ -240,10 +251,10 @@ def main() -> int:
     print(f"[header-check] skipped {skipped} file(s)")
 
     if errors:
-        print("[header-check] FAILED")
+        print("[header-check] FAILED" if args.strict else "[header-check] VIOLATIONS (report-only; use --strict to fail)")
         for error in errors:
             print(f"  {error}")
-        return 1
+        return 1 if args.strict else 0
 
     print("[header-check] PASSED")
     return 0
