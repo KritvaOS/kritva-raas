@@ -102,6 +102,21 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 - **Reviewer role:** Repository owner, with external review
 - **Decision and follow-up:** Accepted. The other B-INC-001 tasks remain open.
 
+### 2026-10-10 — KR-BINC-001-019 repository Makefile accepted
+
+- **State:** ACCEPTED (task only; `B-INC-001-AC-19` stays open because other tasks also contribute to it)
+- **Tasks:** `KR-BINC-001-019`
+- **Increment ACs:** `B-INC-001-AC-19` (contributing)
+- **Program acceptance:** `BAC-037` (contributing)
+- **Tests:** `BTS-001`, `BTS-036`. Owner's local `make check` passed on the PR branch; Source Header Check runs 38064045393 (PR) and 38064087028 (main) and docs-check runs 38064045435 (PR) and 38064087036 (main) passed.
+- **Security gates:** `SEC-GATE-003` (traced through AC-19; the Makefile adds no new control)
+- **Findings/risks:** None
+- **Files changed:** `Makefile`; header checker and test; source header standard; planning records (PB-008)
+- **Commit:** `b7f22b5`, `639a0a9`; merged in PR #3 as `3c96924`
+- **Evidence:** Actions runs listed above
+- **Reviewer role:** Repository owner, with external review
+- **Decision and follow-up:** Accepted. The application build, test, lint and format targets are completed by the toolchain tasks `KR-BINC-001-001` to `004`.
+
 ## Entry Template
 
 Use this template for each subsequent implementation or verification entry.
