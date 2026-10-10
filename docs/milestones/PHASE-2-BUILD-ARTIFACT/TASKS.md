@@ -9,7 +9,7 @@ Source of scope: [MILESTONE.md](MILESTONE.md)
 
 | ID | Description | Estimate | Owner role | Dependencies | Status |
 |---|---|---:|---|---|---|
-| KR-FE-2-001 | Define Build/Artifact UX architecture | 1.0d | Frontend Architect | Phase 1 | [ ] |
+| KR-FE-2-001 | Define Build/Artifact UX architecture | 1.0d | Frontend Architect | P1 STUDIO | [ ] |
 | KR-FE-2-002 | Implement Build route | 1.0d | Frontend Engineer | 001 | [ ] |
 | KR-FE-2-003 | Implement build configuration UI | 1.0d | Frontend Engineer | 002 | [ ] |
 | KR-FE-2-004 | Implement build progress UI | 1.0d | Frontend Engineer | 002 | [ ] |
@@ -18,8 +18,8 @@ Source of scope: [MILESTONE.md](MILESTONE.md)
 | KR-FE-2-007 | Implement artifact detail UI | 1.0d | Frontend Engineer | 010 | [ ] |
 | KR-FE-2-008 | Implement artifact upload UI | 1.0d | Frontend Engineer | 007 | [ ] |
 | KR-FE-2-009 | Implement artifact validation UI | 1.0d | Frontend Engineer | 007 | [ ] |
-| KR-FE-2-010 | Implement artifact list | 1.0d | Frontend Engineer | Phase 1 | [ ] |
-| KR-FE-2-011 | Define Local Runtime build interface | 1.0d | Desktop Architect | Phase 1 | [ ] |
+| KR-FE-2-010 | Implement artifact list | 1.0d | Frontend Engineer | P1 STUDIO | [ ] |
+| KR-FE-2-011 | Define Local Runtime build interface | 1.0d | Desktop Architect | P1 STUDIO | [ ] |
 | KR-FE-2-012 | Implement toolchain discovery IPC | 1.0d | Desktop Engineer | 011 | [ ] |
 | KR-FE-2-013 | Implement build-start IPC | 1.0d | Desktop Engineer | 011 | [ ] |
 | KR-FE-2-014 | Implement build-progress IPC | 1.0d | Desktop Engineer | 013 | [ ] |
@@ -61,7 +61,7 @@ Source of scope: [MILESTONE.md](MILESTONE.md)
 | KR-FE-2-050 | Execute performance benchmark | 1.0d | Build Engineer | 041-048 | [ ] |
 | KR-FE-2-051 | Complete security review | 1.0d | Security Architect | 027-046 | [ ] |
 | KR-FE-2-052 | Complete architecture review | 1.0d | System Architect | 001-050 | [ ] |
-| KR-FE-2-053 | Complete Phase 2 acceptance | 0.5d | Tech Lead | 051,052 | [ ] |
+| KR-FE-2-053 | Complete P2 BUILD & ARTIFACT acceptance | 0.5d | Tech Lead | 051,052 | [ ] |
 
 ### 5.2 Estimation convention
 

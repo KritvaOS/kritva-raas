@@ -68,7 +68,11 @@ This register covers risks associated with:
 - production release;
 - operations.
 
-The register applies to Phase 0 through Phase 8.
+The register applies to P0 FOUNDATION through P8 PRODUCTION. The Phase column uses canonical
+identifiers from `docs/planning/PHASES.md`. Physical robot operation, emergency-stop
+qualification, and hardware-specific safety risks belong to P6 LAB & ROBOT; P5 EXECUTION
+owns only simulated-execution and simulation-fidelity risks. A risk that spans phases
+is split into separate rows, each owned by one phase, or lists every owning phase explicitly.
 
 ## 3. Goals
 
@@ -495,82 +499,84 @@ already occurred.
 
 | ID | Category | Risk | Phase | L | I | Score | Rating | Mitigation | Owner | Trigger | Status |
 |---|---|---|---|---:|---:|---:|---|---|---|---|
-| R-TECH-001 | TECH | Modular-monolith boundaries become tightly coupled | 1 | 3 | 4 | 12 | High | Enforce domain ownership, repositories, contracts, architecture review | Architecture Owner | Cross-domain direct writes or circular dependencies | MITIGATION_PLANNED |
-| R-TECH-002 | TECH | Studio, backend and Lab contracts drift | 2 | 4 | 4 | 16 | Very High | Protocol-first contracts, versioning, contract tests | Integration Owner | Contract test failure or incompatible payload | MITIGATION_PLANNED |
-| R-TECH-003 | TECH | Artifact/runtime compatibility failures | 2 | 3 | 4 | 12 | High | Manifest, compatibility matrix, validation before deployment | Artifact Owner | Valid artifact rejected or incompatible artifact accepted | MITIGATION_PLANNED |
-| R-TECH-004 | TECH | Job and Run state becomes inconsistent | 3 | 3 | 5 | 15 | Very High | Explicit state machines, durable state, reconciliation | Execution Owner | State mismatch or unreconciled job | MITIGATION_PLANNED |
-| R-TECH-005 | TECH | Local build environment is not reproducible | 2 | 3 | 4 | 12 | High | Pinned toolchains, deterministic builds, CI parity | Build Owner | Clean build differs from developer build | MITIGATION_PLANNED |
-| R-TECH-006 | TECH | Simulation differs materially from physical robot behavior | 5 | 4 | 5 | 20 | Critical | HIL, representative adapters, physical qualification | Robotics Owner | Simulation passes while HIL/physical behavior diverges | MITIGATION_PLANNED |
-| R-TECH-007 | TECH | Third-party dependency breaks compatibility | 1 | 3 | 3 | 9 | Medium | Version pinning, dependency scanning, upgrade policy | Platform Owner | Dependency release or CVE causes build/runtime failure | MITIGATION_PLANNED |
-| R-TECH-008 | TECH | Object storage and PostgreSQL metadata become inconsistent | 2 | 3 | 4 | 12 | High | Transactional metadata, outbox/reconciliation, checksums | Backend Owner | Missing object or orphaned metadata | MITIGATION_PLANNED |
-| R-TECH-009 | TECH | Queue/event delivery is lost or duplicated | 3 | 3 | 4 | 12 | High | At-least-once events, IDs, deduplication, durable state | Integration Owner | Event gap or duplicate processing | MITIGATION_PLANNED |
-| R-TECH-010 | TECH | WebSocket/telemetry channel cannot sustain required load | 3 | 3 | 3 | 9 | Medium | Load tests, backpressure, rate limits, specialized transport | Execution Owner | Dropped telemetry exceeds target | MITIGATION_PLANNED |
+| R-TECH-001 | TECH | Modular-monolith boundaries become tightly coupled | P3 CONTROL PLANE | 3 | 4 | 12 | High | Enforce domain ownership, repositories, contracts, architecture review | Architecture Owner | Cross-domain direct writes or circular dependencies | MITIGATION_PLANNED |
+| R-TECH-002 | TECH | Studio, backend and Lab contracts drift | P2 BUILD & ARTIFACT | 4 | 4 | 16 | Very High | Protocol-first contracts, versioning, contract tests | Integration Owner | Contract test failure or incompatible payload | MITIGATION_PLANNED |
+| R-TECH-003 | TECH | Artifact/runtime compatibility failures | P2 BUILD & ARTIFACT | 3 | 4 | 12 | High | Manifest, compatibility matrix, validation before deployment | Artifact Owner | Valid artifact rejected or incompatible artifact accepted | MITIGATION_PLANNED |
+| R-TECH-004 | TECH | Job and Run state becomes inconsistent | P5 EXECUTION | 3 | 5 | 15 | Very High | Explicit state machines, durable state, reconciliation | Execution Owner | State mismatch or unreconciled job | MITIGATION_PLANNED |
+| R-TECH-005 | TECH | Local build environment is not reproducible | P2 BUILD & ARTIFACT | 3 | 4 | 12 | High | Pinned toolchains, deterministic builds, CI parity | Build Owner | Clean build differs from developer build | MITIGATION_PLANNED |
+| R-TECH-006 | TECH | Simulation differs materially from physical robot behavior | P6 LAB & ROBOT | 4 | 5 | 20 | Critical | HIL, representative adapters, physical qualification | Robotics Owner | Simulation passes while HIL/physical behavior diverges | MITIGATION_PLANNED |
+| R-TECH-007 | TECH | Third-party dependency breaks compatibility | P0 FOUNDATION | 3 | 3 | 9 | Medium | Version pinning, dependency scanning, upgrade policy | Platform Owner | Dependency release or CVE causes build/runtime failure | MITIGATION_PLANNED |
+| R-TECH-008 | TECH | Object storage and PostgreSQL metadata become inconsistent | P2 BUILD & ARTIFACT | 3 | 4 | 12 | High | Transactional metadata, outbox/reconciliation, checksums | Backend Owner | Missing object or orphaned metadata | MITIGATION_PLANNED |
+| R-TECH-009 | TECH | Queue/event delivery is lost or duplicated | P5 EXECUTION | 3 | 4 | 12 | High | At-least-once events, IDs, deduplication, durable state | Integration Owner | Event gap or duplicate processing | MITIGATION_PLANNED |
+| R-TECH-010 | TECH | WebSocket/telemetry channel cannot sustain required load | P7 LIVE & RESULTS | 3 | 3 | 9 | Medium | Load tests, backpressure, rate limits, specialized transport | Execution Owner | Dropped telemetry exceeds target | MITIGATION_PLANNED |
+| R-TECH-011 | TECH | Simulated Lab Agent and simulated robot do not exercise the real execution protocol, lifecycle and failure paths | P5 EXECUTION | 3 | 4 | 12 | High | Protocol-conformant simulator, fault injection, documented simulation limits, contract tests against the Lab protocol | Execution Owner | Simulated run passes while protocol or lifecycle conformance tests fail | MITIGATION_PLANNED |
 
 ## 32. Risk Register — Security and Privacy
 
 | ID | Category | Risk | Phase | L | I | Score | Rating | Mitigation | Owner | Trigger | Status |
 |---|---|---|---|---:|---:|---:|---|---|---|---|
-| R-SEC-001 | SEC | Customer source code leaves developer machine | 2 | 2 | 5 | 10 | High | Local-only source/build, privacy scanner, artifact allowlist | Security Owner | Source-like file detected in upload | MITIGATION_PLANNED |
-| R-SEC-002 | SEC | Cross-tenant data access occurs | 1 | 2 | 5 | 10 | High | Authz, repository filtering, DB constraints/RLS, tenant tests | Security Owner | Tenant isolation test failure | MITIGATION_PLANNED |
-| R-SEC-003 | SEC | Artifact signing key is compromised | 2 | 2 | 5 | 10 | High | KMS/HSM, controlled signing, key separation, rotation | Security Owner | Unauthorized signing operation | MITIGATION_PLANNED |
-| R-SEC-004 | SEC | Artifact contains malicious or prohibited payload | 2 | 3 | 5 | 15 | Very High | Scanning, allowlist, signature, sandboxing, Lab validation | Artifact Security Owner | Scanner or Lab Agent rejection | MITIGATION_PLANNED |
-| R-SEC-005 | SEC | Authentication credentials are compromised | 1 | 3 | 5 | 15 | Very High | MFA, passkeys, secure sessions, rate limiting | Identity Owner | Suspicious login or credential reuse | MITIGATION_PLANNED |
-| R-SEC-006 | SEC | Authorization bypass permits privileged action | 1 | 2 | 5 | 10 | High | RBAC + ABAC, deny-by-default, authorization tests | Security Owner | Unauthorized action succeeds | MITIGATION_PLANNED |
-| R-SEC-007 | SEC | Secrets leak through source, logs or artifacts | 0 | 3 | 5 | 15 | Very High | Secret scanning, redaction, managed secrets, no plaintext fallback | Security Owner | Secret scanner finding | MITIGATION_PLANNED |
-| R-SEC-008 | SEC | Lab Agent identity or private key is compromised | 5 | 2 | 5 | 10 | High | mTLS, local key protection, rotation/revocation | Lab Security Owner | Invalid Lab Agent identity | MITIGATION_PLANNED |
-| R-SEC-009 | SEC | Audit records can be modified or deleted improperly | 6 | 2 | 4 | 8 | Medium | Append-oriented storage, access controls, tamper evidence | Security Owner | Audit integrity verification fails | MITIGATION_PLANNED |
-| R-SEC-010 | SEC | Vulnerable dependency reaches production | 6 | 3 | 4 | 12 | High | SCA, SBOM, severity gates, patch process | Security Owner | High-severity dependency finding | MITIGATION_PLANNED |
+| R-SEC-001 | SEC | Customer source code leaves developer machine | P2 BUILD & ARTIFACT | 2 | 5 | 10 | High | Local-only source/build, privacy scanner, artifact allowlist | Security Owner | Source-like file detected in upload | MITIGATION_PLANNED |
+| R-SEC-002 | SEC | Cross-tenant data access occurs | P3 CONTROL PLANE | 2 | 5 | 10 | High | Authz, repository filtering, DB constraints/RLS, tenant tests | Security Owner | Tenant isolation test failure | MITIGATION_PLANNED |
+| R-SEC-003 | SEC | Artifact signing key is compromised | P2 BUILD & ARTIFACT | 2 | 5 | 10 | High | KMS/HSM, controlled signing, key separation, rotation | Security Owner | Unauthorized signing operation | MITIGATION_PLANNED |
+| R-SEC-004 | SEC | Artifact contains malicious or prohibited payload | P2 BUILD & ARTIFACT | 3 | 5 | 15 | Very High | Scanning, allowlist, signature, sandboxing, Lab validation | Artifact Security Owner | Scanner or Lab Agent rejection | MITIGATION_PLANNED |
+| R-SEC-005 | SEC | Authentication credentials are compromised | P3 CONTROL PLANE | 3 | 5 | 15 | Very High | MFA, passkeys, secure sessions, rate limiting | Identity Owner | Suspicious login or credential reuse | MITIGATION_PLANNED |
+| R-SEC-006 | SEC | Authorization bypass permits privileged action | P3 CONTROL PLANE | 2 | 5 | 10 | High | RBAC + ABAC, deny-by-default, authorization tests | Security Owner | Unauthorized action succeeds | MITIGATION_PLANNED |
+| R-SEC-007 | SEC | Secrets leak through source, logs or artifacts | P0 FOUNDATION | 3 | 5 | 15 | Very High | Secret scanning, redaction, managed secrets, no plaintext fallback | Security Owner | Secret scanner finding | MITIGATION_PLANNED |
+| R-SEC-008 | SEC | Lab Agent identity or private key is compromised | P5 EXECUTION; P6 LAB & ROBOT | 2 | 5 | 10 | High | mTLS, local key protection, rotation/revocation | Lab Security Owner | Invalid Lab Agent identity | MITIGATION_PLANNED |
+| R-SEC-009 | SEC | Audit records can be modified or deleted improperly | P8 PRODUCTION | 2 | 4 | 8 | Medium | Append-oriented storage, access controls, tamper evidence | Security Owner | Audit integrity verification fails | MITIGATION_PLANNED |
+| R-SEC-010 | SEC | Vulnerable dependency reaches production | P8 PRODUCTION | 3 | 4 | 12 | High | SCA, SBOM, severity gates, patch process | Security Owner | High-severity dependency finding | MITIGATION_PLANNED |
 
 ## 33. Risk Register — Safety
 
 | ID | Category | Risk | Phase | L | I | Score | Rating | Mitigation | Owner | Trigger | Status |
 |---|---|---|---|---:|---:|---:|---|---|---|---|
-| R-SAFE-001 | SAFE | Robot fails to enter safe state after cloud disconnect | 5 | 2 | 5 | 10 | Critical | Local runtime authority, watchdog, safe-state design, HIL | Safety Owner | Disconnect test fails | MITIGATION_PLANNED |
-| R-SAFE-002 | SAFE | Emergency-stop path is unavailable or ineffective | 5 | 2 | 5 | 10 | Critical | Independent E-stop, physical validation, human review | Safety Owner | E-stop test failure | MITIGATION_PLANNED |
-| R-SAFE-003 | SAFE | Remote artifact commands cause unsafe robot behavior | 5 | 2 | 5 | 10 | Critical | Capability policy, sandbox, runtime limits, HIL, physical gate | Robotics Safety Owner | Unsafe command observed | MITIGATION_PLANNED |
-| R-SAFE-004 | SAFE | Fault recovery automatically restarts unsafe motion | 5 | 2 | 5 | 10 | Critical | No unsafe auto-restart, explicit operator recovery | Safety Owner | Fault causes automatic motion restart | MITIGATION_PLANNED |
-| R-SAFE-005 | SAFE | Simulation creates false confidence in safety | 5 | 3 | 5 | 15 | Very High | Simulation limitation documentation, HIL, human safety review | Safety Owner | Physical behavior not represented in simulation | MITIGATION_PLANNED |
+| R-SAFE-001 | SAFE | Robot fails to enter safe state after cloud disconnect | P6 LAB & ROBOT | 2 | 5 | 10 | Critical | Local runtime authority, watchdog, safe-state design, HIL | Safety Owner | Disconnect test fails | MITIGATION_PLANNED |
+| R-SAFE-002 | SAFE | Emergency-stop path is unavailable or ineffective | P6 LAB & ROBOT | 2 | 5 | 10 | Critical | Independent E-stop, physical validation, human review | Safety Owner | E-stop test failure | MITIGATION_PLANNED |
+| R-SAFE-003 | SAFE | Remote artifact commands cause unsafe robot behavior | P6 LAB & ROBOT | 2 | 5 | 10 | Critical | Capability policy, sandbox, runtime limits, HIL, physical gate | Robotics Safety Owner | Unsafe command observed | MITIGATION_PLANNED |
+| R-SAFE-004 | SAFE | Fault recovery automatically restarts unsafe motion | P6 LAB & ROBOT | 2 | 5 | 10 | Critical | No unsafe auto-restart, explicit operator recovery | Safety Owner | Fault causes automatic motion restart | MITIGATION_PLANNED |
+| R-SAFE-005 | SAFE | Simulation creates false confidence in safety | P6 LAB & ROBOT | 3 | 5 | 15 | Very High | Simulation limitation documentation, HIL, human safety review | Safety Owner | Physical behavior not represented in simulation | MITIGATION_PLANNED |
+| R-SAFE-006 | SAFE | Simulated execution evidence is presented or accepted as physical safety evidence | P5 EXECUTION | 3 | 5 | 15 | Very High | Label simulated data and results, exclude physical safety claims from P5 acceptance, require P6 qualification before physical operation | Safety Owner | P5 evidence cited as proof of physical robot safety | MITIGATION_PLANNED |
 
 ## 34. Risk Register — Schedule and Resource
 
 | ID | Category | Risk | Phase | L | I | Score | Rating | Mitigation | Owner | Trigger | Status |
 |---|---|---|---|---:|---:|---:|---|---|---|---|
-| R-SCH-001 | SCH | Phase 0 foundation takes longer than planned | 0 | 3 | 4 | 12 | High | Prioritize P0, limit scope, daily/weekly tracking | Project Owner | P0 critical path slips | MITIGATION_PLANNED |
-| R-SCH-002 | SCH | Backend/database/cloud work becomes a serial bottleneck | 0 | 4 | 4 | 16 | Very High | Parallelize contract/design work, dependency mapping | Engineering Owner | Multiple domains waiting on same task | MITIGATION_PLANNED |
-| R-SCH-003 | SCH | Physical robot availability delays Phase 5 | 5 | 4 | 4 | 16 | Very High | Simulation first, reserve HIL resources early | Lab Owner | Hardware unavailable near qualification | MITIGATION_PLANNED |
-| R-SCH-004 | SCH | Specialist security/safety review capacity is insufficient | 5 | 3 | 4 | 12 | High | Reserve reviewers, define gates early | Project Owner | Review queue threatens milestone | MITIGATION_PLANNED |
-| R-RES-001 | RES | Required robotics/cloud/security skills are unavailable | 0 | 3 | 4 | 12 | High | Early staffing plan, cross-training, specialist contractors | Project Owner | Critical task has no qualified owner | MITIGATION_PLANNED |
-| R-RES-002 | RES | Lab infrastructure capacity is insufficient for concurrent users | 7 | 3 | 4 | 12 | High | Capacity model, reservation limits, staged scale-out | Lab Owner | Queue time exceeds target | MITIGATION_PLANNED |
+| R-SCH-001 | SCH | P0 FOUNDATION takes longer than planned | P0 FOUNDATION | 3 | 4 | 12 | High | Prioritize P0, limit scope, daily/weekly tracking | Project Owner | P0 critical path slips | MITIGATION_PLANNED |
+| R-SCH-002 | SCH | Backend/database/cloud work becomes a serial bottleneck | P0 FOUNDATION | 4 | 4 | 16 | Very High | Parallelize contract/design work, dependency mapping | Engineering Owner | Multiple domains waiting on same task | MITIGATION_PLANNED |
+| R-SCH-003 | SCH | Physical robot availability delays P6 LAB & ROBOT | P6 LAB & ROBOT | 4 | 4 | 16 | Very High | Simulation first, reserve HIL resources early | Lab Owner | Hardware unavailable near qualification | MITIGATION_PLANNED |
+| R-SCH-004 | SCH | Specialist security/safety review capacity is insufficient | P6 LAB & ROBOT; P8 PRODUCTION | 3 | 4 | 12 | High | Reserve reviewers, define gates early | Project Owner | Review queue threatens milestone | MITIGATION_PLANNED |
+| R-RES-001 | RES | Required robotics/cloud/security skills are unavailable | P0 FOUNDATION | 3 | 4 | 12 | High | Early staffing plan, cross-training, specialist contractors | Project Owner | Critical task has no qualified owner | MITIGATION_PLANNED |
+| R-RES-002 | RES | Lab infrastructure capacity is insufficient for concurrent users | P8 PRODUCTION | 3 | 4 | 12 | High | Capacity model, reservation limits, staged scale-out | Lab Owner | Queue time exceeds target | MITIGATION_PLANNED |
 
 ## 35. Risk Register — Commercial
 
 | ID | Category | Risk | Phase | L | I | Score | Rating | Mitigation | Owner | Trigger | Status |
 |---|---|---|---|---:|---:|---:|---|---|---|---|
-| R-COMM-001 | COMM | Platform-specific credit model is confusing to customers | 4 | 3 | 4 | 12 | High | Clear pricing UX, examples, rate transparency | Product Owner | Support/user feedback shows confusion | MITIGATION_PLANNED |
-| R-COMM-002 | COMM | Credit pricing does not cover robot operating cost | 4 | 3 | 5 | 15 | Very High | Data-driven rate cards, cost model, periodic review | Commercial Owner | Contribution margin below target | MITIGATION_PLANNED |
-| R-COMM-003 | COMM | Robot utilization is too low for viable RaaS economics | 7 | 3 | 5 | 15 | Very High | Capacity analytics, platform selection, targeted demand generation | Business Owner | Utilization below threshold | MITIGATION_PLANNED |
-| R-COMM-004 | COMM | Users expect source-level remote development instead of artifact execution | 2 | 3 | 4 | 12 | High | Product messaging, local build UX, documentation | Product Owner | Repeated source-upload requests | MITIGATION_PLANNED |
-| R-COMM-005 | COMM | Subscription model does not align with platform usage | 4 | 3 | 4 | 12 | High | Separate access subscription and platform credits | Product Owner | High cancellation or low conversion | MITIGATION_PLANNED |
+| R-COMM-001 | COMM | Platform-specific credit model is confusing to customers | P4 BOOKING & COMMERCIAL | 3 | 4 | 12 | High | Clear pricing UX, examples, rate transparency | Product Owner | Support/user feedback shows confusion | MITIGATION_PLANNED |
+| R-COMM-002 | COMM | Credit pricing does not cover robot operating cost | P4 BOOKING & COMMERCIAL | 3 | 5 | 15 | Very High | Data-driven rate cards, cost model, periodic review | Commercial Owner | Contribution margin below target | MITIGATION_PLANNED |
+| R-COMM-003 | COMM | Robot utilization is too low for viable RaaS economics | P8 PRODUCTION | 3 | 5 | 15 | Very High | Capacity analytics, platform selection, targeted demand generation | Business Owner | Utilization below threshold | MITIGATION_PLANNED |
+| R-COMM-004 | COMM | Users expect source-level remote development instead of artifact execution | P2 BUILD & ARTIFACT | 3 | 4 | 12 | High | Product messaging, local build UX, documentation | Product Owner | Repeated source-upload requests | MITIGATION_PLANNED |
+| R-COMM-005 | COMM | Subscription model does not align with platform usage | P4 BOOKING & COMMERCIAL | 3 | 4 | 12 | High | Separate access subscription and platform credits | Product Owner | High cancellation or low conversion | MITIGATION_PLANNED |
 
 ## 36. Risk Register — Regulatory and Compliance
 
 | ID | Category | Risk | Phase | L | I | Score | Rating | Mitigation | Owner | Trigger | Status |
 |---|---|---|---|---:|---:|---:|---|---|---|---|
-| R-REG-001 | REG | Data protection obligations differ by customer jurisdiction | 6 | 3 | 4 | 12 | High | Data classification, minimization, retention, legal review | Compliance Owner | New jurisdiction/customer requirement | MITIGATION_PLANNED |
-| R-REG-002 | REG | Robot operation requires jurisdiction-specific safety compliance | 5 | 3 | 5 | 15 | Very High | Safety review, local compliance checklist, deployment gates | Safety Owner | New market/hardware certification requirement | MITIGATION_PLANNED |
-| R-REG-003 | REG | Payment/billing requirements are not fully supported | 4 | 2 | 4 | 8 | Medium | Payment-provider/legal review, invoice requirements | Commercial Owner | Billing requirement identified | MITIGATION_PLANNED |
-| R-REG-004 | REG | Customer data retention policy conflicts with operational retention | 6 | 3 | 4 | 12 | High | Configurable retention, deletion/anonymization policy | Privacy Owner | Customer deletion/retention request cannot be fulfilled | MITIGATION_PLANNED |
-| R-REG-005 | REG | Export-control or technology-transfer obligations affect deployment | 8 | 2 | 5 | 10 | High | Legal review before international expansion | Business/Legal Owner | Restricted jurisdiction/customer identified | MITIGATION_PLANNED |
+| R-REG-001 | REG | Data protection obligations differ by customer jurisdiction | P8 PRODUCTION | 3 | 4 | 12 | High | Data classification, minimization, retention, legal review | Compliance Owner | New jurisdiction/customer requirement | MITIGATION_PLANNED |
+| R-REG-002 | REG | Robot operation requires jurisdiction-specific safety compliance | P6 LAB & ROBOT | 3 | 5 | 15 | Very High | Safety review, local compliance checklist, deployment gates | Safety Owner | New market/hardware certification requirement | MITIGATION_PLANNED |
+| R-REG-003 | REG | Payment/billing requirements are not fully supported | P4 BOOKING & COMMERCIAL | 2 | 4 | 8 | Medium | Payment-provider/legal review, invoice requirements | Commercial Owner | Billing requirement identified | MITIGATION_PLANNED |
+| R-REG-004 | REG | Customer data retention policy conflicts with operational retention | P8 PRODUCTION | 3 | 4 | 12 | High | Configurable retention, deletion/anonymization policy | Privacy Owner | Customer deletion/retention request cannot be fulfilled | MITIGATION_PLANNED |
+| R-REG-005 | REG | Export-control or technology-transfer obligations affect deployment | P8 PRODUCTION | 2 | 5 | 10 | High | Legal review before international expansion | Business/Legal Owner | Restricted jurisdiction/customer identified | MITIGATION_PLANNED |
 
 ## 37. Risk Register — Operations and Quality
 
 | ID | Category | Risk | Phase | L | I | Score | Rating | Mitigation | Owner | Trigger | Status |
 |---|---|---|---|---:|---:|---:|---|---|---|---|
-| R-OPS-001 | OPS | Lab Agent disconnect leaves cloud state stale | 3 | 3 | 4 | 12 | High | Heartbeat, durable state, reconciliation | Lab Owner | Heartbeat timeout with stale allocation | MITIGATION_PLANNED |
-| R-OPS-002 | OPS | Robot maintenance state is not reflected in booking availability | 5 | 3 | 4 | 12 | High | Resource-state integration and reconciliation | Lab Owner | Booking allocated to unavailable robot | MITIGATION_PLANNED |
-| R-QUAL-001 | QUAL | Automated tests miss cross-domain failures | 3 | 4 | 4 | 16 | Very High | Contract, integration, E2E, simulation and HIL tests | QA Owner | Production-like flow fails despite unit tests | MITIGATION_PLANNED |
-| R-QUAL-002 | QUAL | Release qualification does not represent production workloads | 8 | 3 | 4 | 12 | High | Production-like environments and workload profiles | Release Owner | Production behavior differs materially | MITIGATION_PLANNED |
-| R-DEP-001 | DEP | External service outage blocks core workflow | 3 | 3 | 4 | 12 | High | Adapter boundaries, retry, timeout, fallback, graceful degradation | Platform Owner | External dependency unavailable | MITIGATION_PLANNED |
+| R-OPS-001 | OPS | Lab Agent disconnect leaves cloud state stale | P5 EXECUTION | 3 | 4 | 12 | High | Heartbeat, durable state, reconciliation | Lab Owner | Heartbeat timeout with stale allocation | MITIGATION_PLANNED |
+| R-OPS-002 | OPS | Robot maintenance state is not reflected in booking availability | P6 LAB & ROBOT | 3 | 4 | 12 | High | Resource-state integration and reconciliation | Lab Owner | Booking allocated to unavailable robot | MITIGATION_PLANNED |
+| R-QUAL-001 | QUAL | Automated tests miss cross-domain failures | P5 EXECUTION | 4 | 4 | 16 | Very High | Contract, integration, E2E, simulation and HIL tests | QA Owner | Production-like flow fails despite unit tests | MITIGATION_PLANNED |
+| R-QUAL-002 | QUAL | Release qualification does not represent production workloads | P8 PRODUCTION | 3 | 4 | 12 | High | Production-like environments and workload profiles | Release Owner | Production behavior differs materially | MITIGATION_PLANNED |
+| R-DEP-001 | DEP | External service outage blocks core workflow | P3 CONTROL PLANE | 3 | 4 | 12 | High | Adapter boundaries, retry, timeout, fallback, graceful degradation | Platform Owner | External dependency unavailable | MITIGATION_PLANNED |
 
 ## 38. Risk Count
 
@@ -1476,36 +1482,34 @@ Priority mitigation areas are:
     11. Production recovery
     12. Commercial unit economics
 
-## 91. Phase 0 Risk Actions
+## 91. P0 FOUNDATION Risk Actions
 
-Phase 0 should:
+P0 FOUNDATION should prioritize:
 
 - validate architecture assumptions;
 - establish CI;
 - establish security scanning;
+- establish secret management;
 - establish contracts;
 - establish migration discipline;
 - establish task ownership;
 - establish risk review cadence.
 
-Phase 0 should also convert major architectural uncertainty into explicit ADRs.
+P0 FOUNDATION should also convert major architectural uncertainty into explicit ADRs.
 
-## 92. Phase 1 Risk Actions
+## 92. P1 STUDIO Risk Actions
 
-Phase 1 should prioritize:
+P1 STUDIO should prioritize:
 
-- authentication;
-- authorization;
-- tenant isolation;
-- project ownership;
-- platform catalog integrity;
-- database constraints.
+- local source-code privacy boundary;
+- Studio and local runtime stability;
+- project workflow integrity;
+- IPC boundary security;
+- local configuration and credential handling.
 
-Tenant isolation testing must be established before multi-tenant production use.
+## 93. P2 BUILD & ARTIFACT Risk Actions
 
-## 93. Phase 2 Risk Actions
-
-Phase 2 should prioritize:
+P2 BUILD & ARTIFACT should prioritize:
 
 - source privacy;
 - artifact allowlisting;
@@ -1514,20 +1518,23 @@ Phase 2 should prioritize:
 - compatibility checks;
 - local-build reproducibility.
 
-## 94. Phase 3 Risk Actions
+## 94. P3 CONTROL PLANE Risk Actions
 
-Phase 3 should prioritize:
+P3 CONTROL PLANE should prioritize:
 
-- Lab Agent identity;
-- protocol compatibility;
-- simulation determinism;
-- Job/Run state;
-- telemetry reliability;
-- disconnect recovery.
+- authentication;
+- authorization;
+- tenant isolation;
+- project ownership;
+- platform catalog integrity;
+- database constraints;
+- external dependency isolation.
 
-## 95. Phase 4 Risk Actions
+Tenant isolation testing must be established before multi-tenant production use.
 
-Phase 4 should prioritize:
+## 95. P4 BOOKING & COMMERCIAL Risk Actions
+
+P4 BOOKING & COMMERCIAL should prioritize:
 
 - booking concurrency;
 - allocation exclusion;
@@ -1536,9 +1543,23 @@ Phase 4 should prioritize:
 - refunds;
 - rate-card correctness.
 
-## 96. Phase 5 Risk Actions
+## 96. P5 EXECUTION Risk Actions
 
-Phase 5 should prioritize:
+P5 EXECUTION should prioritize:
+
+- simulated Lab Agent identity;
+- protocol compatibility;
+- simulation determinism and fidelity limits;
+- Job/Run state;
+- event delivery;
+- disconnect recovery;
+- clear labelling of simulated evidence.
+
+P5 EXECUTION does not own physical safety, E-stop qualification, or hardware readiness.
+
+## 97. P6 LAB & ROBOT Risk Actions
+
+P6 LAB & ROBOT should prioritize:
 
 - physical safety;
 - E-stop;
@@ -1546,43 +1567,32 @@ Phase 5 should prioritize:
 - watchdogs;
 - HIL;
 - hardware qualification;
+- jurisdiction-specific robot operation compliance;
 - human safety review.
 
-## 97. Phase 6 Risk Actions
+## 98. P7 LIVE & RESULTS Risk Actions
 
-Phase 6 should prioritize:
+P7 LIVE & RESULTS should prioritize:
+
+- telemetry and video channel capacity;
+- telemetry reliability;
+- result integrity;
+- data provenance (simulated versus physical);
+- observation access control.
+
+## 99. P8 PRODUCTION Risk Actions
+
+P8 PRODUCTION should prioritize:
 
 - security qualification;
-- tenant isolation;
 - key management;
-- secrets;
-- audit;
-- backup;
-- recovery;
-- production observability.
-
-## 98. Phase 7 Risk Actions
-
-Phase 7 should prioritize:
-
-- capacity;
-- load;
-- stress;
-- soak;
-- resource concurrency;
+- audit integrity;
+- backup and recovery;
+- capacity, load, stress and soak;
 - multi-lab operation;
-- cost efficiency.
-
-## 99. Phase 8 Risk Actions
-
-Phase 8 should prioritize:
-
 - release qualification;
 - unresolved risk disposition;
-- canary monitoring;
-- rollback;
-- pilot feedback;
-- production safety;
+- canary monitoring and rollback;
 - commercial readiness.
 
 ## 100. Open Questions
@@ -1695,15 +1705,15 @@ These questions do not block initial risk-register operation.
 
 ## 109. Acceptance Criteria — Phase Mapping
 
-- [ ] Phase 0 risks mapped.
-- [ ] Phase 1 risks mapped.
-- [ ] Phase 2 risks mapped.
-- [ ] Phase 3 risks mapped.
-- [ ] Phase 4 risks mapped.
-- [ ] Phase 5 risks mapped.
-- [ ] Phase 6 risks mapped.
-- [ ] Phase 7 risks mapped.
-- [ ] Phase 8 risks mapped.
+- [ ] P0 FOUNDATION risks mapped.
+- [ ] P1 STUDIO risks mapped.
+- [ ] P2 BUILD & ARTIFACT risks mapped.
+- [ ] P3 CONTROL PLANE risks mapped.
+- [ ] P4 BOOKING & COMMERCIAL risks mapped.
+- [ ] P5 EXECUTION risks mapped.
+- [ ] P6 LAB & ROBOT risks mapped.
+- [ ] P7 LIVE & RESULTS risks mapped.
+- [ ] P8 PRODUCTION risks mapped.
 
 ## 110. Acceptance Criteria — Safety
 
@@ -1778,8 +1788,8 @@ These questions do not block initial risk-register operation.
 - [ ] No risk is falsely marked materialized.
 - [ ] No issue is inferred from risk existence.
 - [ ] Initial owners may be role-based/TBD.
-- [ ] Phase 0 is the first active execution phase.
-- [ ] Risk review begins with Phase 0.
+- [ ] P0 FOUNDATION is the first active execution phase.
+- [ ] Risk review begins with P0 FOUNDATION.
 
 ## 118. Acceptance Criteria — Production Readiness
 
@@ -1872,7 +1882,7 @@ The initial Kritva RaaS risk posture is:
         Planning / Foundation
 
     Active Phase:
-        Phase 0 — FOUNDATION
+        P0 FOUNDATION
 
     Implementation:
         Not Started

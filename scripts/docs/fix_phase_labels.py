@@ -11,7 +11,7 @@ MAP = {  # milestone folder -> (primary, supporting list)
  "B-M05-EXECUTION":(5,[]),"B-M06-RESULTS":(6,[7]),"B-M07-PRODUCTION":(8,[]),
  "DB-M01-FOUNDATION":(0,[1,2,3]),"DB-M02-CORE-DATA":(3,[]),"DB-M03-BOOKING-DATA":(4,[]),"DB-M04-EXECUTION-DATA":(5,[6,7]),
  "C-M01-FOUNDATION":(0,[]),"C-M02-DEVELOPMENT":(1,[2,3]),"C-M03-STAGING":(4,[5,6,7]),"C-M04-PRODUCTION":(8,[])}
-lab = lambda n: f"Phase {n} — {NEW[n]}"
+lab = lambda n: f"P{n} {NEW[n]}"  # canonical form, e.g. "P5 EXECUTION"
 changed = 0
 for f in DOCS.glob("**/milestones/*/*.md"):
     t = o = f.read_text()

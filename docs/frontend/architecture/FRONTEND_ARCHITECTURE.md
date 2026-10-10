@@ -2813,7 +2813,7 @@ Each environment must point to compatible backend contracts.
 | Phase 7 | Live/video/results |
 | Phase 8 | Production hardening |
 
-# 171. Phase 0 — Foundation
+# 171. P0 FOUNDATION
 
 Implement:
 
@@ -2854,7 +2854,7 @@ Acceptance:
 - unauthorized routes are protected;
 - session expiration is handled.
 
-# 173. Phase 2 — Build and Artifact
+# 173. P2 BUILD & ARTIFACT
 
 Implement:
 
@@ -2874,7 +2874,7 @@ Acceptance:
 - upload is explicit;
 - artifact metadata is visible.
 
-# 174. Phase 3 — Control Plane
+# 174. P3 CONTROL PLANE
 
 Implement:
 
@@ -2890,7 +2890,7 @@ Acceptance:
 - frontend communicates through typed API client;
 - server state is authoritative.
 
-# 175. Phase 4 — Booking and Commercial
+# 175. P4 BOOKING & COMMERCIAL
 
 Implement:
 
@@ -2908,7 +2908,7 @@ Acceptance:
 - booking conflict handling works;
 - credit balances are authoritative.
 
-# 176. Phase 5 — Execution
+# 176. P5 EXECUTION
 
 Implement:
 
@@ -2925,7 +2925,7 @@ Acceptance:
 - duplicate start requests are safely handled;
 - stop state is accurately represented.
 
-# 177. Phase 6 — Lab and Robot
+# 177. P6 LAB & ROBOT
 
 Implement:
 
@@ -2940,7 +2940,7 @@ Acceptance:
 - incompatible resources are not presented as executable;
 - lab/resource health is visible.
 
-# 178. Phase 7 — Live and Results
+# 178. P7 LIVE & RESULTS
 
 Implement:
 
@@ -2959,7 +2959,7 @@ Acceptance:
 - state reconciliation works;
 - results remain accessible.
 
-# 179. Phase 8 — Production
+# 179. P8 PRODUCTION
 
 Implement:
 

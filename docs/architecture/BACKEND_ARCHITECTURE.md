@@ -2581,7 +2581,7 @@ The default is to keep the module in the monolith.
 | Phase 7 | Results and realtime |
 | Phase 8 | Production hardening |
 
-## 140. Phase 0 — Foundation
+## 140. P0 FOUNDATION
 
 Deliver:
 
@@ -2624,7 +2624,7 @@ Acceptance:
 - project CRUD works;
 - platform catalog works.
 
-## 142. Phase 2 — Artifact
+## 142. P2 BUILD & ARTIFACT — Artifact
 
 Deliver:
 
@@ -2643,7 +2643,7 @@ Acceptance:
 - validation succeeds/fails correctly;
 - incompatible artifacts are rejected.
 
-## 143. Phase 3 — Control Plane Integration
+## 143. P3 CONTROL PLANE Integration
 
 Deliver:
 
@@ -2661,7 +2661,7 @@ Acceptance:
 - realtime state works;
 - reconnect reconciliation works.
 
-## 144. Phase 4 — Booking and Commercial
+## 144. P4 BOOKING & COMMERCIAL
 
 Deliver:
 
@@ -2680,7 +2680,7 @@ Acceptance:
 - platform-specific credits work;
 - cancellation policy is enforced.
 
-## 145. Phase 5 — Execution
+## 145. P5 EXECUTION
 
 Deliver:
 
@@ -2698,7 +2698,7 @@ Acceptance:
 - state transitions are durable;
 - failures are recoverable.
 
-## 146. Phase 6 — Lab and Physical Robot
+## 146. P6 LAB & ROBOT — Lab and Physical Robot
 
 Deliver:
 
@@ -2718,7 +2718,7 @@ Acceptance:
 - physical execution follows booking and authorization;
 - safety boundary remains intact.
 
-## 147. Phase 7 — Results
+## 147. P7 LIVE & RESULTS — Results
 
 Deliver:
 
@@ -2738,7 +2738,7 @@ Acceptance:
 - metadata is durable;
 - rerun creates a new execution.
 
-## 148. Phase 8 — Production
+## 148. P8 PRODUCTION
 
 Deliver:
 

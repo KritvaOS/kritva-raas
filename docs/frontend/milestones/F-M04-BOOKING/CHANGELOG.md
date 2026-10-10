@@ -51,114 +51,21 @@ Milestone: F-M04 — Booking
 
 # Appendix A — Phase Mapping
 
-## A.1 Phase 0 — FOUNDATION
+The canonical mapping for F-M04 BOOKING (P4) is defined in `docs/planning/PHASES.md` (Section 6). Cross-phase dependencies are owned by `docs/planning/DEPENDENCY_MAP.md` and `docs/planning/IMPLEMENTATION_ROADMAP.md`; milestone scope is owned by this milestone's `MILESTONE.md`. This appendix does not redefine either.
 
-F-M04 consumes:
+| Phase | Relationship to this milestone | Boundary note |
+|---|---|---|
+| P0 FOUNDATION | Upstream dependency; outputs consumed by this milestone |  |
+| P1 STUDIO | Upstream dependency; outputs consumed by this milestone |  |
+| P2 BUILD & ARTIFACT | Upstream dependency; outputs consumed by this milestone |  |
+| P3 CONTROL PLANE | Upstream dependency; outputs consumed by this milestone |  |
+| P4 BOOKING & COMMERCIAL | Owning phase |  |
+| P5 EXECUTION | Downstream consumer of this milestone's outputs | Simulated Lab Agent and simulated robots only. |
+| P6 LAB & ROBOT | Downstream consumer of this milestone's outputs | Physical Lab Agent, physical robots, E-stop qualification and hardware safety review. |
+| P7 LIVE & RESULTS | Downstream consumer of this milestone's outputs |  |
+| P8 PRODUCTION | Downstream consumer of this milestone's outputs |  |
 
-- Studio foundation;
-- API client;
-- authentication;
-- UI system;
-- CI;
-- development environment;
-- database architecture;
-- security foundations.
-
-## A.2 Phase 1 — STUDIO
-
-F-M04 consumes:
-
-- organizations;
-- projects;
-- memberships;
-- platform catalog;
-- platform versions;
-- database repositories;
-- authorization.
-
-## A.3 Phase 2 — BUILD & ARTIFACT
-
-F-M04 is a primary Phase 2 milestone.
-
-It establishes the first complete customer-facing reservation and credit
-workflow.
-
-## A.4 Phase 3 — CONTROL PLANE
-
-F-M04 provides the booking context required by:
-
-- Job creation;
-- resource allocation;
-- artifact deployment;
-- Lab Agent execution.
-
-## A.5 Phase 4 — BOOKING & COMMERCIAL
-
-F-M04 is foundational to:
-
-- credit plans;
-- rate cards;
-- billing;
-- subscriptions;
-- usage;
-- refunds;
-- commercial policies.
-
-## A.6 Phase 5 — EXECUTION
-
-F-M04 consumes:
-
-- real lab state;
-- robot state;
-- resource availability;
-- maintenance windows;
-- Lab Agent health.
-
-## A.7 Phase 6 — LAB & ROBOT
-
-F-M04 is strengthened by:
-
-- financial audit;
-- tenant isolation;
-- security monitoring;
-- reconciliation;
-- production authorization;
-- operational controls.
-
-## A.8 Phase 7 — LIVE & RESULTS
-
-F-M04 expands to:
-
-- larger platform catalogs;
-- more labs;
-- more resources;
-- concurrent bookings;
-- capacity planning;
-- operational scheduling.
-
-## A.9 Phase 8 — PRODUCTION
-
-F-M04 becomes part of the production customer journey:
-
-    Discover
-       |
-       v
-    Subscribe
-       |
-       v
-    Credits
-       |
-       v
-    Book
-       |
-       v
-    Execute
-       |
-       v
-    Results
-       |
-       v
-    Rebook
+Earlier revisions of this appendix used a superseded phase model and were replaced to remove conflicting phase assignments.
 
 ---
 

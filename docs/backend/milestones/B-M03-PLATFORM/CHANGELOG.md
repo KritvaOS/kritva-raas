@@ -54,86 +54,21 @@ Milestone: B-M03 — Platform
 
 # Appendix A — Phase Mapping
 
-## Phase 0 — FOUNDATION
+The canonical mapping for B-M03 PLATFORM (P3) is defined in `docs/planning/PHASES.md` (Section 6). Cross-phase dependencies are owned by `docs/planning/DEPENDENCY_MAP.md` and `docs/planning/IMPLEMENTATION_ROADMAP.md`; milestone scope is owned by this milestone's `MILESTONE.md`. This appendix does not redefine either.
 
-B-M03 consumes:
+| Phase | Relationship to this milestone | Boundary note |
+|---|---|---|
+| P0 FOUNDATION | Upstream dependency; outputs consumed by this milestone |  |
+| P1 STUDIO | Upstream dependency; outputs consumed by this milestone |  |
+| P2 BUILD & ARTIFACT | Upstream dependency; outputs consumed by this milestone |  |
+| P3 CONTROL PLANE | Owning phase |  |
+| P4 BOOKING & COMMERCIAL | Downstream consumer of this milestone's outputs |  |
+| P5 EXECUTION | Downstream consumer of this milestone's outputs | Simulated Lab Agent and simulated robots only. |
+| P6 LAB & ROBOT | Downstream consumer of this milestone's outputs | Physical Lab Agent, physical robots, E-stop qualification and hardware safety review. |
+| P7 LIVE & RESULTS | Downstream consumer of this milestone's outputs |  |
+| P8 PRODUCTION | Downstream consumer of this milestone's outputs |  |
 
-- API foundation;
-- database foundation;
-- authentication;
-- authorization;
-- testing;
-- WebSocket runtime prerequisites.
-
-## Phase 1 — STUDIO
-
-B-M03 extends B-M01 with:
-
-- platform catalog;
-- capabilities;
-- platform configuration;
-- operational catalog foundations.
-
-## Phase 2 — BUILD & ARTIFACT
-
-B-M03 is a primary backend milestone for:
-
-- platform discovery;
-- resource discovery;
-- compatibility;
-- availability foundations.
-
-## Phase 3 — CONTROL PLANE
-
-B-M03 provides:
-
-- execution target identity;
-- resource state;
-- compatibility;
-- WebSocket event infrastructure.
-
-## Phase 4 — BOOKING & COMMERCIAL
-
-B-M03 supports:
-
-- resource allocation;
-- credit calculation inputs;
-- platform-specific credit type;
-- operational capacity.
-
-## Phase 5 — EXECUTION
-
-B-M03 expands to:
-
-- physical labs;
-- real robots;
-- Lab Agent state;
-- runtime status;
-- hardware-specific resources.
-
-## Phase 6 — LAB & ROBOT
-
-B-M03 gains:
-
-- hardened WebSocket security;
-- stronger platform governance;
-- audit monitoring;
-- operational access controls.
-
-## Phase 7 — LIVE & RESULTS
-
-B-M03 evolves toward:
-
-- large resource fleets;
-- high-volume status streams;
-- distributed WebSocket infrastructure;
-- connection scaling;
-- operational monitoring.
-
-## Phase 8 — PRODUCTION
-
-Platform, lab, robot, resource and WebSocket services become part of the
-production RaaS operating environment.
+Earlier revisions of this appendix used a superseded phase model and were replaced to remove conflicting phase assignments.
 
 ---
 

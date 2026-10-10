@@ -232,7 +232,7 @@ The following must all be true before the first customer-facing physical executi
 
 ### 6.21 No-go conditions
 
-Phase 6 shall not close if:
+P6 LAB & ROBOT shall not close if:
 
 - [ ] cloud can bypass safety;
 - [ ] E-stop can be cleared remotely;

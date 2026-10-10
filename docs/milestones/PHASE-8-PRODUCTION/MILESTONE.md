@@ -102,7 +102,7 @@ Supporting services:
 
 ### 1.4 Production principles
 
-Phase 8 shall preserve the following principles:
+P8 PRODUCTION shall preserve the following principles:
 
 1. PostgreSQL is authoritative for structured business state.
 2. Object storage is authoritative for large binary payloads.
@@ -122,7 +122,7 @@ Phase 8 shall preserve the following principles:
 
 ### 1.5 Production-readiness dimensions
 
-Phase 8 evaluates:
+P8 PRODUCTION evaluates:
 
 | Dimension | Production requirement |
 |---|---|
@@ -144,7 +144,7 @@ Phase 8 evaluates:
 
 ### 1.6 Goals
 
-Phase 8 goals are:
+P8 PRODUCTION goals are:
 
 1. production environment qualification;
 2. production security hardening;
@@ -253,7 +253,7 @@ If the cloud becomes unavailable:
 
 ### 1.12 Success definition
 
-Phase 8 succeeds when:
+P8 PRODUCTION succeeds when:
 
     Customer
        |
@@ -606,7 +606,7 @@ Production booking shall enforce:
 
 ### 2.21 Physical safety
 
-Production launch shall not change the Phase 6 safety model.
+Production launch shall not change the P6 LAB & ROBOT safety model.
 
     Cloud
       |
@@ -669,14 +669,14 @@ The following remain future work unless explicitly approved:
 
 Requires completed or accepted:
 
-- Phase 0 Foundation;
-- Phase 1 Studio;
-- Phase 2 Build & Artifact;
-- Phase 3 Control Plane;
-- Phase 4 Booking & Commercial;
-- Phase 5 Execution;
-- Phase 6 Lab & Robot;
-- Phase 7 Live & Results.
+- P0 FOUNDATION Foundation;
+- P1 STUDIO Studio;
+- P2 BUILD & ARTIFACT Build & Artifact;
+- P3 CONTROL PLANE Control Plane;
+- P4 BOOKING & COMMERCIAL Booking & Commercial;
+- P5 EXECUTION Execution;
+- P6 LAB & ROBOT Lab & Robot;
+- P7 LIVE & RESULTS Live & Results.
 
 ### 3.2 Cloud dependencies
 
@@ -1341,17 +1341,17 @@ Each stage requires:
 
 ### 10.13 Phase mapping
 
-| Phase | Phase 8 contribution |
+| Phase | P8 PRODUCTION contribution |
 |---|---|
-| Phase 0 FOUNDATION | Engineering process, contracts, CI, repository and quality baseline |
-| Phase 1 STUDIO | Production desktop client |
-| Phase 2 BUILD & ARTIFACT | Secure local build and signed `.krv` artifacts |
-| Phase 3 CONTROL PLANE | Production identity, projects, platforms and artifacts |
-| Phase 4 BOOKING & COMMERCIAL | Production resources, booking, credits and commercial operations |
-| Phase 5 EXECUTION | Production Job/Run orchestration |
-| Phase 6 LAB & ROBOT | Qualified Lab Agent and physical robot execution |
-| Phase 7 LIVE & RESULTS | Production live operations and results experience |
-| Phase 8 PRODUCTION | Primary milestone; production hardening, scale and launch |
+| P0 FOUNDATION | Engineering process, contracts, CI, repository and quality baseline |
+| P1 STUDIO | Production desktop client |
+| P2 BUILD & ARTIFACT | Secure local build and signed `.krv` artifacts |
+| P3 CONTROL PLANE | Production identity, projects, platforms and artifacts |
+| P4 BOOKING & COMMERCIAL | Production resources, booking, credits and commercial operations |
+| P5 EXECUTION | Production Job/Run orchestration |
+| P6 LAB & ROBOT | Qualified Lab Agent and physical robot execution |
+| P7 LIVE & RESULTS | Production live operations and results experience |
+| P8 PRODUCTION | Primary milestone; production hardening, scale and launch |
 
 ### 10.14 Cross-domain final path
 
@@ -1633,7 +1633,7 @@ The no-go decision shall not be treated as a project failure.
 
 It is the intended safety and quality mechanism for production release.
 
-### 10.20 Final Phase 8 acceptance statement
+### 10.20 Final P8 PRODUCTION acceptance statement
 
 PHASE-8-PRODUCTION shall transition:
 

@@ -444,7 +444,7 @@ Expected:
 
     Result Handoff = AVAILABLE
 
-The complete Results domain may be finalized by Phase 6.
+The complete Results domain is finalized in P7 LIVE & RESULTS (B-M06 RESULTS spans P6-P7).
 
 ### 8.13 Step 12 — Credit verification
 
@@ -503,7 +503,7 @@ Expected:
 
 ### 8.18 Demo completion
 
-Phase 5 demo passes when:
+P5 EXECUTION demo passes when:
 
     Approved Artifact
           |

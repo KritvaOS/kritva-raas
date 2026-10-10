@@ -4,12 +4,12 @@
 
 **Milestone ID:** B-M06-RESULTS  
 **Product:** Kritva RaaS  
-**Primary Phase:** Phase 6 — LAB & ROBOT  
-**Supporting Phases:** Phase 7 — LIVE & RESULTS  
+**Primary Phase:** P6 LAB & ROBOT  
+**Supporting Phases:** P7 LIVE & RESULTS  
 **Primary Surface:** RaaS Control Plane / Backend  
 **Technology:** TypeScript/Node.js, PostgreSQL, object storage, WebSocket/realtime transport, WebRTC/media infrastructure, provider-neutral Lab Agent interfaces  
 **Architecture:** Production-oriented Modular Monolith with asynchronous ingestion and processing workers  
-**Priority:** P0  
+**Priority:** PRI-1 (primary product path per Priority Matrix; see `docs/planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
 **Status:** PLANNED  
 **Primary Outcome:** Establish the authoritative backend result pipeline for telemetry, logs, video, execution results, experiment metadata, downloads and retention, while introducing the real Lab Agent integration boundary required for controlled laboratory execution.
 

@@ -18,7 +18,7 @@ The milestone may be closed only when every item below is checked by the reviewe
 
 ### 7.1 Test architecture
 
-Phase 1 testing follows:
+P1 STUDIO testing follows:
 
     Unit
       |
@@ -284,7 +284,7 @@ Required evidence:
 
 ### 8.1 Demo objective
 
-Demonstrate a complete Phase 1 Studio workflow from application launch through authenticated organization/project/platform interaction and Local Runtime integration.
+Demonstrate a complete P1 STUDIO Studio workflow from application launch through authenticated organization/project/platform interaction and Local Runtime integration.
 
 ### 8.2 Step 1 — Launch Studio
 

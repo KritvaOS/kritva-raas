@@ -4,11 +4,11 @@
 
 **Milestone ID:** F-M07-RESULTS  
 **Product:** Kritva RaaS  
-**Primary Phase:** Phase 7 — LIVE & RESULTS  
+**Primary Phase:** P7 LIVE & RESULTS  
 **Primary Surface:** RaaS Studio  
 **Supporting Services:** Control Plane, Object Storage, Results Service, Artifact Service, Execution Service  
 **Technology:** Tauri + Rust + React + TypeScript + REST + WebSocket/events  
-**Priority:** P0  
+**Priority:** PRI-1 (primary product path per Priority Matrix; see `docs/planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
 **Status:** PLANNED  
 **Primary Outcome:** A production-grade results experience that converts completed
 Runs into durable, discoverable and downloadable evidence, supports metrics and

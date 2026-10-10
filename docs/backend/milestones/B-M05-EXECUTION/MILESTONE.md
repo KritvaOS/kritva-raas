@@ -4,12 +4,12 @@
 
 **Milestone ID:** B-M05-EXECUTION  
 **Product:** Kritva RaaS  
-**Primary Phase:** Phase 5 — EXECUTION  
+**Primary Phase:** P5 EXECUTION  
 **Supporting Phases:** None  
 **Primary Surface:** RaaS Control Plane / Backend  
 **Technology:** TypeScript/Node.js, PostgreSQL, REST API v1, WebSocket events, provider-neutral queue/worker adapters  
 **Architecture:** Production-oriented Modular Monolith with asynchronous workers  
-**Priority:** P0  
+**Priority:** PRI-1 (primary product path per Priority Matrix; see `docs/planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
 **Status:** PLANNED  
 **Primary Outcome:** Establish the authoritative Job and Run execution system that validates a confirmed booking and compatible artifact, allocates the target resource, deploys through a simulated Lab Agent, executes a workload, enforces lifecycle and timeout rules, records durable execution state, and provides the foundation for later physical robot execution.
 

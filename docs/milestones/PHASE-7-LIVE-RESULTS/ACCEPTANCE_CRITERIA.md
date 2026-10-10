@@ -229,7 +229,7 @@ Milestone: PHASE-7-LIVE-RESULTS — Live Operations, Video, Telemetry and Result
 
 ### 6.20 No-go conditions
 
-Phase 7 shall not close if:
+P7 LIVE & RESULTS shall not close if:
 
 - [ ] live state is treated as authoritative;
 - [ ] reconnect can restart execution;

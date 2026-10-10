@@ -9,11 +9,11 @@ Source of scope: [MILESTONE.md](MILESTONE.md)
 
 | ID | Description | Estimate | Owner role | Dependencies | Status |
 |---|---|---:|---|---|---|
-| KR-LR-7-001 | Define live data architecture | 1.0d | System Architect | Phase 6 | [ ] |
+| KR-LR-7-001 | Define live data architecture | 1.0d | System Architect | P6 LAB & ROBOT | [ ] |
 | KR-LR-7-002 | Define live event contract | 1.0d | Protocol Architect | 001 | [ ] |
 | KR-LR-7-003 | Define telemetry envelope | 1.0d | Telemetry Architect | 001 | [ ] |
 | KR-LR-7-004 | Define video session contract | 1.0d | Media Architect | 001 | [ ] |
-| KR-LR-7-005 | Implement live execution API | 1.0d | Backend Engineer | Phase 5 | [ ] |
+| KR-LR-7-005 | Implement live execution API | 1.0d | Backend Engineer | P5 EXECUTION | [ ] |
 | KR-LR-7-006 | Implement WebSocket event stream | 1.5d | Backend Engineer | 002,005 | [ ] |
 | KR-LR-7-007 | Implement event deduplication | 1.0d | Backend Engineer | 006 | [ ] |
 | KR-LR-7-008 | Implement event gap detection | 1.0d | Backend Engineer | 006 | [ ] |
@@ -25,15 +25,15 @@ Source of scope: [MILESTONE.md](MILESTONE.md)
 | KR-LR-7-014 | Implement video reconnect | 1.0d | Media Engineer | 013 | [ ] |
 | KR-LR-7-015 | Implement video failure handling | 1.0d | Media Engineer | 013,014 | [ ] |
 | KR-LR-7-016 | Implement recording metadata | 1.0d | Backend Engineer | 013 | [ ] |
-| KR-LR-7-017 | Implement telemetry ingestion | 2.0d | Telemetry Engineer | 003,Phase 6 | [ ] |
+| KR-LR-7-017 | Implement telemetry ingestion | 2.0d | Telemetry Engineer | 003,P6 LAB & ROBOT | [ ] |
 | KR-LR-7-018 | Implement telemetry normalization | 1.5d | Telemetry Engineer | 017 | [ ] |
 | KR-LR-7-019 | Implement telemetry buffering | 1.0d | Lab Engineer | 017 | [ ] |
 | KR-LR-7-020 | Implement telemetry persistence handoff | 1.5d | Backend Engineer | 018,019 | [ ] |
 | KR-LR-7-021 | Implement telemetry freshness | 1.0d | Backend Engineer | 018 | [ ] |
-| KR-LR-7-022 | Implement live logs | 1.5d | Backend Engineer | Phase 6 | [ ] |
+| KR-LR-7-022 | Implement live logs | 1.5d | Backend Engineer | P6 LAB & ROBOT | [ ] |
 | KR-LR-7-023 | Implement log filtering | 1.0d | Frontend Engineer | 022 | [ ] |
 | KR-LR-7-024 | Implement log redaction validation | 1.0d | Security Engineer | 022 | [ ] |
-| KR-LR-7-025 | Implement result creation | 1.0d | Backend Engineer | Phase 5 | [ ] |
+| KR-LR-7-025 | Implement result creation | 1.0d | Backend Engineer | P5 EXECUTION | [ ] |
 | KR-LR-7-026 | Implement result processing | 1.5d | Backend Engineer | 025 | [ ] |
 | KR-LR-7-027 | Implement result files | 1.5d | Backend Engineer | 025,026 | [ ] |
 | KR-LR-7-028 | Implement result metrics | 1.5d | Backend Engineer | 026 | [ ] |
@@ -44,13 +44,13 @@ Source of scope: [MILESTONE.md](MILESTONE.md)
 | KR-LR-7-033 | Implement comparison metrics | 1.5d | Data Engineer | 032 | [ ] |
 | KR-LR-7-034 | Implement download service | 1.5d | Backend Engineer | 027 | [ ] |
 | KR-LR-7-035 | Implement download authorization | 1.0d | Security Engineer | 034 | [ ] |
-| KR-LR-7-036 | Implement rerun service | 1.5d | Backend Engineer | Phase 4,5 | [ ] |
+| KR-LR-7-036 | Implement rerun service | 1.5d | Backend Engineer | P4 BOOKING & COMMERCIAL,5 | [ ] |
 | KR-LR-7-037 | Implement result APIs | 1.5d | API Engineer | 025-036 | [ ] |
 | KR-LR-7-038 | Implement Live Studio screen | 2.0d | Frontend Engineer | 005-024 | [ ] |
 | KR-LR-7-039 | Implement video UI | 1.5d | Frontend Engineer | 011-015 | [ ] |
 | KR-LR-7-040 | Implement telemetry UI | 1.5d | Frontend Engineer | 017-021 | [ ] |
 | KR-LR-7-041 | Implement log UI | 1.0d | Frontend Engineer | 022-024 | [ ] |
-| KR-LR-7-042 | Implement safety-state UI | 1.0d | Frontend Engineer | Phase 6 | [ ] |
+| KR-LR-7-042 | Implement safety-state UI | 1.0d | Frontend Engineer | P6 LAB & ROBOT | [ ] |
 | KR-LR-7-043 | Implement results UI | 2.0d | Frontend Engineer | 025-028 | [ ] |
 | KR-LR-7-044 | Implement experiment UI | 1.5d | Frontend Engineer | 030,031 | [ ] |
 | KR-LR-7-045 | Implement comparison UI | 1.5d | Frontend Engineer | 032,033 | [ ] |
@@ -68,8 +68,8 @@ Source of scope: [MILESTONE.md](MILESTONE.md)
 | KR-LR-7-057 | Execute live performance baseline | 1.5d | Performance Engineer | 048-056 | [ ] |
 | KR-LR-7-058 | Execute security review | 1.5d | Security Architect | 053 | [ ] |
 | KR-LR-7-059 | Execute UX/accessibility review | 1.0d | UX/QA Engineer | 038-047 | [ ] |
-| KR-LR-7-060 | Complete Phase 7 evidence package | 1.0d | Tech Lead | 057-059 | [ ] |
-| KR-LR-7-061 | Complete Phase 7 acceptance | 0.5d | Tech Lead | 060 | [ ] |
+| KR-LR-7-060 | Complete P7 LIVE & RESULTS evidence package | 1.0d | Tech Lead | 057-059 | [ ] |
+| KR-LR-7-061 | Complete P7 LIVE & RESULTS acceptance | 0.5d | Tech Lead | 060 | [ ] |
 
 ### 5.2 Indicative effort
 

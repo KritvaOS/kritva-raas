@@ -56,92 +56,21 @@ Milestone: B-M06 — Results
 
 # Appendix A — Phase Mapping
 
-## Phase 0 — FOUNDATION
+The canonical mapping for B-M06 RESULTS (P6-P7) is defined in `docs/planning/PHASES.md` (Section 6). Cross-phase dependencies are owned by `docs/planning/DEPENDENCY_MAP.md` and `docs/planning/IMPLEMENTATION_ROADMAP.md`; milestone scope is owned by this milestone's `MILESTONE.md`. This appendix does not redefine either.
 
-B-M06 consumes:
+| Phase | Relationship to this milestone | Boundary note |
+|---|---|---|
+| P0 FOUNDATION | Upstream dependency; outputs consumed by this milestone |  |
+| P1 STUDIO | Upstream dependency; outputs consumed by this milestone |  |
+| P2 BUILD & ARTIFACT | Upstream dependency; outputs consumed by this milestone |  |
+| P3 CONTROL PLANE | Upstream dependency; outputs consumed by this milestone |  |
+| P4 BOOKING & COMMERCIAL | Upstream dependency; outputs consumed by this milestone |  |
+| P5 EXECUTION | Upstream dependency; outputs consumed by this milestone | Simulated Lab Agent and simulated robots only. |
+| P6 LAB & ROBOT | Owning phase (start) | Physical Lab Agent, physical robots, E-stop qualification and hardware safety review. |
+| P7 LIVE & RESULTS | Owning phase (completion) |  |
+| P8 PRODUCTION | Downstream consumer of this milestone's outputs |  |
 
-- API foundation;
-- PostgreSQL;
-- object storage;
-- authentication;
-- authorization;
-- audit;
-- queue/worker infrastructure;
-- observability.
-
-## Phase 1 — STUDIO
-
-B-M06 consumes:
-
-- Organization;
-- Project;
-- Platform;
-- Resource;
-- repository foundation.
-
-## Phase 2 — BUILD & ARTIFACT
-
-B-M06 consumes:
-
-- artifact;
-- compatibility;
-- Project;
-- platform selection.
-
-## Phase 3 — CONTROL PLANE
-
-B-M06 is the primary backend milestone for:
-
-- telemetry;
-- logs;
-- video metadata;
-- Results;
-- Experiment metadata;
-- downloads.
-
-## Phase 4 — BOOKING & COMMERCIAL
-
-B-M06 integrates:
-
-- booking;
-- credit consumption;
-- usage evidence;
-- commercial result references.
-
-## Phase 5 — EXECUTION
-
-B-M06 expands to:
-
-- real Lab Agent;
-- real camera;
-- real telemetry;
-- physical robot result collection;
-- local buffering;
-- lab connectivity recovery.
-
-## Phase 6 — LAB & ROBOT
-
-B-M06 gains:
-
-- hardened result isolation;
-- media security;
-- retention compliance;
-- download security;
-- production audit controls.
-
-## Phase 7 — LIVE & RESULTS
-
-B-M06 evolves toward:
-
-- high-volume telemetry;
-- large media fleets;
-- distributed ingestion;
-- scalable result processing;
-- advanced experiment analytics.
-
-## Phase 8 — PRODUCTION
-
-Results, media, telemetry and experiments become production customer services.
+Earlier revisions of this appendix used a superseded phase model and were replaced to remove conflicting phase assignments.
 
 ---
 

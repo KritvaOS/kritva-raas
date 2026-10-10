@@ -9,7 +9,7 @@ Source of scope: [MILESTONE.md](MILESTONE.md)
 
 | ID | Description | Estimate | Owner role | Dependencies | Status |
 |---|---|---:|---|---|---|
-| KR-BE-4-001 | Confirm resource/robot/lab boundaries | 1.0d | Backend Architect | Phase 3 | [ ] |
+| KR-BE-4-001 | Confirm resource/robot/lab boundaries | 1.0d | Backend Architect | P3 CONTROL PLANE | [ ] |
 | KR-BE-4-002 | Implement lab repository/service | 1.0d | Backend Engineer | DB-M02 | [ ] |
 | KR-BE-4-003 | Implement robot repository/service | 1.0d | Backend Engineer | DB-M02 | [ ] |
 | KR-BE-4-004 | Implement resource repository/service | 1.5d | Backend Engineer | 002,003 | [ ] |
@@ -17,7 +17,7 @@ Source of scope: [MILESTONE.md](MILESTONE.md)
 | KR-BE-4-006 | Implement availability windows | 1.0d | Backend Engineer | 004 | [ ] |
 | KR-BE-4-007 | Implement resource state transitions | 1.0d | Backend Engineer | 004 | [ ] |
 | KR-BE-4-008 | Implement availability service | 2.0d | Scheduling Engineer | 004-006 | [ ] |
-| KR-BE-4-009 | Implement platform/resource eligibility | 1.5d | Backend Engineer | 008, Phase 3 | [ ] |
+| KR-BE-4-009 | Implement platform/resource eligibility | 1.5d | Backend Engineer | 008, P3 CONTROL PLANE | [ ] |
 | KR-BE-4-010 | Implement availability APIs | 1.0d | API Engineer | 008 | [ ] |
 | KR-BE-4-011 | Implement booking aggregate | 1.5d | Backend Architect | DB-M03 | [ ] |
 | KR-BE-4-012 | Implement booking state machine | 1.0d | Backend Engineer | 011 | [ ] |
@@ -51,7 +51,7 @@ Source of scope: [MILESTONE.md](MILESTONE.md)
 | KR-BE-4-040 | Implement commercial authorization | 1.0d | Security Engineer | 037-039 | [ ] |
 | KR-BE-4-041 | Implement booking audit events | 1.0d | Security Engineer | 017-020 | [ ] |
 | KR-BE-4-042 | Implement financial audit events | 1.0d | Security Engineer | 026-035 | [ ] |
-| KR-BE-4-043 | Implement booking UI | 2.0d | Frontend Engineer | Phase 3, 037 | [ ] |
+| KR-BE-4-043 | Implement booking UI | 2.0d | Frontend Engineer | P3 CONTROL PLANE, 037 | [ ] |
 | KR-BE-4-044 | Implement availability UI | 1.5d | Frontend Engineer | 010 | [ ] |
 | KR-BE-4-045 | Implement credit wallet UI | 1.0d | Frontend Engineer | 038 | [ ] |
 | KR-BE-4-046 | Implement quote UI | 1.0d | Frontend Engineer | 016 | [ ] |
@@ -68,7 +68,7 @@ Source of scope: [MILESTONE.md](MILESTONE.md)
 | KR-BE-4-057 | Review scheduling invariants | 1.0d | Scheduling Architect | 008-020 | [ ] |
 | KR-BE-4-058 | Complete security review | 1.0d | Security Architect | 040,053 | [ ] |
 | KR-BE-4-059 | Complete architecture review | 1.0d | System Architect | 001-055 | [ ] |
-| KR-BE-4-060 | Complete Phase 4 acceptance | 0.5d | Tech Lead | 056-059 | [ ] |
+| KR-BE-4-060 | Complete P4 BOOKING & COMMERCIAL acceptance | 0.5d | Tech Lead | 056-059 | [ ] |
 
 ### 5.2 Indicative effort
 
@@ -86,7 +86,7 @@ Financial and concurrency work shall not be compressed below the level needed to
 
 ### 5.3 Definition of Ready
 
-A Phase 4 task is READY only when:
+A P4 BOOKING & COMMERCIAL task is READY only when:
 
 - resource or financial ownership is defined;
 - transaction boundary is documented;

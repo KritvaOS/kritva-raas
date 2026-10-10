@@ -215,10 +215,10 @@ Do not infer acceptance from a merged change, successful build, or passing unit 
 
 | Priority | Meaning |
 |---|---|
-| `P0` | Immediate prerequisite, critical blocker, or essential foundation task. |
-| `P1` | High-priority task required for planned milestone progress. |
-| `P2` | Important task that can follow higher-priority dependencies. |
-| `P3` | Lower-priority improvement or follow-up task. |
+| `PRI-0` | Immediate prerequisite, critical blocker, or essential foundation task. |
+| `PRI-1` | High-priority task required for planned milestone progress. |
+| `PRI-2` | Important task that can follow higher-priority dependencies. |
+| `PRI-3` | Lower-priority improvement or follow-up task. |
 
 Task priority is distinct from the canonical phase identifier. Use the `Priority` field for task urgency and the `Phase` field for phase assignment.
 
@@ -249,7 +249,7 @@ Each task record must contain the following fields.
 | Phase | Canonical phase ID and name |
 | Milestone | Exact milestone ID and name, or `TBD` pending reconciliation |
 | Status | Approved task status |
-| Priority | P0, P1, P2, or P3 |
+| Priority | PRI-0, PRI-1, PRI-2, or PRI-3 |
 | Owner | Accountable person or role |
 | Dependencies | Task IDs, milestone IDs, or external deliverables |
 | Acceptance state | Approved acceptance state |

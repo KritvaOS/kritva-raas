@@ -1977,7 +1977,7 @@ Recommended order:
 | 7 | Observation/Result | Live operation |
 | 8 | Production components | Reliability and scale |
 
-## 94. Phase 0 — Foundation
+## 94. P0 FOUNDATION
 
 Implement:
 
@@ -1996,7 +1996,7 @@ Acceptance:
 - interfaces are documented;
 - local integration succeeds.
 
-## 95. Phase 1 — Studio
+## 95. P1 STUDIO
 
 Implement:
 
@@ -2015,7 +2015,7 @@ Acceptance:
 - platform catalog can be displayed;
 - IPC boundary works.
 
-## 96. Phase 2 — Artifact
+## 96. P2 BUILD & ARTIFACT — Artifact
 
 Implement:
 
@@ -2033,7 +2033,7 @@ Acceptance:
 - server validates;
 - incompatible artifacts are rejected.
 
-## 97. Phase 3 — Control Plane
+## 97. P3 CONTROL PLANE
 
 Implement:
 
@@ -2056,7 +2056,7 @@ Acceptance:
 - asynchronous work functions;
 - state transitions are persisted.
 
-## 98. Phase 4 — Booking and Credit
+## 98. P4 BOOKING & COMMERCIAL — Booking and Credit
 
 Implement:
 
@@ -2072,7 +2072,7 @@ Acceptance:
 - platform credits are enforced;
 - ledger is auditable.
 
-## 99. Phase 5 — Execution
+## 99. P5 EXECUTION
 
 Implement:
 
@@ -2090,7 +2090,7 @@ Acceptance:
 - stop/cancel works;
 - failures reconcile.
 
-## 100. Phase 6 — Physical Lab
+## 100. P6 LAB & ROBOT — Physical Lab
 
 Implement:
 
@@ -2110,7 +2110,7 @@ Acceptance:
 - runtime executes;
 - safety review is complete.
 
-## 101. Phase 7 — Live and Results
+## 101. P7 LIVE & RESULTS
 
 Implement:
 
@@ -2129,7 +2129,7 @@ Acceptance:
 - results are stored;
 - rerun works.
 
-## 102. Phase 8 — Production
+## 102. P8 PRODUCTION
 
 Harden:
 

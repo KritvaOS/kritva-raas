@@ -82,7 +82,7 @@ This framework applies to changes affecting:
 - documentation;
 - operational procedures.
 
-The framework applies from Phase 0 through Phase 8.
+The framework applies from P0 FOUNDATION through P8 PRODUCTION.
 
 ## 3. Goals
 
@@ -302,11 +302,11 @@ SCHEDULE.
 
 | Priority | Meaning |
 |---|---|
-| P0 | Safety/security/production-critical or emergency |
-| P1 | Current milestone or release critical |
-| P2 | Planned product/engineering change |
-| P3 | Future improvement |
-| P4 | Informational/minor |
+| PRI-0 | Safety/security/production-critical or emergency |
+| PRI-1 | Current milestone or release critical |
+| PRI-2 | Planned product/engineering change |
+| PRI-3 | Future improvement |
+| PRI-4 | Informational/minor |
 
 ## 15. Change Impact
 
@@ -1089,7 +1089,7 @@ A structured change request should contain:
         "priority": "P1",
         "status": "PROPOSED",
         "requestor": "owner",
-        "baseline": "Phase 1 architecture",
+        "baseline": "P3 CONTROL PLANE architecture",
         "proposed_change": "Change description",
         "rationale": "Reason",
         "affected_phase": "1",
@@ -1576,9 +1576,9 @@ possible.
 
 Changing providers should not require rewriting domain logic.
 
-## 101. Phase 0 Mapping
+## 101. P0 FOUNDATION Mapping
 
-Phase 0 change management establishes:
+P0 FOUNDATION change management establishes:
 
 - change IDs;
 - baseline rules;
@@ -1591,49 +1591,48 @@ Primary objective:
 
     Establish controlled change before implementation scales.
 
-## 102. Phase 1 Mapping
+## 102. P1 STUDIO Mapping
 
-Phase 1 changes focus on:
+P1 STUDIO changes focus on:
+
+- Studio;
+- local runtime;
+- local project workflow;
+- IPC boundary;
+- local source-privacy boundary.
+
+Changes that weaken the local source-privacy boundary require security review.
+
+## 103. P2 BUILD & ARTIFACT Mapping
+
+P2 BUILD & ARTIFACT changes focus on:
+
+- local build;
+- artifact;
+- artifact manifest;
+- signing;
+- source privacy;
+- artifact security.
+
+Contract and security impact are especially important.
+
+## 104. P3 CONTROL PLANE Mapping
+
+P3 CONTROL PLANE changes focus on:
 
 - core platform architecture;
 - database;
 - authentication;
 - authorization;
 - tenant model;
-- API contracts.
+- API contracts;
+- object storage metadata.
 
 High-impact changes require architecture and security review.
 
-## 103. Phase 2 Mapping
+## 105. P4 BOOKING & COMMERCIAL Mapping
 
-Phase 2 changes focus on:
-
-- Studio;
-- local build;
-- artifact;
-- source privacy;
-- artifact security;
-- object storage.
-
-Contract and security impact are especially important.
-
-## 104. Phase 3 Mapping
-
-Phase 3 changes focus on:
-
-- Lab Agent;
-- execution;
-- Job/Run;
-- simulation;
-- telemetry;
-- video;
-- protocol.
-
-Changes affecting physical execution require future safety consideration.
-
-## 105. Phase 4 Mapping
-
-Phase 4 changes focus on:
+P4 BOOKING & COMMERCIAL changes focus on:
 
 - booking;
 - resource allocation;
@@ -1645,64 +1644,65 @@ Phase 4 changes focus on:
 
 Financial/resource consistency is mandatory.
 
-## 106. Phase 5 Mapping
+## 106. P5 EXECUTION Mapping
 
-Phase 5 changes focus on:
+P5 EXECUTION changes focus on:
 
+- simulated Lab Agent;
+- execution;
+- Job/Run;
+- simulation;
+- protocol;
+- execution events and logs.
+
+Changes that would introduce physical execution belong to P6 LAB & ROBOT and require safety review there.
+
+## 107. P6 LAB & ROBOT Mapping
+
+P6 LAB & ROBOT changes focus on:
+
+- physical Lab Agent;
 - robot hardware;
 - HIL;
 - physical qualification;
 - safety;
-- local runtime;
 - E-stop.
 
 Safety changes receive specialist review.
 
-## 107. Phase 6 Mapping
+## 108. P7 LIVE & RESULTS Mapping
 
-Phase 6 changes focus on:
+P7 LIVE & RESULTS changes focus on:
 
-- security;
-- tenant isolation;
-- secrets;
-- keys;
+- telemetry;
+- video;
+- results;
+- observation data and provenance.
+
+Changes affecting result integrity or provenance require review.
+
+## 109. P8 PRODUCTION Mapping
+
+P8 PRODUCTION changes focus on:
+
+- security qualification;
+- secrets and keys;
 - audit;
 - recovery;
-- production infrastructure.
-
-Security-impacting changes receive security review.
-
-## 108. Phase 7 Mapping
-
-Phase 7 changes focus on:
-
-- scale;
-- capacity;
-- concurrency;
-- multi-lab;
-- observability;
-- cost optimization.
-
-Performance changes require evidence.
-
-## 109. Phase 8 Mapping
-
-Phase 8 changes focus on:
-
+- production infrastructure;
+- scale, capacity and multi-lab operation;
 - release;
-- production;
-- commercial readiness;
-- operational readiness;
+- commercial and operational readiness;
 - physical fleet rollout.
 
-Release-impacting changes are tightly controlled.
+Security-impacting and release-impacting changes are tightly controlled.
 
 ## 110. Initial Change Governance State
 
 Current state:
 
     Current Phase:
-        Phase 0 — FOUNDATION
+        P0 FOUNDATION
 
     Change Process:
         Defined
@@ -1944,15 +1944,15 @@ For each material change:
 
 ## 127. Phase Acceptance Criteria
 
-- [ ] Phase 0 change controls established.
-- [ ] Phase 1 architecture changes controlled.
-- [ ] Phase 2 artifact/source privacy changes controlled.
-- [ ] Phase 3 execution/protocol changes controlled.
-- [ ] Phase 4 booking/credit changes controlled.
-- [ ] Phase 5 safety/hardware changes controlled.
-- [ ] Phase 6 LAB & ROBOT safety-relevant changes controlled.
-- [ ] Phase 8 PRODUCTION security and operations changes controlled.
-- [ ] Phase 8 release/launch changes controlled.
+- [ ] P0 FOUNDATION change controls established.
+- [ ] P1 STUDIO local-boundary changes controlled.
+- [ ] P2 BUILD & ARTIFACT artifact/source privacy changes controlled.
+- [ ] P3 CONTROL PLANE architecture, identity and data changes controlled.
+- [ ] P4 BOOKING & COMMERCIAL booking/credit changes controlled.
+- [ ] P5 EXECUTION simulated execution/protocol changes controlled.
+- [ ] P6 LAB & ROBOT safety/hardware changes controlled.
+- [ ] P7 LIVE & RESULTS observation and results changes controlled.
+- [ ] P8 PRODUCTION security, operations and release changes controlled.
 
 ## 128. Final Change Management Invariants
 

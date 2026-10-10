@@ -4,11 +4,11 @@
 
 **Milestone ID:** C-M01-FOUNDATION  
 **Product:** Kritva RaaS  
-**Primary Phase:** Phase 0 — FOUNDATION  
+**Primary Phase:** P0 FOUNDATION  
 **Supporting Phases:** None  
 **Primary Surface:** Cloud Infrastructure / Platform Engineering / Security / CI/CD  
 **Architecture:** Provider-neutral managed cloud foundation  
-**Priority:** P0  
+**Priority:** PRI-0 (critical invariant per Priority Matrix; see `docs/planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
 **Status:** PLANNED  
 **Primary Outcome:** Establish a secure, reproducible, isolated and observable cloud foundation on which the Kritva RaaS Control Plane, database, object storage, queue, workers, Lab connectivity and production operations can be deployed consistently across Local, Development, Staging and Production environments.
 

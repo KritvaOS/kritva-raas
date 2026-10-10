@@ -569,7 +569,7 @@ Expected:
 
 ### 8.20 Demo completion
 
-The Phase 7 demo passes when:
+The P7 LIVE & RESULTS demo passes when:
 
     Live Execution
           |

@@ -4,10 +4,10 @@
 
 **Milestone ID:** F-M01-STUDIO-FOUNDATION  
 **Product:** Kritva RaaS  
-**Primary Phase:** Phase 0 — FOUNDATION  
+**Primary Phase:** P0 FOUNDATION  
 **Primary Surface:** RaaS Studio  
 **Technology:** Tauri + Rust + React + TypeScript  
-**Priority:** P0  
+**Priority:** PRI-1 (primary product path per Priority Matrix; see `docs/planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
 **Status:** PLANNED  
 **Target:** Production-grade Studio foundation  
 **Primary Outcome:** A secure, navigable, authenticated Studio shell that establishes the
@@ -298,7 +298,7 @@ The mock must not become a permanent replacement for the real API.
          +--> CI/Test Infrastructure
          |
          v
-    F-M02 Identity & Project Workspace
+    F-M02 PROJECTS
 
 ---
 

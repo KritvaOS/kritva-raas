@@ -200,7 +200,7 @@ Demo-0 shall satisfy:
 
 ### 6.16 No-go conditions
 
-Phase 3 shall not close if:
+P3 CONTROL PLANE shall not close if:
 
 - [ ] Control Plane depends on mock business state;
 - [ ] PostgreSQL is bypassed for authoritative state;

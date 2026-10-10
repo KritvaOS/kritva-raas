@@ -2208,7 +2208,7 @@ Complete Studio workflow:
 | Phase 7 | Live execution and results |
 | Phase 8 | Production hardening |
 
-## 127. Phase 0 — Foundation
+## 127. P0 FOUNDATION
 
 Deliver:
 
@@ -2248,7 +2248,7 @@ Gate:
 - expired sessions recover safely;
 - unauthorized routes are blocked.
 
-## 129. Phase 2 — Build and Artifact
+## 129. P2 BUILD & ARTIFACT
 
 Deliver:
 
@@ -2267,7 +2267,7 @@ Gate:
 - successful build creates valid `.krv`;
 - upload is explicit.
 
-## 130. Phase 3 — Control Plane
+## 130. P3 CONTROL PLANE
 
 Deliver:
 
@@ -2283,7 +2283,7 @@ Gate:
 
 - Studio can synchronize authoritative remote state.
 
-## 131. Phase 4 — Booking and Credits
+## 131. P4 BOOKING & COMMERCIAL — Booking and Credits
 
 Deliver:
 
@@ -2300,7 +2300,7 @@ Gate:
 - booking conflicts are handled;
 - insufficient credits are handled.
 
-## 132. Phase 5 — Execution
+## 132. P5 EXECUTION
 
 Deliver:
 
@@ -2317,7 +2317,7 @@ Gate:
 - duplicate requests are safe;
 - authoritative state is displayed.
 
-## 133. Phase 6 — Lab and Robot
+## 133. P6 LAB & ROBOT
 
 Deliver:
 
@@ -2332,7 +2332,7 @@ Gate:
 - incompatible execution is blocked;
 - unavailable resources are clearly represented.
 
-## 134. Phase 7 — Live and Results
+## 134. P7 LIVE & RESULTS
 
 Deliver:
 
@@ -2349,7 +2349,7 @@ Gate:
 - long-running sessions remain stable;
 - results are durable and discoverable.
 
-## 135. Phase 8 — Production
+## 135. P8 PRODUCTION
 
 Deliver:
 

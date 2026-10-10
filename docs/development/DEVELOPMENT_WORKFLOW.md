@@ -421,13 +421,13 @@ Recommended priorities:
 
 | Priority | Meaning |
 |---|---|
-| P0 | Required for current milestone/release |
-| P1 | Important but not blocking core milestone |
-| P2 | Useful enhancement |
+| PRI-0 | Required for current milestone/release |
+| PRI-1 | Important but not blocking core milestone |
+| PRI-2 | Useful enhancement |
 | EXP | Experimental |
 | DEFERRED | Explicitly postponed |
 
-P0 does not mean every task is urgent.
+PRI-0 does not mean every task is urgent.
 
 It means the task is required to satisfy the agreed milestone or release
 scope.

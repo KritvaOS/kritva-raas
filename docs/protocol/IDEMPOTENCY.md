@@ -2673,7 +2673,7 @@ A new idempotency record for every telemetry packet is prohibited.
 | Phase 7 | Results/events |
 | Phase 8 | Production operations |
 
-# 157. Phase 0 — Foundation
+# 157. P0 FOUNDATION
 
 Implement:
 
@@ -2691,7 +2691,7 @@ Acceptance:
 - duplicate requests cannot both claim a key;
 - request hash mismatch is detected.
 
-# 158. Phase 1 — Studio
+# 158. P1 STUDIO
 
 Implement:
 
@@ -2705,7 +2705,7 @@ Acceptance:
 
 - Studio never generates a new key for an automatic retry.
 
-# 159. Phase 2 — Artifact
+# 159. P2 BUILD & ARTIFACT — Artifact
 
 Implement:
 
@@ -2718,7 +2718,7 @@ Acceptance:
 
 - repeated upload cannot create duplicate artifact identities.
 
-# 160. Phase 3 — Control Plane
+# 160. P3 CONTROL PLANE
 
 Implement:
 
@@ -2732,7 +2732,7 @@ Acceptance:
 
 - horizontally scaled API instances produce one logical result.
 
-# 161. Phase 4 — Commercial
+# 161. P4 BOOKING & COMMERCIAL — Commercial
 
 Implement:
 
@@ -2746,7 +2746,7 @@ Acceptance:
 
 - retries cannot double-book or double-charge.
 
-# 162. Phase 5 — Execution
+# 162. P5 EXECUTION
 
 Implement:
 
@@ -2762,7 +2762,7 @@ Acceptance:
 
 - job start retry cannot create a second run.
 
-# 163. Phase 6 — Lab and Robot
+# 163. P6 LAB & ROBOT
 
 Implement:
 
@@ -2775,7 +2775,7 @@ Acceptance:
 
 - uncertain physical execution is reconciled before retrying.
 
-# 164. Phase 7 — Live and Results
+# 164. P7 LIVE & RESULTS
 
 Implement:
 
@@ -2788,7 +2788,7 @@ Acceptance:
 
 - duplicate worker messages cannot create duplicate result records.
 
-# 165. Phase 8 — Production
+# 165. P8 PRODUCTION
 
 Implement:
 

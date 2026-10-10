@@ -92,7 +92,7 @@ They do not prohibit parallel implementation of work whose prerequisites are alr
 |---|---|---|---|---|
 | P0 FOUNDATION | F-M01 STUDIO FOUNDATION | — | DB-M01 FOUNDATION | C-M01 FOUNDATION |
 | P1 STUDIO | F-M01 STUDIO FOUNDATION; F-M02 PROJECTS | — | DB-M01 FOUNDATION | C-M02 DEVELOPMENT |
-| P2 BUILD & ARTIFACT | F-M03 BUILD & ARTIFACT | B-M02 ARTIFACT | DB-M01 FOUNDATION; DB-M02 CORE DATA | C-M02 DEVELOPMENT |
+| P2 BUILD & ARTIFACT | F-M03 BUILD & ARTIFACT | B-M02 ARTIFACT | DB-M01 FOUNDATION | C-M02 DEVELOPMENT |
 | P3 CONTROL PLANE | — | B-M01 CONTROL PLANE; B-M02 ARTIFACT; B-M03 PLATFORM | DB-M01 FOUNDATION; DB-M02 CORE DATA | C-M02 DEVELOPMENT |
 | P4 BOOKING & COMMERCIAL | F-M04 BOOKING | B-M04 BOOKING | DB-M03 BOOKING DATA | C-M03 STAGING |
 | P5 EXECUTION | F-M05 EXECUTION | B-M05 EXECUTION | DB-M04 EXECUTION DATA | C-M03 STAGING |
@@ -102,6 +102,8 @@ They do not prohibit parallel implementation of work whose prerequisites are alr
 
 The same milestone may contribute to more than one phase where explicitly shown above.
 
+DB-M02 CORE DATA (P3) is not a P2 BUILD & ARTIFACT milestone. P2 uses the DB-M01 FOUNDATION (P0-P3) identity, organization, project, migration, RLS, and audit foundations. Where P2 work needs persisted artifact, storage, or compatibility metadata, that is a cross-phase dependency on DB-M02 CORE DATA (P3); B-M02 ARTIFACT (P2-P3) completes registry persistence against DB-M02 CORE DATA during P3 CONTROL PLANE.
+
 The milestone dossier remains authoritative for the complete milestone scope.
 
 ## 5. Implementation Priority Model
@@ -110,14 +112,16 @@ Implementation priorities are defined as follows.
 
 | Priority | Meaning |
 |---|---|
-| P0 | Required to establish the foundation or protect a critical invariant |
-| P1 | Required for the primary RaaS MVP path |
-| P2 | Required for expansion, operational maturity, or non-critical product breadth |
-| P3 | Future enhancement or lower-priority capability |
+| PRI-0 | Critical invariant: required to establish the foundation or protect a safety, security, privacy, financial or data-integrity invariant |
+| PRI-1 | Required for the primary product path (defined in `docs/planning/PHASES.md`) |
+| PRI-2 | Required for expansion, operational maturity, or non-critical product breadth |
+| PRI-3 | Future enhancement or lower-priority capability |
 
-Priority is distinct from phase number.
+Priority uses the `PRI-n` notation so that it can never be confused with a phase identifier (`P0`-`P8`). Priority is distinct from phase number.
 
-A P1 task may occur in P0, P1, or a later phase if it is required for the primary product path.
+A PRI-1 task may occur in P0 FOUNDATION, P1 STUDIO, or a later phase if it is required for the primary product path.
+
+Milestone priority is assigned from actual delivery criticality using the Priority Matrix (Section 26); not every milestone is PRI-0.
 
 Security, tenant isolation, source privacy, artifact integrity, financial integrity, and physical safety requirements may be elevated to P0 regardless of feature classification.
 
@@ -184,9 +188,9 @@ Backend implementation does not require a dedicated P0 milestone under the froze
        |
        +--> F-M01 STUDIO FOUNDATION
 
-### P0 Priority
+### P0 FOUNDATION Priority
 
-P0 FOUNDATION work is predominantly P0 priority.
+P0 FOUNDATION work is predominantly PRI-0.
 
 Particular emphasis must be placed on:
 
@@ -257,8 +261,11 @@ Primary milestones:
 - F-M03 BUILD & ARTIFACT
 - B-M02 ARTIFACT
 - DB-M01 FOUNDATION
-- DB-M02 CORE DATA
 - C-M02 DEVELOPMENT
+
+Cross-phase dependency (not a P2 milestone):
+
+- DB-M02 CORE DATA (P3), for persisted artifact, storage, and compatibility metadata.
 
 The dependency sequence is:
 
@@ -310,9 +317,9 @@ P2 must stabilize the artifact contract before remote execution implementation i
 - Artifact checksum.
 - Object storage metadata.
 
-### P2 Priority
+### P2 BUILD & ARTIFACT Priority
 
-Artifact security and source privacy are P0-level invariants even though their primary implementation occurs during P2 BUILD & ARTIFACT.
+Artifact security and source privacy are PRI-0 invariants even though their primary implementation occurs during P2 BUILD & ARTIFACT.
 
 ## 10. P3 CONTROL PLANE Sequencing
 
@@ -1089,9 +1096,9 @@ The target integrated product path is:
 
 This path must remain consistent with the contracts and invariants established by the applicable phases and milestone dossiers.
 
-## 25. MVP Critical Path
+## 25. Primary Product Path (Critical Path)
 
-The primary MVP path is:
+The primary product path (MVP), as defined in `docs/planning/PHASES.md` Section 3.1, is not a phase or milestone. Its milestone critical path is:
 
     F-M01 STUDIO FOUNDATION
             |
@@ -1134,29 +1141,29 @@ The database and cloud milestones supporting these steps must be completed to th
 
 | Work Area | Priority |
 |---|---|
-| Repository and CI foundation | P0 |
-| Authentication | P0 |
-| Authorization | P0 |
-| Tenant isolation | P0 |
-| Source-code privacy | P0 |
-| Artifact integrity | P0 |
-| Database integrity | P0 |
-| Booking integrity | P0 |
-| Credit ledger integrity | P0 |
-| Physical safety | P0 |
-| Studio foundation | P1 |
-| Project workflow | P1 |
-| Local build | P1 |
-| Artifact packaging | P1 |
-| Platform discovery | P1 |
-| Booking | P1 |
-| Remote execution | P1 |
-| Live observation | P1 |
-| Results | P1 |
-| Experiments | P2 |
-| Advanced comparison | P2 |
-| Production scale optimization | P2 |
-| Advanced commercial features | P2 |
+| Repository and CI foundation | PRI-0 |
+| Authentication | PRI-0 |
+| Authorization | PRI-0 |
+| Tenant isolation | PRI-0 |
+| Source-code privacy | PRI-0 |
+| Artifact integrity | PRI-0 |
+| Database integrity | PRI-0 |
+| Booking integrity | PRI-0 |
+| Credit ledger integrity | PRI-0 |
+| Physical safety | PRI-0 |
+| Studio foundation | PRI-1 |
+| Project workflow | PRI-1 |
+| Local build | PRI-1 |
+| Artifact packaging | PRI-1 |
+| Platform discovery | PRI-1 |
+| Booking | PRI-1 |
+| Remote execution | PRI-1 |
+| Live observation | PRI-1 |
+| Results | PRI-1 |
+| Experiments | PRI-2 |
+| Advanced comparison | PRI-2 |
+| Production scale optimization | PRI-2 |
+| Advanced commercial features | PRI-2 |
 
 Safety and security classifications override normal feature priority.
 

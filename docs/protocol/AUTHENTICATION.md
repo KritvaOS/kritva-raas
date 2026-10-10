@@ -2299,7 +2299,7 @@ Security vulnerabilities may shorten this window.
 | Phase 7 | WebSocket/live authentication |
 | Phase 8 | Production security and rotation |
 
-# 139. Phase 0 — Foundation
+# 139. P0 FOUNDATION
 
 Implement:
 
@@ -2318,7 +2318,7 @@ Acceptance:
 - valid tokens produce an authenticated principal;
 - issuer/audience/expiry are validated.
 
-# 140. Phase 1 — Studio and Web
+# 140. P1 STUDIO and Web
 
 Implement:
 
@@ -2335,7 +2335,7 @@ Acceptance:
 - expired access tokens refresh;
 - refresh failure returns user to authentication.
 
-# 141. Phase 2 — Artifact
+# 141. P2 BUILD & ARTIFACT — Artifact
 
 Implement:
 
@@ -2348,7 +2348,7 @@ Acceptance:
 
 - users cannot access another organization's artifacts.
 
-# 142. Phase 3 — Control Plane
+# 142. P3 CONTROL PLANE
 
 Implement:
 
@@ -2362,7 +2362,7 @@ Acceptance:
 
 - every protected endpoint validates authentication consistently.
 
-# 143. Phase 4 — Commercial
+# 143. P4 BOOKING & COMMERCIAL — Commercial
 
 Implement:
 
@@ -2375,7 +2375,7 @@ Acceptance:
 
 - financial operations require authenticated and authorized identities.
 
-# 144. Phase 5 — Execution
+# 144. P5 EXECUTION
 
 Implement:
 
@@ -2388,7 +2388,7 @@ Acceptance:
 
 - only authorized users/services can start robot jobs.
 
-# 145. Phase 6 — Lab Agent
+# 145. P6 LAB & ROBOT — Lab Agent
 
 Implement:
 
@@ -2403,7 +2403,7 @@ Acceptance:
 
 - only registered authorized Lab Agents can connect.
 
-# 146. Phase 7 — Live and Results
+# 146. P7 LIVE & RESULTS
 
 Implement:
 
@@ -2417,7 +2417,7 @@ Acceptance:
 
 - authenticated users receive only authorized realtime data.
 
-# 147. Phase 8 — Production
+# 147. P8 PRODUCTION
 
 Implement:
 

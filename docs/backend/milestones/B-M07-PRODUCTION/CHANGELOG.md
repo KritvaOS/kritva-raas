@@ -59,113 +59,21 @@ Milestone: B-M07 — Production
 
 # Appendix A — Phase Mapping
 
-## Phase 0 — FOUNDATION
+The canonical mapping for B-M07 PRODUCTION (P8) is defined in `docs/planning/PHASES.md` (Section 6). Cross-phase dependencies are owned by `docs/planning/DEPENDENCY_MAP.md` and `docs/planning/IMPLEMENTATION_ROADMAP.md`; milestone scope is owned by this milestone's `MILESTONE.md`. This appendix does not redefine either.
 
-B-M07 consumes:
+| Phase | Relationship to this milestone | Boundary note |
+|---|---|---|
+| P0 FOUNDATION | Upstream dependency; outputs consumed by this milestone |  |
+| P1 STUDIO | Upstream dependency; outputs consumed by this milestone |  |
+| P2 BUILD & ARTIFACT | Upstream dependency; outputs consumed by this milestone |  |
+| P3 CONTROL PLANE | Upstream dependency; outputs consumed by this milestone |  |
+| P4 BOOKING & COMMERCIAL | Upstream dependency; outputs consumed by this milestone |  |
+| P5 EXECUTION | Upstream dependency; outputs consumed by this milestone | Simulated Lab Agent and simulated robots only. |
+| P6 LAB & ROBOT | Upstream dependency; outputs consumed by this milestone | Physical Lab Agent, physical robots, E-stop qualification and hardware safety review. |
+| P7 LIVE & RESULTS | Upstream dependency; outputs consumed by this milestone |  |
+| P8 PRODUCTION | Owning phase |  |
 
-- repository;
-- CI;
-- development environment;
-- base infrastructure;
-- API conventions;
-- testing framework.
-
-Production hardening verifies that these foundations can be promoted through
-Development, Staging and Production without environment ambiguity.
-
-## Phase 1 — STUDIO
-
-B-M07 hardens:
-
-- Identity;
-- Organization;
-- Projects;
-- Platforms;
-- repositories;
-- authorization.
-
-Tenant isolation is a primary production requirement.
-
-## Phase 2 — BUILD & ARTIFACT
-
-B-M07 hardens:
-
-- Studio/API interaction;
-- artifact operations;
-- project access;
-- API authentication;
-- API authorization.
-
-## Phase 3 — CONTROL PLANE
-
-B-M07 hardens:
-
-- Job;
-- Run;
-- queue;
-- workers;
-- Lab Agent;
-- WebSocket;
-- telemetry;
-- logs;
-- video;
-- Results.
-
-## Phase 4 — BOOKING & COMMERCIAL
-
-B-M07 hardens:
-
-- booking;
-- resource allocation;
-- credits;
-- ledger;
-- payment integration boundaries;
-- financial auditability.
-
-Financial consistency receives the strongest transaction guarantees.
-
-## Phase 5 — EXECUTION
-
-B-M07 hardens:
-
-- real Lab Agent;
-- secure lab connectivity;
-- robot resource state;
-- local runtime boundary;
-- physical safety separation.
-
-## Phase 6 — LAB & ROBOT
-
-B-M07 is the primary milestone for:
-
-- security;
-- HA;
-- observability;
-- DR;
-- performance;
-- compliance;
-- release readiness.
-
-## Phase 7 — LIVE & RESULTS
-
-B-M07 establishes the foundation for:
-
-- higher user count;
-- higher robot count;
-- higher telemetry volume;
-- larger media volume;
-- operational automation;
-- capacity expansion.
-
-## Phase 8 — PRODUCTION
-
-B-M07 provides the release and operational controls required for:
-
-- controlled production launch;
-- canary;
-- pilot;
-- limited GA;
-- full GA.
+Earlier revisions of this appendix used a superseded phase model and were replaced to remove conflicting phase assignments.
 
 ---
 

@@ -78,7 +78,12 @@ Milestone: F-M05 — Execution
 - [ ] Audit event is generated.
 - [ ] Software Stop does not claim physical E-stop activation.
 
-## 6.6 Physical E-Stop Presentation
+## 6.6 E-Stop State Presentation (Simulated Signal)
+
+All items in this section are verified against E-stop state reported by the
+simulated Lab Agent or injected in a controlled test environment. No F-M05
+acceptance item requires a physical robot, a physical Lab Agent, or E-stop
+hardware.
 
 - [ ] Physical E-stop state is shown separately.
 - [ ] Physical E-stop source is identified where possible.
@@ -88,7 +93,7 @@ Milestone: F-M05 — Execution
 - [ ] DISCONNECTED state does not imply SAFE.
 - [ ] UI does not provide a fake E-stop release control.
 - [ ] UI does not claim software stop equals E-stop.
-- [ ] Physical safety review is completed before physical deployment.
+- [ ] Physical E-stop qualification and human safety review are recorded as P6 LAB & ROBOT gates, not F-M05 acceptance items.
 - [ ] Safety state is not derived from Job state alone.
 
 ## 6.7 Safety State

@@ -2627,7 +2627,7 @@ The phases represent increasing capability, not different architectures.
 The same system boundaries should exist from the beginning, even when early components are
 simulated.
 
-## 97. Phase 0 — Foundation
+## 97. P0 FOUNDATION
 
 Primary objective:
 
@@ -2671,7 +2671,7 @@ Expected topology:
 
 Phase 0 proves the architecture without requiring physical hardware.
 
-## 98. Phase 1 — Studio
+## 98. P1 STUDIO
 
 Primary objective:
 
@@ -2690,7 +2690,7 @@ The backend may use mocked or simplified execution data.
 
 The architecture boundary between UI and Local Runtime must already exist.
 
-## 99. Phase 2 — Build and Artifact
+## 99. P2 BUILD & ARTIFACT
 
 Primary objective:
 
@@ -2712,7 +2712,7 @@ The source-code boundary becomes operational.
 
 The remote system receives `.krv`, not source.
 
-## 100. Phase 3 — Control Plane
+## 100. P3 CONTROL PLANE
 
 Primary objective:
 
@@ -2733,7 +2733,7 @@ Capabilities:
 
 The modular monolith becomes the authoritative system of record.
 
-## 101. Phase 4 — Booking and Commercial
+## 101. P4 BOOKING & COMMERCIAL
 
 Primary objective:
 
@@ -2752,7 +2752,7 @@ Capabilities:
 
 The Control Plane becomes authoritative for resource and credit allocation.
 
-## 102. Phase 5 — Execution
+## 102. P5 EXECUTION
 
 Primary objective:
 
@@ -2771,7 +2771,7 @@ Capabilities:
 
 This phase proves the complete remote execution control path.
 
-## 103. Phase 6 — Lab and Robot
+## 103. P6 LAB & ROBOT
 
 Primary objective:
 
@@ -2791,7 +2791,7 @@ Physical safety review is mandatory before physical deployment.
 
 The cloud remains outside the physical safety authority boundary.
 
-## 104. Phase 7 — Live and Results
+## 104. P7 LIVE & RESULTS
 
 Primary objective:
 
@@ -2810,7 +2810,7 @@ Capabilities:
 
 Video and telemetry are implemented as observation paths independent of transactional control.
 
-## 105. Phase 8 — Production
+## 105. P8 PRODUCTION
 
 Primary objective:
 

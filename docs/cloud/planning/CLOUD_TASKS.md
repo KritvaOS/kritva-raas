@@ -13,7 +13,7 @@
 | Milestones | C-M01–C-M04 |
 | Task Count | 45 |
 | Planning Model | Milestone and dependency driven |
-| Priority Model | P0 / P1 / P2 |
+| Priority Model | PRI-0 / PRI-1 / PRI-2 |
 | Estimate Unit | Person-days |
 | Primary Owners | Cloud / DevOps / Security / DBA / SRE / QA / Lab Integration |
 | Environment Flow | Local → Development → Staging → Production |
@@ -90,9 +90,9 @@ Cloud tasks provide infrastructure and integration capability for those systems.
 
 1. Tasks implement approved architecture.
 2. Architecture decisions precede implementation.
-3. P0 tasks are required for the relevant milestone gate.
-4. P1 tasks are important for the target production roadmap.
-5. P2 tasks are optimization or future capability.
+3. PRI-0 tasks are required for the relevant milestone gate.
+4. PRI-1 tasks are important for the target production roadmap.
+5. PRI-2 tasks are optimization or future capability.
 6. Dependencies must be satisfied before implementation.
 7. Each task has explicit acceptance evidence.
 8. Tasks should be independently reviewable.
@@ -106,11 +106,11 @@ Cloud tasks provide infrastructure and integration capability for those systems.
 
 | Priority | Meaning |
 |---|---|
-| P0 | Mandatory for milestone/phase completion |
-| P1 | Required for target production capability but may follow core path |
-| P2 | Optimization, scale, or future enhancement |
+| PRI-0 | Mandatory for milestone/phase completion |
+| PRI-1 | Required for target production capability but may follow core path |
+| PRI-2 | Optimization, scale, or future enhancement |
 
-A P1 task cannot silently become a production blocker without an explicit
+A PRI-1 task cannot silently become a production blocker without an explicit
 planning decision.
 
 ## 7. Owner Roles
@@ -235,15 +235,15 @@ Tasks:
 
 | ID | Task | Phase | Priority | Estimate |
 |---|---|---:|---:|---:|
-| C01-001 | Cloud Account/Project Foundation | 0 | P0 | 3d |
-| C01-002 | Infrastructure-as-Code Foundation | 0 | P0 | 5d |
-| C01-003 | Network Foundation | 0 | P0 | 7d |
-| C01-004 | Compute Foundation | 1 | P0 | 6d |
-| C01-005 | PostgreSQL Foundation | 1 | P0 | 6d |
-| C01-006 | Object Storage Foundation | 1 | P0 | 4d |
-| C01-007 | Secrets Foundation | 0 | P0 | 5d |
-| C01-008 | CI Infrastructure Validation | 0 | P0 | 4d |
-| C01-009 | Basic Monitoring | 1 | P0 | 4d |
+| C01-001 | Cloud Account/Project Foundation | 0 | PRI-0 | 3d |
+| C01-002 | Infrastructure-as-Code Foundation | 0 | PRI-0 | 5d |
+| C01-003 | Network Foundation | 0 | PRI-0 | 7d |
+| C01-004 | Compute Foundation | 1 | PRI-0 | 6d |
+| C01-005 | PostgreSQL Foundation | 1 | PRI-0 | 6d |
+| C01-006 | Object Storage Foundation | 1 | PRI-0 | 4d |
+| C01-007 | Secrets Foundation | 0 | PRI-0 | 5d |
+| C01-008 | CI Infrastructure Validation | 0 | PRI-0 | 4d |
+| C01-009 | Basic Monitoring | 1 | PRI-0 | 4d |
 
 ## 15. C01-001 Cloud Account/Project Foundation
 
@@ -607,15 +607,15 @@ Tasks:
 
 | ID | Task | Phase | Priority | Estimate |
 |---|---|---:|---:|---:|
-| C02-001 | Development Control Plane Deployment | 1 | P0 | 5d |
-| C02-002 | Development Worker Deployment | 3 | P0 | 4d |
-| C02-003 | Development Database Migration | 1 | P0 | 4d |
-| C02-004 | Queue Infrastructure | 3 | P0 | 5d |
-| C02-005 | Artifact Storage Integration | 2 | P0 | 5d |
-| C02-006 | Mock Lab Agent Connectivity | 3 | P0 | 6d |
-| C02-007 | Development Observability | 1–3 | P0 | 6d |
-| C02-008 | Automated Development Deployment | 1–3 | P0 | 5d |
-| C02-009 | End-to-End Development Validation | 3 | P0 | 6d |
+| C02-001 | Development Control Plane Deployment | 1 | PRI-0 | 5d |
+| C02-002 | Development Worker Deployment | 3 | PRI-0 | 4d |
+| C02-003 | Development Database Migration | 1 | PRI-0 | 4d |
+| C02-004 | Queue Infrastructure | 3 | PRI-0 | 5d |
+| C02-005 | Artifact Storage Integration | 2 | PRI-0 | 5d |
+| C02-006 | Mock Lab Agent Connectivity | 3 | PRI-0 | 6d |
+| C02-007 | Development Observability | 1–3 | PRI-0 | 6d |
+| C02-008 | Automated Development Deployment | 1–3 | PRI-0 | 5d |
+| C02-009 | End-to-End Development Validation | 3 | PRI-0 | 6d |
 
 ## 26. C02-001 Development Control Plane Deployment
 
@@ -910,17 +910,17 @@ Tasks:
 
 | ID | Task | Phase | Priority | Estimate |
 |---|---|---:|---:|---:|
-| C03-001 | Staging Network | 4–7 | P0 | 6d |
-| C03-002 | Staging Compute | 4–7 | P0 | 5d |
-| C03-003 | Staging Database | 4–7 | P0 | 4d |
-| C03-004 | Staging Object Storage | 4–7 | P0 | 4d |
-| C03-005 | Staging Queue | 4–7 | P0 | 4d |
-| C03-006 | Staging Secrets | 4–7 | P0 | 4d |
-| C03-007 | Staging Observability | 4–7 | P0 | 6d |
-| C03-008 | Test Lab Connectivity | 6 | P0 | 7d |
-| C03-009 | Release Candidate Deployment | 5–7 | P0 | 5d |
-| C03-010 | End-to-End Acceptance | 5–7 | P0 | 8d |
-| C03-011 | Production Promotion Gate | 7 | P0 | 4d |
+| C03-001 | Staging Network | 4–7 | PRI-0 | 6d |
+| C03-002 | Staging Compute | 4–7 | PRI-0 | 5d |
+| C03-003 | Staging Database | 4–7 | PRI-0 | 4d |
+| C03-004 | Staging Object Storage | 4–7 | PRI-0 | 4d |
+| C03-005 | Staging Queue | 4–7 | PRI-0 | 4d |
+| C03-006 | Staging Secrets | 4–7 | PRI-0 | 4d |
+| C03-007 | Staging Observability | 4–7 | PRI-0 | 6d |
+| C03-008 | Test Lab Connectivity | 6 | PRI-0 | 7d |
+| C03-009 | Release Candidate Deployment | 5–7 | PRI-0 | 5d |
+| C03-010 | End-to-End Acceptance | 5–7 | PRI-0 | 8d |
+| C03-011 | Production Promotion Gate | 7 | PRI-0 | 4d |
 
 ## 37. C03-001 Staging Network
 
@@ -1245,22 +1245,22 @@ Tasks:
 
 | ID | Task | Phase | Priority | Estimate |
 |---|---|---:|---:|---:|
-| C04-001 | Production Network | 8 | P0 | 8d |
-| C04-002 | Production Compute | 8 | P0 | 8d |
-| C04-003 | Production PostgreSQL | 8 | P0 | 8d |
-| C04-004 | Production Object Storage | 8 | P0 | 6d |
-| C04-005 | Production Queue | 8 | P0 | 5d |
-| C04-006 | Production Secrets | 8 | P0 | 5d |
-| C04-007 | Security Hardening | 8 | P0 | 8d |
-| C04-008 | Monitoring and Dashboards | 8 | P0 | 7d |
-| C04-009 | Alerting | 8 | P0 | 5d |
-| C04-010 | Backup Automation | 8 | P0 | 5d |
-| C04-011 | Restore Validation | 8 | P0 | 5d |
-| C04-012 | Disaster Recovery | 8 | P0 | 8d |
-| C04-013 | Cost Controls | 8 | P1 | 4d |
-| C04-014 | Operational Runbooks | 8 | P0 | 6d |
-| C04-015 | Production Deployment | 8 | P0 | 5d |
-| C04-016 | Production Acceptance | 8 | P0 | 7d |
+| C04-001 | Production Network | 8 | PRI-0 | 8d |
+| C04-002 | Production Compute | 8 | PRI-0 | 8d |
+| C04-003 | Production PostgreSQL | 8 | PRI-0 | 8d |
+| C04-004 | Production Object Storage | 8 | PRI-0 | 6d |
+| C04-005 | Production Queue | 8 | PRI-0 | 5d |
+| C04-006 | Production Secrets | 8 | PRI-0 | 5d |
+| C04-007 | Security Hardening | 8 | PRI-0 | 8d |
+| C04-008 | Monitoring and Dashboards | 8 | PRI-0 | 7d |
+| C04-009 | Alerting | 8 | PRI-0 | 5d |
+| C04-010 | Backup Automation | 8 | PRI-0 | 5d |
+| C04-011 | Restore Validation | 8 | PRI-0 | 5d |
+| C04-012 | Disaster Recovery | 8 | PRI-0 | 8d |
+| C04-013 | Cost Controls | 8 | PRI-1 | 4d |
+| C04-014 | Operational Runbooks | 8 | PRI-0 | 6d |
+| C04-015 | Production Deployment | 8 | PRI-0 | 5d |
+| C04-016 | Production Acceptance | 8 | PRI-0 | 7d |
 
 ## 50. C04-001 Production Network
 
@@ -2087,7 +2087,7 @@ The cloud backlog must preserve these invariants:
 1. Every task implements an approved architecture boundary.
 2. Every task has a stable ID.
 3. Every task has explicit acceptance evidence.
-4. P0 tasks are required for their milestone gate.
+4. PRI-0 tasks are required for their milestone gate.
 5. Dependencies are explicit.
 6. Cloud infrastructure is reproducible.
 7. Production does not depend on development infrastructure.

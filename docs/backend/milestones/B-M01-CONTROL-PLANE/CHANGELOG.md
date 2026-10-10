@@ -54,100 +54,21 @@ Milestone: B-M01 — Control Plane
 
 # Appendix A — Phase Mapping
 
-## Phase 0 — FOUNDATION
+The canonical mapping for B-M01 CONTROL PLANE (P3) is defined in `docs/planning/PHASES.md` (Section 6). Cross-phase dependencies are owned by `docs/planning/DEPENDENCY_MAP.md` and `docs/planning/IMPLEMENTATION_ROADMAP.md`; milestone scope is owned by this milestone's `MILESTONE.md`. This appendix does not redefine either.
 
-B-M01 consumes:
+| Phase | Relationship to this milestone | Boundary note |
+|---|---|---|
+| P0 FOUNDATION | Upstream dependency; outputs consumed by this milestone |  |
+| P1 STUDIO | Upstream dependency; outputs consumed by this milestone |  |
+| P2 BUILD & ARTIFACT | Upstream dependency; outputs consumed by this milestone |  |
+| P3 CONTROL PLANE | Owning phase |  |
+| P4 BOOKING & COMMERCIAL | Downstream consumer of this milestone's outputs |  |
+| P5 EXECUTION | Downstream consumer of this milestone's outputs | Simulated Lab Agent and simulated robots only. |
+| P6 LAB & ROBOT | Downstream consumer of this milestone's outputs | Physical Lab Agent, physical robots, E-stop qualification and hardware safety review. |
+| P7 LIVE & RESULTS | Downstream consumer of this milestone's outputs |  |
+| P8 PRODUCTION | Downstream consumer of this milestone's outputs |  |
 
-- repository foundation;
-- CI;
-- local infrastructure;
-- development setup;
-- migration framework;
-- test framework;
-- security scanning;
-- configuration baseline.
-
-## Phase 1 — STUDIO
-
-B-M01 is a primary Phase 1 milestone.
-
-It establishes:
-
-- API v1;
-- identity;
-- organizations;
-- authorization;
-- projects;
-- platform catalog;
-- repositories;
-- audit.
-
-## Phase 2 — BUILD & ARTIFACT
-
-B-M01 enables:
-
-- Studio project management;
-- artifact metadata;
-- booking APIs;
-- credit APIs;
-- user-facing product flow.
-
-## Phase 3 — CONTROL PLANE
-
-B-M01 supplies:
-
-- authenticated execution requests;
-- project ownership;
-- authorization;
-- Job/Run ownership;
-- audit context.
-
-## Phase 4 — BOOKING & COMMERCIAL
-
-B-M01 supplies:
-
-- organization identity;
-- tenant context;
-- authorization;
-- financial-domain ownership boundaries;
-- audit foundation.
-
-## Phase 5 — EXECUTION
-
-B-M01 supplies:
-
-- organization identity;
-- project context;
-- platform identity;
-- administrative authorization;
-- audit.
-
-## Phase 6 — LAB & ROBOT
-
-B-M01 is extended with:
-
-- stronger audit;
-- security monitoring;
-- compliance;
-- operational controls;
-- production hardening.
-
-## Phase 7 — LIVE & RESULTS
-
-The Control Plane evolves toward:
-
-- horizontal application scaling;
-- caching where safe;
-- read optimization;
-- asynchronous operations;
-- operational analytics.
-
-The modular domain boundaries remain intact.
-
-## Phase 8 — PRODUCTION
-
-The Control Plane becomes the production authoritative API surface for the
-RaaS platform subject to release qualification.
+Earlier revisions of this appendix used a superseded phase model and were replaced to remove conflicting phase assignments.
 
 ---
 

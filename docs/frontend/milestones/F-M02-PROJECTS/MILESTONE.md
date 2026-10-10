@@ -4,10 +4,10 @@
 
 **Milestone ID:** F-M02-PROJECTS  
 **Product:** Kritva RaaS  
-**Primary Phase:** Phase 1 — STUDIO  
+**Primary Phase:** P1 STUDIO  
 **Primary Surface:** RaaS Studio  
 **Technology:** Tauri + Rust + React + TypeScript  
-**Priority:** P0  
+**Priority:** PRI-1 (primary product path per Priority Matrix; see `docs/planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
 **Status:** PLANNED  
 **Primary Outcome:** A production-grade project workspace that allows authenticated
 users to create, list, open, configure and manage local RaaS projects while
@@ -305,23 +305,21 @@ Relevant planning documents:
 
 ## 3.7 Dependency Flow
 
-    F-M01 Studio Foundation
+    F-M01 STUDIO FOUNDATION
              |
              v
-    F-M02 Project Workspace
+    F-M02 PROJECTS
              |
        +-----+-----+
        |           |
        v           v
     Platform    Local Workspace
+    Selection      |
        |           |
        +-----+-----+
              |
              v
-       F-M03 Platform Discovery
-             |
-             v
-       F-M04 Build & Artifacts
+       F-M03 BUILD & ARTIFACT
 
 ---
 

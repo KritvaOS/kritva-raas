@@ -2147,7 +2147,7 @@ Retirement requires:
 | Phase 7 | Event/telemetry compatibility |
 | Phase 8 | Deprecation, migration, retirement |
 
-# 130. Phase 0 — Foundation
+# 130. P0 FOUNDATION
 
 Implement:
 
@@ -2164,7 +2164,7 @@ Acceptance:
 - compatible/breaking changes are classified;
 - contract tests exist.
 
-# 131. Phase 1 — Studio
+# 131. P1 STUDIO
 
 Implement:
 
@@ -2178,7 +2178,7 @@ Acceptance:
 - Studio identifies its supported API versions;
 - unsupported API versions are rejected cleanly.
 
-# 132. Phase 2 — Artifact
+# 132. P2 BUILD & ARTIFACT — Artifact
 
 Implement:
 
@@ -2192,7 +2192,7 @@ Acceptance:
 - incompatible artifacts are rejected before execution;
 - existing supported artifacts remain executable.
 
-# 133. Phase 3 — Control Plane
+# 133. P3 CONTROL PLANE
 
 Implement:
 
@@ -2207,7 +2207,7 @@ Acceptance:
 - API v1 remains stable;
 - schema compatibility is CI-tested.
 
-# 134. Phase 4 — Commercial
+# 134. P4 BOOKING & COMMERCIAL — Commercial
 
 Implement:
 
@@ -2221,7 +2221,7 @@ Acceptance:
 - old supported clients cannot accidentally double-charge;
 - booking operations remain compatible.
 
-# 135. Phase 5 — Execution
+# 135. P5 EXECUTION
 
 Implement:
 
@@ -2235,7 +2235,7 @@ Acceptance:
 - incompatible agents cannot receive execution commands;
 - supported old agents continue to operate during migration.
 
-# 136. Phase 6 — Physical Robot
+# 136. P6 LAB & ROBOT — Physical Robot
 
 Implement:
 
@@ -2249,7 +2249,7 @@ Acceptance:
 - robot execution only occurs on approved compatible versions;
 - blocked versions cannot execute.
 
-# 137. Phase 7 — Live and Results
+# 137. P7 LIVE & RESULTS
 
 Implement:
 
@@ -2263,7 +2263,7 @@ Acceptance:
 - older supported consumers tolerate new optional event fields;
 - experiment records retain relevant version information.
 
-# 138. Phase 8 — Production
+# 138. P8 PRODUCTION
 
 Implement:
 

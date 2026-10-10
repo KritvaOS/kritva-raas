@@ -53,120 +53,21 @@ Milestone: F-M07 — Results
 
 # Appendix A — Phase Mapping
 
-## A.1 Phase 0 — FOUNDATION
+The canonical mapping for F-M07 RESULTS (P7) is defined in `docs/planning/PHASES.md` (Section 6). Cross-phase dependencies are owned by `docs/planning/DEPENDENCY_MAP.md` and `docs/planning/IMPLEMENTATION_ROADMAP.md`; milestone scope is owned by this milestone's `MILESTONE.md`. This appendix does not redefine either.
 
-F-M07 consumes:
+| Phase | Relationship to this milestone | Boundary note |
+|---|---|---|
+| P0 FOUNDATION | Upstream dependency; outputs consumed by this milestone |  |
+| P1 STUDIO | Upstream dependency; outputs consumed by this milestone |  |
+| P2 BUILD & ARTIFACT | Upstream dependency; outputs consumed by this milestone |  |
+| P3 CONTROL PLANE | Upstream dependency; outputs consumed by this milestone |  |
+| P4 BOOKING & COMMERCIAL | Upstream dependency; outputs consumed by this milestone |  |
+| P5 EXECUTION | Upstream dependency; outputs consumed by this milestone | Simulated Lab Agent and simulated robots only. |
+| P6 LAB & ROBOT | Upstream dependency; outputs consumed by this milestone | Physical Lab Agent, physical robots, E-stop qualification and hardware safety review. |
+| P7 LIVE & RESULTS | Owning phase |  |
+| P8 PRODUCTION | Downstream consumer of this milestone's outputs |  |
 
-- Studio foundation;
-- API client;
-- authentication;
-- authorization;
-- database migration framework;
-- object-storage abstraction;
-- testing framework;
-- audit foundation.
-
-## A.2 Phase 1 — STUDIO
-
-F-M07 consumes:
-
-- projects;
-- organizations;
-- platforms;
-- artifact identity;
-- Job/Run entities;
-- tenant boundaries.
-
-## A.3 Phase 2 — BUILD & ARTIFACT
-
-F-M07 integrates the complete product-facing lifecycle from Project through
-Artifact, Booking and Execution.
-
-## A.4 Phase 3 — CONTROL PLANE
-
-F-M07 is the results completion milestone for Phase 3.
-
-It provides:
-
-- durable results;
-- result files;
-- metrics;
-- experiments;
-- comparison;
-- download;
-- rerun.
-
-## A.5 Phase 4 — BOOKING & COMMERCIAL
-
-Results later support:
-
-- usage reconciliation;
-- credit consumption evidence;
-- billing references;
-- commercial analytics.
-
-F-M07 does not own financial state.
-
-## A.6 Phase 5 — EXECUTION
-
-Results expand to:
-
-- physical robot outputs;
-- richer telemetry;
-- video;
-- hardware-specific measurements;
-- HIL evidence.
-
-## A.7 Phase 6 — LAB & ROBOT
-
-Results gain:
-
-- stronger retention;
-- audit;
-- compliance;
-- security monitoring;
-- object-storage hardening;
-- incident evidence.
-
-## A.8 Phase 7 — LIVE & RESULTS
-
-Results expand to:
-
-- larger datasets;
-- high-volume result processing;
-- organization analytics;
-- fleet-level reporting;
-- scalable comparison.
-
-## A.9 Phase 8 — PRODUCTION
-
-The complete MVP loop becomes:
-
-    Build Locally
-       |
-       v
-    Package
-       |
-       v
-    Book
-       |
-       v
-    Execute
-       |
-       v
-    Watch Live
-       |
-       v
-    Result
-       |
-       v
-    Analyze
-       |
-       v
-    Download
-       |
-       v
-    Rerun
+Earlier revisions of this appendix used a superseded phase model and were replaced to remove conflicting phase assignments.
 
 ---
 

@@ -18,7 +18,7 @@ The milestone may be closed only when every item below is checked by the reviewe
 
 ### 7.1 Verification strategy
 
-Phase 0 verification follows:
+P0 FOUNDATION verification follows:
 
     Static checks
         |
@@ -191,7 +191,7 @@ The exact repository commands shall be documented by the implementation.
 
 ### 7.11 Performance verification
 
-Phase 0 does not require production-scale performance.
+P0 FOUNDATION does not require production-scale performance.
 
 It shall establish baseline measurements for:
 
@@ -332,7 +332,7 @@ Execute unit, integration, and smoke tests.
 
 Expected:
 
-All required Phase 0 tests pass.
+All required P0 FOUNDATION tests pass.
 
 ### 8.14 Step 13 — Run CI-equivalent checks
 
@@ -367,7 +367,7 @@ Domain/application code remains unchanged.
 
 ### 8.17 Demo completion
 
-Phase 0 demo passes when:
+P0 FOUNDATION demo passes when:
 
 > A clean environment can build and execute the foundational Studio, Backend, Database, Contract, and simulated Lab interfaces through documented commands with all mandatory quality gates passing.
 

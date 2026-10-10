@@ -1975,7 +1975,7 @@ The following must remain true:
 | Phase 7 | Results | Run traceability |
 | Phase 8 | Production | Full lifecycle hardening |
 
-## 120. Phase 0 — Artifact Foundation
+## 120. P0 FOUNDATION — Artifact Foundation
 
 Deliver:
 
@@ -1992,7 +1992,7 @@ Acceptance:
 - digest can be calculated;
 - malformed packages are rejected.
 
-## 121. Phase 1 — Studio Artifact Creation
+## 121. P1 STUDIO Artifact Creation
 
 Deliver:
 
@@ -2009,7 +2009,7 @@ Acceptance:
 - obvious source files are rejected;
 - debug symbols are controlled.
 
-## 122. Phase 2 — Artifact Storage and Validation
+## 122. P2 BUILD & ARTIFACT — Artifact Storage and Validation
 
 Deliver:
 
@@ -2026,7 +2026,7 @@ Acceptance:
 - unsigned production artifacts fail;
 - accepted artifacts are immutable.
 
-## 123. Phase 3 — Control Plane Integration
+## 123. P3 CONTROL PLANE Integration
 
 Deliver:
 
@@ -2044,7 +2044,7 @@ Acceptance:
 - artifact state transitions are controlled;
 - audit events are generated.
 
-## 124. Phase 4 — Booking Integration
+## 124. P4 BOOKING & COMMERCIAL — Booking Integration
 
 Deliver:
 
@@ -2058,7 +2058,7 @@ Acceptance:
 - authorized artifact can be selected;
 - exact digest is recorded.
 
-## 125. Phase 5 — Remote Execution
+## 125. P5 EXECUTION — Remote Execution
 
 Deliver:
 
@@ -2075,7 +2075,7 @@ Acceptance:
 - runtime compatibility is checked;
 - execution starts only after validation.
 
-## 126. Phase 6 — Physical Robot
+## 126. P6 LAB & ROBOT — Physical Robot
 
 Deliver:
 
@@ -2089,7 +2089,7 @@ Acceptance:
 - required capabilities are checked;
 - physical deployment is controlled.
 
-## 127. Phase 7 — Live and Results
+## 127. P7 LIVE & RESULTS
 
 Deliver:
 
@@ -2104,7 +2104,7 @@ Acceptance:
 - runtime version is recorded;
 - results can be traced to exact executable content.
 
-## 128. Phase 8 — Production Hardening
+## 128. P8 PRODUCTION Hardening
 
 Deliver:
 

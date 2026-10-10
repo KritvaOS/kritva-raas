@@ -1918,7 +1918,7 @@ The application boundaries remain unchanged.
 | 7 | Live/results | Real execution |
 | 8 | Production | Production |
 
-## 87. Phase 0 — Foundation
+## 87. P0 FOUNDATION
 
 Applications:
 
@@ -1943,7 +1943,7 @@ Acceptance:
 - interfaces are defined;
 - local end-to-end skeleton runs.
 
-## 88. Phase 1 — Studio
+## 88. P1 STUDIO
 
 Studio becomes functional.
 
@@ -1959,7 +1959,7 @@ Control Plane remains limited but provides stable API foundations.
 
 Web Console may begin as a minimal authenticated shell.
 
-## 89. Phase 2 — Build and Artifact
+## 89. P2 BUILD & ARTIFACT
 
 Studio Local Runtime becomes functional.
 
@@ -1981,7 +1981,7 @@ Control Plane supports:
 
 Object storage becomes part of the execution path.
 
-## 90. Phase 3 — Control Plane
+## 90. P3 CONTROL PLANE
 
 Control Plane domains become operational:
 
@@ -1999,7 +1999,7 @@ Workers become real asynchronous execution infrastructure.
 
 Web Console receives operational user features.
 
-## 91. Phase 4 — Booking and Commercial
+## 91. P4 BOOKING & COMMERCIAL
 
 Applications add:
 
@@ -2014,7 +2014,7 @@ The Web Console becomes important for account and commercial operations.
 
 Studio integrates the same APIs for developer workflows.
 
-## 92. Phase 5 — Execution
+## 92. P5 EXECUTION
 
 The Control Plane orchestrates:
 
@@ -2027,7 +2027,7 @@ The Control Plane orchestrates:
 
 The Lab Agent initially targets mock/simulated resources.
 
-## 93. Phase 6 — Lab and Robot
+## 93. P6 LAB & ROBOT
 
 The Lab Agent becomes production-capable.
 
@@ -2043,7 +2043,7 @@ Capabilities:
 
 Physical deployment requires safety review.
 
-## 94. Phase 7 — Live and Results
+## 94. P7 LIVE & RESULTS
 
 Studio adds:
 
@@ -2058,7 +2058,7 @@ Web Console adds operational views.
 
 The backend adds result processing and media integration.
 
-## 95. Phase 8 — Production
+## 95. P8 PRODUCTION
 
 All application units become production hardened.
 

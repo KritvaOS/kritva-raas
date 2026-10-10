@@ -4,11 +4,11 @@
 
 **Milestone ID:** B-M07-PRODUCTION  
 **Product:** Kritva RaaS  
-**Primary Phase:** Phase 8 — PRODUCTION  
+**Primary Phase:** P8 PRODUCTION  
 **Supporting Phases:** None  
 **Primary Surface:** Backend Control Plane / Cloud / Operations  
 **Technology:** Production-oriented modular monolith, PostgreSQL, object storage, queue/workers, WebSocket, WebRTC/media integration, secure Lab Protocol, provider-neutral infrastructure  
-**Priority:** P0  
+**Priority:** PRI-0 (critical invariant per Priority Matrix; see `docs/planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
 **Status:** PLANNED  
 **Primary Outcome:** Harden the Kritva RaaS backend and supporting infrastructure for production operation with security, tenant isolation, scalability, observability, high availability, disaster recovery, performance qualification, compliance controls and release readiness.
 

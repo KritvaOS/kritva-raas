@@ -57,7 +57,7 @@ Milestone: F-M01 — Studio Foundation
     RaaS Studio
         |
         v
-    F-M01 Studio Foundation
+    F-M01 STUDIO FOUNDATION
         |
         +--> Shell
         +--> Navigation
@@ -69,36 +69,40 @@ Milestone: F-M01 — Studio Foundation
         +--> Platform Awareness
         |
         v
-    F-M02 Identity & Project Workspace
+    F-M02 PROJECTS
         |
         v
-    F-M03 Platform Discovery
+    F-M03 BUILD & ARTIFACT
         |
         v
-    F-M04 Build & Artifacts
+    F-M04 BOOKING
         |
         v
-    F-M05 Booking & Credits
+    F-M05 EXECUTION
         |
         v
-    F-M06 Remote Execution
+    F-M06 LIVE
         |
         v
-    F-M07 Results & Production UX
+    F-M07 RESULTS
 
 ## A.2 Phase Mapping
 
-| Phase | Relationship to F-M01 |
-|---|---|
-| Phase 0 | Primary implementation phase |
-| Phase 1 | F-M01 foundation consumed by core platform |
-| Phase 2 | Navigation extends into build/artifact workflows |
-| Phase 3 | Job/Run screens extend the shell |
-| Phase 4 | Booking/credit screens extend navigation |
-| Phase 5 | Lab/robot status integrates with platform awareness |
-| Phase 6 | Production security hardens Studio |
-| Phase 7 | Operational dashboards extend Studio/Web Console |
-| Phase 8 | Production UX and support workflows complete |
+The canonical mapping for F-M01 STUDIO FOUNDATION (P0-P1) is defined in `docs/planning/PHASES.md` (Section 6). Cross-phase dependencies are owned by `docs/planning/DEPENDENCY_MAP.md` and `docs/planning/IMPLEMENTATION_ROADMAP.md`; milestone scope is owned by this milestone's `MILESTONE.md`. This appendix does not redefine either.
+
+| Phase | Relationship to this milestone | Boundary note |
+|---|---|---|
+| P0 FOUNDATION | Owning phase (start) |  |
+| P1 STUDIO | Owning phase (completion) |  |
+| P2 BUILD & ARTIFACT | Downstream consumer of this milestone's outputs |  |
+| P3 CONTROL PLANE | Downstream consumer of this milestone's outputs |  |
+| P4 BOOKING & COMMERCIAL | Downstream consumer of this milestone's outputs |  |
+| P5 EXECUTION | Downstream consumer of this milestone's outputs | Simulated Lab Agent and simulated robots only. |
+| P6 LAB & ROBOT | Downstream consumer of this milestone's outputs | Physical Lab Agent, physical robots, E-stop qualification and hardware safety review. |
+| P7 LIVE & RESULTS | Downstream consumer of this milestone's outputs |  |
+| P8 PRODUCTION | Downstream consumer of this milestone's outputs |  |
+
+Earlier revisions of this appendix used a superseded phase model and were replaced to remove conflicting phase assignments.
 
 ## A.3 Task Dependency Graph
 

@@ -203,6 +203,21 @@ No cross-domain decision should be inferred solely from the existence of this in
 
 These entries are proposed register placeholders, not evidence that the underlying decisions have been accepted. Each entry MUST be reviewed and either completed, rejected, or removed from the active index.
 
+### 4.2.1 Disposition Tracker
+
+Every system-level decision in the index MUST carry an accountable owner, a required disposition, the gate by which the disposition is required, approval evidence, and the authoritative implementation reference. Owners are recorded as roles until named individuals are assigned in `docs/tracking/STATUS.md`.
+
+| ID | Accountable owner | Required disposition | Disposition required before | Approval evidence | Implementation reference | Current state |
+|---|---|---|---|---|---|---|
+| SYS-ADR-001 | System Architecture Owner | Accept, reject, or supersede | P0 FOUNDATION exit | None recorded | This document, Section 7 | Proposed — not approved |
+| SYS-ADR-002 | Cloud Owner, with Security Owner | Accept, reject, or supersede | P0 FOUNDATION exit (C-M01 FOUNDATION), before any shared environment is provisioned | None recorded | `docs/architecture/CLOUD_ARCHITECTURE.md`; `docs/cloud/planning/DECISIONS.md` | Proposed — not approved |
+| SYS-ADR-003 | Database Owner, with Backend Owner | Accept, reject, or supersede | P0 FOUNDATION exit (DB-M01 FOUNDATION conventions); confirmed before DB-M02 CORE DATA acceptance | None recorded | `docs/architecture/DATABASE_ARCHITECTURE.md`; `docs/database/planning/DECISIONS.md` | Proposed — not approved |
+| SYS-ADR-004 | Security Owner | Accept, reject, or supersede | Before P3 CONTROL PLANE identity and authorization implementation starts | None recorded | `docs/architecture/SECURITY_ARCHITECTURE.md`; `docs/security/DECISIONS.md` | Proposed — not approved |
+| SYS-ADR-005 | System Architecture Owner, with Integration Owner | Accept, reject, or supersede | P2 BUILD & ARTIFACT exit (artifact manifest and protocol compatibility) | None recorded | `docs/protocol/COMPATIBILITY.md`; `docs/protocol/VERSIONING.md` | Proposed — not approved |
+| SYS-ADR-006 | QA Owner, with Release Owner | Accept, reject, or supersede | P0 FOUNDATION exit | None recorded | `docs/tracking/STATUS.md`; this document, Sections 8 and 10 | Proposed — not approved |
+
+Baseline rule: the cross-domain architecture baseline MUST NOT be described as accepted, and the implementation plan MUST NOT be approved as a frozen implementation baseline, while any SYS-ADR entry whose gate has been reached remains Proposed. A decision approved in another register MAY be linked here, but its status in this index MUST be reconciled to that record and its approval evidence cited.
+
 ### 4.3 Index Maintenance
 
 When a system-level decision is accepted, the index MUST link to its full record and identify its status.
@@ -218,6 +233,9 @@ The index MUST NOT duplicate the domain decision's implementation details.
 ### 5.1 SYS-ADR-001 — Product/System Architecture Ownership and Decision Governance
 
 **Status:** Proposed  
+**Accountable owner:** System Architecture Owner  
+**Disposition required before:** P0 FOUNDATION exit  
+**Approval evidence:** None recorded  
 **Scope:** All Kritva RaaS engineering domains  
 **Affected domains:** Frontend, backend, cloud, database, security, and system architecture
 
@@ -260,6 +278,9 @@ Review this decision if the project changes its documentation governance, domain
 ### 5.2 SYS-ADR-002 — Environment Separation and Production Isolation
 
 **Status:** Proposed  
+**Accountable owner:** Cloud Owner, with Security Owner  
+**Disposition required before:** P0 FOUNDATION exit (C-M01 FOUNDATION), before any shared environment is provisioned  
+**Approval evidence:** None recorded  
 **Scope:** System-level deployment and environment boundaries  
 **Affected domains:** Backend, cloud, database, security
 
@@ -298,6 +319,9 @@ Review this decision if the deployment model changes materially, if environments
 ### 5.3 SYS-ADR-003 — System-Wide Data Authority and Persistence Boundaries
 
 **Status:** Proposed  
+**Accountable owner:** Database Owner, with Backend Owner  
+**Disposition required before:** P0 FOUNDATION exit (DB-M01 FOUNDATION conventions); confirmed before DB-M02 CORE DATA acceptance  
+**Approval evidence:** None recorded  
 **Scope:** System-level data ownership and persistence boundaries  
 **Affected domains:** Backend, database, security
 
@@ -334,6 +358,9 @@ Review this decision if a data domain changes its authoritative owner, a new per
 ### 5.4 SYS-ADR-004 — Cross-Domain Security Boundary Enforcement
 
 **Status:** Proposed  
+**Accountable owner:** Security Owner  
+**Disposition required before:** Before P3 CONTROL PLANE identity and authorization implementation starts  
+**Approval evidence:** None recorded  
 **Scope:** System-level security responsibilities across application and infrastructure layers  
 **Affected domains:** Frontend, backend, cloud, database, security
 
@@ -370,6 +397,9 @@ Review this decision if trust boundaries change, new authentication or identity 
 ### 5.5 SYS-ADR-005 — Cross-Domain Compatibility and Change Coordination
 
 **Status:** Proposed  
+**Accountable owner:** System Architecture Owner, with Integration Owner  
+**Disposition required before:** P2 BUILD & ARTIFACT exit (artifact manifest and protocol compatibility)  
+**Approval evidence:** None recorded  
 **Scope:** Cross-domain changes that affect published contracts or multiple deployable components  
 **Affected domains:** Frontend, backend, cloud, database
 
@@ -407,6 +437,9 @@ Review this decision when a new deployment model, contract-versioning policy, or
 ### 5.6 SYS-ADR-006 — Operational Evidence and Acceptance Traceability
 
 **Status:** Proposed  
+**Accountable owner:** QA Owner, with Release Owner  
+**Disposition required before:** P0 FOUNDATION exit  
+**Approval evidence:** None recorded  
 **Scope:** Cross-domain architecture and release evidence  
 **Affected domains:** All domains
 

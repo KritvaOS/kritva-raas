@@ -2256,7 +2256,7 @@ Schema documentation should remain synchronized with implementation.
 | Phase 7 | Results/history | Complete execution history |
 | Phase 8 | HA/backup/retention | Production database |
 
-## 140. Phase 0 — Foundation
+## 140. P0 FOUNDATION
 
 Deliver:
 
@@ -2294,7 +2294,7 @@ Acceptance:
 - membership uniqueness works;
 - platform catalog works.
 
-## 142. Phase 2 — Artifact
+## 142. P2 BUILD & ARTIFACT — Artifact
 
 Deliver:
 
@@ -2311,7 +2311,7 @@ Acceptance:
 - incompatible artifacts are rejected;
 - artifact history is retained.
 
-## 143. Phase 3 — Control Plane Integration
+## 143. P3 CONTROL PLANE Integration
 
 Deliver:
 
@@ -2328,7 +2328,7 @@ Acceptance:
 - audit records exist;
 - migrations are tested.
 
-## 144. Phase 4 — Booking and Credits
+## 144. P4 BOOKING & COMMERCIAL — Booking and Credits
 
 Deliver:
 
@@ -2345,7 +2345,7 @@ Acceptance:
 - refunds are auditable;
 - transactions remain consistent.
 
-## 145. Phase 5 — Execution
+## 145. P5 EXECUTION
 
 Deliver:
 
@@ -2362,7 +2362,7 @@ Acceptance:
 - resource allocation is exclusive;
 - runs are historically preserved.
 
-## 146. Phase 6 — Physical Labs
+## 146. P6 LAB & ROBOT — Physical Labs
 
 Deliver:
 
@@ -2380,7 +2380,7 @@ Acceptance:
 - resource ownership is tracked;
 - disconnected agents are handled.
 
-## 147. Phase 7 — Results
+## 147. P7 LIVE & RESULTS — Results
 
 Deliver:
 
@@ -2397,7 +2397,7 @@ Acceptance:
 - result history is queryable;
 - retention works.
 
-## 148. Phase 8 — Production
+## 148. P8 PRODUCTION
 
 Deliver:
 

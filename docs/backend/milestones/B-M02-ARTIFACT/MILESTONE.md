@@ -4,13 +4,13 @@
 
 **Milestone ID:** B-M02-ARTIFACT  
 **Product:** Kritva RaaS  
-**Primary Phase:** Phase 2 — BUILD & ARTIFACT  
-**Supporting Phases:** Phase 3 — CONTROL PLANE  
+**Primary Phase:** P2 BUILD & ARTIFACT  
+**Supporting Phases:** P3 CONTROL PLANE  
 **Primary Surface:** RaaS Control Plane / Backend  
 **Technology:** TypeScript/Node.js, PostgreSQL, provider-neutral object storage,
 REST API v1, artifact security/signing services  
 **Architecture:** Production-oriented Modular Monolith  
-**Priority:** P0  
+**Priority:** PRI-0 (critical invariant per Priority Matrix; see `docs/planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
 **Status:** PLANNED  
 **Primary Outcome:** Establish the authoritative backend artifact registry and
 secure artifact lifecycle for `.krv` packages, including upload, validation,

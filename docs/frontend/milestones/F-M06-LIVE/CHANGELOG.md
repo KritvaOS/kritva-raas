@@ -52,104 +52,21 @@ Milestone: F-M06 — Live Execution
 
 # Appendix A — Phase Mapping
 
-## A.1 Phase 0 — FOUNDATION
+The canonical mapping for F-M06 LIVE (P7) is defined in `docs/planning/PHASES.md` (Section 6). Cross-phase dependencies are owned by `docs/planning/DEPENDENCY_MAP.md` and `docs/planning/IMPLEMENTATION_ROADMAP.md`; milestone scope is owned by this milestone's `MILESTONE.md`. This appendix does not redefine either.
 
-F-M06 consumes:
+| Phase | Relationship to this milestone | Boundary note |
+|---|---|---|
+| P0 FOUNDATION | Upstream dependency; outputs consumed by this milestone |  |
+| P1 STUDIO | Upstream dependency; outputs consumed by this milestone |  |
+| P2 BUILD & ARTIFACT | Upstream dependency; outputs consumed by this milestone |  |
+| P3 CONTROL PLANE | Upstream dependency; outputs consumed by this milestone |  |
+| P4 BOOKING & COMMERCIAL | Upstream dependency; outputs consumed by this milestone |  |
+| P5 EXECUTION | Upstream dependency; outputs consumed by this milestone | Simulated Lab Agent and simulated robots only. |
+| P6 LAB & ROBOT | Upstream dependency; outputs consumed by this milestone | Physical Lab Agent, physical robots, E-stop qualification and hardware safety review. |
+| P7 LIVE & RESULTS | Owning phase |  |
+| P8 PRODUCTION | Downstream consumer of this milestone's outputs |  |
 
-- Studio foundation;
-- API client;
-- WebSocket infrastructure;
-- authentication;
-- authorization;
-- UI system;
-- CI;
-- observability.
-
-## A.2 Phase 1 — STUDIO
-
-F-M06 consumes:
-
-- projects;
-- platforms;
-- resources;
-- organizations;
-- access control;
-- durable execution entities.
-
-## A.3 Phase 2 — BUILD & ARTIFACT
-
-F-M06 consumes the artifact and booking workflows from F-M03/F-M04 and the
-execution workflow from F-M05.
-
-## A.4 Phase 3 — CONTROL PLANE
-
-F-M06 is a primary Phase 3 milestone.
-
-It establishes:
-
-- live video;
-- telemetry;
-- realtime logs;
-- events;
-- lab/robot status;
-- reconnect.
-
-## A.5 Phase 4 — BOOKING & COMMERCIAL
-
-F-M06 consumes resource and booking context and can expose resource utilization
-signals without becoming the authoritative billing system.
-
-## A.6 Phase 5 — EXECUTION
-
-F-M06 expands from simulation to:
-
-- reference robots;
-- HIL;
-- physical cameras;
-- physical telemetry;
-- Lab Agent;
-- real robot state.
-
-## A.7 Phase 6 — LAB & ROBOT
-
-F-M06 gains:
-
-- production media security;
-- stronger stream authorization;
-- audit;
-- operational monitoring;
-- security incident controls.
-
-## A.8 Phase 7 — LIVE & RESULTS
-
-F-M06 expands to:
-
-- multiple concurrent live sessions;
-- multiple labs;
-- media capacity management;
-- telemetry scaling;
-- centralized operational monitoring.
-
-## A.9 Phase 8 — PRODUCTION
-
-The live experience becomes part of:
-
-    Discover
-      |
-      v
-    Book
-      |
-      v
-    Execute
-      |
-      v
-    Watch Live
-      |
-      v
-    Analyze Results
-      |
-      v
-    Rerun
+Earlier revisions of this appendix used a superseded phase model and were replaced to remove conflicting phase assignments.
 
 ---
 

@@ -40,13 +40,13 @@ The governing product principle is:
 
 This specification applies to:
 
-- F-M01 UI Foundation;
-- F-M02 Identity & Project Workspace;
-- F-M03 Platform Discovery;
-- F-M04 Local Build & Artifacts;
-- F-M05 Booking & Credits;
-- F-M06 Remote Execution;
-- F-M07 Results & Production UX.
+- F-M01 STUDIO FOUNDATION (P0-P1);
+- F-M02 PROJECTS (P1);
+- F-M03 BUILD & ARTIFACT (P2);
+- F-M04 BOOKING (P4);
+- F-M05 EXECUTION (P5);
+- F-M06 LIVE (P7);
+- F-M07 RESULTS (P7).
 
 It applies to:
 
@@ -1236,7 +1236,7 @@ Manual review shall document:
 - defects found;
 - disposition.
 
-# 71. F-M01 Acceptance
+# 71. F-M01 STUDIO FOUNDATION Acceptance
 
 F-M01 passes when:
 
@@ -1251,7 +1251,7 @@ F-M01 passes when:
 - [ ] CI passes.
 - [ ] Architecture review passes.
 
-# 72. F-M02 Acceptance
+# 72. F-M02 PROJECTS Acceptance
 
 F-M02 passes when:
 
@@ -1260,29 +1260,18 @@ F-M02 passes when:
 - [ ] Projects are integrated.
 - [ ] Project creation works.
 - [ ] Project context works.
+- [ ] Platform discovery and selection work.
+- [ ] Platform detail and compatibility information are explained.
+- [ ] Platform/resource/robot concepts remain distinct.
 - [ ] Source privacy indicator works.
 - [ ] Local source remains local.
 - [ ] Account settings work.
 - [ ] Accessibility review passes.
-- [ ] E2E login/project flow passes.
+- [ ] E2E login/project/platform selection flow passes.
 
-# 73. F-M03 Acceptance
+# 73. F-M03 BUILD & ARTIFACT Acceptance
 
 F-M03 passes when:
-
-- [ ] Platform discovery works.
-- [ ] Platform detail works.
-- [ ] Configuration works.
-- [ ] Compatibility works.
-- [ ] Incompatibility is explained.
-- [ ] Availability is represented where supported.
-- [ ] Platform/resource/robot concepts remain distinct.
-- [ ] Accessibility passes.
-- [ ] E2E platform selection passes.
-
-# 74. F-M04 Acceptance
-
-F-M04 passes when:
 
 - [ ] Local build works.
 - [ ] Local test works.
@@ -1295,9 +1284,9 @@ F-M04 passes when:
 - [ ] Build logs perform acceptably.
 - [ ] E2E artifact flow passes.
 
-# 75. F-M05 Acceptance
+# 74. F-M04 BOOKING Acceptance
 
-F-M05 passes when:
+F-M04 passes when:
 
 - [ ] Availability works.
 - [ ] Booking works.
@@ -1310,23 +1299,32 @@ F-M05 passes when:
 - [ ] Accessibility passes.
 - [ ] E2E booking flow passes.
 
-# 76. F-M06 Acceptance
+# 75. F-M05 EXECUTION Acceptance
 
-F-M06 passes when:
+F-M05 passes when:
 
 - [ ] Job lifecycle works.
 - [ ] Run lifecycle works.
-- [ ] Live Run works.
-- [ ] Video works where configured.
-- [ ] Telemetry works.
-- [ ] Logs work.
-- [ ] Reconnect works.
-- [ ] Stop flow works.
+- [ ] Execution logs work.
+- [ ] Software Stop flow works and is distinct from E-stop.
 - [ ] Safety authority is clear.
 - [ ] No unsafe restart is exposed.
-- [ ] E2E execution flow passes.
+- [ ] E2E execution flow passes against the simulated Lab Agent and simulated robot.
+- [ ] No acceptance item requires a physical robot (physical execution is a P6 LAB & ROBOT gate).
 
-# 77. F-M07 Acceptance
+# 76. F-M06 LIVE Acceptance
+
+F-M06 passes when:
+
+- [ ] Live Run view works.
+- [ ] Video works where configured.
+- [ ] Telemetry works.
+- [ ] Live logs work.
+- [ ] Reconnect works.
+- [ ] Simulated versus physical data source is identified.
+- [ ] Accessibility passes.
+
+# 77. F-M07 RESULTS Acceptance
 
 F-M07 passes when:
 
@@ -1337,7 +1335,7 @@ F-M07 passes when:
 - [ ] Rerun works.
 - [ ] Settings work.
 - [ ] Notifications work.
-- [ ] Full MVP flow passes.
+- [ ] Full primary product path (Build Locally, Book Remotely, Run, Observe, Results) passes.
 - [ ] Accessibility qualification passes.
 - [ ] Performance qualification passes.
 - [ ] Security qualification passes.

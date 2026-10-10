@@ -271,7 +271,7 @@ All stages must use authoritative services.
 
 ### 6.19 No-go conditions
 
-Phase 4 shall not close if:
+P4 BOOKING & COMMERCIAL shall not close if:
 
 - [ ] double booking is possible;
 - [ ] wallet and ledger can diverge;

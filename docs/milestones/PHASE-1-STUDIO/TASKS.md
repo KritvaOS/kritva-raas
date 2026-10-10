@@ -9,7 +9,7 @@ Source of scope: [MILESTONE.md](MILESTONE.md)
 
 | ID | Description | Estimate | Owner role | Dependencies | Status |
 |---|---|---:|---|---|---|
-| KR-FE-1-001 | Confirm Studio architecture and package boundaries | 0.5d | Frontend Architect | Phase 0 | [ ] |
+| KR-FE-1-001 | Confirm Studio architecture and package boundaries | 0.5d | Frontend Architect | P0 FOUNDATION | [ ] |
 | KR-FE-1-002 | Configure Tauri application | 1.0d | Desktop Engineer | 001 | [ ] |
 | KR-FE-1-003 | Configure React/TypeScript application | 1.0d | Frontend Engineer | 001 | [ ] |
 | KR-FE-1-004 | Establish Studio routing | 0.5d | Frontend Engineer | 003 | [ ] |
@@ -17,7 +17,7 @@ Source of scope: [MILESTONE.md](MILESTONE.md)
 | KR-FE-1-006 | Implement navigation model | 1.0d | Frontend Engineer | 005 | [ ] |
 | KR-FE-1-007 | Implement application state foundation | 1.0d | Frontend Architect | 003 | [ ] |
 | KR-FE-1-008 | Implement configuration loading | 1.0d | Platform Engineer | 002,003 | [ ] |
-| KR-FE-1-009 | Implement API client foundation | 1.5d | API/Frontend Engineer | Phase 0 contracts | [ ] |
+| KR-FE-1-009 | Implement API client foundation | 1.5d | API/Frontend Engineer | P0 FOUNDATION contracts | [ ] |
 | KR-FE-1-010 | Implement API error normalization | 1.0d | Frontend Engineer | 009 | [ ] |
 | KR-FE-1-011 | Implement request correlation | 0.5d | Frontend Engineer | 009 | [ ] |
 | KR-FE-1-012 | Implement authentication UI | 1.5d | Frontend Engineer | 009 | [ ] |
@@ -34,13 +34,13 @@ Source of scope: [MILESTONE.md](MILESTONE.md)
 | KR-FE-1-023 | Implement project target metadata | 1.0d | Frontend Engineer | 022,026 | [ ] |
 | KR-FE-1-024 | Implement platform catalog view | 1.0d | Frontend Engineer | 009 | [ ] |
 | KR-FE-1-025 | Implement platform detail | 1.0d | Frontend Engineer | 024 | [ ] |
-| KR-FE-1-026 | Implement platform/version/architecture model | 1.0d | Frontend/API Engineer | Phase 0 contracts | [ ] |
+| KR-FE-1-026 | Implement platform/version/architecture model | 1.0d | Frontend/API Engineer | P0 FOUNDATION contracts | [ ] |
 | KR-FE-1-027 | Implement capability display | 0.5d | Frontend Engineer | 026 | [ ] |
 | KR-FE-1-028 | Implement service connectivity status | 1.0d | Frontend Engineer | 009 | [ ] |
 | KR-FE-1-029 | Implement Local Runtime IPC contract | 1.5d | Desktop Engineer | 002 | [ ] |
 | KR-FE-1-030 | Implement Local Runtime mock | 1.0d | Desktop Engineer | 029 | [ ] |
 | KR-FE-1-031 | Implement settings foundation | 1.0d | Frontend Engineer | 008 | [ ] |
-| KR-FE-1-032 | Implement UI component foundation | 2.0d | UI Engineer | Phase 0 | [ ] |
+| KR-FE-1-032 | Implement UI component foundation | 2.0d | UI Engineer | P0 FOUNDATION | [ ] |
 | KR-FE-1-033 | Implement loading/empty/error states | 1.0d | UI Engineer | 032 | [ ] |
 | KR-FE-1-034 | Implement notification/toast foundation | 0.5d | UI Engineer | 032 | [ ] |
 | KR-FE-1-035 | Implement accessibility foundation | 1.0d | UI Engineer | 032 | [ ] |
@@ -64,13 +64,13 @@ Source of scope: [MILESTONE.md](MILESTONE.md)
 | KR-FE-1-053 | Complete UI review | 1.0d | UI/UX Reviewer | 032-035 | [ ] |
 | KR-FE-1-054 | Complete security review | 1.0d | Security Architect | 013-017,029 | [ ] |
 | KR-FE-1-055 | Complete architecture review | 1.0d | System Architect | 001-052 | [ ] |
-| KR-FE-1-056 | Complete Phase 1 acceptance | 0.5d | Tech Lead | 053-055 | [ ] |
+| KR-FE-1-056 | Complete P1 STUDIO acceptance | 0.5d | Tech Lead | 053-055 | [ ] |
 
 ### 5.2 Estimation convention
 
 Estimates are person-days.
 
-Indicative Phase 1 effort:
+Indicative P1 STUDIO effort:
 
     Studio architecture/UI:       15–20 person-days
     Native/runtime integration:    7–10 person-days

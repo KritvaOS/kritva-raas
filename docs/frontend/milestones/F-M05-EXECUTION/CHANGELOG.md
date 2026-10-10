@@ -52,119 +52,21 @@ Milestone: F-M05 — Execution
 
 # Appendix A — Phase Mapping
 
-## A.1 Phase 0 — FOUNDATION
+The canonical mapping for F-M05 EXECUTION (P5) is defined in `docs/planning/PHASES.md` (Section 6). Cross-phase dependencies are owned by `docs/planning/DEPENDENCY_MAP.md` and `docs/planning/IMPLEMENTATION_ROADMAP.md`; milestone scope is owned by this milestone's `MILESTONE.md`. This appendix does not redefine either.
 
-F-M05 consumes:
+| Phase | Relationship to this milestone | Boundary note |
+|---|---|---|
+| P0 FOUNDATION | Upstream dependency; outputs consumed by this milestone |  |
+| P1 STUDIO | Upstream dependency; outputs consumed by this milestone |  |
+| P2 BUILD & ARTIFACT | Upstream dependency; outputs consumed by this milestone |  |
+| P3 CONTROL PLANE | Upstream dependency; outputs consumed by this milestone |  |
+| P4 BOOKING & COMMERCIAL | Upstream dependency; outputs consumed by this milestone |  |
+| P5 EXECUTION | Owning phase | Simulated Lab Agent and simulated robots only. |
+| P6 LAB & ROBOT | Downstream consumer of this milestone's outputs | Physical Lab Agent, physical robots, E-stop qualification and hardware safety review. |
+| P7 LIVE & RESULTS | Downstream consumer of this milestone's outputs |  |
+| P8 PRODUCTION | Downstream consumer of this milestone's outputs |  |
 
-- Studio foundation;
-- API client;
-- authentication;
-- authorization;
-- WebSocket foundation;
-- testing framework;
-- logging;
-- CI.
-
-## A.2 Phase 1 — STUDIO
-
-F-M05 consumes:
-
-- projects;
-- organizations;
-- artifact identity;
-- platform catalog;
-- resources;
-- bookings;
-- repositories;
-- authorization.
-
-## A.3 Phase 2 — BUILD & ARTIFACT
-
-F-M05 consumes the customer-facing artifact and booking workflows produced by
-F-M03 and F-M04.
-
-## A.4 Phase 3 — CONTROL PLANE
-
-F-M05 is the primary Phase 3 execution milestone.
-
-It establishes:
-
-- Job;
-- Run;
-- deployment;
-- execution;
-- software control;
-- logs;
-- safety presentation.
-
-## A.5 Phase 4 — BOOKING & COMMERCIAL
-
-F-M05 consumes:
-
-- resource scheduling;
-- credit reservation;
-- usage accounting;
-- commercial policies.
-
-Final execution consumption can later reconcile with credit reservations.
-
-## A.6 Phase 5 — EXECUTION
-
-F-M05 expands from simulation into:
-
-- Lab Agent;
-- reference robot;
-- HIL;
-- physical robot;
-- runtime integration.
-
-Physical execution remains gated by safety review.
-
-## A.7 Phase 6 — LAB & ROBOT
-
-F-M05 gains:
-
-- production signing;
-- stronger audit;
-- security monitoring;
-- operational controls;
-- incident response;
-- production safety gates.
-
-## A.8 Phase 7 — LIVE & RESULTS
-
-F-M05 expands to:
-
-- multiple labs;
-- multiple concurrent Jobs;
-- larger log streams;
-- resource pools;
-- operational dashboards;
-- fleet-level observability.
-
-## A.9 Phase 8 — PRODUCTION
-
-F-M05 becomes part of the production lifecycle:
-
-    Artifact
-       |
-       v
-    Booking
-       |
-       v
-    Job
-       |
-       v
-    Run
-       |
-       v
-    Robot
-       |
-       v
-    Results
-       |
-       v
-    Rerun
+Earlier revisions of this appendix used a superseded phase model and were replaced to remove conflicting phase assignments.
 
 ---
 

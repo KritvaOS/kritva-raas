@@ -318,7 +318,7 @@ Selected platform is stored as project metadata.
 
 ### 8.7 Step 6 — Build locally
 
-Invoke Phase 2 local build.
+Invoke P2 BUILD & ARTIFACT local build.
 
 Expected:
 

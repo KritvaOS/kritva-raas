@@ -2145,7 +2145,7 @@ Critical state should remain queryable.
 | Phase 7 | WebSocket/live | Realtime execution |
 | Phase 8 | Production | Protocol hardening |
 
-## 146. Phase 0 — Protocol Foundation
+## 146. P0 FOUNDATION — Protocol Foundation
 
 Deliver:
 
@@ -2163,7 +2163,7 @@ Acceptance:
 - versioning rules are documented;
 - error codes are stable.
 
-## 147. Phase 1 — Studio Protocol
+## 147. P1 STUDIO Protocol
 
 Deliver:
 
@@ -2179,7 +2179,7 @@ Acceptance:
 - authentication works;
 - realtime connection works.
 
-## 148. Phase 2 — Artifact Protocol
+## 148. P2 BUILD & ARTIFACT — Artifact Protocol
 
 Deliver:
 
@@ -2196,7 +2196,7 @@ Acceptance:
 - validation events work;
 - exact artifact identity is preserved.
 
-## 149. Phase 3 — Control Plane Protocol
+## 149. P3 CONTROL PLANE Protocol
 
 Deliver:
 
@@ -2212,7 +2212,7 @@ Acceptance:
 - API implementation passes contract tests;
 - asynchronous workflows are recoverable.
 
-## 150. Phase 4 — Commercial Protocol
+## 150. P4 BOOKING & COMMERCIAL — Commercial Protocol
 
 Deliver:
 
@@ -2228,7 +2228,7 @@ Acceptance:
 - conflicts produce stable errors;
 - state transitions are validated.
 
-## 151. Phase 5 — Execution Protocol
+## 151. P5 EXECUTION Protocol
 
 Deliver:
 
@@ -2246,7 +2246,7 @@ Acceptance:
 - state events arrive;
 - reconnect/reconciliation works.
 
-## 152. Phase 6 — Physical Robot Protocol
+## 152. P6 LAB & ROBOT — Physical Robot Protocol
 
 Deliver:
 
@@ -2262,7 +2262,7 @@ Acceptance:
 - safety state is visible;
 - cloud does not replace local safety controls.
 
-## 153. Phase 7 — Live and Results Protocol
+## 153. P7 LIVE & RESULTS Protocol
 
 Deliver:
 
@@ -2279,7 +2279,7 @@ Acceptance:
 - telemetry bounded;
 - results are traceable.
 
-## 154. Phase 8 — Production Protocol
+## 154. P8 PRODUCTION Protocol
 
 Deliver:
 

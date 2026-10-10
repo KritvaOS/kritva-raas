@@ -1723,7 +1723,7 @@ Important business metrics include:
 | Phase 7 | Run, telemetry, result, experiment responses |
 | Phase 8 | Production hardening and governance |
 
-# 103. Phase 0 — Foundation
+# 103. P0 FOUNDATION
 
 Implement:
 
@@ -1741,7 +1741,7 @@ Acceptance:
 - codes are centrally defined;
 - status semantics are documented.
 
-# 104. Phase 1 — Studio
+# 104. P1 STUDIO
 
 Implement:
 
@@ -1757,7 +1757,7 @@ Acceptance:
 - build progress is recoverable;
 - local errors are structured.
 
-# 105. Phase 2 — Artifact
+# 105. P2 BUILD & ARTIFACT — Artifact
 
 Implement:
 
@@ -1772,7 +1772,7 @@ Acceptance:
 - validation completion is explicit;
 - invalid artifacts provide actionable errors.
 
-# 106. Phase 3 — Control Plane
+# 106. P3 CONTROL PLANE
 
 Implement:
 
@@ -1788,7 +1788,7 @@ Acceptance:
 - database failures are translated to protocol errors;
 - no internal SQL error leaks.
 
-# 107. Phase 4 — Commercial
+# 107. P4 BOOKING & COMMERCIAL — Commercial
 
 Implement:
 
@@ -1805,7 +1805,7 @@ Acceptance:
 - financial errors are deterministic;
 - duplicate operations are safe.
 
-# 108. Phase 5 — Execution
+# 108. P5 EXECUTION
 
 Implement:
 
@@ -1821,7 +1821,7 @@ Acceptance:
 - resource conflicts are explicit;
 - asynchronous state is durable.
 
-# 109. Phase 6 — Physical Robot
+# 109. P6 LAB & ROBOT — Physical Robot
 
 Implement:
 
@@ -1836,7 +1836,7 @@ Acceptance:
 - safety-related state is not confused with application state;
 - cloud failure does not falsely indicate robot safety.
 
-# 110. Phase 7 — Live and Results
+# 110. P7 LIVE & RESULTS
 
 Implement:
 
@@ -1853,7 +1853,7 @@ Acceptance:
 - partial data is explicit;
 - reconnect recovers current state.
 
-# 111. Phase 8 — Production
+# 111. P8 PRODUCTION
 
 Implement:
 

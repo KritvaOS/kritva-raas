@@ -247,7 +247,7 @@ Milestone: PHASE-5-EXECUTION — Remote Execution, Jobs, Runs and Simulated Robo
 
 ### 6.21 No-go conditions
 
-Phase 5 shall not close if:
+P5 EXECUTION shall not close if:
 
 - [ ] Job state exists only in queue memory;
 - [ ] Run state is not durable;

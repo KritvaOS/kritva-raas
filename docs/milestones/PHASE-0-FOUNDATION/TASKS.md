@@ -67,13 +67,13 @@ Source of scope: [MILESTONE.md](MILESTONE.md)
 | KR-PLAT-0-056 | Complete architecture review | 1.0d | System Architect | 001-055 | [ ] |
 | KR-PLAT-0-057 | Complete security review | 1.0d | Security Architect | 026-053 | [ ] |
 | KR-PLAT-0-058 | Complete CI/release readiness review | 1.0d | DevOps Lead | 038-054 | [ ] |
-| KR-PLAT-0-059 | Complete Phase 0 acceptance and tracking update | 0.5d | Tech Lead | 056-058 | [ ] |
+| KR-PLAT-0-059 | Complete P0 FOUNDATION acceptance and tracking update | 0.5d | Tech Lead | 056-058 | [ ] |
 
 ### 5.2 Task estimation
 
 Estimates are person-days.
 
-Phase 0 is expected to require approximately:
+P0 FOUNDATION is expected to require approximately:
 
     Foundation implementation: 35–45 person-days
     Review/integration/testing: 15–20 person-days
@@ -100,7 +100,7 @@ No task shall enter READY without an assigned owner.
 
 ### 5.4 Definition of Ready
 
-A Phase 0 task is READY only when:
+A P0 FOUNDATION task is READY only when:
 
 - scope is understood;
 - dependencies are known;

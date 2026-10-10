@@ -9,7 +9,7 @@ Source of scope: [MILESTONE.md](MILESTONE.md)
 
 | ID | Description | Estimate | Owner role | Dependencies | Status |
 |---|---|---:|---|---|---|
-| KR-BE-3-001 | Confirm Control Plane module boundaries | 1.0d | Backend Architect | Phase 0 | [ ] |
+| KR-BE-3-001 | Confirm Control Plane module boundaries | 1.0d | Backend Architect | P0 FOUNDATION | [ ] |
 | KR-BE-3-002 | Configure backend service runtime | 1.0d | Backend Engineer | 001 | [ ] |
 | KR-BE-3-003 | Implement API v1 transport | 1.0d | API Engineer | 002 | [ ] |
 | KR-BE-3-004 | Implement request/response envelopes | 1.0d | API Engineer | 003 | [ ] |
@@ -53,12 +53,12 @@ Source of scope: [MILESTONE.md](MILESTONE.md)
 | KR-BE-3-042 | Implement authorization tests | 1.5d | Security/QA Engineer | 010-034 | [ ] |
 | KR-BE-3-043 | Implement tenant-isolation tests | 1.5d | Security/QA Engineer | 009-034 | [ ] |
 | KR-BE-3-044 | Implement artifact integration tests | 1.5d | QA Engineer | 027-035 | [ ] |
-| KR-BE-3-045 | Implement Studio integration tests | 1.5d | QA Engineer | Phase 1, 019,022,027 | [ ] |
+| KR-BE-3-045 | Implement Studio integration tests | 1.5d | QA Engineer | P1 STUDIO, 019,022,027 | [ ] |
 | KR-BE-3-046 | Implement Demo-0 integration scenario | 1.5d | Integration Engineer | 041-045 | [ ] |
 | KR-BE-3-047 | Execute performance baseline | 1.0d | Database/Backend Engineer | 041 | [ ] |
 | KR-BE-3-048 | Execute security review | 1.0d | Security Architect | 042,043 | [ ] |
 | KR-BE-3-049 | Execute architecture review | 1.0d | System Architect | 001-047 | [ ] |
-| KR-BE-3-050 | Complete Phase 3 acceptance | 0.5d | Tech Lead | 048,049 | [ ] |
+| KR-BE-3-050 | Complete P3 CONTROL PLANE acceptance | 0.5d | Tech Lead | 048,049 | [ ] |
 
 ### 5.2 Indicative effort
 

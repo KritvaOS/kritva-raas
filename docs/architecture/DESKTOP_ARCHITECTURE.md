@@ -2262,7 +2262,7 @@ UpdateManager owns application update lifecycle.
 | Phase 7 | Live/results | Full execution UX |
 | Phase 8 | Production | Packaging, updates, hardening |
 
-## 152. Phase 0 — Foundation
+## 152. P0 FOUNDATION
 
 Deliver:
 
@@ -2280,7 +2280,7 @@ Acceptance:
 - IPC works;
 - tests execute.
 
-## 153. Phase 1 — Studio Core
+## 153. P1 STUDIO Core
 
 Deliver:
 
@@ -2298,7 +2298,7 @@ Acceptance:
 - platform information is visible;
 - local project can be opened.
 
-## 154. Phase 2 — Build and Artifact
+## 154. P2 BUILD & ARTIFACT
 
 Deliver:
 
@@ -2318,7 +2318,7 @@ Acceptance:
 - source is not uploaded;
 - artifact validates.
 
-## 155. Phase 3 — Control Plane Integration
+## 155. P3 CONTROL PLANE Integration
 
 Deliver:
 
@@ -2334,7 +2334,7 @@ Acceptance:
 - reconnect restores state;
 - artifact upload works.
 
-## 156. Phase 4 — Booking and Commercial
+## 156. P4 BOOKING & COMMERCIAL
 
 Deliver:
 
@@ -2350,7 +2350,7 @@ Acceptance:
 - credit state comes from backend;
 - booking conflicts are handled.
 
-## 157. Phase 5 — Remote Execution
+## 157. P5 EXECUTION — Remote Execution
 
 Deliver:
 
@@ -2367,7 +2367,7 @@ Acceptance:
 - Stop Job works;
 - backend remains authoritative.
 
-## 158. Phase 6 — Physical Lab
+## 158. P6 LAB & ROBOT — Physical Lab
 
 Deliver:
 
@@ -2381,7 +2381,7 @@ Acceptance:
 - deployment status is visible;
 - robot safety state is distinguished from application state.
 
-## 159. Phase 7 — Live and Results
+## 159. P7 LIVE & RESULTS
 
 Deliver:
 
@@ -2398,7 +2398,7 @@ Acceptance:
 - results are displayed;
 - rerun is supported.
 
-## 160. Phase 8 — Production
+## 160. P8 PRODUCTION
 
 Deliver:
 

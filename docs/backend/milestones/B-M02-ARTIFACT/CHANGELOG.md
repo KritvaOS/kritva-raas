@@ -54,95 +54,21 @@ Milestone: B-M02 — Artifact
 
 # Appendix A — Phase Mapping
 
-## Phase 0 — FOUNDATION
+The canonical mapping for B-M02 ARTIFACT (P2-P3) is defined in `docs/planning/PHASES.md` (Section 6). Cross-phase dependencies are owned by `docs/planning/DEPENDENCY_MAP.md` and `docs/planning/IMPLEMENTATION_ROADMAP.md`; milestone scope is owned by this milestone's `MILESTONE.md`. This appendix does not redefine either.
 
-B-M02 consumes:
+| Phase | Relationship to this milestone | Boundary note |
+|---|---|---|
+| P0 FOUNDATION | Upstream dependency; outputs consumed by this milestone |  |
+| P1 STUDIO | Upstream dependency; outputs consumed by this milestone |  |
+| P2 BUILD & ARTIFACT | Owning phase (start) |  |
+| P3 CONTROL PLANE | Owning phase (completion) |  |
+| P4 BOOKING & COMMERCIAL | Downstream consumer of this milestone's outputs |  |
+| P5 EXECUTION | Downstream consumer of this milestone's outputs | Simulated Lab Agent and simulated robots only. |
+| P6 LAB & ROBOT | Downstream consumer of this milestone's outputs | Physical Lab Agent, physical robots, E-stop qualification and hardware safety review. |
+| P7 LIVE & RESULTS | Downstream consumer of this milestone's outputs |  |
+| P8 PRODUCTION | Downstream consumer of this milestone's outputs |  |
 
-- object-storage abstraction;
-- database migration framework;
-- security scanning;
-- secrets management;
-- key management;
-- CI.
-
-## Phase 1 — STUDIO
-
-B-M02 consumes B-M01:
-
-- organizations;
-- Projects;
-- authorization;
-- repositories;
-- API v1;
-- audit;
-- idempotency.
-
-## Phase 2 — BUILD & ARTIFACT
-
-B-M02 is a primary Phase 2 backend milestone.
-
-It enables:
-
-- local build artifact upload;
-- artifact registry;
-- artifact selection;
-- execution eligibility.
-
-## Phase 3 — CONTROL PLANE
-
-B-M02 provides:
-
-- immutable artifact identity;
-- compatibility validation;
-- approval state;
-- revocation;
-- execution-readiness.
-
-## Phase 4 — BOOKING & COMMERCIAL
-
-Artifacts later contribute to:
-
-- usage;
-- execution records;
-- credit consumption;
-- billing evidence.
-
-B-M02 does not own financial state.
-
-## Phase 5 — EXECUTION
-
-Artifact validation is extended with:
-
-- Lab Agent validation;
-- runtime validation;
-- physical platform validation;
-- hardware-specific policy.
-
-## Phase 6 — LAB & ROBOT
-
-Artifact security is strengthened through:
-
-- production signing;
-- stronger malware scanning;
-- key rotation;
-- revocation;
-- security monitoring;
-- incident response.
-
-## Phase 7 — LIVE & RESULTS
-
-Artifact infrastructure evolves toward:
-
-- large registry scale;
-- storage lifecycle automation;
-- high-volume uploads;
-- cache/read optimization;
-- artifact distribution optimization.
-
-## Phase 8 — PRODUCTION
-
-The approved artifact lifecycle becomes part of the production release and
-execution trust chain.
+Earlier revisions of this appendix used a superseded phase model and were replaced to remove conflicting phase assignments.
 
 ---
 

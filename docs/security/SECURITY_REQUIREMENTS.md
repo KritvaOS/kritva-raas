@@ -257,177 +257,177 @@ Security classification shall influence:
 
 | ID | Priority | Requirement | Rationale | Verification | Phase |
 |---|---|---|---|---|---|
-| SEC-001 | P0 | All protected API operations shall require authenticated identity. | Prevent anonymous access to protected resources. | Integration test | 1 |
-| SEC-002 | P0 | Authentication shall use industry-standard protocols and shall not transmit passwords in plaintext. | Protect credentials. | Security review + test | 1 |
-| SEC-003 | P0 | Password credentials, where supported, shall be stored only using an approved adaptive password hashing algorithm. | Prevent credential disclosure from database compromise. | Code review + test | 1 |
-| SEC-004 | P0 | Session tokens shall be cryptographically random and non-predictable. | Prevent session hijacking. | Security test | 1 |
-| SEC-005 | P0 | Access tokens shall have bounded lifetime. | Limit impact of stolen tokens. | Configuration test | 1 |
-| SEC-006 | P0 | Refresh-token handling shall support revocation. | Enable account/session containment. | Integration test | 1 |
-| SEC-007 | P0 | Logout shall invalidate or revoke the applicable session/token. | Prevent continued unauthorized use. | Integration test | 1 |
-| SEC-008 | P0 | Authentication failure responses shall not reveal whether an account exists. | Reduce account enumeration. | API test | 1 |
-| SEC-009 | P0 | Authentication endpoints shall implement rate limiting and abuse protection. | Reduce brute-force attacks. | Load/security test | 1 |
-| SEC-010 | P1 | Multi-factor authentication shall be supported for administrators. | Protect privileged accounts. | Integration test | 1 |
-| SEC-011 | P1 | MFA shall be enforceable by organization security policy. | Allow enterprise security requirements. | Policy test | 8 |
-| SEC-012 | P0 | Administrative accounts shall not use shared credentials. | Preserve accountability. | Review | 1 |
-| SEC-013 | P0 | Service-to-service authentication shall use non-human service identities. | Prevent shared user credentials. | Architecture review | 2 |
-| SEC-014 | P0 | Lab Agents shall authenticate using provisioned machine identity or equivalent strong credentials. | Prevent rogue lab connections. | Integration test | 6 |
-| SEC-015 | P0 | Expired, revoked, or disabled credentials shall not authorize new operations. | Contain compromised identities. | Integration test | 1 |
-| SEC-016 | P1 | Suspicious authentication activity shall be logged. | Enable detection and investigation. | Log verification | 7 |
-| SEC-017 | P1 | Administrative authentication events shall be auditable. | Required for privileged accountability. | Audit test | 7 |
-| SEC-018 | P1 | Sessions shall be terminated after configurable inactivity where appropriate. | Reduce unattended-session risk. | Integration test | 8 |
+| SEC-001 | PRI-0 | All protected API operations shall require authenticated identity. | Prevent anonymous access to protected resources. | Integration test | 1 |
+| SEC-002 | PRI-0 | Authentication shall use industry-standard protocols and shall not transmit passwords in plaintext. | Protect credentials. | Security review + test | 1 |
+| SEC-003 | PRI-0 | Password credentials, where supported, shall be stored only using an approved adaptive password hashing algorithm. | Prevent credential disclosure from database compromise. | Code review + test | 1 |
+| SEC-004 | PRI-0 | Session tokens shall be cryptographically random and non-predictable. | Prevent session hijacking. | Security test | 1 |
+| SEC-005 | PRI-0 | Access tokens shall have bounded lifetime. | Limit impact of stolen tokens. | Configuration test | 1 |
+| SEC-006 | PRI-0 | Refresh-token handling shall support revocation. | Enable account/session containment. | Integration test | 1 |
+| SEC-007 | PRI-0 | Logout shall invalidate or revoke the applicable session/token. | Prevent continued unauthorized use. | Integration test | 1 |
+| SEC-008 | PRI-0 | Authentication failure responses shall not reveal whether an account exists. | Reduce account enumeration. | API test | 1 |
+| SEC-009 | PRI-0 | Authentication endpoints shall implement rate limiting and abuse protection. | Reduce brute-force attacks. | Load/security test | 1 |
+| SEC-010 | PRI-1 | Multi-factor authentication shall be supported for administrators. | Protect privileged accounts. | Integration test | 1 |
+| SEC-011 | PRI-1 | MFA shall be enforceable by organization security policy. | Allow enterprise security requirements. | Policy test | 8 |
+| SEC-012 | PRI-0 | Administrative accounts shall not use shared credentials. | Preserve accountability. | Review | 1 |
+| SEC-013 | PRI-0 | Service-to-service authentication shall use non-human service identities. | Prevent shared user credentials. | Architecture review | 2 |
+| SEC-014 | PRI-0 | Lab Agents shall authenticate using provisioned machine identity or equivalent strong credentials. | Prevent rogue lab connections. | Integration test | 6 |
+| SEC-015 | PRI-0 | Expired, revoked, or disabled credentials shall not authorize new operations. | Contain compromised identities. | Integration test | 1 |
+| SEC-016 | PRI-1 | Suspicious authentication activity shall be logged. | Enable detection and investigation. | Log verification | 7 |
+| SEC-017 | PRI-1 | Administrative authentication events shall be auditable. | Required for privileged accountability. | Audit test | 7 |
+| SEC-018 | PRI-1 | Sessions shall be terminated after configurable inactivity where appropriate. | Reduce unattended-session risk. | Integration test | 8 |
 
 ## 8.2 Authorization Requirements
 
 | ID | Priority | Requirement | Rationale | Verification | Phase |
 |---|---|---|---|---|---|
-| SEC-020 | P0 | Every protected operation shall perform authorization after authentication. | Authentication alone is insufficient. | Integration test | 1 |
-| SEC-021 | P0 | Authorization shall be based on explicit permissions/roles. | Prevent implicit privilege. | Unit + integration test | 1 |
-| SEC-022 | P0 | Organization membership shall be checked before organization-owned operations. | Enforce tenancy. | Integration test | 1 |
-| SEC-023 | P0 | Project access shall be checked before project-owned operations. | Prevent project data leakage. | Integration test | 2 |
-| SEC-024 | P0 | Resource operations shall validate platform and booking authorization. | Prevent unauthorized robot use. | Integration test | 4 |
-| SEC-025 | P0 | Artifact execution shall require explicit execution authorization. | Execution affects remote resources. | Integration test | 5 |
-| SEC-026 | P0 | Physical robot execution shall require valid booking and resource allocation. | Prevent unreserved robot control. | Integration test | 5 |
-| SEC-027 | P0 | Users shall not elevate their own roles. | Prevent privilege escalation. | Security test | 1 |
-| SEC-028 | P0 | Organization administrators shall not automatically gain physical safety override capability. | Separate business administration from safety control. | Architecture review | 6 |
-| SEC-029 | P0 | Platform catalog permissions shall be separated from lab operational permissions. | Limit operational authority. | Role test | 6 |
-| SEC-030 | P0 | Lab Agent permissions shall be restricted to assigned lab resources. | Limit blast radius. | Integration test | 6 |
-| SEC-031 | P0 | Service identities shall use scoped permissions. | Limit compromised-service impact. | IAM review | 2 |
-| SEC-032 | P1 | Sensitive administrative operations shall require elevated authorization. | Protect high-impact functions. | Integration test | 8 |
-| SEC-033 | P1 | Authorization failures shall be audited without exposing sensitive data. | Support investigation. | Audit test | 7 |
-| SEC-034 | P0 | Deny-by-default authorization shall apply when policy is missing or ambiguous. | Prevent fail-open security behavior. | Negative tests | 1 |
+| SEC-020 | PRI-0 | Every protected operation shall perform authorization after authentication. | Authentication alone is insufficient. | Integration test | 1 |
+| SEC-021 | PRI-0 | Authorization shall be based on explicit permissions/roles. | Prevent implicit privilege. | Unit + integration test | 1 |
+| SEC-022 | PRI-0 | Organization membership shall be checked before organization-owned operations. | Enforce tenancy. | Integration test | 1 |
+| SEC-023 | PRI-0 | Project access shall be checked before project-owned operations. | Prevent project data leakage. | Integration test | 2 |
+| SEC-024 | PRI-0 | Resource operations shall validate platform and booking authorization. | Prevent unauthorized robot use. | Integration test | 4 |
+| SEC-025 | PRI-0 | Artifact execution shall require explicit execution authorization. | Execution affects remote resources. | Integration test | 5 |
+| SEC-026 | PRI-0 | Physical robot execution shall require valid booking and resource allocation. | Prevent unreserved robot control. | Integration test | 5 |
+| SEC-027 | PRI-0 | Users shall not elevate their own roles. | Prevent privilege escalation. | Security test | 1 |
+| SEC-028 | PRI-0 | Organization administrators shall not automatically gain physical safety override capability. | Separate business administration from safety control. | Architecture review | 6 |
+| SEC-029 | PRI-0 | Platform catalog permissions shall be separated from lab operational permissions. | Limit operational authority. | Role test | 6 |
+| SEC-030 | PRI-0 | Lab Agent permissions shall be restricted to assigned lab resources. | Limit blast radius. | Integration test | 6 |
+| SEC-031 | PRI-0 | Service identities shall use scoped permissions. | Limit compromised-service impact. | IAM review | 2 |
+| SEC-032 | PRI-1 | Sensitive administrative operations shall require elevated authorization. | Protect high-impact functions. | Integration test | 8 |
+| SEC-033 | PRI-1 | Authorization failures shall be audited without exposing sensitive data. | Support investigation. | Audit test | 7 |
+| SEC-034 | PRI-0 | Deny-by-default authorization shall apply when policy is missing or ambiguous. | Prevent fail-open security behavior. | Negative tests | 1 |
 
 ## 8.3 Source-Code Privacy Requirements
 
 | ID | Priority | Requirement | Rationale | Verification | Phase |
 |---|---|---|---|---|---|
-| SEC-040 | P0 | RaaS shall not require source code upload for remote execution. | Protect intellectual property. | Architecture review | 2 |
-| SEC-041 | P0 | Studio shall build source locally where supported. | Keep source outside cloud boundary. | E2E test | 2 |
-| SEC-042 | P0 | The remote execution interface shall accept packaged artifacts rather than source by default. | Minimize source exposure. | API test | 3 |
-| SEC-043 | P0 | Server logs shall not contain source-code contents. | Prevent accidental disclosure. | Log inspection | 3 |
-| SEC-044 | P0 | API errors shall not echo source code or sensitive build content. | Prevent leakage through diagnostics. | Negative test | 3 |
-| SEC-045 | P0 | Source files shall not be persisted in PostgreSQL by RaaS application services. | Maintain source privacy boundary. | Repository review | 2 |
-| SEC-046 | P0 | Source files shall not be automatically copied to object storage. | Prevent hidden source retention. | Integration test | 2 |
-| SEC-047 | P1 | Crash reports shall sanitize source paths and source contents. | Protect developer information. | Failure test | 7 |
-| SEC-048 | P0 | Debug logging shall not expose source or secrets in Production. | Reduce accidental leakage. | Configuration test | 8 |
-| SEC-049 | P1 | Local build caches shall be protected by the Studio operating-system account boundary. | Protect source on endpoint. | Security review | 2 |
-| SEC-050 | P1 | Documentation shall clearly identify the source-to-artifact security boundary. | Establish user expectations. | Documentation review | 2 |
+| SEC-040 | PRI-0 | RaaS shall not require source code upload for remote execution. | Protect intellectual property. | Architecture review | 2 |
+| SEC-041 | PRI-0 | Studio shall build source locally where supported. | Keep source outside cloud boundary. | E2E test | 2 |
+| SEC-042 | PRI-0 | The remote execution interface shall accept packaged artifacts rather than source by default. | Minimize source exposure. | API test | 3 |
+| SEC-043 | PRI-0 | Server logs shall not contain source-code contents. | Prevent accidental disclosure. | Log inspection | 3 |
+| SEC-044 | PRI-0 | API errors shall not echo source code or sensitive build content. | Prevent leakage through diagnostics. | Negative test | 3 |
+| SEC-045 | PRI-0 | Source files shall not be persisted in PostgreSQL by RaaS application services. | Maintain source privacy boundary. | Repository review | 2 |
+| SEC-046 | PRI-0 | Source files shall not be automatically copied to object storage. | Prevent hidden source retention. | Integration test | 2 |
+| SEC-047 | PRI-1 | Crash reports shall sanitize source paths and source contents. | Protect developer information. | Failure test | 7 |
+| SEC-048 | PRI-0 | Debug logging shall not expose source or secrets in Production. | Reduce accidental leakage. | Configuration test | 8 |
+| SEC-049 | PRI-1 | Local build caches shall be protected by the Studio operating-system account boundary. | Protect source on endpoint. | Security review | 2 |
+| SEC-050 | PRI-1 | Documentation shall clearly identify the source-to-artifact security boundary. | Establish user expectations. | Documentation review | 2 |
 
 ## 8.4 Artifact Integrity Requirements
 
 | ID | Priority | Requirement | Rationale | Verification | Phase |
 |---|---|---|---|---|---|
-| SEC-060 | P0 | Every remotely executable artifact shall have a unique immutable identity. | Prevent ambiguity and substitution. | Integration test | 3 |
-| SEC-061 | P0 | Artifact metadata shall include platform identity. | Validate target compatibility. | Contract test | 3 |
-| SEC-062 | P0 | Artifact metadata shall include architecture. | Prevent incompatible execution. | Contract test | 3 |
-| SEC-063 | P0 | Artifact metadata shall include KritvaOS/runtime compatibility. | Prevent unsupported execution. | Compatibility test | 3 |
-| SEC-064 | P0 | Artifact metadata shall include SDK compatibility. | Prevent API/runtime mismatch. | Compatibility test | 3 |
-| SEC-065 | P0 | Artifact checksum shall be verified after upload. | Detect corruption or tampering. | Integration test | 3 |
-| SEC-066 | P0 | Signed artifacts shall have their signature verified before execution. | Establish artifact authenticity. | Cryptographic test | 3 |
-| SEC-067 | P0 | Invalid signatures shall block execution. | Fail closed. | Negative test | 3 |
-| SEC-068 | P0 | Revoked artifacts/signing identities shall be rejected. | Contain compromised artifacts. | Integration test | 8 |
-| SEC-069 | P0 | Artifact content shall not be modified after successful validation. | Preserve validated execution unit. | Storage/integration test | 3 |
-| SEC-070 | P0 | Artifact storage shall enforce organization/project authorization. | Prevent cross-tenant artifact access. | Security test | 3 |
-| SEC-071 | P0 | Artifact deployment shall validate manifest against target Platform Version. | Prevent incompatible execution. | Integration test | 5 |
-| SEC-072 | P0 | Required capabilities shall be validated before execution. | Prevent unauthorized hardware use. | Integration test | 5 |
-| SEC-073 | P0 | Artifact entrypoint shall be explicitly declared. | Prevent ambiguous execution. | Validation test | 3 |
-| SEC-074 | P1 | Artifact expiration shall be enforceable where policy requires it. | Limit stale artifact execution. | Policy test | 8 |
-| SEC-075 | P0 | Artifact download shall require authorization. | Protect executable IP. | API test | 3 |
-| SEC-076 | P1 | Artifact provenance shall be retained for security investigation. | Support incident analysis. | Audit review | 7 |
+| SEC-060 | PRI-0 | Every remotely executable artifact shall have a unique immutable identity. | Prevent ambiguity and substitution. | Integration test | 3 |
+| SEC-061 | PRI-0 | Artifact metadata shall include platform identity. | Validate target compatibility. | Contract test | 3 |
+| SEC-062 | PRI-0 | Artifact metadata shall include architecture. | Prevent incompatible execution. | Contract test | 3 |
+| SEC-063 | PRI-0 | Artifact metadata shall include KritvaOS/runtime compatibility. | Prevent unsupported execution. | Compatibility test | 3 |
+| SEC-064 | PRI-0 | Artifact metadata shall include SDK compatibility. | Prevent API/runtime mismatch. | Compatibility test | 3 |
+| SEC-065 | PRI-0 | Artifact checksum shall be verified after upload. | Detect corruption or tampering. | Integration test | 3 |
+| SEC-066 | PRI-0 | Signed artifacts shall have their signature verified before execution. | Establish artifact authenticity. | Cryptographic test | 3 |
+| SEC-067 | PRI-0 | Invalid signatures shall block execution. | Fail closed. | Negative test | 3 |
+| SEC-068 | PRI-0 | Revoked artifacts/signing identities shall be rejected. | Contain compromised artifacts. | Integration test | 8 |
+| SEC-069 | PRI-0 | Artifact content shall not be modified after successful validation. | Preserve validated execution unit. | Storage/integration test | 3 |
+| SEC-070 | PRI-0 | Artifact storage shall enforce organization/project authorization. | Prevent cross-tenant artifact access. | Security test | 3 |
+| SEC-071 | PRI-0 | Artifact deployment shall validate manifest against target Platform Version. | Prevent incompatible execution. | Integration test | 5 |
+| SEC-072 | PRI-0 | Required capabilities shall be validated before execution. | Prevent unauthorized hardware use. | Integration test | 5 |
+| SEC-073 | PRI-0 | Artifact entrypoint shall be explicitly declared. | Prevent ambiguous execution. | Validation test | 3 |
+| SEC-074 | PRI-1 | Artifact expiration shall be enforceable where policy requires it. | Limit stale artifact execution. | Policy test | 8 |
+| SEC-075 | PRI-0 | Artifact download shall require authorization. | Protect executable IP. | API test | 3 |
+| SEC-076 | PRI-1 | Artifact provenance shall be retained for security investigation. | Support incident analysis. | Audit review | 7 |
 
 ## 8.5 Tenant Isolation Requirements
 
 | ID | Priority | Requirement | Rationale | Verification | Phase |
 |---|---|---|---|---|---|
-| SEC-080 | P0 | Organization shall be the primary logical tenant boundary. | Establish consistent isolation. | Architecture review | 1 |
-| SEC-081 | P0 | Customer-owned records shall carry organization context where practical. | Defense in depth. | Schema review | 2 |
-| SEC-082 | P0 | Repository queries shall filter by organization context. | Prevent accidental cross-tenant reads. | Code review + tests | 2 |
-| SEC-083 | P0 | API path parameters shall never override authenticated tenant context without authorization. | Prevent IDOR attacks. | Security test | 1 |
-| SEC-084 | P0 | Cross-organization object references shall be rejected unless explicitly authorized. | Prevent data crossing tenants. | Integration test | 2 |
-| SEC-085 | P0 | Project membership shall be organization-consistent. | Prevent membership boundary bypass. | DB + integration test | 2 |
-| SEC-086 | P0 | Artifact access shall enforce organization ownership. | Protect IP. | Integration test | 3 |
-| SEC-087 | P0 | Booking access shall enforce organization ownership. | Protect resource and financial state. | Integration test | 4 |
-| SEC-088 | P0 | Credit wallets and ledgers shall be organization-scoped. | Prevent financial leakage. | DB + integration test | 4 |
-| SEC-089 | P0 | Results and experiments shall be organization-scoped. | Protect experiment data. | Integration test | 7 |
-| SEC-090 | P0 | Object-storage keys shall include tenant-scoped namespaces or equivalent isolation. | Prevent object-level leakage. | Storage test | 3 |
-| SEC-091 | P0 | Tenant authorization shall not depend solely on frontend filtering. | Frontend can be bypassed. | Security review | 1 |
-| SEC-092 | P1 | Optional database row-level security may provide defense in depth. | Reduce impact of application defects. | Architecture test | 8 |
-| SEC-093 | P0 | Tenant isolation shall be tested using adversarial cross-tenant scenarios. | Validate actual isolation. | E2E security suite | 8 |
+| SEC-080 | PRI-0 | Organization shall be the primary logical tenant boundary. | Establish consistent isolation. | Architecture review | 1 |
+| SEC-081 | PRI-0 | Customer-owned records shall carry organization context where practical. | Defense in depth. | Schema review | 2 |
+| SEC-082 | PRI-0 | Repository queries shall filter by organization context. | Prevent accidental cross-tenant reads. | Code review + tests | 2 |
+| SEC-083 | PRI-0 | API path parameters shall never override authenticated tenant context without authorization. | Prevent IDOR attacks. | Security test | 1 |
+| SEC-084 | PRI-0 | Cross-organization object references shall be rejected unless explicitly authorized. | Prevent data crossing tenants. | Integration test | 2 |
+| SEC-085 | PRI-0 | Project membership shall be organization-consistent. | Prevent membership boundary bypass. | DB + integration test | 2 |
+| SEC-086 | PRI-0 | Artifact access shall enforce organization ownership. | Protect IP. | Integration test | 3 |
+| SEC-087 | PRI-0 | Booking access shall enforce organization ownership. | Protect resource and financial state. | Integration test | 4 |
+| SEC-088 | PRI-0 | Credit wallets and ledgers shall be organization-scoped. | Prevent financial leakage. | DB + integration test | 4 |
+| SEC-089 | PRI-0 | Results and experiments shall be organization-scoped. | Protect experiment data. | Integration test | 7 |
+| SEC-090 | PRI-0 | Object-storage keys shall include tenant-scoped namespaces or equivalent isolation. | Prevent object-level leakage. | Storage test | 3 |
+| SEC-091 | PRI-0 | Tenant authorization shall not depend solely on frontend filtering. | Frontend can be bypassed. | Security review | 1 |
+| SEC-092 | PRI-1 | Optional database row-level security may provide defense in depth. | Reduce impact of application defects. | Architecture test | 8 |
+| SEC-093 | PRI-0 | Tenant isolation shall be tested using adversarial cross-tenant scenarios. | Validate actual isolation. | E2E security suite | 8 |
 
 ## 8.6 Lab and Robot Safety Requirements
 
 | ID | Priority | Requirement | Rationale | Verification | Phase |
 |---|---|---|---|---|---|
-| SEC-100 | P0 | Cloud services shall never be the sole physical safety mechanism. | Network/cloud failure must not create unsafe motion. | Architecture review | 6 |
-| SEC-101 | P0 | Physical emergency stop shall remain local to the robot/lab safety system. | Ensure immediate safety response. | Human safety review | 6 |
-| SEC-102 | P0 | Lab Agent shall enforce local execution policy before robot deployment. | Protect against cloud-side mistakes. | Integration test | 6 |
-| SEC-103 | P0 | Lab Agent shall reject artifacts incompatible with its assigned platform. | Prevent unsafe deployment. | Negative test | 6 |
-| SEC-104 | P0 | Physical robot execution shall require explicit resource allocation. | Prevent concurrent control. | Integration test | 6 |
-| SEC-105 | P0 | Resource allocation shall prevent conflicting active bookings. | Prevent competing control sessions. | Concurrency test | 4 |
-| SEC-106 | P0 | Robot state FAULT shall block normal job execution. | Prevent operation of known-fault hardware. | Integration test | 6 |
-| SEC-107 | P0 | Robot state MAINTENANCE shall block normal execution. | Prevent operation during maintenance. | Integration test | 6 |
-| SEC-108 | P0 | Lab Agent loss of control connectivity shall trigger configured safe behavior. | Contain communication failures. | Failure-injection test | 6 |
-| SEC-109 | P0 | Unsafe automatic robot restart shall not occur after cloud failure. | Prevent uncontrolled recovery. | Failure test | 6 |
-| SEC-110 | P0 | Remote users shall not directly access robot management networks. | Reduce attack surface. | Network review | 6 |
-| SEC-111 | P0 | Lab Agent shall expose only required robot-control operations. | Minimize privileged interface. | Interface review | 6 |
-| SEC-112 | P0 | Safety-critical controls shall be auditable. | Enable accountability. | Audit test | 7 |
-| SEC-113 | P0 | Human safety review shall remain an explicit gate for physical deployment. | Software validation is not physical safety certification. | Review checklist | 6 |
-| SEC-114 | P1 | Simulator execution shall be preferred for untrusted or experimental workloads where policy requires. | Reduce physical risk. | Policy test | 6 |
+| SEC-100 | PRI-0 | Cloud services shall never be the sole physical safety mechanism. | Network/cloud failure must not create unsafe motion. | Architecture review | 6 |
+| SEC-101 | PRI-0 | Physical emergency stop shall remain local to the robot/lab safety system. | Ensure immediate safety response. | Human safety review | 6 |
+| SEC-102 | PRI-0 | Lab Agent shall enforce local execution policy before robot deployment. | Protect against cloud-side mistakes. | Integration test | 6 |
+| SEC-103 | PRI-0 | Lab Agent shall reject artifacts incompatible with its assigned platform. | Prevent unsafe deployment. | Negative test | 6 |
+| SEC-104 | PRI-0 | Physical robot execution shall require explicit resource allocation. | Prevent concurrent control. | Integration test | 6 |
+| SEC-105 | PRI-0 | Resource allocation shall prevent conflicting active bookings. | Prevent competing control sessions. | Concurrency test | 4 |
+| SEC-106 | PRI-0 | Robot state FAULT shall block normal job execution. | Prevent operation of known-fault hardware. | Integration test | 6 |
+| SEC-107 | PRI-0 | Robot state MAINTENANCE shall block normal execution. | Prevent operation during maintenance. | Integration test | 6 |
+| SEC-108 | PRI-0 | Lab Agent loss of control connectivity shall trigger configured safe behavior. | Contain communication failures. | Failure-injection test | 6 |
+| SEC-109 | PRI-0 | Unsafe automatic robot restart shall not occur after cloud failure. | Prevent uncontrolled recovery. | Failure test | 6 |
+| SEC-110 | PRI-0 | Remote users shall not directly access robot management networks. | Reduce attack surface. | Network review | 6 |
+| SEC-111 | PRI-0 | Lab Agent shall expose only required robot-control operations. | Minimize privileged interface. | Interface review | 6 |
+| SEC-112 | PRI-0 | Safety-critical controls shall be auditable. | Enable accountability. | Audit test | 7 |
+| SEC-113 | PRI-0 | Human safety review shall remain an explicit gate for physical deployment. | Software validation is not physical safety certification. | Review checklist | 6 |
+| SEC-114 | PRI-1 | Simulator execution shall be preferred for untrusted or experimental workloads where policy requires. | Reduce physical risk. | Policy test | 6 |
 
 ## 8.7 Data Protection Requirements
 
 | ID | Priority | Requirement | Rationale | Verification | Phase |
 |---|---|---|---|---|---|
-| SEC-120 | P0 | Sensitive data shall be encrypted in transit. | Prevent network interception. | TLS/security scan | 1 |
-| SEC-121 | P0 | Sensitive persistent data shall be encrypted at rest using platform-supported encryption. | Protect storage compromise. | Configuration review | 2 |
-| SEC-122 | P0 | Secrets shall not be stored in source repositories. | Prevent credential leakage. | CI scan | 0 |
-| SEC-123 | P0 | Production secrets shall be managed through a dedicated secret-management mechanism. | Centralize access control. | Infrastructure review | 2 |
-| SEC-124 | P0 | Cryptographic keys shall not be embedded in application binaries. | Prevent key extraction. | Binary inspection | 3 |
-| SEC-125 | P0 | Secrets shall not be written to normal application logs. | Prevent accidental disclosure. | Log test | 7 |
-| SEC-126 | P0 | Database credentials shall use least privilege. | Limit database compromise. | IAM review | 2 |
-| SEC-127 | P0 | Object storage access shall use scoped identities. | Limit storage compromise. | IAM review | 3 |
-| SEC-128 | P1 | Personal data shall be minimized. | Reduce privacy exposure. | Data review | 8 |
-| SEC-129 | P1 | Data retention shall be defined by data class. | Prevent indefinite unnecessary retention. | Policy review | 8 |
-| SEC-130 | P1 | User data export shall preserve tenant boundaries. | Support data portability safely. | Integration test | 8 |
-| SEC-131 | P1 | Account deletion shall trigger defined retention/anonymization behavior. | Meet privacy obligations. | Integration test | 8 |
-| SEC-132 | P1 | Financial and audit records shall be retained according to applicable policy. | Preserve required evidence. | Retention test | 8 |
-| SEC-133 | P0 | Backup data shall receive protection equivalent to production data. | Backups contain sensitive information. | Backup review | 8 |
-| SEC-134 | P1 | Production data shall not be copied to Development without approved sanitization. | Prevent uncontrolled data exposure. | Environment review | 2 |
-| SEC-135 | P0 | Object-storage signed URLs shall be short-lived and scoped. | Reduce leaked-link impact. | Integration test | 7 |
+| SEC-120 | PRI-0 | Sensitive data shall be encrypted in transit. | Prevent network interception. | TLS/security scan | 1 |
+| SEC-121 | PRI-0 | Sensitive persistent data shall be encrypted at rest using platform-supported encryption. | Protect storage compromise. | Configuration review | 2 |
+| SEC-122 | PRI-0 | Secrets shall not be stored in source repositories. | Prevent credential leakage. | CI scan | 0 |
+| SEC-123 | PRI-0 | Production secrets shall be managed through a dedicated secret-management mechanism. | Centralize access control. | Infrastructure review | 2 |
+| SEC-124 | PRI-0 | Cryptographic keys shall not be embedded in application binaries. | Prevent key extraction. | Binary inspection | 3 |
+| SEC-125 | PRI-0 | Secrets shall not be written to normal application logs. | Prevent accidental disclosure. | Log test | 7 |
+| SEC-126 | PRI-0 | Database credentials shall use least privilege. | Limit database compromise. | IAM review | 2 |
+| SEC-127 | PRI-0 | Object storage access shall use scoped identities. | Limit storage compromise. | IAM review | 3 |
+| SEC-128 | PRI-1 | Personal data shall be minimized. | Reduce privacy exposure. | Data review | 8 |
+| SEC-129 | PRI-1 | Data retention shall be defined by data class. | Prevent indefinite unnecessary retention. | Policy review | 8 |
+| SEC-130 | PRI-1 | User data export shall preserve tenant boundaries. | Support data portability safely. | Integration test | 8 |
+| SEC-131 | PRI-1 | Account deletion shall trigger defined retention/anonymization behavior. | Meet privacy obligations. | Integration test | 8 |
+| SEC-132 | PRI-1 | Financial and audit records shall be retained according to applicable policy. | Preserve required evidence. | Retention test | 8 |
+| SEC-133 | PRI-0 | Backup data shall receive protection equivalent to production data. | Backups contain sensitive information. | Backup review | 8 |
+| SEC-134 | PRI-1 | Production data shall not be copied to Development without approved sanitization. | Prevent uncontrolled data exposure. | Environment review | 2 |
+| SEC-135 | PRI-0 | Object-storage signed URLs shall be short-lived and scoped. | Reduce leaked-link impact. | Integration test | 7 |
 
 ## 8.8 Logging and Audit Requirements
 
 | ID | Priority | Requirement | Rationale | Verification | Phase |
 |---|---|---|---|---|---|
-| SEC-140 | P0 | Authentication events shall be logged. | Detect account attacks. | Log test | 7 |
-| SEC-141 | P0 | Authorization failures shall be logged. | Detect access attempts. | Log test | 7 |
-| SEC-142 | P0 | Administrative actions shall be audited. | Preserve privileged accountability. | Audit test | 7 |
-| SEC-143 | P0 | Artifact upload, validation, signing, revocation, and execution shall be auditable. | Protect execution boundary. | Audit test | 7 |
-| SEC-144 | P0 | Booking and resource-allocation security events shall be auditable. | Protect physical resources. | Audit test | 7 |
-| SEC-145 | P0 | Credit-affecting operations shall be auditable. | Protect financial state. | Audit test | 7 |
-| SEC-146 | P0 | Robot deployment and execution authorization shall be auditable. | Safety and accountability. | Audit test | 7 |
-| SEC-147 | P0 | Audit records shall include actor, organization, operation, target, timestamp, and outcome where applicable. | Provide investigation context. | Schema review | 7 |
-| SEC-148 | P0 | Security logs shall not contain plaintext credentials or secrets. | Prevent secondary leakage. | Security scan | 7 |
-| SEC-149 | P1 | Logs shall support correlation using request/trace identifiers. | Enable incident reconstruction. | Integration test | 7 |
-| SEC-150 | P1 | Security logs shall be protected against unauthorized modification. | Preserve evidence. | Infrastructure test | 8 |
-| SEC-151 | P1 | Audit retention shall be multi-year according to policy. | Preserve historical security evidence. | Retention test | 8 |
-| SEC-152 | P1 | Security monitoring shall alert on configurable high-risk events. | Enable timely response. | Detection test | 8 |
+| SEC-140 | PRI-0 | Authentication events shall be logged. | Detect account attacks. | Log test | 7 |
+| SEC-141 | PRI-0 | Authorization failures shall be logged. | Detect access attempts. | Log test | 7 |
+| SEC-142 | PRI-0 | Administrative actions shall be audited. | Preserve privileged accountability. | Audit test | 7 |
+| SEC-143 | PRI-0 | Artifact upload, validation, signing, revocation, and execution shall be auditable. | Protect execution boundary. | Audit test | 7 |
+| SEC-144 | PRI-0 | Booking and resource-allocation security events shall be auditable. | Protect physical resources. | Audit test | 7 |
+| SEC-145 | PRI-0 | Credit-affecting operations shall be auditable. | Protect financial state. | Audit test | 7 |
+| SEC-146 | PRI-0 | Robot deployment and execution authorization shall be auditable. | Safety and accountability. | Audit test | 7 |
+| SEC-147 | PRI-0 | Audit records shall include actor, organization, operation, target, timestamp, and outcome where applicable. | Provide investigation context. | Schema review | 7 |
+| SEC-148 | PRI-0 | Security logs shall not contain plaintext credentials or secrets. | Prevent secondary leakage. | Security scan | 7 |
+| SEC-149 | PRI-1 | Logs shall support correlation using request/trace identifiers. | Enable incident reconstruction. | Integration test | 7 |
+| SEC-150 | PRI-1 | Security logs shall be protected against unauthorized modification. | Preserve evidence. | Infrastructure test | 8 |
+| SEC-151 | PRI-1 | Audit retention shall be multi-year according to policy. | Preserve historical security evidence. | Retention test | 8 |
+| SEC-152 | PRI-1 | Security monitoring shall alert on configurable high-risk events. | Enable timely response. | Detection test | 8 |
 
 ## 8.9 Compliance and Governance Requirements
 
 | ID | Priority | Requirement | Rationale | Verification | Phase |
 |---|---|---|---|---|---|
-| SEC-160 | P1 | Security policies shall be documented and version controlled. | Establish governance. | Documentation review | 8 |
-| SEC-161 | P1 | Production changes shall be traceable to an authorized change. | Support accountability. | CI/CD review | 8 |
-| SEC-162 | P0 | Dependencies shall be scanned for known critical vulnerabilities. | Reduce supply-chain risk. | CI test | 0 |
-| SEC-163 | P1 | Critical dependency vulnerabilities shall have defined remediation SLAs. | Ensure timely response. | Process review | 8 |
-| SEC-164 | P0 | Production builds shall be reproducible or provenance-traceable. | Support supply-chain investigation. | Build review | 3 |
-| SEC-165 | P0 | CI/CD credentials shall use scoped service identities. | Reduce pipeline compromise impact. | IAM review | 0 |
-| SEC-166 | P0 | Production deployment shall require authenticated and authorized pipeline execution. | Prevent unauthorized releases. | CI/CD test | 8 |
-| SEC-167 | P1 | Security reviews shall be performed before Production release of security-sensitive features. | Reduce release risk. | Review evidence | 8 |
-| SEC-168 | P1 | Penetration testing shall be performed before production launch and periodically thereafter. | Validate external attack resistance. | Security assessment | 8 |
-| SEC-169 | P1 | Security findings shall have severity, owner, remediation status, and target date. | Enable accountable remediation. | Issue review | 8 |
-| SEC-170 | P1 | Security incidents shall have documented response procedures. | Reduce incident impact. | Tabletop exercise | 8 |
-| SEC-171 | P1 | Evidence needed for future compliance programs shall be retained. | Enable later certification. | Audit review | 8 |
+| SEC-160 | PRI-1 | Security policies shall be documented and version controlled. | Establish governance. | Documentation review | 8 |
+| SEC-161 | PRI-1 | Production changes shall be traceable to an authorized change. | Support accountability. | CI/CD review | 8 |
+| SEC-162 | PRI-0 | Dependencies shall be scanned for known critical vulnerabilities. | Reduce supply-chain risk. | CI test | 0 |
+| SEC-163 | PRI-1 | Critical dependency vulnerabilities shall have defined remediation SLAs. | Ensure timely response. | Process review | 8 |
+| SEC-164 | PRI-0 | Production builds shall be reproducible or provenance-traceable. | Support supply-chain investigation. | Build review | 3 |
+| SEC-165 | PRI-0 | CI/CD credentials shall use scoped service identities. | Reduce pipeline compromise impact. | IAM review | 0 |
+| SEC-166 | PRI-0 | Production deployment shall require authenticated and authorized pipeline execution. | Prevent unauthorized releases. | CI/CD test | 8 |
+| SEC-167 | PRI-1 | Security reviews shall be performed before Production release of security-sensitive features. | Reduce release risk. | Review evidence | 8 |
+| SEC-168 | PRI-1 | Penetration testing shall be performed before production launch and periodically thereafter. | Validate external attack resistance. | Security assessment | 8 |
+| SEC-169 | PRI-1 | Security findings shall have severity, owner, remediation status, and target date. | Enable accountable remediation. | Issue review | 8 |
+| SEC-170 | PRI-1 | Security incidents shall have documented response procedures. | Reduce incident impact. | Tabletop exercise | 8 |
+| SEC-171 | PRI-1 | Evidence needed for future compliance programs shall be retained. | Enable later certification. | Audit review | 8 |
 
 # 9. Identity and Access-Control Model
 

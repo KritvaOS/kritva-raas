@@ -4,10 +4,10 @@
 
 **Milestone ID:** F-M03-BUILD-ARTIFACT  
 **Product:** Kritva RaaS  
-**Primary Phase:** Phase 2 — BUILD & ARTIFACT  
+**Primary Phase:** P2 BUILD & ARTIFACT  
 **Primary Surface:** RaaS Studio + Local Runtime  
 **Technology:** Tauri + Rust + React + TypeScript + Local Toolchain  
-**Priority:** P0  
+**Priority:** PRI-1 (primary product path per Priority Matrix; see `docs/planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
 **Status:** PLANNED  
 **Primary Outcome:** A secure local build and artifact workflow that detects the
 developer toolchain, builds and tests the project locally, produces a validated

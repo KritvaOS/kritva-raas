@@ -9,7 +9,7 @@ Source of scope: [MILESTONE.md](MILESTONE.md)
 
 | ID | Description | Estimate | Owner Role | Dependencies | Status |
 |---|---|---:|---|---|---|
-| KR-BE-1-001 | Create Control Plane application structure | 2d | Backend | Phase 0 | [ ] |
+| KR-BE-1-001 | Create Control Plane application structure | 2d | Backend | P0 FOUNDATION | [ ] |
 | KR-BE-1-002 | Define backend module boundaries | 1.5d | Architect | 001 | [ ] |
 | KR-BE-1-003 | Establish configuration framework | 1.5d | Backend | 001 | [ ] |
 | KR-BE-1-004 | Establish HTTP transport | 2d | Backend | 001 | [ ] |

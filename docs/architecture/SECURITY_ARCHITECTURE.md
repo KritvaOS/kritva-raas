@@ -2149,7 +2149,7 @@ Live stream URLs should be short-lived and non-public.
 | Phase 7 | Data security | Observation protection |
 | Phase 8 | Production security | Full hardening |
 
-## 151. Phase 0 — Security Foundation
+## 151. P0 FOUNDATION — Security Foundation
 
 Deliver:
 
@@ -2184,7 +2184,7 @@ Acceptance:
 - tenant isolation tests pass;
 - privileged access requires strong authentication.
 
-## 153. Phase 2 — Artifact Security
+## 153. P2 BUILD & ARTIFACT — Artifact Security
 
 Deliver:
 
@@ -2218,7 +2218,7 @@ Acceptance:
 - workload cannot access other customer data;
 - prohibited device access is blocked.
 
-## 155. Phase 4 — Commercial Security
+## 155. P4 BOOKING & COMMERCIAL — Commercial Security
 
 Deliver:
 
@@ -2234,7 +2234,7 @@ Acceptance:
 - unauthorized adjustments are blocked;
 - financial actions are audited.
 
-## 156. Phase 5 — Lab Security
+## 156. P5 EXECUTION — Lab Security
 
 Deliver:
 
@@ -2250,7 +2250,7 @@ Acceptance:
 - robot networks are not Internet-exposed;
 - agent credentials can be revoked.
 
-## 157. Phase 6 — Physical Robot Security
+## 157. P6 LAB & ROBOT — Physical Robot Security
 
 Deliver:
 
@@ -2266,7 +2266,7 @@ Acceptance:
 - safety controller remains authoritative;
 - physical safety review passes.
 
-## 158. Phase 7 — Data and Observation Security
+## 158. P7 LIVE & RESULTS — Data and Observation Security
 
 Deliver:
 
@@ -2282,7 +2282,7 @@ Acceptance:
 - video access is protected;
 - retention policies are enforced.
 
-## 159. Phase 8 — Production Security
+## 159. P8 PRODUCTION Security
 
 Deliver:
 

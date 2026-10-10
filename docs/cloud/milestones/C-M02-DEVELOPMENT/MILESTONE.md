@@ -1,5 +1,11 @@
 # C-M02-DEVELOPMENT — Shared Development Environment
 
+**Primary Phase:** P1 STUDIO  
+
+**Supporting Phases:** P2 BUILD & ARTIFACT, P3 CONTROL PLANE  
+
+**Milestone:** C-M02 DEVELOPMENT (P1-P3)
+
 ## 1 Objective
 
 ### 1.1 Milestone purpose

@@ -50,87 +50,21 @@ Milestone: F-M02 — Projects
 
 # Appendix A — Phase Mapping
 
-## A.1 Phase 0
+The canonical mapping for F-M02 PROJECTS (P1) is defined in `docs/planning/PHASES.md` (Section 6). Cross-phase dependencies are owned by `docs/planning/DEPENDENCY_MAP.md` and `docs/planning/IMPLEMENTATION_ROADMAP.md`; milestone scope is owned by this milestone's `MILESTONE.md`. This appendix does not redefine either.
 
-F-M02 consumes the following Phase 0 foundation:
+| Phase | Relationship to this milestone | Boundary note |
+|---|---|---|
+| P0 FOUNDATION | Upstream dependency; outputs consumed by this milestone |  |
+| P1 STUDIO | Owning phase |  |
+| P2 BUILD & ARTIFACT | Downstream consumer of this milestone's outputs |  |
+| P3 CONTROL PLANE | Downstream consumer of this milestone's outputs |  |
+| P4 BOOKING & COMMERCIAL | Downstream consumer of this milestone's outputs |  |
+| P5 EXECUTION | Downstream consumer of this milestone's outputs | Simulated Lab Agent and simulated robots only. |
+| P6 LAB & ROBOT | Downstream consumer of this milestone's outputs | Physical Lab Agent, physical robots, E-stop qualification and hardware safety review. |
+| P7 LIVE & RESULTS | Downstream consumer of this milestone's outputs |  |
+| P8 PRODUCTION | Downstream consumer of this milestone's outputs |  |
 
-- Tauri shell;
-- React shell;
-- navigation;
-- authentication;
-- API client;
-- UI system;
-- test infrastructure;
-- security baseline.
-
-F-M02 must not duplicate these foundations.
-
-## A.2 Phase 1
-
-F-M02 is primarily a Phase 1 milestone.
-
-Phase 1 outcome:
-
-> The authenticated developer has a persistent Project Workspace that connects
-> local development context with authorized RaaS project metadata.
-
-## A.3 Phase 2
-
-F-M02 provides the project context consumed by:
-
-- local build;
-- SDK selection;
-- runtime selection;
-- artifact generation;
-- artifact compatibility.
-
-## A.4 Phase 3
-
-F-M02 project identity is used by:
-
-- Jobs;
-- Runs;
-- remote execution;
-- telemetry;
-- results.
-
-## A.5 Phase 4
-
-Project identity becomes part of:
-
-- booking;
-- credit consumption;
-- resource allocation.
-
-## A.6 Phase 5
-
-Project target platform and configuration become part of:
-
-- Lab Agent deployment;
-- simulator execution;
-- physical robot execution.
-
-## A.7 Phase 6
-
-Project-level security expands into:
-
-- artifact security;
-- tenant isolation;
-- audit;
-- production execution policies.
-
-## A.8 Phase 7
-
-Project data becomes a dimension for:
-
-- usage analytics;
-- operational dashboards;
-- project-level quotas;
-- fleet-scale execution.
-
-## A.9 Phase 8
-
-Project workflows become part of the production customer experience.
+Earlier revisions of this appendix used a superseded phase model and were replaced to remove conflicting phase assignments.
 
 ---
 

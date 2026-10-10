@@ -7,7 +7,7 @@
 | Document | Resource Plan |
 | Path | `docs/planning/RESOURCE_PLAN.md` |
 | Project | Kritva RaaS |
-| Status | Planning baseline |
+| Status | Planning baseline (indicative). Not yet a committed, costed schedule baseline; see Section 23.2 |
 | Scope | P0 FOUNDATION through P8 PRODUCTION |
 | Primary audience | Project leadership, engineering leads, hiring owners, finance and operations |
 | Planning unit | Full-time equivalent (FTE), person-month (PM), and budget category |
@@ -1275,6 +1275,28 @@ For the initial review, prioritize:
 - The first credible staffing and cost forecast.
 - The readiness evidence required before physical robotics expansion.
 - The security, SRE, and support capacity required before production launch.
+
+### 23.2 Commitment Baseline Status
+
+This plan provides indicative FTE ranges. It becomes a committed, costed schedule baseline only when every element below is recorded with evidence. Until then, no hiring, spending, or delivery-date commitment may cite this plan as its authority.
+
+| Baseline element | Required content | Record of truth | Current state |
+|---|---|---|---|
+| Time-phased allocation | FTE per role per calendar month for the next delivery window, capped at each person's available capacity | Phase-level FTE allocation sheet | Not started |
+| Named owners | A named accountable owner for each phase, each milestone, and each shared specialist role | `docs/tracking/STATUS.md` and milestone tracking | TBD in tracking documents |
+| Hiring dates | Approved role, target start date, and hiring gate for each planned hire | Hiring pipeline | Not started |
+| Cost assumptions | Approved salary bands, contractor rates, and loaded-cost factors | Budget forecast (finance-owned) | Not started |
+| Infrastructure and lab costs | Recurring CI, cloud, storage and tooling estimates; robotics bill of materials with quotations | Infrastructure cost model; robotics bill of materials | Not started |
+| Budget forecast | Monthly forecast by budget category with contingency | Budget forecast | Not started |
+| Dependency reconciliation | Allocation timing reconciled with `docs/planning/DEPENDENCY_MAP.md` and milestone dependencies | Phase-level FTE allocation sheet | Not started |
+| Approval | Leadership and finance approval of the baseline, with date and approver | Change log in `docs/tracking/CHANGE_TRACKING.md` | Not approved |
+
+Time-phased allocation format (one row per role per phase; values are filled from the records above, not estimated in this document):
+
+| Phase | Role | Named owner | Start month | End month | FTE per month | Cost basis | Hiring gate | Status |
+|---|---|---|---|---|---|---|---|---|
+| P0 FOUNDATION | Engineering lead / architect | TBD | TBD | TBD | TBD | TBD | Section 5.3 | Pending |
+| P1 STUDIO | Frontend / desktop engineer | TBD | TBD | TBD | TBD | TBD | Section 6.3 | Pending |
 
 ---
 

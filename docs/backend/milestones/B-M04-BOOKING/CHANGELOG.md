@@ -52,93 +52,21 @@ Milestone: B-M04 — Booking
 
 # Appendix A — Phase Mapping
 
-## Phase 0 — FOUNDATION
+The canonical mapping for B-M04 BOOKING (P4) is defined in `docs/planning/PHASES.md` (Section 6). Cross-phase dependencies are owned by `docs/planning/DEPENDENCY_MAP.md` and `docs/planning/IMPLEMENTATION_ROADMAP.md`; milestone scope is owned by this milestone's `MILESTONE.md`. This appendix does not redefine either.
 
-B-M04 consumes:
+| Phase | Relationship to this milestone | Boundary note |
+|---|---|---|
+| P0 FOUNDATION | Upstream dependency; outputs consumed by this milestone |  |
+| P1 STUDIO | Upstream dependency; outputs consumed by this milestone |  |
+| P2 BUILD & ARTIFACT | Upstream dependency; outputs consumed by this milestone |  |
+| P3 CONTROL PLANE | Upstream dependency; outputs consumed by this milestone |  |
+| P4 BOOKING & COMMERCIAL | Owning phase |  |
+| P5 EXECUTION | Downstream consumer of this milestone's outputs | Simulated Lab Agent and simulated robots only. |
+| P6 LAB & ROBOT | Downstream consumer of this milestone's outputs | Physical Lab Agent, physical robots, E-stop qualification and hardware safety review. |
+| P7 LIVE & RESULTS | Downstream consumer of this milestone's outputs |  |
+| P8 PRODUCTION | Downstream consumer of this milestone's outputs |  |
 
-- PostgreSQL;
-- transaction framework;
-- authentication;
-- authorization;
-- audit;
-- idempotency;
-- testing infrastructure.
-
-## Phase 1 — STUDIO
-
-B-M04 consumes:
-
-- Organization;
-- Project;
-- platform catalog;
-- resource catalog;
-- repository foundation.
-
-## Phase 2 — BUILD & ARTIFACT
-
-B-M04 provides the backend foundations for:
-
-- availability;
-- booking discovery;
-- credit quote;
-- wallet display.
-
-## Phase 3 — CONTROL PLANE
-
-B-M04 provides:
-
-- confirmed booking;
-- resource allocation;
-- credit reservation;
-- execution window;
-- cancellation coordination.
-
-## Phase 4 — BOOKING & COMMERCIAL
-
-B-M04 is the primary backend milestone for:
-
-- resource reservation;
-- platform-specific credits;
-- wallet;
-- ledger;
-- billing;
-- payment;
-- refunds.
-
-## Phase 5 — EXECUTION
-
-B-M04 expands to:
-
-- physical resource availability;
-- real Lab state;
-- real maintenance;
-- robot faults;
-- operational booking policies.
-
-## Phase 6 — LAB & ROBOT
-
-B-M04 gains:
-
-- stronger financial controls;
-- payment security;
-- fraud controls;
-- reconciliation;
-- audit monitoring;
-- production payment compliance.
-
-## Phase 7 — LIVE & RESULTS
-
-B-M04 evolves toward:
-
-- high booking concurrency;
-- larger resource pools;
-- automated reconciliation;
-- advanced pricing;
-- operational capacity optimization.
-
-## Phase 8 — PRODUCTION
-
-Booking, credit, billing and payment become production commercial services.
+Earlier revisions of this appendix used a superseded phase model and were replaced to remove conflicting phase assignments.
 
 ---
 

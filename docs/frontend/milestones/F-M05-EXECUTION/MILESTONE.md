@@ -4,10 +4,10 @@
 
 **Milestone ID:** F-M05-EXECUTION  
 **Product:** Kritva RaaS  
-**Primary Phase:** Phase 5 — EXECUTION  
+**Primary Phase:** P5 EXECUTION  
 **Primary Surface:** RaaS Studio + Control Plane  
 **Technology:** Tauri + Rust + React + TypeScript + WebSocket/REST  
-**Priority:** P0  
+**Priority:** PRI-1 (primary product path per Priority Matrix; see `docs/planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
 **Status:** PLANNED  
 **Primary Outcome:** A production-grade remote execution workflow that creates
 Jobs from validated artifacts and confirmed bookings, displays Job and Run
@@ -22,8 +22,13 @@ with the physical emergency stop.
 ## 1.1 Milestone Objective
 
 F-M05 establishes the remote execution control plane between the user's
-validated `.krv` artifact, a confirmed booking, the Lab Agent, and the
-Kritva Runtime executing on a simulated or physical robotic resource.
+validated `.krv` artifact, a confirmed booking, the simulated Lab Agent, and the
+Kritva Runtime executing on a simulated robotic resource.
+
+F-M05 belongs to P5 EXECUTION, which is limited to remote execution through a
+simulated Lab Agent and simulated robots. Physical Lab Agent and physical robot
+integration, physical emergency-stop qualification, and hardware safety review
+are owned by P6 LAB & ROBOT and are not acceptance requirements for F-M05.
 
 The primary workflow is:
 
@@ -302,12 +307,18 @@ F-M05 must support:
 
 - simulated robot;
 - reference/simulation lab;
-- Lab Agent;
+- simulated Lab Agent;
 - Kritva Runtime;
 - controlled test environment.
 
-Physical robot execution may be enabled only after the applicable safety gate
-and human safety review are satisfied.
+Physical robot execution is out of scope for F-M05 and P5 EXECUTION. It is
+introduced in P6 LAB & ROBOT and may be enabled only after the applicable
+safety gate and human safety review are satisfied.
+
+F-M05 defines the user-interface contract for safety-state presentation
+(including the E-stop state indicator) and verifies it using simulated or
+injected state. That contract is reused, not re-accepted, when P6 LAB & ROBOT
+connects an authoritative physical safety interface.
 
 ---
 

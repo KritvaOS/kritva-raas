@@ -4,12 +4,12 @@
 
 **Milestone ID:** B-M01-CONTROL-PLANE  
 **Product:** Kritva RaaS  
-**Primary Phase:** Phase 3 — CONTROL PLANE  
-**Supporting Phase:** Phase 0 — FOUNDATION  
+**Primary Phase:** P3 CONTROL PLANE  
+**Supporting Phase:** P0 FOUNDATION  
 **Primary Surface:** RaaS Control Plane / Backend  
 **Technology:** TypeScript/Node.js backend, PostgreSQL, REST API v1  
 **Architecture:** Production-oriented Modular Monolith  
-**Priority:** P0  
+**Priority:** PRI-0 (critical invariant per Priority Matrix; see `docs/planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
 **Status:** PLANNED  
 **Primary Outcome:** Establish the authoritative Control Plane foundation for identity,
 organizations, authorization, projects, platform catalog, repositories, API v1,
@@ -402,7 +402,7 @@ They must not accept:
 
 B-M01 depends on:
 
-- Phase 0 repository foundation;
+- P0 FOUNDATION repository foundation;
 - development environment;
 - CI foundation;
 - PostgreSQL migration framework;

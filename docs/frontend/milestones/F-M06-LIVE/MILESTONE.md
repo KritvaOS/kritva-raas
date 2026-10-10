@@ -4,10 +4,10 @@
 
 **Milestone ID:** F-M06-LIVE  
 **Product:** Kritva RaaS  
-**Primary Phase:** Phase 7 — LIVE & RESULTS  
+**Primary Phase:** P7 LIVE & RESULTS  
 **Primary Surface:** RaaS Studio + Control Plane + Lab  
 **Technology:** Tauri + Rust + React + TypeScript + WebRTC + WebSocket  
-**Priority:** P0  
+**Priority:** PRI-1 (primary product path per Priority Matrix; see `docs/planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
 **Status:** PLANNED  
 **Primary Outcome:** A production-grade live execution experience providing
 low-latency robot video, realtime telemetry, execution logs/events, lab and

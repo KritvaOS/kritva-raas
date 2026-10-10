@@ -9,7 +9,7 @@ Source of scope: [MILESTONE.md](MILESTONE.md)
 
 | ID | Description | Estimate | Owner role | Dependencies | Status |
 |---|---|---:|---|---|---|
-| KR-BE-5-001 | Define Job/Run aggregate boundaries | 1.0d | Backend Architect | Phase 4 | [ ] |
+| KR-BE-5-001 | Define Job/Run aggregate boundaries | 1.0d | Backend Architect | P4 BOOKING & COMMERCIAL | [ ] |
 | KR-BE-5-002 | Define Job state machine | 1.0d | Backend Architect | 001 | [ ] |
 | KR-BE-5-003 | Define Run state machine | 1.0d | Backend Architect | 001 | [ ] |
 | KR-BE-5-004 | Implement Job repository | 1.0d | Backend Engineer | DB foundation | [ ] |
@@ -17,8 +17,8 @@ Source of scope: [MILESTONE.md](MILESTONE.md)
 | KR-BE-5-006 | Implement Job service | 1.5d | Backend Engineer | 002,004 | [ ] |
 | KR-BE-5-007 | Implement Run service | 1.5d | Backend Engineer | 003,005 | [ ] |
 | KR-BE-5-008 | Implement state history | 1.0d | Backend Engineer | 006,007 | [ ] |
-| KR-BE-5-009 | Implement execution eligibility service | 1.5d | Backend Engineer | Phase 3,4 | [ ] |
-| KR-BE-5-010 | Implement execution queue interface | 1.0d | Platform Engineer | Phase 0 | [ ] |
+| KR-BE-5-009 | Implement execution eligibility service | 1.5d | Backend Engineer | P3 CONTROL PLANE,4 | [ ] |
+| KR-BE-5-010 | Implement execution queue interface | 1.0d | Platform Engineer | P0 FOUNDATION | [ ] |
 | KR-BE-5-011 | Implement development queue adapter | 1.0d | Platform Engineer | 010 | [ ] |
 | KR-BE-5-012 | Implement worker interface | 1.0d | Backend Architect | 010 | [ ] |
 | KR-BE-5-013 | Implement worker claim/heartbeat | 1.5d | Backend Engineer | 012 | [ ] |
@@ -40,7 +40,7 @@ Source of scope: [MILESTONE.md](MILESTONE.md)
 | KR-BE-5-029 | Implement failure classification | 1.0d | Backend Engineer | 025,028 | [ ] |
 | KR-BE-5-030 | Implement cleanup orchestration | 1.5d | Execution Engineer | 026-029 | [ ] |
 | KR-BE-5-031 | Implement execution result handoff | 1.0d | Backend Engineer | 030 | [ ] |
-| KR-BE-5-032 | Integrate credit consumption | 1.0d | Financial/Backend Engineer | Phase 4 | [ ] |
+| KR-BE-5-032 | Integrate credit consumption | 1.0d | Financial/Backend Engineer | P4 BOOKING & COMMERCIAL | [ ] |
 | KR-BE-5-033 | Implement execution APIs | 1.5d | API Engineer | 006,007 | [ ] |
 | KR-BE-5-034 | Implement execution WebSocket events | 1.0d | API Engineer | 008 | [ ] |
 | KR-BE-5-035 | Implement execution audit | 1.0d | Security Engineer | 014 | [ ] |
@@ -68,7 +68,7 @@ Source of scope: [MILESTONE.md](MILESTONE.md)
 | KR-BE-5-057 | Execute performance baseline | 1.0d | Performance Engineer | 045-056 | [ ] |
 | KR-BE-5-058 | Execute security review | 1.0d | Security Architect | 049,054,055 | [ ] |
 | KR-BE-5-059 | Execute execution architecture review | 1.0d | System Architect | 001-057 | [ ] |
-| KR-BE-5-060 | Complete Phase 5 acceptance | 0.5d | Tech Lead | 058,059 | [ ] |
+| KR-BE-5-060 | Complete P5 EXECUTION acceptance | 0.5d | Tech Lead | 058,059 | [ ] |
 
 ### 5.2 Indicative effort
 

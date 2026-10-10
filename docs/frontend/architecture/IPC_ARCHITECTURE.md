@@ -1903,7 +1903,7 @@ development documentation.
 | Phase 7 | Live/results integration |
 | Phase 8 | Production hardening |
 
-## 112. Phase 0 — IPC Foundation
+## 112. P0 FOUNDATION — IPC Foundation
 
 Implement:
 
@@ -1922,7 +1922,7 @@ Acceptance:
 - malformed request is rejected;
 - arbitrary shell command is impossible through IPC.
 
-## 113. Phase 1 — Project and Runtime
+## 113. P1 STUDIO — Project and Runtime
 
 Implement:
 
@@ -1939,7 +1939,7 @@ Acceptance:
 - paths are validated;
 - runtime diagnostics work.
 
-## 114. Phase 2 — Build/Test/Artifact
+## 114. P2 BUILD & ARTIFACT — Build/Test/Artifact
 
 Implement:
 
@@ -1974,7 +1974,7 @@ Acceptance:
       v
     Sign
 
-## 115. Phase 3 — Control Plane Boundary
+## 115. P3 CONTROL PLANE Boundary
 
 IPC remains local while Studio integrates the resulting artifact with the
 Control Plane.
@@ -1988,7 +1988,7 @@ Implement local support for:
 
 The IPC layer must not become a proxy for REST.
 
-## 116. Phase 4 — Booking
+## 116. P4 BOOKING & COMMERCIAL — Booking
 
 The local runtime supplies:
 
@@ -2006,7 +2006,7 @@ The boundary is:
        |
        +--> API Client for booking state
 
-## 117. Phase 5 — Execution
+## 117. P5 EXECUTION
 
 The Local Runtime supports artifact readiness and diagnostics.
 
@@ -2022,7 +2022,7 @@ Remote job operations remain:
 
 The Local Runtime does not directly start remote robot processes.
 
-## 118. Phase 6 — Lab and Robot
+## 118. P6 LAB & ROBOT
 
 IPC provides local compatibility and artifact information.
 
@@ -2031,7 +2031,7 @@ Remote robot state remains outside the local IPC boundary.
 No local IPC command should bypass the Control Plane to access a production
 robot.
 
-## 119. Phase 7 — Live and Results
+## 119. P7 LIVE & RESULTS
 
 Live video, telemetry, and remote logs use the remote communication architecture.
 
@@ -2041,7 +2041,7 @@ Local IPC continues to support:
 - artifact metadata;
 - local build provenance.
 
-## 120. Phase 8 — Production
+## 120. P8 PRODUCTION
 
 Complete:
 

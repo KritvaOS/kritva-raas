@@ -545,7 +545,7 @@ Expected:
 
 ### 8.18 Demo completion
 
-The Phase 6 demo passes when:
+The P6 LAB & ROBOT demo passes when:
 
 > A real robot can execute an approved artifact through the complete RaaS path while local safety authority remains independent of cloud availability and cloud commands cannot bypass physical safety controls.
 

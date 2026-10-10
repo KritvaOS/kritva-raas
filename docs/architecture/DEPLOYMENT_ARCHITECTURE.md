@@ -2089,7 +2089,7 @@ Deployment is complete only after:
 | Phase 7 | Live/results | Full runtime |
 | Phase 8 | Production operations | Hardened deployment |
 
-## 135. Phase 0 — Deployment Foundation
+## 135. P0 FOUNDATION — Deployment Foundation
 
 Deliver:
 
@@ -2108,7 +2108,7 @@ Acceptance:
 - artifacts are reproducible;
 - development deployment is automated.
 
-## 136. Phase 1 — Studio Deployment
+## 136. P1 STUDIO Deployment
 
 Deliver:
 
@@ -2126,7 +2126,7 @@ Acceptance:
 - authentication works;
 - update path works.
 
-## 137. Phase 2 — Artifact Deployment
+## 137. P2 BUILD & ARTIFACT — Artifact Deployment
 
 Deliver:
 
@@ -2143,7 +2143,7 @@ Acceptance:
 - correct platform metadata is present;
 - artifact can be promoted.
 
-## 138. Phase 3 — Control Plane Deployment
+## 138. P3 CONTROL PLANE Deployment
 
 Deliver:
 
@@ -2161,7 +2161,7 @@ Acceptance:
 - workers process jobs;
 - rollback is demonstrated.
 
-## 139. Phase 4 — Commercial Deployment
+## 139. P4 BOOKING & COMMERCIAL — Commercial Deployment
 
 Deliver:
 
@@ -2176,7 +2176,7 @@ Acceptance:
 - idempotency works;
 - production promotion includes commercial checks.
 
-## 140. Phase 5 — Execution Deployment
+## 140. P5 EXECUTION Deployment
 
 Deliver:
 
@@ -2194,7 +2194,7 @@ Acceptance:
 - results return;
 - failures are recoverable.
 
-## 141. Phase 6 — Physical Robot Deployment
+## 141. P6 LAB & ROBOT — Physical Robot Deployment
 
 Deliver:
 
@@ -2211,7 +2211,7 @@ Acceptance:
 - production canary passes;
 - human safety review is complete.
 
-## 142. Phase 7 — Live and Results Deployment
+## 142. P7 LIVE & RESULTS Deployment
 
 Deliver:
 
@@ -2229,7 +2229,7 @@ Acceptance:
 - results persist;
 - reconnect works.
 
-## 143. Phase 8 — Production Deployment
+## 143. P8 PRODUCTION Deployment
 
 Deliver:
 

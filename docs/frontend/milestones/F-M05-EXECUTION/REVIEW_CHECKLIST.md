@@ -450,7 +450,9 @@ The UI must never label this action "Emergency Stop".
 
 ## 8.12 Step 10 — Physical E-Stop Simulation
 
-Inject physical E-stop state.
+Inject physical E-stop state through the simulated Lab Agent or test harness.
+No physical robot, physical Lab Agent, or E-stop hardware is used in
+P5 EXECUTION; physical E-stop qualification belongs to P6 LAB & ROBOT.
 
 Expected:
 

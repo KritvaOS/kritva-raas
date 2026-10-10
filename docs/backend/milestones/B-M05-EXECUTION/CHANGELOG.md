@@ -55,102 +55,21 @@ Milestone: B-M05 — Execution
 
 # Appendix A — Phase Mapping
 
-## Phase 0 — FOUNDATION
+The canonical mapping for B-M05 EXECUTION (P5) is defined in `docs/planning/PHASES.md` (Section 6). Cross-phase dependencies are owned by `docs/planning/DEPENDENCY_MAP.md` and `docs/planning/IMPLEMENTATION_ROADMAP.md`; milestone scope is owned by this milestone's `MILESTONE.md`. This appendix does not redefine either.
 
-B-M05 consumes:
+| Phase | Relationship to this milestone | Boundary note |
+|---|---|---|
+| P0 FOUNDATION | Upstream dependency; outputs consumed by this milestone |  |
+| P1 STUDIO | Upstream dependency; outputs consumed by this milestone |  |
+| P2 BUILD & ARTIFACT | Upstream dependency; outputs consumed by this milestone |  |
+| P3 CONTROL PLANE | Upstream dependency; outputs consumed by this milestone |  |
+| P4 BOOKING & COMMERCIAL | Upstream dependency; outputs consumed by this milestone |  |
+| P5 EXECUTION | Owning phase | Simulated Lab Agent and simulated robots only. |
+| P6 LAB & ROBOT | Downstream consumer of this milestone's outputs | Physical Lab Agent, physical robots, E-stop qualification and hardware safety review. |
+| P7 LIVE & RESULTS | Downstream consumer of this milestone's outputs |  |
+| P8 PRODUCTION | Downstream consumer of this milestone's outputs |  |
 
-- API foundation;
-- PostgreSQL;
-- authentication;
-- authorization;
-- testing;
-- queue infrastructure abstraction;
-- observability.
-
-## Phase 1 — STUDIO
-
-B-M05 consumes:
-
-- Project;
-- Organization;
-- repository foundation;
-- API contracts;
-- platform/resource catalog.
-
-## Phase 2 — BUILD & ARTIFACT
-
-B-M05 consumes:
-
-- artifacts;
-- artifact security;
-- compatibility;
-- basic platform discovery.
-
-## Phase 3 — CONTROL PLANE
-
-B-M05 is the primary backend milestone for:
-
-- Job;
-- Run;
-- queue;
-- worker;
-- execution service;
-- Lab Agent;
-- simulated execution;
-- timeout;
-- cancellation.
-
-## Phase 4 — BOOKING & COMMERCIAL
-
-B-M05 integrates:
-
-- credit reservation;
-- credit consumption;
-- booking enforcement;
-- resource allocation;
-- execution billing evidence.
-
-## Phase 5 — EXECUTION
-
-B-M05 evolves from:
-
-    Simulated Lab Agent
-
-to:
-
-    Real Lab Agent
-        |
-        v
-    Kritva Runtime
-        |
-        v
-    Physical Robot
-
-## Phase 6 — LAB & ROBOT
-
-B-M05 gains:
-
-- hardened execution isolation;
-- stronger artifact verification;
-- production worker controls;
-- security monitoring;
-- safety qualification.
-
-## Phase 7 — LIVE & RESULTS
-
-B-M05 evolves toward:
-
-- worker pools;
-- resource-aware scheduling;
-- queue scaling;
-- execution quotas;
-- fleet-level orchestration;
-- high availability.
-
-## Phase 8 — PRODUCTION
-
-Execution becomes a production service supporting controlled real-robot
-execution.
+Earlier revisions of this appendix used a superseded phase model and were replaced to remove conflicting phase assignments.
 
 ---
 

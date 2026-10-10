@@ -2544,7 +2544,7 @@ Execution must still be blocked.
 | Phase 7 | Live/result compatibility |
 | Phase 8 | Production rolling upgrades and retirement |
 
-# 153. Phase 0 — Foundation
+# 153. P0 FOUNDATION
 
 Implement:
 
@@ -2560,7 +2560,7 @@ Acceptance:
 - compatibility dimensions are documented;
 - incompatible states are machine-detectable.
 
-# 154. Phase 1 — Studio
+# 154. P1 STUDIO
 
 Implement:
 
@@ -2574,7 +2574,7 @@ Acceptance:
 - unsupported API versions fail clearly;
 - supported Studio versions operate against supported Control Plane versions.
 
-# 155. Phase 2 — Build and Artifact
+# 155. P2 BUILD & ARTIFACT
 
 Implement:
 
@@ -2588,7 +2588,7 @@ Acceptance:
 - invalid artifacts are rejected before execution;
 - target architecture is explicit.
 
-# 156. Phase 3 — Control Plane
+# 156. P3 CONTROL PLANE
 
 Implement:
 
@@ -2602,7 +2602,7 @@ Acceptance:
 
 - Control Plane can evaluate supported combinations deterministically.
 
-# 157. Phase 4 — Booking and Commercial
+# 157. P4 BOOKING & COMMERCIAL
 
 Implement:
 
@@ -2615,7 +2615,7 @@ Acceptance:
 
 - incompatible resources are excluded or clearly rejected.
 
-# 158. Phase 5 — Execution
+# 158. P5 EXECUTION
 
 Implement:
 
@@ -2628,7 +2628,7 @@ Acceptance:
 
 - incompatible agents/resources cannot receive execution commands.
 
-# 159. Phase 6 — Lab and Robot
+# 159. P6 LAB & ROBOT
 
 Implement:
 
@@ -2642,7 +2642,7 @@ Acceptance:
 
 - physical execution cannot proceed through a hard incompatibility.
 
-# 160. Phase 7 — Live and Results
+# 160. P7 LIVE & RESULTS
 
 Implement:
 
@@ -2655,7 +2655,7 @@ Acceptance:
 
 - results remain interpretable across supported versions.
 
-# 161. Phase 8 — Production
+# 161. P8 PRODUCTION
 
 Implement:
 

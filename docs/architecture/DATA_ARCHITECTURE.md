@@ -2091,7 +2091,7 @@ Physical robots continue following local safety policy independently.
 | Phase 7 | Telemetry/video/results | Observation data |
 | Phase 8 | Governance | Production data lifecycle |
 
-## 130. Phase 0 — Data Foundation
+## 130. P0 FOUNDATION — Data Foundation
 
 Deliver:
 
@@ -2126,7 +2126,7 @@ Acceptance:
 - project ownership is durable;
 - access is auditable.
 
-## 132. Phase 2 — Artifacts
+## 132. P2 BUILD & ARTIFACT — Artifacts
 
 Deliver:
 
@@ -2160,7 +2160,7 @@ Acceptance:
 - duplicate execution is prevented;
 - lifecycle history is preserved.
 
-## 134. Phase 4 — Booking and Credits
+## 134. P4 BOOKING & COMMERCIAL — Booking and Credits
 
 Deliver:
 
@@ -2177,7 +2177,7 @@ Acceptance:
 - booking conflicts are prevented;
 - credit consumption is atomic.
 
-## 135. Phase 5 — Lab Execution
+## 135. P5 EXECUTION — Lab Execution
 
 Deliver:
 
@@ -2194,7 +2194,7 @@ Acceptance:
 - execution state is associated with runs;
 - offline state is recoverable.
 
-## 136. Phase 6 — Physical Lab
+## 136. P6 LAB & ROBOT — Physical Lab
 
 Deliver:
 
@@ -2210,7 +2210,7 @@ Acceptance:
 - safety state is distinguished from application state;
 - physical deployment is auditable.
 
-## 137. Phase 7 — Telemetry, Video and Results
+## 137. P7 LIVE & RESULTS — Telemetry, Video and Results
 
 Deliver:
 
@@ -2228,7 +2228,7 @@ Acceptance:
 - result files are durable;
 - retention is configurable.
 
-## 138. Phase 8 — Production Governance
+## 138. P8 PRODUCTION Governance
 
 Deliver:
 

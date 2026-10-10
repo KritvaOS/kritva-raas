@@ -66,6 +66,12 @@ The phase model is:
 | P7 | Establish live execution observation, video, telemetry, logs, results, experiments, comparisons, and rerun workflows. |
 | P8 | Establish production security, reliability, observability, scalability, operational readiness, and launch readiness. |
 
+### 3.1 Primary Product Path (MVP)
+
+The primary product path, also referred to as the MVP, is the end-to-end customer flow: Build Locally, Book Remotely, Run, Observe, and Results. It is a product-scope concept used for priority (PRI-1 in `docs/planning/IMPLEMENTATION_ROADMAP.md`) and acceptance traceability.
+
+It is not a phase, a milestone, or a substitute for either. It spans P1 STUDIO through P7 LIVE & RESULTS, and its scope is defined by the milestone dossiers it crosses. "MVP" MUST NOT be used as a phase name or as a milestone name.
+
 ## 4. Phase Principles
 
 The following principles apply across P0 through P8.
@@ -143,13 +149,15 @@ The following table is the canonical relationship between phases and domain mile
 |---|---|---|---|---|
 | P0 FOUNDATION | F-M01 STUDIO FOUNDATION | — | DB-M01 FOUNDATION | C-M01 FOUNDATION |
 | P1 STUDIO | F-M01 STUDIO FOUNDATION; F-M02 PROJECTS | — | DB-M01 FOUNDATION | C-M02 DEVELOPMENT |
-| P2 BUILD & ARTIFACT | F-M03 BUILD & ARTIFACT | B-M02 ARTIFACT | DB-M01 FOUNDATION; DB-M02 CORE DATA | C-M02 DEVELOPMENT |
+| P2 BUILD & ARTIFACT | F-M03 BUILD & ARTIFACT | B-M02 ARTIFACT | DB-M01 FOUNDATION | C-M02 DEVELOPMENT |
 | P3 CONTROL PLANE | — | B-M01 CONTROL PLANE; B-M02 ARTIFACT; B-M03 PLATFORM | DB-M01 FOUNDATION; DB-M02 CORE DATA | C-M02 DEVELOPMENT |
 | P4 BOOKING & COMMERCIAL | F-M04 BOOKING | B-M04 BOOKING | DB-M03 BOOKING DATA | C-M03 STAGING |
 | P5 EXECUTION | F-M05 EXECUTION | B-M05 EXECUTION | DB-M04 EXECUTION DATA | C-M03 STAGING |
 | P6 LAB & ROBOT | — | B-M06 RESULTS | DB-M04 EXECUTION DATA | C-M03 STAGING |
 | P7 LIVE & RESULTS | F-M06 LIVE; F-M07 RESULTS | B-M06 RESULTS | DB-M04 EXECUTION DATA | C-M03 STAGING |
 | P8 PRODUCTION | — | B-M07 PRODUCTION | — | C-M04 PRODUCTION |
+
+DB-M02 CORE DATA (P3) is not a P2 BUILD & ARTIFACT milestone. P2 uses the DB-M01 FOUNDATION (P0-P3) identity, organization, project, migration, RLS, and audit foundations. Where P2 work needs persisted artifact, storage, or compatibility metadata, that is a cross-phase dependency on DB-M02 CORE DATA (P3); B-M02 ARTIFACT (P2-P3) completes registry persistence against DB-M02 CORE DATA during P3 CONTROL PLANE.
 
 The milestone dossiers under `docs/**/milestones/` are authoritative for milestone scope.
 
@@ -417,7 +425,7 @@ Establish the trusted local build and artifact workflow from source code to a va
 - F-M03 BUILD & ARTIFACT.
 - B-M02 ARTIFACT.
 - DB-M01 FOUNDATION.
-- DB-M02 CORE DATA.
+- DB-M02 CORE DATA (P3), as a cross-phase dependency for persisted artifact metadata only; it is not a P2 milestone.
 - C-M02 DEVELOPMENT.
 
 ### 9.6 Risks
@@ -1373,6 +1381,10 @@ The following invariants apply across the complete phase model.
 - Established phase acceptance and exit criteria.
 - Established change-control authority.
 - Removed retired phase and milestone terminology from the canonical phase definition.
+
+### Corrections Pending Approval
+
+- 2026-10-10 — External audit corrections (RAAS-001 to RAAS-009): DB-M02 CORE DATA removed from the P2 BUILD & ARTIFACT row of the cross-domain mapping to match the frozen mapping DB-M02 CORE DATA (P3), with the P2 dependency documented explicitly; primary product path (MVP) defined separately from the phase model. These are conformance corrections to the frozen model, not phase model changes. Approver: pending.
 
 ### Future Changes
 

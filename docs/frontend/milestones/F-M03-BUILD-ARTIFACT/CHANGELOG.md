@@ -50,95 +50,21 @@ Milestone: F-M03 — Build & Artifact
 
 # Appendix A — Phase Mapping
 
-## A.1 Phase 0
+The canonical mapping for F-M03 BUILD & ARTIFACT (P2) is defined in `docs/planning/PHASES.md` (Section 6). Cross-phase dependencies are owned by `docs/planning/DEPENDENCY_MAP.md` and `docs/planning/IMPLEMENTATION_ROADMAP.md`; milestone scope is owned by this milestone's `MILESTONE.md`. This appendix does not redefine either.
 
-F-M03 consumes Phase 0 foundations:
+| Phase | Relationship to this milestone | Boundary note |
+|---|---|---|
+| P0 FOUNDATION | Upstream dependency; outputs consumed by this milestone |  |
+| P1 STUDIO | Upstream dependency; outputs consumed by this milestone |  |
+| P2 BUILD & ARTIFACT | Owning phase |  |
+| P3 CONTROL PLANE | Downstream consumer of this milestone's outputs |  |
+| P4 BOOKING & COMMERCIAL | Downstream consumer of this milestone's outputs |  |
+| P5 EXECUTION | Downstream consumer of this milestone's outputs | Simulated Lab Agent and simulated robots only. |
+| P6 LAB & ROBOT | Downstream consumer of this milestone's outputs | Physical Lab Agent, physical robots, E-stop qualification and hardware safety review. |
+| P7 LIVE & RESULTS | Downstream consumer of this milestone's outputs |  |
+| P8 PRODUCTION | Downstream consumer of this milestone's outputs |  |
 
-- Tauri;
-- React;
-- Rust;
-- navigation;
-- API client;
-- UI system;
-- CI;
-- security scanning;
-- development workflow.
-
-## A.2 Phase 1
-
-F-M03 consumes F-M02 project context:
-
-- project ID;
-- local workspace;
-- platform;
-- KritvaOS;
-- SDK.
-
-## A.3 Phase 2
-
-F-M03 is a primary Phase 2 milestone.
-
-Phase 2 establishes:
-
-> A developer can turn a local project into a validated, signed `.krv`
-> artifact without sending source code to the cloud.
-
-## A.4 Phase 3
-
-F-M03 provides the artifact consumed by:
-
-- remote deployment;
-- Job creation;
-- Run execution;
-- Lab Agent;
-- Runtime.
-
-## A.5 Phase 4
-
-Artifact identity becomes associated with:
-
-- booking;
-- platform resource allocation;
-- credit consumption.
-
-## A.6 Phase 5
-
-Artifacts are consumed by:
-
-- simulation;
-- Lab Agent;
-- physical robots;
-- HIL.
-
-## A.7 Phase 6
-
-Artifact security expands into:
-
-- production signing;
-- key rotation;
-- revocation;
-- quarantine;
-- malware/security scanning;
-- audit.
-
-## A.8 Phase 7
-
-Artifact infrastructure scales for:
-
-- multiple platforms;
-- larger artifact sizes;
-- concurrent uploads;
-- fleet deployment.
-
-## A.9 Phase 8
-
-Artifact lifecycle becomes part of:
-
-- production release;
-- customer support;
-- rollback;
-- revocation;
-- production deployment.
+Earlier revisions of this appendix used a superseded phase model and were replaced to remove conflicting phase assignments.
 
 ---
 

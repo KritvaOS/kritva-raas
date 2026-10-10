@@ -186,7 +186,7 @@ Milestone: PHASE-0-FOUNDATION — Architecture and Engineering Foundation
 
 ### 6.15 Cross-domain exit criteria
 
-Phase 0 shall not close based solely on individual domain completion.
+P0 FOUNDATION shall not close based solely on individual domain completion.
 
 The following integrated flow must work:
 
@@ -232,7 +232,7 @@ Acceptance requires:
 - [ ] Simulated Lab Agent skeleton responds.
 - [ ] CI executes the integrated test.
 - [ ] No source code crosses the intended artifact boundary.
-- [ ] No physical robot is required for Phase 0 acceptance.
+- [ ] No physical robot is required for P0 FOUNDATION acceptance.
 
 ### 6.16 Quality gates
 

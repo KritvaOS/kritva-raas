@@ -8,7 +8,7 @@ The dashboard is the central coordination reference for product and engineering 
 
 This document is a status record, not an implementation specification. Detailed scope and acceptance criteria remain in the authoritative milestone dossiers under `docs/**/milestones/`.
 
-The dashboard is initialized against the frozen canonical phase and milestone model. Unless explicitly recorded in the Phase 0 documentation baseline, all phases and milestones begin with status `NOT STARTED`.
+The dashboard is initialized against the frozen canonical phase and milestone model. Unless explicitly recorded in the P0 FOUNDATION documentation baseline, all phases and milestones begin with status `NOT STARTED`.
 
 The dashboard must not imply that implementation, integration, testing, or production readiness has been achieved without supporting evidence.
 
@@ -71,7 +71,7 @@ Do not use `COMPLETE` as a substitute for `IN PROGRESS`, `IN REVIEW`, or `ACCEPT
 
 **Canonical model:** Frozen phase and milestone identifiers listed in this document.
 
-**Initial milestone status:** All milestones are `NOT STARTED`, unless Phase 0 documentation work is explicitly recorded as `IN PROGRESS` with an owner and evidence.
+**Initial milestone status:** All milestones are `NOT STARTED`, unless P0 FOUNDATION documentation work is explicitly recorded as `IN PROGRESS` with an owner and evidence.
 
 **Initial production status:** `NOT STARTED`.
 
@@ -79,8 +79,8 @@ Do not use `COMPLETE` as a substitute for `IN PROGRESS`, `IN REVIEW`, or `ACCEPT
 
 ### 4.1 Initialization rules
 
-- Phase 0 documentation work may be marked `IN PROGRESS` only when actual work has started.
-- Do not infer that every Phase 0 task is active because one documentation task is active.
+- P0 FOUNDATION documentation work may be marked `IN PROGRESS` only when actual work has started.
+- Do not infer that every P0 FOUNDATION task is active because one documentation task is active.
 - Do not infer that any milestone is accepted from the existence of a roadmap or planning document.
 - Existing code or previously completed work must be reconciled against the current milestone dossier before its status is upgraded.
 - Historical evidence may be reused only when it directly satisfies the current acceptance criteria.
@@ -94,7 +94,7 @@ Update this section at each formal status review.
 | Indicator | Initial status | Update rule |
 |---|---|---|
 | Overall product delivery | NOT STARTED | Based on phase progress and critical-path readiness |
-| Phase progress | NOT STARTED, except documented Phase 0 work | Based on phase acceptance evidence |
+| Phase progress | NOT STARTED, except documented P0 FOUNDATION work | Based on phase acceptance evidence |
 | Frontend delivery | NOT STARTED | Based on F-M01 through F-M07 |
 | Backend delivery | NOT STARTED | Based on B-M01 through B-M07 |
 | Database delivery | NOT STARTED | Based on DB-M01 through DB-M04 |
@@ -132,7 +132,7 @@ Phase definitions are maintained only in `docs/planning/PHASES.md`. The followin
 - Phase progress must not be calculated by counting tasks alone.
 - A phase cannot be marked `COMPLETE` while required acceptance evidence is missing.
 - A phase may be blocked even when some of its constituent tasks are complete.
-- Phase 8 production work must not be represented as complete based only on staging success.
+- P8 PRODUCTION production work must not be represented as complete based only on staging success.
 
 ## 7. Frontend Milestone Status
 
@@ -418,9 +418,9 @@ Workflow readiness must be based on the relevant frontend, backend, database, an
 
 During initialization, use these rules to prevent accidental overstatement of progress.
 
-- Record actual Phase 0 documentation work as `IN PROGRESS` only when a concrete task has started.
+- Record actual P0 FOUNDATION documentation work as `IN PROGRESS` only when a concrete task has started.
 - Record its task identifier, owner, evidence, and next action.
-- Leave other Phase 0 work `NOT STARTED` unless there is separate evidence of activity.
+- Leave other P0 FOUNDATION work `NOT STARTED` unless there is separate evidence of activity.
 - Keep all frontend, backend, database, and cloud milestones `NOT STARTED` until verified work justifies a status change.
 - Do not mark a milestone `IN REVIEW` until the implementation is available and review has formally started.
 - Do not mark a milestone `ACCEPTED` without the required acceptance evidence.
@@ -601,7 +601,7 @@ The dashboard baseline is accepted for tracking purposes when:
 - the canonical phase inventory is present
 - all frozen milestone identifiers and names are present
 - initial statuses are explicitly recorded
-- Phase 0 documentation work is marked `IN PROGRESS` only where verified
+- P0 FOUNDATION documentation work is marked `IN PROGRESS` only where verified
 - authoritative references are identified
 - status vocabulary is defined
 - dependency and blocker tracking rules are established
@@ -620,7 +620,7 @@ Baseline acceptance does not mean that any product milestone, phase, or producti
 - Added all frozen backend milestones B-M01 through B-M07.
 - Added all frozen database milestones DB-M01 through DB-M04.
 - Added all frozen cloud milestones C-M01 through C-M04.
-- Established initial `NOT STARTED` statuses, subject to verified Phase 0 documentation work.
+- Established initial `NOT STARTED` statuses, subject to verified P0 FOUNDATION documentation work.
 - Defined status vocabulary and evidence-driven status transitions.
 - Added cross-domain dependency, blocker, risk, and acceptance tracking rules.
 - Established `docs/planning/PHASES.md` as the canonical phase definition.

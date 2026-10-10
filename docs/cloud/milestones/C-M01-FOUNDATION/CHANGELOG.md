@@ -57,96 +57,21 @@ Milestone: C-M01 — Cloud Foundation
 
 # Appendix A — Phase Mapping
 
-## Phase 0 — FOUNDATION
+The canonical mapping for C-M01 FOUNDATION (P0) is defined in `docs/planning/PHASES.md` (Section 6). Cross-phase dependencies are owned by `docs/planning/DEPENDENCY_MAP.md` and `docs/planning/IMPLEMENTATION_ROADMAP.md`; milestone scope is owned by this milestone's `MILESTONE.md`. This appendix does not redefine either.
 
-C-M01 is the primary cloud milestone for Phase 0.
+| Phase | Relationship to this milestone | Boundary note |
+|---|---|---|
+| P0 FOUNDATION | Owning phase |  |
+| P1 STUDIO | Downstream consumer of this milestone's outputs |  |
+| P2 BUILD & ARTIFACT | Downstream consumer of this milestone's outputs |  |
+| P3 CONTROL PLANE | Downstream consumer of this milestone's outputs |  |
+| P4 BOOKING & COMMERCIAL | Downstream consumer of this milestone's outputs |  |
+| P5 EXECUTION | Downstream consumer of this milestone's outputs | Simulated Lab Agent and simulated robots only. |
+| P6 LAB & ROBOT | Downstream consumer of this milestone's outputs | Physical Lab Agent, physical robots, E-stop qualification and hardware safety review. |
+| P7 LIVE & RESULTS | Downstream consumer of this milestone's outputs |  |
+| P8 PRODUCTION | Downstream consumer of this milestone's outputs |  |
 
-Deliver:
-
-- cloud accounts/projects;
-- environment structure;
-- IaC;
-- networking;
-- IAM;
-- secrets;
-- CI/CD;
-- base observability.
-
-## Phase 1 — STUDIO
-
-C-M01 supports:
-
-- API deployment;
-- PostgreSQL;
-- identity;
-- organizations;
-- projects;
-- platform catalog.
-
-## Phase 2 — BUILD & ARTIFACT
-
-C-M01 provides infrastructure for:
-
-- Studio backend connectivity;
-- artifact registry;
-- uploads;
-- object storage;
-- API execution.
-
-## Phase 3 — CONTROL PLANE
-
-C-M01 supports:
-
-- API;
-- workers;
-- queue;
-- WebSocket;
-- Lab Agent connectivity;
-- Job/Run infrastructure.
-
-## Phase 4 — BOOKING & COMMERCIAL
-
-C-M01 supports:
-
-- booking;
-- credits;
-- payment integrations;
-- financial workloads;
-- stronger audit requirements.
-
-## Phase 5 — EXECUTION
-
-C-M01 supports:
-
-- secure lab connectivity;
-- Lab Agent;
-- robot infrastructure boundary;
-- telemetry;
-- media signaling.
-
-## Phase 6 — LAB & ROBOT
-
-C-M01 provides the foundational controls hardened by B-M07:
-
-- HA;
-- security;
-- observability;
-- backup;
-- recovery;
-- compliance.
-
-## Phase 7 — LIVE & RESULTS
-
-C-M01 provides the foundation for:
-
-- scaling;
-- capacity management;
-- cost management;
-- advanced operational automation.
-
-## Phase 8 — PRODUCTION
-
-C-M01 infrastructure becomes the baseline for controlled production rollout.
+Earlier revisions of this appendix used a superseded phase model and were replaced to remove conflicting phase assignments.
 
 ---
 

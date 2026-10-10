@@ -2457,7 +2457,7 @@ Each message carries correlation information to connect the user workflow.
 | Phase 7 | Run/telemetry/result envelopes |
 | Phase 8 | Production tracing, limits, governance |
 
-# 137. Phase 0 — Foundation
+# 137. P0 FOUNDATION
 
 Implement:
 
@@ -2480,7 +2480,7 @@ Acceptance:
 - timestamps are UTC;
 - size limits are enforced.
 
-# 138. Phase 1 — Studio
+# 138. P1 STUDIO
 
 Implement:
 
@@ -2497,7 +2497,7 @@ Acceptance:
 - local errors use common semantics;
 - build operations can be correlated.
 
-# 139. Phase 2 — Artifact
+# 139. P2 BUILD & ARTIFACT — Artifact
 
 Implement:
 
@@ -2513,7 +2513,7 @@ Acceptance:
 - large binaries are not embedded;
 - artifact operations preserve correlation.
 
-# 140. Phase 3 — Control Plane
+# 140. P3 CONTROL PLANE
 
 Implement:
 
@@ -2530,7 +2530,7 @@ Acceptance:
 - request/response correlation works;
 - traces cross service boundaries.
 
-# 141. Phase 4 — Booking and Commercial
+# 141. P4 BOOKING & COMMERCIAL
 
 Implement:
 
@@ -2546,7 +2546,7 @@ Acceptance:
 - booking operations can be reconciled;
 - request and operation IDs are retained.
 
-# 142. Phase 5 — Execution
+# 142. P5 EXECUTION
 
 Implement:
 
@@ -2563,7 +2563,7 @@ Acceptance:
 - response loss can be reconciled;
 - job events retain operation identity.
 
-# 143. Phase 6 — Physical Robot
+# 143. P6 LAB & ROBOT — Physical Robot
 
 Implement:
 
@@ -2579,7 +2579,7 @@ Acceptance:
 - safety state is not inferred from transport availability;
 - agent identity is authenticated.
 
-# 144. Phase 7 — Live and Results
+# 144. P7 LIVE & RESULTS
 
 Implement:
 
@@ -2595,7 +2595,7 @@ Acceptance:
 - large results use references;
 - telemetry timestamps are explicit.
 
-# 145. Phase 8 — Production
+# 145. P8 PRODUCTION
 
 Implement:
 

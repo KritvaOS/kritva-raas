@@ -2035,7 +2035,7 @@ and query refresh.
 | Phase 7 | Live telemetry/results |
 | Phase 8 | Production hardening |
 
-## 125. Phase 0 — Foundation
+## 125. P0 FOUNDATION
 
 Implement:
 
@@ -2052,7 +2052,7 @@ Acceptance:
 - server state uses TanStack Query;
 - UI state uses explicit Zustand ownership.
 
-## 126. Phase 1 — Session and UI
+## 126. P1 STUDIO — Session and UI
 
 Implement:
 
@@ -2068,7 +2068,7 @@ Acceptance:
 - login/logout correctly controls protected state;
 - tenant switching clears/rebinds state.
 
-## 127. Phase 2 — Local Development
+## 127. P2 BUILD & ARTIFACT — Local Development
 
 Implement:
 
@@ -2091,7 +2091,7 @@ Acceptance:
 
 is represented without placing local operation data in server query caches.
 
-## 128. Phase 3 — Control Plane
+## 128. P3 CONTROL PLANE
 
 Implement:
 
@@ -2106,7 +2106,7 @@ Acceptance:
 
 - server data is not duplicated in Zustand.
 
-## 129. Phase 4 — Booking and Credits
+## 129. P4 BOOKING & COMMERCIAL — Booking and Credits
 
 Implement:
 
@@ -2121,7 +2121,7 @@ Acceptance:
 - booking and credit state are server-confirmed;
 - no unsafe optimistic financial state.
 
-## 130. Phase 5 — Execution
+## 130. P5 EXECUTION
 
 Implement:
 
@@ -2144,7 +2144,7 @@ Acceptance:
         v
     query cache
 
-## 131. Phase 6 — Lab and Robot
+## 131. P6 LAB & ROBOT
 
 Implement:
 
@@ -2159,7 +2159,7 @@ Acceptance:
 - lab events correctly update relevant query state;
 - offline lab state is distinguishable.
 
-## 132. Phase 7 — Live and Results
+## 132. P7 LIVE & RESULTS
 
 Implement:
 
@@ -2175,7 +2175,7 @@ Acceptance:
 - high-frequency telemetry does not overload the main query cache;
 - final results remain server state.
 
-## 133. Phase 8 — Production
+## 133. P8 PRODUCTION
 
 Complete:
 

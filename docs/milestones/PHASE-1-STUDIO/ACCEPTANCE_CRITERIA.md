@@ -135,7 +135,7 @@ Milestone: PHASE-1-STUDIO — Desktop Studio Foundation
 - [ ] Studio does not upload source during login.
 - [ ] Studio does not upload source during project creation.
 - [ ] Studio does not upload source during project metadata synchronization.
-- [ ] Studio API client has no source-upload operation in Phase 1.
+- [ ] Studio API client has no source-upload operation in P1 STUDIO.
 - [ ] Source access remains inside the local workspace boundary.
 - [ ] Source paths are not written into remote metadata unnecessarily.
 - [ ] Error messages do not disclose source content.
@@ -262,7 +262,7 @@ Acceptance requires:
 
 ### 6.19 No-go conditions
 
-Phase 1 shall not close if:
+P1 STUDIO shall not close if:
 
 - [ ] Studio cannot build reproducibly;
 - [ ] authentication stores credentials insecurely;

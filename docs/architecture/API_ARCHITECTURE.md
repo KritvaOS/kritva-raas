@@ -2238,7 +2238,7 @@ A contract change should follow:
 | Phase 7 | Realtime/results | Full observation |
 | Phase 8 | Production | Hardened API |
 
-## 152. Phase 0 — API Foundation
+## 152. P0 FOUNDATION — API Foundation
 
 Deliver:
 
@@ -2274,7 +2274,7 @@ Acceptance:
 - organizations are isolated;
 - projects are accessible only to authorized users.
 
-## 154. Phase 2 — Artifacts
+## 154. P2 BUILD & ARTIFACT — Artifacts
 
 Deliver:
 
@@ -2308,7 +2308,7 @@ Acceptance:
 - lifecycle events are delivered;
 - REST remains authoritative.
 
-## 156. Phase 4 — Booking and Commercial
+## 156. P4 BOOKING & COMMERCIAL
 
 Deliver:
 
@@ -2325,7 +2325,7 @@ Acceptance:
 - financial operations are idempotent;
 - booking state is auditable.
 
-## 157. Phase 5 — Execution Integration
+## 157. P5 EXECUTION Integration
 
 Deliver:
 
@@ -2341,7 +2341,7 @@ Acceptance:
 - resource allocation is enforced;
 - failures are represented correctly.
 
-## 158. Phase 6 — Physical Lab
+## 158. P6 LAB & ROBOT — Physical Lab
 
 Deliver:
 
@@ -2358,7 +2358,7 @@ Acceptance:
 - safety state is visible;
 - physical safety review remains independent.
 
-## 159. Phase 7 — Live and Results
+## 159. P7 LIVE & RESULTS
 
 Deliver:
 
@@ -2375,7 +2375,7 @@ Acceptance:
 - missed events can be reconciled through REST;
 - results are downloadable.
 
-## 160. Phase 8 — Production
+## 160. P8 PRODUCTION
 
 Deliver:
 

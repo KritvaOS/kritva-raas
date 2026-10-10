@@ -1069,7 +1069,7 @@ Baseline readiness does not mean that any phase has been accepted or completed.
 - Preserved the authoritative role of milestone dossiers under `docs/**/milestones/`.
 - Added dependency, blocker, risk, review, and closure procedures.
 - Established evidence-based progress reporting and phase acceptance requirements.
-- Set all milestones to `NOT STARTED` as the initial baseline, subject only to verified Phase 0 documentation work.
+- Set all milestones to `NOT STARTED` as the initial baseline, subject only to verified P0 FOUNDATION documentation work.
 
 ### Future Updates
 

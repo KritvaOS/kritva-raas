@@ -64,7 +64,7 @@ This document covers issues related to:
 - architecture;
 - integration.
 
-It applies across Phase 0 through Phase 8.
+It applies across P0 FOUNDATION through P8 PRODUCTION.
 
 ## 3. Goals
 
@@ -278,18 +278,18 @@ Priority describes how urgently the issue should be addressed.
 
 | Priority | Definition |
 |---|---|
-| P0 | Immediate action; blocks critical execution or safety |
-| P1 | Must be addressed in current milestone/release |
-| P2 | Planned corrective work |
-| P3 | Address when capacity permits |
-| P4 | Backlog / informational |
+| PRI-0 | Immediate action; blocks critical execution or safety |
+| PRI-1 | Must be addressed in current milestone/release |
+| PRI-2 | Planned corrective work |
+| PRI-3 | Address when capacity permits |
+| PRI-4 | Backlog / informational |
 
 Severity and priority are independent.
 
 Example:
 
     Severity: S2
-    Priority: P1
+    Priority: PRI-1
 
 A medium-impact issue may become urgent because it blocks a critical
 milestone.
@@ -446,7 +446,7 @@ Example only:
 | Milestone | P0-004 |
 | Task | KR-BE-P0-001 |
 | Severity | S1 |
-| Priority | P1 |
+| Priority | PRI-1 |
 | Status | OPEN |
 
 Example description:
@@ -472,7 +472,7 @@ Example:
 | Milestone | P1-007 |
 | Task | KR-DB-P1-007 |
 | Severity | S1 |
-| Priority | P1 |
+| Priority | PRI-1 |
 | Status | TRIAGED |
 
 The issue should link to the migration task and database risk.
@@ -489,7 +489,7 @@ Example:
 | Milestone | P2-010 |
 | Task | KR-ART-P2-007 |
 | Severity | S0 |
-| Priority | P0 |
+| Priority | PRI-0 |
 | Status | OPEN |
 
 This is a critical source-privacy boundary violation.
@@ -508,7 +508,7 @@ Example:
 | Milestone | P4-003 |
 | Task | KR-BOOK-P4-005 |
 | Severity | S1 |
-| Priority | P1 |
+| Priority | PRI-1 |
 | Status | OPEN |
 
 The issue must be linked to the booking concurrency risk.
@@ -525,7 +525,7 @@ Example:
 | Milestone | P5-006 |
 | Task | KR-SEC-P5-003 |
 | Severity | S0 |
-| Priority | P0 |
+| Priority | PRI-0 |
 | Status | OPEN |
 
 This issue blocks physical execution qualification.
@@ -542,7 +542,7 @@ Example:
 | Milestone | P8-004 |
 | Task | KR-REL-P8-002 |
 | Severity | S1 |
-| Priority | P1 |
+| Priority | PRI-1 |
 | Status | TRIAGED |
 
 The issue blocks production readiness until rollback is verified.
@@ -992,9 +992,9 @@ The issue dashboard should summarize:
 Initial values are zero because no implementation issue has been formally
 declared.
 
-## 59. Phase 0 Issue Mapping
+## 59. P0 FOUNDATION Issue Mapping
 
-Phase 0 issues are expected to cover:
+P0 FOUNDATION issues are expected to cover:
 
 - repository;
 - workspace;
@@ -1013,27 +1013,20 @@ Example issue linkage:
        +--> KR-BE-P0-001
        +--> RISK-FOUNDATION-001
 
-## 60. Phase 1 Issue Mapping
+## 60. P1 STUDIO Issue Mapping
 
-Phase 1 issue domains include:
-
-- identity;
-- authentication;
-- organizations;
-- authorization;
-- projects;
-- platforms;
-- database;
-- APIs;
-- tenant isolation.
-
-Critical issues in tenant isolation must block acceptance.
-
-## 61. Phase 2 Issue Mapping
-
-Phase 2 issue domains include:
+P1 STUDIO issue domains include:
 
 - Studio;
+- local runtime;
+- projects;
+- IPC;
+- local source privacy.
+
+## 61. P2 BUILD & ARTIFACT Issue Mapping
+
+P2 BUILD & ARTIFACT issue domains include:
+
 - local build;
 - artifact generation;
 - artifact signing;
@@ -1043,26 +1036,22 @@ Phase 2 issue domains include:
 
 Source-code leakage is an S0 condition.
 
-## 62. Phase 3 Issue Mapping
+## 62. P3 CONTROL PLANE Issue Mapping
 
-Phase 3 issue domains include:
+P3 CONTROL PLANE issue domains include:
 
-- Lab Protocol;
-- Lab Agent;
-- simulation;
-- Job;
-- Run;
-- telemetry;
-- logs;
-- video;
-- results;
-- E2E execution.
+- identity;
+- authentication;
+- organizations;
+- authorization;
+- platforms;
+- database;
+- APIs;
+- tenant isolation.
 
-Protocol incompatibility affecting execution is generally S1 or higher.
+## 63. P4 BOOKING & COMMERCIAL Issue Mapping
 
-## 63. Phase 4 Issue Mapping
-
-Phase 4 issue domains include:
+P4 BOOKING & COMMERCIAL issue domains include:
 
 - booking;
 - resource allocation;
@@ -1072,16 +1061,27 @@ Phase 4 issue domains include:
 - wallet;
 - ledger;
 - reservations;
-- consumption;
-- refunds.
+- consumption.
 
-Financial record corruption is S0.
+## 64. P5 EXECUTION Issue Mapping
 
-## 64. Phase 5 Issue Mapping
+P5 EXECUTION issue domains include:
 
-Phase 5 issue domains include:
+- Lab Protocol;
+- simulated Lab Agent;
+- simulation;
+- Job;
+- Run;
+- execution events;
+- logs.
 
-- real Lab Agent;
+Simulated evidence must not be recorded as physical safety evidence.
+
+## 65. P6 LAB & ROBOT Issue Mapping
+
+P6 LAB & ROBOT issue domains include:
+
+- physical Lab Agent;
 - robot registration;
 - hardware;
 - HIL;
@@ -1091,53 +1091,27 @@ Phase 5 issue domains include:
 
 Any unsafe physical behavior is S0.
 
-## 65. Phase 6 Issue Mapping
+## 66. P7 LIVE & RESULTS Issue Mapping
 
-Phase 6 issue domains include:
+P7 LIVE & RESULTS issue domains include:
 
-- tenant isolation;
-- source privacy;
-- artifact security;
-- secrets;
-- key management;
+- telemetry;
+- video;
+- results;
+- data provenance.
+
+## 67. P8 PRODUCTION Issue Mapping
+
+P8 PRODUCTION issue domains include:
+
+- tenant isolation and security qualification;
+- secrets and key management;
 - audit;
-- backup;
-- recovery;
-- production observability.
-
-Security acceptance failures may block release.
-
-## 66. Phase 7 Issue Mapping
-
-Phase 7 issue domains include:
-
-- performance;
-- load;
-- stress;
-- soak;
-- resource concurrency;
+- backup and recovery;
+- performance, load, stress and soak;
 - multiple labs;
-- cloud capacity;
-- database capacity;
-- operational automation.
-
-Performance issues become release blockers when defined capacity targets are
-not met.
-
-## 67. Phase 8 Issue Mapping
-
-Phase 8 issue domains include:
-
-- final qualification;
-- security qualification;
-- release candidate;
-- production readiness;
-- canary;
-- pilot;
-- limited GA;
-- full launch.
-
-Any launch-blocking issue must be explicitly linked to release readiness.
+- production observability;
+- release candidate, canary, pilot and launch.
 
 ## 68. Issue Flow Across the Product
 
@@ -1952,15 +1926,15 @@ Mitigation:
 
 ## 120. Acceptance Criteria — Phase Mapping
 
-- [ ] Phase 0 issue mapping defined.
-- [ ] Phase 1 issue mapping defined.
-- [ ] Phase 2 issue mapping defined.
-- [ ] Phase 3 issue mapping defined.
-- [ ] Phase 4 issue mapping defined.
-- [ ] Phase 5 issue mapping defined.
-- [ ] Phase 6 issue mapping defined.
-- [ ] Phase 7 issue mapping defined.
-- [ ] Phase 8 issue mapping defined.
+- [ ] P0 FOUNDATION issue mapping defined.
+- [ ] P1 STUDIO issue mapping defined.
+- [ ] P2 BUILD & ARTIFACT issue mapping defined.
+- [ ] P3 CONTROL PLANE issue mapping defined.
+- [ ] P4 BOOKING & COMMERCIAL issue mapping defined.
+- [ ] P5 EXECUTION issue mapping defined.
+- [ ] P6 LAB & ROBOT issue mapping defined.
+- [ ] P7 LIVE & RESULTS issue mapping defined.
+- [ ] P8 PRODUCTION issue mapping defined.
 
 ## 121. Acceptance Criteria — Security
 
@@ -2044,7 +2018,7 @@ Mitigation:
 - [ ] S0 count is zero initially.
 - [ ] S1 count is zero initially.
 - [ ] No active blocker is declared.
-- [ ] Issue tracking is ready for Phase 0 execution.
+- [ ] Issue tracking is ready for P0 FOUNDATION execution.
 
 ## 130. Acceptance Criteria — Traceability
 
@@ -2172,4 +2146,4 @@ future implementation will be defect-free.
 > path and verifiable closure evidence. The initial Kritva RaaS state contains
 > no declared implementation issue and therefore reports zero active issues,
 > while the issue-management framework is established and ready to capture
-> problems as Phase 0 implementation begins.
+> problems as P0 FOUNDATION implementation begins.

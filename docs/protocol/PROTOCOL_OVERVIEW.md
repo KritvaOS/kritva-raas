@@ -2144,7 +2144,7 @@ Exact production values are operational configuration.
 | Phase 7 | Live | Realtime observation |
 | Phase 8 | Production | Hardening and governance |
 
-## 136. Phase 0 — Foundation
+## 136. P0 FOUNDATION
 
 Deliver:
 
@@ -2163,7 +2163,7 @@ Acceptance:
 - version rules exist;
 - contract tests execute.
 
-## 137. Phase 1 — Studio
+## 137. P1 STUDIO
 
 Deliver:
 
@@ -2179,7 +2179,7 @@ Acceptance:
 - authentication works;
 - realtime connection works.
 
-## 138. Phase 2 — Artifact
+## 138. P2 BUILD & ARTIFACT — Artifact
 
 Deliver:
 
@@ -2196,7 +2196,7 @@ Acceptance:
 - validation is observable;
 - source remains local.
 
-## 139. Phase 3 — Control Plane
+## 139. P3 CONTROL PLANE
 
 Deliver:
 
@@ -2212,7 +2212,7 @@ Acceptance:
 - asynchronous workflows are recoverable;
 - error model is consistent.
 
-## 140. Phase 4 — Booking and Credits
+## 140. P4 BOOKING & COMMERCIAL — Booking and Credits
 
 Deliver:
 
@@ -2227,7 +2227,7 @@ Acceptance:
 - credit operations are safe;
 - conflicts are explicit.
 
-## 141. Phase 5 — Execution
+## 141. P5 EXECUTION
 
 Deliver:
 
@@ -2245,7 +2245,7 @@ Acceptance:
 - state events work;
 - reconciliation works.
 
-## 142. Phase 6 — Physical Robot
+## 142. P6 LAB & ROBOT — Physical Robot
 
 Deliver:
 
@@ -2260,7 +2260,7 @@ Acceptance:
 - safety state remains local;
 - cloud loss does not disable safety.
 
-## 143. Phase 7 — Live and Results
+## 143. P7 LIVE & RESULTS
 
 Deliver:
 
@@ -2277,7 +2277,7 @@ Acceptance:
 - telemetry is bounded;
 - results are traceable.
 
-## 144. Phase 8 — Production
+## 144. P8 PRODUCTION
 
 Deliver:
 

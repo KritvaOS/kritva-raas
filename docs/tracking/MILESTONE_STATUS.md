@@ -21,7 +21,7 @@ The tracker is used for engineering coordination, milestone reviews, cross-domai
 
 It is a tracking document, not a substitute for detailed scope or acceptance criteria. The existing milestone dossiers under `docs/**/milestones/` remain authoritative for milestone scope.
 
-The initial baseline sets every milestone to `NOT STARTED`, unless verified Phase 0 documentation work is explicitly recorded as in progress. No milestone is accepted or complete solely because this tracker or a planning document exists.
+The initial baseline sets every milestone to `NOT STARTED`, unless verified P0 FOUNDATION documentation work is explicitly recorded as in progress. No milestone is accepted or complete solely because this tracker or a planning document exists.
 
 ## 2. Canonical References
 
@@ -95,7 +95,7 @@ A milestone may be `IN REVIEW` while its acceptance state is `PENDING`. A milest
 
 **Canonical model:** Frozen phases and milestone identifiers listed in this document.
 
-**Initial milestone status:** `NOT STARTED` for all F-, B-, DB-, and C- milestones unless verified Phase 0 documentation work is explicitly recorded as in progress.
+**Initial milestone status:** `NOT STARTED` for all F-, B-, DB-, and C- milestones unless verified P0 FOUNDATION documentation work is explicitly recorded as in progress.
 
 **Initial acceptance state:** `NOT ASSESSED` for every milestone.
 
@@ -1266,7 +1266,7 @@ The milestone tracker is ready for routine use when:
 - all 22 canonical milestones are listed
 - the phase mappings match `docs/planning/PHASES.md`
 - initial statuses and acceptance states are recorded
-- actual Phase 0 documentation work is identified without overstating progress
+- actual P0 FOUNDATION documentation work is identified without overstating progress
 - milestone owners and dates are assigned or explicitly marked `TBD`
 - authoritative milestone dossiers are identified
 - dependency tracking is established
@@ -1289,7 +1289,7 @@ Baseline acceptance confirms the tracking structure is ready. It does not accept
 - Added dependency readiness and evidence-based progress rules.
 - Added phase-to-milestone coverage for reconciliation.
 - Established milestone review, acceptance, reporting, and change-control procedures.
-- Set the initial milestone baseline to `NOT STARTED` and acceptance to `NOT ASSESSED`, subject only to verified Phase 0 documentation work.
+- Set the initial milestone baseline to `NOT STARTED` and acceptance to `NOT ASSESSED`, subject only to verified P0 FOUNDATION documentation work.
 
 ### Future Updates
 

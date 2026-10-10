@@ -428,7 +428,7 @@ Expected:
 
 ### 8.18 Demo completion
 
-The Phase 4 demo passes when:
+The P4 BOOKING & COMMERCIAL demo passes when:
 
 > An organization can discover an available platform resource, receive a quote, reserve platform-specific credits, confirm a conflict-safe booking, consume or release credits according to the lifecycle, and produce auditable commercial records.
 

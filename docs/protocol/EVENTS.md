@@ -2430,7 +2430,7 @@ Credit events are financially authoritative and auditable.
 | Phase 7 | Live/Results | run/telemetry/result/experiment |
 | Phase 8 | Production | replay, governance, observability |
 
-# 166. Phase 0 — Event Foundation
+# 166. P0 FOUNDATION — Event Foundation
 
 Implement:
 
@@ -2448,7 +2448,7 @@ Acceptance:
 - event naming is stable;
 - duplicate handling is documented.
 
-# 167. Phase 1 — Studio
+# 167. P1 STUDIO
 
 Implement:
 
@@ -2464,7 +2464,7 @@ Acceptance:
 - Studio receives local and remote lifecycle updates;
 - reconnect behavior is defined.
 
-# 168. Phase 2 — Artifact
+# 168. P2 BUILD & ARTIFACT — Artifact
 
 Implement:
 
@@ -2478,7 +2478,7 @@ Acceptance:
 - validation completion is explicit;
 - rejected artifacts expose stable reason codes.
 
-# 169. Phase 3 — Control Plane
+# 169. P3 CONTROL PLANE
 
 Implement:
 
@@ -2493,7 +2493,7 @@ Acceptance:
 - event publication follows committed state;
 - audit correlation exists.
 
-# 170. Phase 4 — Commercial
+# 170. P4 BOOKING & COMMERCIAL — Commercial
 
 Implement:
 
@@ -2507,7 +2507,7 @@ Acceptance:
 - credit changes are durable;
 - financial events are auditable.
 
-# 171. Phase 5 — Execution
+# 171. P5 EXECUTION
 
 Implement:
 
@@ -2522,7 +2522,7 @@ Acceptance:
 - job and resource states are recoverable;
 - agent disconnect is detectable.
 
-# 172. Phase 6 — Physical Robot
+# 172. P6 LAB & ROBOT — Physical Robot
 
 Implement:
 
@@ -2537,7 +2537,7 @@ Acceptance:
 - physical state is distinguishable from application state;
 - cloud disconnect does not imply safety state.
 
-# 173. Phase 7 — Live and Results
+# 173. P7 LIVE & RESULTS
 
 Implement:
 
@@ -2555,7 +2555,7 @@ Acceptance:
 - result lifecycle is traceable;
 - partial telemetry is explicit.
 
-# 174. Phase 8 — Production
+# 174. P8 PRODUCTION
 
 Implement:
 

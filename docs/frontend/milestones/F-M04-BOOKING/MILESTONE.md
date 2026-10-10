@@ -4,10 +4,10 @@
 
 **Milestone ID:** F-M04-BOOKING  
 **Product:** Kritva RaaS  
-**Primary Phase:** Phase 4 — BOOKING & COMMERCIAL  
+**Primary Phase:** P4 BOOKING & COMMERCIAL  
 **Primary Surface:** RaaS Studio + Control Plane  
 **Technology:** Tauri + Rust + React + TypeScript + Backend API  
-**Priority:** P0  
+**Priority:** PRI-1 (primary product path per Priority Matrix; see `docs/planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
 **Status:** PLANNED  
 **Primary Outcome:** A production-grade platform discovery, resource availability,
 booking, credit quote, wallet visibility, booking management, and billing

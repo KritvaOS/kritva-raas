@@ -2248,7 +2248,7 @@ Additional platforms require explicit support qualification.
 | Phase 7 | Live/result integration |
 | Phase 8 | Production hardening |
 
-## 132. Phase 0 — Native Foundation
+## 132. P0 FOUNDATION — Native Foundation
 
 Implement:
 
@@ -2266,7 +2266,7 @@ Gate:
 - IPC command works;
 - no arbitrary shell API exists.
 
-## 133. Phase 1 — Studio Integration
+## 133. P1 STUDIO Integration
 
 Implement:
 
@@ -2281,7 +2281,7 @@ Gate:
 
 - Studio reliably communicates with Rust runtime.
 
-## 134. Phase 2 — Local Development
+## 134. P2 BUILD & ARTIFACT — Local Development
 
 Implement:
 
@@ -2311,7 +2311,7 @@ Gate:
       v
     Signed / Validated
 
-## 135. Phase 3 — Control Plane
+## 135. P3 CONTROL PLANE
 
 Implement:
 
@@ -2325,7 +2325,7 @@ Gate:
 
 - validated local `.krv` can be uploaded without source directory transfer.
 
-## 136. Phase 4 — Booking and Credits
+## 136. P4 BOOKING & COMMERCIAL — Booking and Credits
 
 Implement Studio integration for:
 
@@ -2338,7 +2338,7 @@ Implement Studio integration for:
 The Local Runtime itself remains primarily local; remote commercial state remains
 owned by the Control Plane.
 
-## 137. Phase 5 — Remote Execution
+## 137. P5 EXECUTION — Remote Execution
 
 Integrate:
 
@@ -2350,7 +2350,7 @@ Integrate:
 
 Local Runtime provides the artifact; the Control Plane owns remote execution.
 
-## 138. Phase 6 — Lab and Robot
+## 138. P6 LAB & ROBOT
 
 Support frontend/runtime diagnostics for:
 
@@ -2362,7 +2362,7 @@ Support frontend/runtime diagnostics for:
 
 The Local Runtime does not directly control remote robots.
 
-## 139. Phase 7 — Live and Results
+## 139. P7 LIVE & RESULTS
 
 The Local Runtime supports:
 
@@ -2373,7 +2373,7 @@ The Local Runtime supports:
 Live telemetry, video, and remote logs are handled by Studio's remote
 communication architecture rather than by the Local Runtime.
 
-## 140. Phase 8 — Production
+## 140. P8 PRODUCTION
 
 Complete:
 

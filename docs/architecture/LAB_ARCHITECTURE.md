@@ -2367,7 +2367,7 @@ A physical lab is production-ready only when:
 | Phase 7 | Telemetry/video/results | Full observation |
 | Phase 8 | Production hardening | Production RaaS labs |
 
-## 148. Phase 0 — Lab Foundation
+## 148. P0 FOUNDATION — Lab Foundation
 
 Deliver:
 
@@ -2385,7 +2385,7 @@ Acceptance:
 - heartbeat is visible;
 - resource is discovered.
 
-## 149. Phase 1 — Development Lab
+## 149. P1 STUDIO — Development Lab
 
 Deliver:
 
@@ -2401,7 +2401,7 @@ Acceptance:
 - agent can report resource state;
 - reconnect works.
 
-## 150. Phase 2 — Artifact
+## 150. P2 BUILD & ARTIFACT — Artifact
 
 Deliver:
 
@@ -2437,7 +2437,7 @@ Acceptance:
 - stop works;
 - duplicate start is prevented.
 
-## 152. Phase 4 — Resource and Booking
+## 152. P4 BOOKING & COMMERCIAL — Resource and Booking
 
 Deliver:
 
@@ -2453,7 +2453,7 @@ Acceptance:
 - resource conflicts are prevented;
 - incompatible artifacts are rejected.
 
-## 153. Phase 5 — Execution
+## 153. P5 EXECUTION
 
 Deliver:
 
@@ -2471,7 +2471,7 @@ Acceptance:
 - resource is released after completion/failure;
 - restart/recovery works.
 
-## 154. Phase 6 — Physical Lab
+## 154. P6 LAB & ROBOT — Physical Lab
 
 Deliver:
 
@@ -2489,7 +2489,7 @@ Acceptance:
 - controlled execution works;
 - safety review passes.
 
-## 155. Phase 7 — Live and Results
+## 155. P7 LIVE & RESULTS
 
 Deliver:
 
@@ -2508,7 +2508,7 @@ Acceptance:
 - results are persisted;
 - temporary network loss is handled.
 
-## 156. Phase 8 — Production
+## 156. P8 PRODUCTION
 
 Deliver:
 

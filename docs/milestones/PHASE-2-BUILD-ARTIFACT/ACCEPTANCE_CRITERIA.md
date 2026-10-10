@@ -277,7 +277,7 @@ Acceptance requires:
 
 ### 6.18 No-go conditions
 
-Phase 2 shall not close if:
+P2 BUILD & ARTIFACT shall not close if:
 
 - [ ] source is uploaded during build;
 - [ ] source is required for artifact registration;

@@ -630,7 +630,7 @@ Review:
 
 ### 8.20 Demo completion
 
-The Phase 8 demo passes when:
+The P8 PRODUCTION demo passes when:
 
 > A production candidate can be deployed, operated, monitored, recovered, rolled back and safely used through the complete RaaS lifecycle with evidence for security, reliability, scale, financial integrity and physical safety.
 

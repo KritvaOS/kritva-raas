@@ -2259,7 +2259,7 @@ Mitigation:
 | Phase 7 | Live/results infrastructure | Full execution platform |
 | Phase 8 | Production hardening | Production RaaS |
 
-## 138. Phase 0 — Foundation
+## 138. P0 FOUNDATION
 
 Deliver:
 
@@ -2283,7 +2283,7 @@ Acceptance:
 - queue works;
 - secrets are not committed.
 
-## 139. Phase 1 — Development Environment
+## 139. P1 STUDIO — Development Environment
 
 Deliver:
 
@@ -2304,7 +2304,7 @@ Acceptance:
 - asynchronous work executes;
 - artifacts can be stored.
 
-## 140. Phase 2 — Artifact Infrastructure
+## 140. P2 BUILD & ARTIFACT — Artifact Infrastructure
 
 Deliver:
 
@@ -2321,7 +2321,7 @@ Acceptance:
 - invalid artifacts are rejected;
 - object access is private.
 
-## 141. Phase 3 — Control Plane Infrastructure
+## 141. P3 CONTROL PLANE Infrastructure
 
 Deliver:
 
@@ -2340,7 +2340,7 @@ Acceptance:
 - worker failure is recoverable;
 - staging resembles production.
 
-## 142. Phase 4 — Booking and Commercial Infrastructure
+## 142. P4 BOOKING & COMMERCIAL Infrastructure
 
 Deliver:
 
@@ -2357,7 +2357,7 @@ Acceptance:
 - audit history exists;
 - backups are configured.
 
-## 143. Phase 5 — Execution Infrastructure
+## 143. P5 EXECUTION Infrastructure
 
 Deliver:
 
@@ -2375,7 +2375,7 @@ Acceptance:
 - worker scaling works;
 - lab disconnect is handled.
 
-## 144. Phase 6 — Physical Lab Infrastructure
+## 144. P6 LAB & ROBOT — Physical Lab Infrastructure
 
 Deliver:
 
@@ -2392,7 +2392,7 @@ Acceptance:
 - physical execution is isolated by lab;
 - lab outage does not affect unrelated labs.
 
-## 145. Phase 7 — Live and Results Infrastructure
+## 145. P7 LIVE & RESULTS Infrastructure
 
 Deliver:
 
@@ -2410,7 +2410,7 @@ Acceptance:
 - video is accessible through authorized paths;
 - telemetry does not overload transactional database.
 
-## 146. Phase 8 — Production
+## 146. P8 PRODUCTION
 
 Deliver:
 
