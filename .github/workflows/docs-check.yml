@@ -39,3 +39,7 @@ jobs:
         run: python3 scripts/docs/check_docs.py
       - name: Run backend traceability checker
         run: python3 scripts/docs/check_backend_traceability.py
+      - name: Run approval package checker tests
+        run: python3 -m unittest discover -s tests/backend_approvals -v
+      - name: Run backend approval package checker
+        run: python3 scripts/docs/check_backend_approvals.py

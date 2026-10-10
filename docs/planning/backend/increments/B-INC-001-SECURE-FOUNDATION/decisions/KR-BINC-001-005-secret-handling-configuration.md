@@ -13,6 +13,7 @@
 ## Related documents
 
 - [Readiness review](IMPLEMENTATION_READINESS.md)
+- [Approval package](../../../decisions/approvals/APPROVAL-KR-BINC-001-005-secret-handling.md)
 - [Increment tasks](../TASKS.md)
 - [Increment acceptance criteria](../ACCEPTANCE_CRITERIA.md)
 - [Commit procedure](../GIT_COMMIT_STEP.md)

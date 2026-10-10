@@ -51,6 +51,7 @@ The program-level document set is intended to cover the following responsibiliti
 | `BACKEND_RISK_REGISTER.md` | Backend risks, mitigations, decision owners, and escalation conditions |
 | `BACKEND_RESOURCE_PLAN.md` | Owner roles, capacity assumptions, estimates, and unresolved resource decisions |
 | `BACKEND_CHANGELOG.md` | Controlled record of changes to the backend planning baseline |
+| `decisions/README.md` | Backend decision-approval workflow, canonical decision records, and approval-package navigation |
 
 The document set is being prepared in batches. Until a document has been created and reviewed, it must not be treated as an approved source of requirements.
 

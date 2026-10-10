@@ -87,6 +87,21 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-10 — Backend decision-approval packages and checker added
+
+- **State:** IMPLEMENTED (documentation and validation tooling; no task status change)
+- **Tasks:** None (cross-task approval workflow and its checker)
+- **Increment ACs:** Not applicable
+- **Program acceptance:** Not applicable
+- **Tests:** Not applicable (the new checker has its own unit tests; no task test is advanced)
+- **Security gates:** Not applicable (no gate is closed)
+- **Findings/risks:** Not assessed beyond the compatibility metadata in the runtime approval package
+- **Files changed:** `../../decisions/` (README and three approval packages), `scripts/docs/check_backend_approvals.py`, `tests/backend_approvals/`, `Makefile`, `.github/workflows/docs-check.yml`, `decisions/IMPLEMENTATION_READINESS.md`, the three decision records (link only), `../../BACKEND_CHANGELOG.md` PB-012
+- **Commit:** Pending until this change is merged
+- **Evidence:** `make check` results recorded in the commit messages
+- **Reviewer role:** Repository owner
+- **Decision and follow-up:** See PB-012. `KR-BINC-001-001`, `KR-BINC-001-002` and `KR-BINC-001-005` stay In Review and their records stay Proposed. The packages are Draft until sent to the approvers
+
 ### 2026-10-10 — PR #5 follow-up: record references and planning-commit rule
 
 - **State:** IMPLEMENTED (documentation correction; no task status change)
@@ -97,10 +112,10 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 - **Security gates:** Not applicable
 - **Findings/risks:** External audit of PR #5 found no reason to revert it and listed five follow-up items, all addressed here or tracked in `../../BACKEND_CHANGELOG.md` PB-011
 - **Files changed:** `CHANGELOG.md`, `GIT_COMMIT_STEP.md` Section 4.1, `decisions/IMPLEMENTATION_READINESS.md`, `../../BACKEND_CHANGELOG.md`
-- **Commit:** Pending until this change is merged
-- **Evidence:** `make check` results recorded in the commit message
+- **Commit:** `d28f506` and `abeef74`; merged in PR #6 as `8bc4558`
+- **Evidence:** `make check` results recorded in the commit messages; source-header-check runs 114264977321 and 114265167987 and docs-check runs 114264978332 and 114265167849 on head `abeef74` succeeded
 - **Reviewer role:** Repository owner
-- **Decision and follow-up:** See PB-011
+- **Decision and follow-up:** See PB-011. The PR title and description were left at the default values, so this entry is the tracking record
 
 ### 2026-10-10 — KR-BINC-001-002 package manager recommendation proposed
 
