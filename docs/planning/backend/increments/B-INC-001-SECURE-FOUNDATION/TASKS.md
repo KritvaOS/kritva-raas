@@ -409,6 +409,7 @@ All new tasks below have an estimate of **TBD**. Each must be refined and approv
 - **Linked AC:** B-INC-001-AC-21.
 - **Linked tests:** BTS-037.
 - **Linked security gates:** Not applicable.
+- **Status:** Accepted on 2026-10-10 by the repository owner (`BACKEND_CHANGELOG.md` PB-007).
 
 ## 5. Cross-Task Dependencies
 

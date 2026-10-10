@@ -193,7 +193,7 @@ All tasks in this section are Proposed. Dependencies and acceptance details must
 | KR-BINC-001-015 | Verify secret-scanner exception handling | Selected scanner and CI integration | Reviewed, narrow exception mechanism with tests or documented validation and auditable rationale | Security Owner |
 | KR-BINC-001-016 | Document security-control operation and evidence | Approved scanner and CI behavior | Documentation of invocation, failure interpretation, safe evidence handling, and remediation expectations | Documentation Owner |
 | KR-BINC-001-017 | Verify clean-checkout setup and foundational test workflow | Application skeleton, package-manager decision, and test commands | Reproducible setup and test results from a clean environment | Backend Technical Lead |
-| KR-BINC-001-018 | Adopt source header standard and CI check | kritva-core header checker; owner license decision | `docs/development/SOURCE_HEADER_STANDARD.md`, checker, unit tests, `Source Header Check` workflow and pre-commit hook; all in-scope files carry compliant headers | Backend Technical Lead |
+| KR-BINC-001-018 | Adopt source header standard and CI check | kritva-core header checker; owner license decision | `docs/development/SOURCE_HEADER_STANDARD.md`, checker, unit tests, `Source Header Check` workflow and pre-commit hook; all in-scope files carry compliant headers. **Accepted 2026-10-10 (PB-007).** | Backend Technical Lead |
 
 ### 7.1 New-task acceptance rules
 
