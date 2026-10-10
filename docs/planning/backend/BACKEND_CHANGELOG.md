@@ -358,6 +358,32 @@ Acceptance evidence for `B-INC-001-AC-21` and `BAC-039`, recorded against `350b6
 
 All four evidence items are now verified. `KR-BINC-001-018`, `B-INC-001-AC-21` and `BAC-039` are ready for the owner's acceptance decision. Because the ruleset requires a pull request and has no bypass actors, every change to `main`, including this entry, goes through a pull request whose required checks must pass.
 
+## 3F. PB-007 — KR-BINC-001-018 Accepted
+
+| Field | Value |
+|---|---|
+| Change ID | PB-007 |
+| Date | 2026-10-10 |
+| Status | Accepted |
+| Owner role | Repository owner |
+| Accepted revision | `3a0d7e5` on main (merge of PR #1) |
+
+The repository owner accepted `KR-BINC-001-018`, `B-INC-001-AC-21` and `BAC-039`, on the external reviewer's recommendation, after the evidence PR passed through the new merge gate.
+
+| Evidence | Reference |
+|---|---|
+| Evidence PR passed the gate | PR [#1](https://github.com/KritvaOS/kritva-raas/pull/1): Source Header Check run 38062983863 and docs-check run 38062983880 passed on the pull request; merged as `3a0d7e5` |
+| `main` green after merge | Source Header Check run [38063027471](https://github.com/KritvaOS/kritva-raas/actions/runs/38063027471); docs-check run [38063027587](https://github.com/KritvaOS/kritva-raas/actions/runs/38063027587) |
+| Negative path | Run [38052486010](https://github.com/KritvaOS/kritva-raas/actions/runs/38052486010): HEADER-008, exit 1 |
+| Merge gate | Ruleset 24843399: pull request required, `source-header-check` and `docs-check` required, deletion and force pushes blocked, no bypass |
+
+Follow-ups, outside acceptance scope:
+- enable strict up-to-date status checks;
+- pin both required checks to the GitHub Actions integration;
+- optionally correct the ruleset name `main-protectionain`.
+
+The other B-INC-001 tasks and acceptance criteria are unaffected and remain open.
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

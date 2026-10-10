@@ -87,6 +87,21 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-10 — KR-BINC-001-018 source header standard accepted
+
+- **State:** ACCEPTED
+- **Tasks:** `KR-BINC-001-018`
+- **Increment ACs:** `B-INC-001-AC-21`
+- **Program acceptance:** `BAC-039` (with supporting `BAC-031` and `BAC-037`)
+- **Tests:** `BTS-037`. Source Header Check runs 38063027471 and 38062983863 passed; negative-path run 38052486010 failed as intended with HEADER-008.
+- **Security gates:** Not applicable
+- **Findings/risks:** None open. Optional hardening (strict up-to-date checks and pinning the checks to GitHub Actions) is tracked separately.
+- **Files changed:** see `../../BACKEND_CHANGELOG.md` PB-005 to PB-007
+- **Commit:** implementation `44cb244`, `8b51577`, `72b87cd`, `350b6b7`; evidence `846840f`, `066a2ae`, `c585560` (merged in PR #1 as `3a0d7e5`)
+- **Evidence:** Actions runs listed above; ruleset 24843399
+- **Reviewer role:** Repository owner, with external review
+- **Decision and follow-up:** Accepted. The other B-INC-001 tasks remain open.
+
 ## Entry Template
 
 Use this template for each subsequent implementation or verification entry.

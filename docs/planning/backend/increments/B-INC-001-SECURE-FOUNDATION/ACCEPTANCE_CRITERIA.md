@@ -288,7 +288,7 @@ Complete this table during the review.
 | B-INC-001-AC-18 | TBD | TBD | TBD | TBD | TBD |
 | B-INC-001-AC-19 | TBD | TBD | TBD | TBD | TBD |
 | B-INC-001-AC-20 | TBD | TBD | TBD | TBD | TBD |
-| B-INC-001-AC-21 | TBD | TBD | TBD | TBD | TBD |
+| B-INC-001-AC-21 | PASS | Source Header Check runs 38063027471 (`main` at `3a0d7e5`) and 38062983863 (PR #1); negative-path run 38052486010 (HEADER-008, exit 1); ruleset 24843399; `BACKEND_CHANGELOG.md` PB-006 and PB-007 | None open. Strict up-to-date checks and integration pinning are tracked as optional hardening. | Repository owner | 2026-10-10 |
 
 ## 6. Status
 
