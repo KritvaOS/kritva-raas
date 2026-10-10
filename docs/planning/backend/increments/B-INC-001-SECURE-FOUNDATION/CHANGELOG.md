@@ -53,10 +53,10 @@
 #### Traceability
 
 - Existing implementation tasks: `KR-BE-1-001` through `KR-BE-1-009`, and `KR-BE-1-041`.
-- New increment tasks: `KR-BINC-001-001` through `KR-BINC-001-017`.
-- Increment acceptance: `B-INC-001-AC-01` through `B-INC-001-AC-20`.
+- New increment tasks: `KR-BINC-001-001` through `KR-BINC-001-018`.
+- Increment acceptance: `B-INC-001-AC-01` through `B-INC-001-AC-21`.
 - Program acceptance namespace: `BAC-001` through `BAC-038`.
-- Program test namespace: `BTS-001` through `BTS-036`.
+- Program test namespace: `BTS-001` through `BTS-037`.
 - Program security-gate namespace: `SEC-GATE-001` through `SEC-GATE-013`.
 
 The exact task-to-program-ID relationships are governed by `TASKS.md` and the canonical program registers. Do not treat the presence of an ID here as evidence that its criterion has passed.

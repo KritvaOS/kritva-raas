@@ -1,4 +1,22 @@
 #!/usr/bin/env python3
+#==============================================================================
+# Copyright (c) 2026 KritvaOS
+# SPDX-License-Identifier: LicenseRef-KritvaOS-Proprietary
+#
+# File        : split_milestones.py
+# Description : Splits milestone dossier README files into the standard milestone file set
+#
+# Component   : Infrastructure
+# Module      : Documentation Maintenance
+# Layer       : Development Infrastructure
+#
+# Requirements: N/A — one-off documentation migration
+# API         : Command-line documentation rewrite
+#
+# Author      : KritvaOS
+# Created     : 10-10-2026
+#==============================================================================
+
 """Split each milestone dossier README.md into the standard milestone file set."""
 import re, pathlib, sys
 DOCS = pathlib.Path(__file__).resolve().parents[2] / "docs"

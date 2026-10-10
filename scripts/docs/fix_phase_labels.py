@@ -1,4 +1,22 @@
 #!/usr/bin/env python3
+#==============================================================================
+# Copyright (c) 2026 KritvaOS
+# SPDX-License-Identifier: LicenseRef-KritvaOS-Proprietary
+#
+# File        : fix_phase_labels.py
+# Description : Normalises milestone dossier phase labels to the frozen canonical model
+#
+# Component   : Infrastructure
+# Module      : Documentation Maintenance
+# Layer       : Development Infrastructure
+#
+# Requirements: N/A — one-off documentation migration (RAAS-005)
+# API         : Command-line documentation rewrite
+#
+# Author      : KritvaOS
+# Created     : 10-10-2026
+#==============================================================================
+
 """Normalise phase labels in milestone dossiers to the frozen canonical model."""
 import re, pathlib
 DOCS = pathlib.Path(__file__).resolve().parents[2] / "docs"

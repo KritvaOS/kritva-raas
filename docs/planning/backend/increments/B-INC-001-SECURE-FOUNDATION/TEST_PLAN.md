@@ -41,7 +41,7 @@ The scope covers:
 - Security and configuration documentation.
 - Reproducible verification from a clean checkout.
 
-The increment includes existing tasks `KR-BE-1-001` through `KR-BE-1-009` and `KR-BE-1-041`, plus new tasks `KR-BINC-001-001` through `KR-BINC-001-017`. Use `TASKS.md` for task-level ownership, dependencies, outputs, and acceptance links.
+The increment includes existing tasks `KR-BE-1-001` through `KR-BE-1-009` and `KR-BE-1-041`, plus new tasks `KR-BINC-001-001` through `KR-BINC-001-018`. Use `TASKS.md` for task-level ownership, dependencies, outputs, and acceptance links.
 
 This plan does not approve an unselected technology, authorize production credentials, or claim that the application is production-ready. Technology choices remain open until recorded in an approved decision record.
 
@@ -49,10 +49,10 @@ This plan does not approve an unselected technology, authorize production creden
 
 The following documents own the canonical program-level IDs:
 
-- `../../BACKEND_TEST_STRATEGY.md` — test IDs `BTS-001` through `BTS-036`.
+- `../../BACKEND_TEST_STRATEGY.md` — test IDs `BTS-001` through `BTS-037`.
 - `../../BACKEND_SECURITY_GATE.md` — security-gate IDs `SEC-GATE-001` through `SEC-GATE-013`.
 - `../../BACKEND_ACCEPTANCE_CRITERIA.md` — program acceptance IDs `BAC-001` through `BAC-038`.
-- `ACCEPTANCE_CRITERIA.md` — increment acceptance IDs `B-INC-001-AC-01` through `B-INC-001-AC-20`.
+- `ACCEPTANCE_CRITERIA.md` — increment acceptance IDs `B-INC-001-AC-01` through `B-INC-001-AC-21`.
 - `TASKS.md` — task-to-acceptance, test, and security-gate traceability.
 - `REVIEW_CHECKLIST.md` — human review and release-blocking checks.
 
@@ -137,6 +137,7 @@ This matrix is generated from `ACCEPTANCE_CRITERIA.md`, which is authoritative f
 | `B-INC-001-AC-18` | History scan and exposure-response readiness | BTS-010 | SEC-GATE-006, SEC-GATE-007 | Sanitized scan record; refs and commit range; findings/dispositions; response-procedure review |
 | `B-INC-001-AC-19` | Documentation and workflow match actual behavior | BTS-001, BTS-036 | SEC-GATE-003 | Documentation diff; link/checker result; clean-checkout record; review disposition |
 | `B-INC-001-AC-20` | Increment evidence and disposition | BTS-032, BTS-035, BTS-036 | SEC-GATE-012, SEC-GATE-013 | Completed acceptance matrix; test and scanner run references; review records; open-issue list; explicit acceptance decision |
+| `B-INC-001-AC-21` | Source header standard enforced | BTS-037 | Not applicable | Checker and unit-test output for the revision; Actions run reference; exemption list review |
 
 **Traceability rule:** Record the exact canonical test IDs executed in the run record. Do not infer a pass merely because an unrelated test passed.
 

@@ -397,6 +397,19 @@ All new tasks below have an estimate of **TBD**. Each must be refined and approv
 - **Linked tests:** BTS-001, BTS-032, BTS-035, BTS-036.
 - **Linked security gates:** SEC-GATE-003, SEC-GATE-012, SEC-GATE-013.
 
+### KR-BINC-001-018 — Adopt source header standard and CI check
+
+- **Description:** Adopt the KritvaOS source header standard (ported from kritva-core, rule family HEADER-001 to HEADER-008) with the proprietary RaaS SPDX identifier, the RaaS language set and the controlled Component and Layer vocabularies, enforced in CI and by an optional pre-commit hook.
+- **Inputs:** kritva-core `scripts/lint/check_source_headers.py` and `.github/workflows/source-header-check.yml`; owner decision that RaaS is proprietary; approved toolchain decisions.
+- **Outputs/files:** `docs/development/SOURCE_HEADER_STANDARD.md`; `scripts/lint/check_source_headers.py`; `tests/source_header_check/test_check_source_headers.py`; `.github/workflows/source-header-check.yml`; `.githooks/pre-commit`; headers on all in-scope tracked files.
+- **Dependencies:** None for the checker; new source files from other tasks must carry headers when committed.
+- **Owner role:** Backend Technical Lead.
+- **Estimate:** TBD.
+- **Definition of done:** Strict tracked-file check passes; checker unit tests pass; the workflow is green on the implementation commit; the standard documents exemptions and hook installation (`git config core.hooksPath .githooks`).
+- **Linked AC:** B-INC-001-AC-21.
+- **Linked tests:** BTS-037.
+- **Linked security gates:** Not applicable.
+
 ## 5. Cross-Task Dependencies
 
 The principal implementation sequence is:

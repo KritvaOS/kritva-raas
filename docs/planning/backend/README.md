@@ -71,7 +71,7 @@ All four increment dossiers exist under `docs/planning/backend/increments/`. Eac
 
 | Increment | Dossier | Acceptance criteria | Tasks | Branch | Closure tag |
 |---|---|---|---|---|---|
-| B-INC-001 | [SECURE-FOUNDATION](increments/B-INC-001-SECURE-FOUNDATION/MILESTONE.md) | 20 | 27 | `increment/b-inc-001-secure-foundation` | `b-inc-001-secure-foundation-closed` |
+| B-INC-001 | [SECURE-FOUNDATION](increments/B-INC-001-SECURE-FOUNDATION/MILESTONE.md) | 21 | 28 | `increment/b-inc-001-secure-foundation` | `b-inc-001-secure-foundation-closed` |
 | B-INC-002 | [IDENTITY-ORGANIZATION](increments/B-INC-002-IDENTITY-ORGANIZATION/MILESTONE.md) | 18 | 14 | `increment/b-inc-002-identity-organization` | `b-inc-002-identity-organization-closed` |
 | B-INC-003 | [PROJECTS-PLATFORM-CATALOG](increments/B-INC-003-PROJECTS-PLATFORM-CATALOG/MILESTONE.md) | 17 | 13 | `increment/b-inc-003-projects-platform-catalog` | `b-inc-003-projects-platform-catalog-closed` |
 | B-INC-004 | [AUDIT-TRANSACTIONS-IDEMPOTENCY](increments/B-INC-004-AUDIT-TRANSACTIONS-IDEMPOTENCY/MILESTONE.md) | 16 | 13 | `increment/b-inc-004-audit-transactions-idempotency` | `b-inc-004-audit-transactions-idempotency-closed` |

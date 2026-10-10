@@ -1,4 +1,22 @@
 #!/usr/bin/env python3
+#==============================================================================
+# Copyright (c) 2026 KritvaOS
+# SPDX-License-Identifier: LicenseRef-KritvaOS-Proprietary
+#
+# File        : check_backend_traceability.py
+# Description : Validates backend increment dossier acceptance, task, test-plan and commit-text traceability
+#
+# Component   : Infrastructure
+# Module      : Backend Traceability Checker
+# Layer       : Development Infrastructure
+#
+# Requirements: N/A — backend planning traceability (RAAS-AUD-05)
+# API         : Command-line traceability validation
+#
+# Author      : KritvaOS
+# Created     : 10-10-2026
+#==============================================================================
+
 """Traceability checks for backend increment dossiers.
 
 For every docs/planning/backend/increments/B-INC-nnn-*/ dossier, verify that:

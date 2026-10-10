@@ -458,7 +458,7 @@ All four increment dossiers (B-INC-001 to B-INC-004) are prepared, with status P
 Next actions, in order:
 
 1. Review and freeze the B-INC-001 SECURE FOUNDATION dossier and approve its open technology decisions (`KR-BINC-001-001` to `KR-BINC-001-004` and `KR-BINC-001-008`).
-2. Implement B-INC-001, including the blocking CI secret scan, and record real evidence against `B-INC-001-AC-01` to `AC-20`.
+2. Implement B-INC-001, including the blocking CI secret scan, and record real evidence against `B-INC-001-AC-01` to `AC-21`.
 3. Authorize B-INC-002 to B-INC-004 in order, each only after its predecessor is accepted and the dependencies recorded in its dossier are satisfied.
 
 ## 20. Increment IDs and Git Commit Conventions

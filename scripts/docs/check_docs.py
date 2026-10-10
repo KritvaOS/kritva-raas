@@ -1,4 +1,22 @@
 #!/usr/bin/env python3
+#==============================================================================
+# Copyright (c) 2026 KritvaOS
+# SPDX-License-Identifier: LicenseRef-KritvaOS-Proprietary
+#
+# File        : check_docs.py
+# Description : Validates documentation structure, canonical phases, milestones and planning invariants
+#
+# Component   : Infrastructure
+# Module      : Documentation Checker
+# Layer       : Development Infrastructure
+#
+# Requirements: N/A — repository documentation governance (RAAS-008)
+# API         : Command-line documentation validation
+#
+# Author      : KritvaOS
+# Created     : 10-10-2026
+#==============================================================================
+
 """Documentation consistency checks for docs/.
 Structural checks: retired phase/milestone names, canonical milestone folders,
 required standard milestone files, broken relative links and backtick doc

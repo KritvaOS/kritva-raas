@@ -274,6 +274,51 @@ The traceability checker was confirmed to fail on a deliberately altered commit 
 
 Planning validation confirms documentation consistency only. It is not implementation, test or security acceptance evidence.
 
+## 3D. PB-005 — Re-audit Closure and Source Header Standard
+
+| Field | Value |
+|---|---|
+| Change ID | PB-005 |
+| Date | 2026-10-10 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Audited revision | `00c494a` on main |
+
+Re-audit outcome (external review of `00c494a`):
+
+| Finding | Status | Evidence |
+|---|---|---|
+| RAAS-AUD-01 | Closed (planning) | Section 19 of `BACKEND_IMPLEMENTATION_PLAN.md` |
+| RAAS-AUD-02 | Open by design | Awaits implementation evidence and a security-review decision |
+| RAAS-AUD-03 | Closed (planning) | PB-002 to PB-004 dated and validation types separated |
+| RAAS-AUD-04 | Closed (traceability) | `KR-BE-1-047` owned only by B-INC-004 |
+| RAAS-AUD-05 | Closed (CI wiring and run verified) | `docs-check` Actions run 38048607956 on `00c494a`: both checker steps succeeded |
+| RAAS-AUD-06 | Closed (documentation navigation) | Root `README.md` |
+
+Source header standard (aligned with kritva-core):
+
+1. Added `docs/development/SOURCE_HEADER_STANDARD.md`. It keeps the Kritva Core header fields and rule IDs, uses `SPDX-License-Identifier: LicenseRef-KritvaOS-Proprietary` (owner decision: RaaS is proprietary), and defines the Component and Layer vocabularies, the Requirements and API conventions, the scope and the exemptions.
+2. Ported `scripts/lint/check_source_headers.py` from kritva-core. Additions:
+   - the TypeScript/JavaScript, Rust and SQL (`--`) sources are in scope;
+   - build output directories and `*.d.ts`/`*.min.js` are excluded;
+   - HEADER-005 checks that the File field matches the file;
+   - HEADER-007 checks the Component and Layer vocabularies;
+   - Created dates must be real calendar dates.
+3. Added `tests/source_header_check/test_check_source_headers.py` with 13 tests (including a non-zero CLI exit on an invalid file), the `Source Header Check` workflow (`.github/workflows/source-header-check.yml`, same command as Kritva Core), and `.githooks/pre-commit`.
+4. Added standard headers to every in-scope tracked file: the four `scripts/docs/*.py` scripts and `.github/workflows/docs-check.yml`.
+5. Planning: new task `KR-BINC-001-018`, criterion `B-INC-001-AC-21`, canonical test `BTS-037` and backend acceptance criterion `BAC-039` (source header compliance and enforcement, added on external-review advice), with a test-plan row, an acceptance-record row, commit text, and task-register and resource-plan rows. B-INC-001 now has 21 criteria and 28 tasks.
+
+Local validation on the working tree:
+
+| Command | Result |
+|---|---|
+| `python3 scripts/lint/check_source_headers.py --mode tracked --strict` | 8 source/config files checked, PASSED |
+| `python3 -m unittest discover -s tests/source_header_check` | 13 tests, OK |
+| `python3 scripts/docs/check_docs.py` | 0 problems |
+| `python3 scripts/docs/check_backend_traceability.py` | 4 dossiers, 0 problems |
+
+`B-INC-001-AC-21` is accepted only after a green `Source Header Check` run on the pushed revision.
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

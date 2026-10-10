@@ -239,6 +239,16 @@ The increment is not accepted merely because its source files exist or a develop
 - **Security-gate trace:** SEC-GATE-012, SEC-GATE-013.
 - **Owner:** Backend Technical Lead; acceptance authority follows B-M01 governance.
 
+### B-INC-001-AC-21 — Source header standard enforced
+
+- **Pass condition:** `docs/development/SOURCE_HEADER_STANDARD.md` is linked from the development documentation; `scripts/lint/check_source_headers.py` enforces the proprietary SPDX identifier, copyright line, required fields, valid `Created` date, `File` match and the controlled Component and Layer vocabularies; its unit tests cover every supported comment style, classification and failure rule; every in-scope tracked file passes in strict mode; and the `Source Header Check` workflow and `.githooks/pre-commit` run the same command.
+- **Fail condition:** A required rule is unenforced or untested, an in-scope file fails, an exemption is broader than the documented list, or the workflow is missing or red for the tested revision.
+- **Evidence to retain:** Checker and unit-test output for the revision; Actions run reference; exemption list review.
+- **Backend acceptance trace:** BAC-031, BAC-037, BAC-039.
+- **Test trace:** BTS-037.
+- **Security-gate trace:** Not applicable.
+- **Owner:** Backend Technical Lead.
+
 ## 4. Mandatory Blocking Conditions
 
 The following conditions block B-INC-001 acceptance:
@@ -278,6 +288,7 @@ Complete this table during the review.
 | B-INC-001-AC-18 | TBD | TBD | TBD | TBD | TBD |
 | B-INC-001-AC-19 | TBD | TBD | TBD | TBD | TBD |
 | B-INC-001-AC-20 | TBD | TBD | TBD | TBD | TBD |
+| B-INC-001-AC-21 | TBD | TBD | TBD | TBD | TBD |
 
 ## 6. Status
 

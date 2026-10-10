@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+#==============================================================================
+# Copyright (c) 2026 KritvaOS
+# SPDX-License-Identifier: LicenseRef-KritvaOS-Proprietary
+#
+# File        : pre-commit
+# Description : Runs the KritvaOS source header checker before commit
+#
+# Component   : Infrastructure
+# Module      : Source Header Checker
+# Layer       : Development Infrastructure
+#
+# Requirements: HEADER-001, KR-BINC-001-018
+# API         : Git pre-commit hook
+#
+# Author      : KritvaOS
+# Created     : 10-10-2026
+#==============================================================================
+
+set -e
+python3 scripts/lint/check_source_headers.py --mode tracked --strict
