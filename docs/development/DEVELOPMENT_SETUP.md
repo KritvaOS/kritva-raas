@@ -534,7 +534,7 @@ Conceptual example:
     API_PORT=4000
     API_BASE_URL=http://127.0.0.1:4000
 
-    DATABASE_URL=postgresql://kritva:kritva@127.0.0.1:5432/kritva_raas
+    DATABASE_URL=postgresql://<db-user>:<db-password>@127.0.0.1:5432/kritva_raas
 
     OBJECT_STORAGE_ENDPOINT=http://127.0.0.1:9000
     OBJECT_STORAGE_BUCKET=kritva-local
