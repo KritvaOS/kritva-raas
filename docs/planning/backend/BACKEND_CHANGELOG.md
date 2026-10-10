@@ -351,10 +351,12 @@ Acceptance evidence for `B-INC-001-AC-21` and `BAC-039`, recorded against `350b6
 |---|---|---|
 | Source Header Check green on `350b6b7` | Verified. Steps "Test source header checker" and "Check source headers" both succeeded. | Run [38051684790](https://github.com/KritvaOS/kritva-raas/actions/runs/38051684790) |
 | docs-check green on `350b6b7` | Verified. Steps "Run documentation checker" and "Run backend traceability checker" both succeeded. | Run [38051684651](https://github.com/KritvaOS/kritva-raas/actions/runs/38051684651) |
-| Controlled failing run on a disposable branch | Pending (owner action) | Push a branch whose only change is a malformed header, confirm Source Header Check fails at the "Check source headers" step (not at setup or checkout), record the run URL here, then delete the branch. |
-| Both checks required for `main` | Not configured. On 2026-10-10 the GitHub branch API reported `main` unprotected, with no required status checks. | Owner action: add a branch protection rule or ruleset for `main` requiring `source-header-check` and `docs-check`, then record the evidence here. |
+| Controlled failing run on a disposable branch | Verified. Branch `ci/negative-header-test` at `24544e039ceaaec6423286d029d1ef9fd4514865` added only `scripts/lint/negative_header_probe.py`, which has no header. Setup, checkout and "Test source header checker" succeeded. "Check source headers" failed with `scripts/lint/negative_header_probe.py: [HEADER-008] missing or malformed leading header block` (exit code 1). docs-check on the same commit passed (run 38052485993). The branch was then deleted, so the probe never reached `main`. | Run [38052486010](https://github.com/KritvaOS/kritva-raas/actions/runs/38052486010), job [114214231084](https://github.com/KritvaOS/kritva-raas/actions/runs/38052486010/job/114214231084) |
+| Both checks required for `main` | Not configured. Rechecked on 2026-10-10 after the negative run: `GET /repos/KritvaOS/kritva-raas/branches/main` returns `protected: false` with no required status checks, and `GET /repos/KritvaOS/kritva-raas/rules/branches/main` returns no rules. | Owner action: add a branch protection rule or ruleset for `main` requiring `source-header-check` and `docs-check`, then record the evidence here. |
 
-`KR-BINC-001-018`, `B-INC-001-AC-21` and `BAC-039` stay open until the last two rows are complete.
+`main` at `846840f` is also green (Source Header Check run 38052473705, docs-check run 38052473699).
+
+`KR-BINC-001-018`, `B-INC-001-AC-21` and `BAC-039` stay open until branch protection requires both checks on `main` and that is verified through the API.
 
 ## 4. Future Entries
 
