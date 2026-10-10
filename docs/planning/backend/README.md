@@ -67,11 +67,24 @@ Implementation increments will use the following identifiers and proposed names:
 
 These are proposed implementation increments, not official milestones. B-INC-002 through B-INC-004 must not be treated as frozen or implementation-ready until the preceding work and dependencies have been reviewed.
 
-The initial implementation dossier is planned under:
+All four increment dossiers exist under `docs/planning/backend/increments/`. Each has the same eight files: `MILESTONE.md`, `TASKS.md`, `ACCEPTANCE_CRITERIA.md`, `REVIEW_CHECKLIST.md`, `TEST_PLAN.md`, `SECURITY_REVIEW.md`, `CHANGELOG.md` and `GIT_COMMIT_STEP.md`.
 
-`docs/planning/backend/increments/B-INC-001-SECURE-FOUNDATION/`
+| Increment | Dossier | Acceptance criteria | Tasks | Branch | Closure tag |
+|---|---|---|---|---|---|
+| B-INC-001 | [SECURE-FOUNDATION](increments/B-INC-001-SECURE-FOUNDATION/MILESTONE.md) | 20 | 27 | `increment/b-inc-001-secure-foundation` | `b-inc-001-secure-foundation-closed` |
+| B-INC-002 | [IDENTITY-ORGANIZATION](increments/B-INC-002-IDENTITY-ORGANIZATION/MILESTONE.md) | 18 | 14 | `increment/b-inc-002-identity-organization` | `b-inc-002-identity-organization-closed` |
+| B-INC-003 | [PROJECTS-PLATFORM-CATALOG](increments/B-INC-003-PROJECTS-PLATFORM-CATALOG/MILESTONE.md) | 17 | 13 | `increment/b-inc-003-projects-platform-catalog` | `b-inc-003-projects-platform-catalog-closed` |
+| B-INC-004 | [AUDIT-TRANSACTIONS-IDEMPOTENCY](increments/B-INC-004-AUDIT-TRANSACTIONS-IDEMPOTENCY/MILESTONE.md) | 16 | 13 | `increment/b-inc-004-audit-transactions-idempotency` | `b-inc-004-audit-transactions-idempotency-closed` |
 
-Its documents will define the increment objective, task breakdown, acceptance criteria, review checklist, test plan, security review, changelog, and Git commit procedure.
+Traceability rules for every dossier:
+
+- `ACCEPTANCE_CRITERIA.md` is the single source for each criterion's `BAC-*`, `BTS-*` and `SEC-GATE-*` trace.
+- A task's linked tests and security gates in `TASKS.md` are exactly the union of its linked criteria's traces.
+- The `TEST_PLAN.md` matrix reproduces the acceptance-criteria traces exactly.
+- `GIT_COMMIT_STEP.md` Section 9 gives a ready-to-use commit message for every task, with trailers identical to `TASKS.md`, plus the branch, closing commit and annotated tag.
+- Shared tasks (`KR-BE-1-043` to `KR-BE-1-045`) keep their whole-task B-M01 estimates; each increment commits only its scoped slice.
+
+All dossiers are Proposed. Dossier completeness and trace validation confirm documentation consistency only, not implementation, test or acceptance results.
 
 ## 5. Existing Milestone Dossiers
 
@@ -161,12 +174,6 @@ The following conditions require explicit review rather than informal interpreta
 
 This planning directory is being established in controlled batches.
 
-The initial batch contains:
-
-- `README.md`
-- `BACKEND_IMPLEMENTATION_PLAN.md`
-- `BACKEND_TASK_REGISTER.md`
-
-The next planning work should complete the B-INC-001 dossier before defining detailed dossiers for B-INC-002 through B-INC-004.
+The ten program-level documents and the four increment dossiers (B-INC-001 to B-INC-004) are in place, with status Proposed. The next steps are to review and freeze B-INC-001, approve its open technology decisions, and then authorize implementation in increment order.
 
 No implementation task is considered authorized solely because it appears in a Proposed planning document. The applicable review and decision gates must be satisfied first.

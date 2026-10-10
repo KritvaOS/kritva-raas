@@ -106,7 +106,7 @@ The increments are execution and review boundaries within the existing milestone
 
 B-INC-001 is the first increment proposed for detailed review and implementation.
 
-B-INC-002 through B-INC-004 remain planning placeholders at this stage. Their detailed dossiers must be prepared only after the relevant preceding work, contracts, dependencies, and acceptance evidence have been reviewed.
+B-INC-002 through B-INC-004 have Proposed dossiers. Their implementation must not start until the preceding increment is accepted and the contracts, dependencies and decisions recorded in each dossier are satisfied.
 
 A dependency may be implemented earlier or later only when the change is explicitly recorded and does not violate milestone ownership, required contract gates, or acceptance dependencies.
 
@@ -175,13 +175,15 @@ A scan result is evidence only for the files, branches, history, and scanner con
 
 ## 7. B-INC-002 — IDENTITY-ORGANIZATION
 
+Dossier: [`increments/B-INC-002-IDENTITY-ORGANIZATION/`](increments/B-INC-002-IDENTITY-ORGANIZATION/MILESTONE.md), with 18 acceptance criteria, 14 tasks and per-task commit text. The dossier's `ACCEPTANCE_CRITERIA.md` is authoritative for acceptance and traceability; this section is a summary.
+
 ### 7.1 Objective
 
 Implement the identity and organization foundation required for authenticated, tenant-scoped access.
 
 ### 7.2 Planned work
 
-The future dossier is expected to address:
+The dossier addresses:
 
 - Provider-neutral identity and authentication boundaries.
 - Principal and user representations.
@@ -204,7 +206,7 @@ Database enforcement requirements must be coordinated with the Database Technica
 
 ### 7.4 Exit conditions
 
-The future dossier must define evidence demonstrating that:
+The dossier defines evidence demonstrating that:
 
 - Authentication integration follows the approved boundary.
 - Unauthenticated and unauthorized requests are rejected appropriately.
@@ -215,9 +217,11 @@ The future dossier must define evidence demonstrating that:
 - Tests cover both permitted and denied operations.
 - Review findings are dispositioned before acceptance.
 
-These conditions describe the intended acceptance boundary; the detailed dossier must refine them before B-INC-002 is authorized.
+These conditions are refined into measurable criteria in the B-INC-002 dossier.
 
 ## 8. B-INC-003 — PROJECTS-PLATFORM-CATALOG
+
+Dossier: [`increments/B-INC-003-PROJECTS-PLATFORM-CATALOG/`](increments/B-INC-003-PROJECTS-PLATFORM-CATALOG/MILESTONE.md), with 17 acceptance criteria, 13 tasks and per-task commit text. The dossier's `ACCEPTANCE_CRITERIA.md` is authoritative for acceptance and traceability; this section is a summary.
 
 ### 8.1 Objective
 
@@ -225,7 +229,7 @@ Implement project metadata and platform-catalog operations within their approved
 
 ### 8.2 Planned work
 
-The future dossier is expected to address:
+The dossier addresses:
 
 - Organization-owned project metadata.
 - Project repository and service behavior.
@@ -243,7 +247,7 @@ Platform-catalog functionality must remain aligned with the established mileston
 
 ### 8.4 Exit conditions
 
-The future dossier must establish evidence that:
+The dossier defines evidence that:
 
 - Project operations enforce organization ownership and authorization.
 - Platform-catalog operations enforce the intended access policy.
@@ -254,13 +258,15 @@ The future dossier must establish evidence that:
 
 ## 9. B-INC-004 — AUDIT-TRANSACTIONS-IDEMPOTENCY
 
+Dossier: [`increments/B-INC-004-AUDIT-TRANSACTIONS-IDEMPOTENCY/`](increments/B-INC-004-AUDIT-TRANSACTIONS-IDEMPOTENCY/MILESTONE.md), with 16 acceptance criteria, 13 tasks and per-task commit text. The dossier's `ACCEPTANCE_CRITERIA.md` is authoritative for acceptance and traceability; this section is a summary.
+
 ### 9.1 Objective
 
 Establish and verify the cross-cutting persistence behaviors required for safe backend operations.
 
 ### 9.2 Planned work
 
-The future dossier is expected to address:
+The dossier addresses:
 
 - Transaction boundary conventions.
 - Idempotency persistence and request handling.
@@ -277,7 +283,7 @@ The increment must coordinate transaction and schema requirements with DB-M01 FO
 
 ### 9.4 Exit conditions
 
-The future dossier must define evidence that:
+The dossier defines evidence that:
 
 - Transaction failures roll back the expected changes.
 - Idempotent retries behave according to the approved contract.
@@ -450,3 +456,39 @@ Completion of an increment does not automatically mean that B-M01 CONTROL PLANE,
 The immediate next action is to complete and review the B-INC-001 SECURE FOUNDATION dossier. Its tasks and acceptance criteria must be sufficiently precise to allow implementation and repository-checker validation without relying on undocumented assumptions.
 
 B-INC-002 through B-INC-004 are intentionally not detailed in this pass. Their dossiers should follow after B-INC-001 has been reviewed and frozen, with any newly discovered dependencies recorded before subsequent work is authorized.
+
+## 20. Increment IDs and Git Commit Conventions
+
+Backend implementation increments are subordinate implementation units. They do not create, rename, or replace the frozen official milestones defined by `docs/planning/PHASES.md`.
+
+Each increment must have a stable ID, a dedicated branch, a closing commit, and an annotated closure tag. Use the repository's existing milestone Git convention, adapted to the increment ID and slug.
+
+| Increment ID | Name | Parent milestone | Branch | Closing commit subject | Tag |
+|---|---|---|---|---|---|
+| B-INC-001 | Secure Foundation | B-M01 CONTROL PLANE | `increment/b-inc-001-secure-foundation` | `increment(b-inc-001-secure-foundation): close B-INC-001 — Secure Foundation` | `b-inc-001-secure-foundation-closed` |
+| B-INC-002 | Identity and Organization | B-M01 CONTROL PLANE | `increment/b-inc-002-identity-organization` | `increment(b-inc-002-identity-organization): close B-INC-002 — Identity and Organization` | `b-inc-002-identity-organization-closed` |
+| B-INC-003 | Projects and Platform Catalog | B-M01 CONTROL PLANE | `increment/b-inc-003-projects-platform-catalog` | `increment(b-inc-003-projects-platform-catalog): close B-INC-003 — Projects and Platform Catalog` | `b-inc-003-projects-platform-catalog-closed` |
+| B-INC-004 | Audit, Transactions and Idempotency | B-M01 CONTROL PLANE | `increment/b-inc-004-audit-transactions-idempotency` | `increment(b-inc-004-audit-transactions-idempotency): close B-INC-004 — Audit, Transactions and Idempotency` | `b-inc-004-audit-transactions-idempotency-closed` |
+
+**Note:** B-INC-002 to B-INC-004 names and slugs follow their planned dossier folder names (`B-INC-002-IDENTITY-ORGANIZATION`, `B-INC-003-PROJECTS-PLATFORM-CATALOG`, `B-INC-004-AUDIT-TRANSACTIONS-IDEMPOTENCY`) in Sections 7 to 9. They are confirmed when each dossier is created.
+
+### 20.1 Per-task commits and closure requirements
+
+- Each task must have one atomic commit, with its task ID in the subject.
+- Each task commit must include `Tasks`, `Acceptance`, `Tests`, `Security-Gates`, and `Evidence` trailers.
+- Acceptance, test, and security-gate IDs must be taken from the saved canonical definitions. Task-level mappings must derive from the linked acceptance criteria.
+- Do not invent or silently remap IDs. If a trace is missing or inconsistent, resolve it in the saved source documents before preparing the commit.
+- Evidence references must identify actual sanitized evidence. A placeholder is not evidence, and a test must not be reported as passing unless it was run and its result was inspected.
+- Each increment's closing commit must summarize accepted tasks, acceptance results, review, and tracking updates.
+- Create the annotated `*-closed` tag only after the closing commit has been reviewed and the increment's closure requirements are satisfied.
+- Mandatory unresolved acceptance criteria or security gates block closure.
+
+### 20.2 Per-task commit-text ownership
+
+Ready-to-use per-task commit messages are defined in each increment's `GIT_COMMIT_STEP.md`, for example:
+
+`docs/planning/backend/increments/B-INC-001-SECURE-FOUNDATION/GIT_COMMIT_STEP.md`
+
+Per-task commit text for B-INC-002, B-INC-003 and B-INC-004 is in Section 9 of each increment's `GIT_COMMIT_STEP.md`, together with the branch, closing commit and annotated tag.
+
+Do not reuse B-INC-001 task traces for another increment. The increment dossier and saved canonical definitions are the sources for each increment's commit text.

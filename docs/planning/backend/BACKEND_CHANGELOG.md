@@ -207,6 +207,38 @@ Traceability correction: the first draft of the increment dossier cited `BAC-*`,
 
 Validation: the documentation checker reports 0 errors. The new ID namespaces (`KR-BINC-001-*`, `R-BE-*`, `BAC-*`, `BTS-*`, `SEC-GATE-*`, `B-INC-001-*`) do not occur outside `docs/planning/backend/`.
 
+## 3B. PB-003 — B-INC-002 to B-INC-004 Dossiers and Commit Text
+
+| Field | Value |
+|---|---|
+| Change ID | PB-003 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Reason | Close the external-audit finding that B-INC-002 to B-INC-004 had no dossiers and no per-task Git commit text |
+
+Changes:
+
+1. Added the eight-file dossiers for B-INC-002 IDENTITY-ORGANIZATION (18 acceptance criteria, 14 tasks), B-INC-003 PROJECTS-PLATFORM-CATALOG (17, 13) and B-INC-004 AUDIT-TRANSACTIONS-IDEMPOTENCY (16, 13).
+2. Every task in all four increments now has ready-to-use commit text in its dossier's `GIT_COMMIT_STEP.md` Section 9, with an increment branch, closing commit and annotated tag matching `BACKEND_IMPLEMENTATION_PLAN.md` Section 20.
+3. Updated `README.md` Section 4, `BACKEND_TASK_REGISTER.md` Sections 4 and 5 and `BACKEND_IMPLEMENTATION_PLAN.md` Sections 5.1 and 7 to 9 to point to the dossiers instead of describing them as deferred.
+
+Validation, with the same checks applied to all four dossiers:
+
+- Every acceptance-criteria trace uses only defined `BAC-*`, `BTS-*` and `SEC-GATE-*` IDs, reviewed for meaning.
+- Each task's linked tests and gates equal the union of its linked criteria's traces.
+- Each commit message's trailers equal `TASKS.md`.
+- Each `TEST_PLAN.md` matrix row equals its criterion's trace.
+- The documentation checker reports 0 errors.
+
+Corrections made during validation:
+
+- B-INC-002: three task test lists and two commit trailers were aligned to their criteria, and the `TEST_PLAN.md` AC-02 row was corrected.
+- B-INC-003: `TASKS.md` and `ACCEPTANCE_CRITERIA.md` were reformatted to the common entry format.
+- B-INC-004: a milestone name was corrected to `B-M01 CONTROL PLANE`.
+- B-INC-001: a commit example's trailer was corrected.
+
+Shared tasks `KR-BE-1-043` to `KR-BE-1-045` keep whole-task estimates; increments commit scoped slices. `KR-CA-022` to `KR-CA-026` remain deferred.
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

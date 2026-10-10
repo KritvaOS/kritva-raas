@@ -51,9 +51,9 @@ Do not infer task status from the existence of a branch, commit, pull request, o
 | Increment | Proposed name | Primary task scope | Current planning status |
 |---|---|---|---|
 | B-INC-001 | SECURE FOUNDATION | Existing application-foundation tasks, structured logging, relevant foundation tests, and new repository security-control tasks | Proposed; first increment for review |
-| B-INC-002 | IDENTITY-ORGANIZATION | Existing identity, user, organization, membership, role, authorization, and tenant-context tasks | Proposed; detailed dossier deferred |
-| B-INC-003 | PROJECTS-PLATFORM-CATALOG | Existing project and platform-catalog tasks | Proposed; detailed dossier deferred |
-| B-INC-004 | AUDIT-TRANSACTIONS-IDEMPOTENCY | Existing transaction, idempotency, audit, migration, and related verification tasks | Proposed; detailed dossier deferred |
+| B-INC-002 | IDENTITY-ORGANIZATION | Existing identity, user, organization, membership, role, authorization, and tenant-context tasks | Proposed; dossier `increments/B-INC-002-IDENTITY-ORGANIZATION/` |
+| B-INC-003 | PROJECTS-PLATFORM-CATALOG | Existing project and platform-catalog tasks | Proposed; dossier `increments/B-INC-003-PROJECTS-PLATFORM-CATALOG/` |
+| B-INC-004 | AUDIT-TRANSACTIONS-IDEMPOTENCY | Existing transaction, idempotency, audit, migration, and related verification tasks | Proposed; dossier `increments/B-INC-004-AUDIT-TRANSACTIONS-IDEMPOTENCY/` |
 
 This mapping defines planning boundaries only. B-M01 CONTROL PLANE remains the authoritative backend milestone. Database and cloud work must remain aligned with their respective milestone dossiers.
 
@@ -78,6 +78,8 @@ The following mapping preserves the existing task identifiers and the establishe
 
 ### 5.2 Identity and organization — B-INC-002
 
+Detailed task entries, acceptance traces and commit text: [`increments/B-INC-002-IDENTITY-ORGANIZATION/TASKS.md`](increments/B-INC-002-IDENTITY-ORGANIZATION/TASKS.md).
+
 | Existing task ID | Existing task responsibility | Proposed increment mapping | Dependency or note |
 |---|---|---|---|
 | KR-BE-1-010 | Define identity model | B-INC-002 | Authentication contract and principal semantics |
@@ -95,6 +97,8 @@ The following mapping preserves the existing task identifiers and the establishe
 
 ### 5.3 Projects and platform catalog — B-INC-003
 
+Detailed task entries, acceptance traces and commit text: [`increments/B-INC-003-PROJECTS-PLATFORM-CATALOG/TASKS.md`](increments/B-INC-003-PROJECTS-PLATFORM-CATALOG/TASKS.md).
+
 | Existing task ID | Existing task responsibility | Proposed increment mapping | Dependency or note |
 |---|---|---|---|
 | KR-BE-1-022 | Define Project model | B-INC-003 | Organization-scoped project metadata |
@@ -111,6 +115,8 @@ The following mapping preserves the existing task identifiers and the establishe
 The B-INC-003 mapping does not authorize moving B-M03 PLATFORM deliverables into B-M01 CONTROL PLANE. Any overlap must be reconciled with the authoritative milestone scope before implementation.
 
 ### 5.4 Transactions, idempotency, and audit — B-INC-004
+
+Detailed task entries, acceptance traces and commit text: [`increments/B-INC-004-AUDIT-TRANSACTIONS-IDEMPOTENCY/TASKS.md`](increments/B-INC-004-AUDIT-TRANSACTIONS-IDEMPOTENCY/TASKS.md).
 
 | Existing task ID | Existing task responsibility | Proposed increment mapping | Dependency or note |
 |---|---|---|---|
@@ -300,6 +306,6 @@ The task register is Proposed.
 
 The immediate priority is B-INC-001 SECURE FOUNDATION. Its complete dossier must establish actionable task descriptions, dependencies, acceptance criteria, review requirements, and retained evidence before the increment is frozen.
 
-B-INC-002 through B-INC-004 remain deferred for detailed planning until B-INC-001 is reviewed and frozen.
+Dossiers for B-INC-002 to B-INC-004 are prepared (Proposed). Their implementation remains gated on B-INC-001 being reviewed and frozen and on the dependencies recorded in each dossier.
 
 The repository's current secret-protection status is not asserted by this document. Scanner execution, CI behavior, history assessment, and any findings must be verified against the actual repository state before a clean-status claim is made.
