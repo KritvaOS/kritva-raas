@@ -204,6 +204,30 @@ This is a format example only. Replace placeholder references with actual canoni
 
 If repository policy requires a co-author trailer or other commit metadata, follow the approved repository convention in addition to this format.
 
+### 4.1 Planning-only and record-correction commits
+
+Most commits implement one task and use the format above. A planning-only or record-correction commit changes planning records, the commit procedure or tracking text without implementing a task, advancing an acceptance criterion or running a test. Use this form for those commits only:
+
+```text
+docs(backend): <imperative summary>
+
+<What changed and why, with the scope and what is excluded.>
+
+Tasks: None (<short reason, for example batch planning record>)
+Acceptance: Not applicable (no acceptance criterion is advanced)
+Tests: Not applicable
+Security-Gates: Not applicable
+Evidence: <checker results or PR and CI run references actually inspected>
+```
+
+Rules:
+
+1. Omit the `[<TASK-ID>]` suffix. Never attach a task ID, or a union of task IDs, to a commit that does not implement those tasks.
+2. Use it only when the change is not an implementation of a task. A change to a task's own record, status or evidence stays in that task's commit, in the per-task format.
+3. The commit must not change a task status or acceptance record. A status change goes in a task commit or an acceptance commit (Section 7).
+4. `Evidence` states only checks that ran and were inspected. Write "no task tests or gates run" when that is the case.
+5. Per-task commits keep the format in Section 4 unchanged.
+
 ## 5. Evidence to Retain
 
 For every task commit, retain or reference:
