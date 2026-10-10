@@ -87,6 +87,21 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-10 — PR #5 follow-up: record references and planning-commit rule
+
+- **State:** IMPLEMENTED (documentation correction; no task status change)
+- **Tasks:** None (record correction and process rule)
+- **Increment ACs:** Not applicable
+- **Program acceptance:** Not applicable
+- **Tests:** Not applicable
+- **Security gates:** Not applicable
+- **Findings/risks:** External audit of PR #5 found no reason to revert it and listed five follow-up items, all addressed here or tracked in `../../BACKEND_CHANGELOG.md` PB-011
+- **Files changed:** `CHANGELOG.md`, `GIT_COMMIT_STEP.md` Section 4.1, `decisions/IMPLEMENTATION_READINESS.md`, `../../BACKEND_CHANGELOG.md`
+- **Commit:** Pending until this change is merged
+- **Evidence:** `make check` results recorded in the commit message
+- **Reviewer role:** Repository owner
+- **Decision and follow-up:** See PB-011
+
 ### 2026-10-10 — KR-BINC-001-002 package manager recommendation proposed
 
 - **State:** IMPLEMENTED (decision record Proposed; not approved)
@@ -97,10 +112,10 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 - **Security gates:** `SEC-GATE-003`, `SEC-GATE-004`, `SEC-GATE-013` — not assessed
 - **Findings/risks:** Lockfile and clean-install behavior not yet demonstrated (record Section 6)
 - **Files changed:** `decisions/KR-BINC-001-002-package-manager-lockfile.md`; `TASKS.md` status
-- **Commit:** Pending
-- **Evidence:** npm registry and Node.js release list queried 2026-10-10 (record Section 3)
+- **Commit:** `2341ffd`, merged in PR #5 (merge `914e555`)
+- **Evidence:** npm registry and Node.js release list queried 2026-10-10 (record Section 3). PR #5 required checks on head `2341ffd`: Source Header Check run 38068101282, docs-check run 38068101275; on `main` after the merge: Source Header Check run 38068170548, docs-check run 38068170376.
 - **Reviewer role:** Backend Technical Lead (approval pending; depends on `KR-BINC-001-001`)
-- **Decision and follow-up:** Recommend npm with a committed `package-lock.json` and `npm ci`; pnpm is the alternative. Next: `KR-BINC-001-008`.
+- **Decision and follow-up:** Recommend npm with a committed `package-lock.json` and `npm ci`; pnpm is the alternative. `KR-BINC-001-008` is on hold pending its comparative evaluation and is not the next commit.
 
 ### 2026-10-10 — KR-BINC-001-001 runtime and language recommendation proposed
 
@@ -112,10 +127,10 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 - **Security gates:** `SEC-GATE-004`, `SEC-GATE-013` — not assessed
 - **Findings/risks:** Compatibility of the later toolchain with the proposed versions is not yet verified (record Section 6)
 - **Files changed:** `decisions/KR-BINC-001-001-runtime-language.md`; `TASKS.md` status
-- **Commit:** Pending
-- **Evidence:** Node.js release schedule and npm registry queried 2026-10-10 (record Section 3)
+- **Commit:** `681abf0`, merged in PR #5 (merge `914e555`)
+- **Evidence:** Node.js release schedule and npm registry queried 2026-10-10 (record Section 3). PR #5 required checks on head `2341ffd`: Source Header Check run 38068101282, docs-check run 38068101275; on `main` after the merge: Source Header Check run 38068170548, docs-check run 38068170376.
 - **Reviewer role:** Backend Technical Lead (approval pending)
-- **Decision and follow-up:** Recommend Node.js 24 LTS and TypeScript 6.0.3 as the baseline, with TypeScript 7.0.2 as an upgrade candidate after a compatibility check. Node.js 26 is the alternative after it enters LTS on 2026-10-28. Next: `KR-BINC-001-002`.
+- **Decision and follow-up:** Recommend Node.js 24 LTS and TypeScript 6.0.3 as the baseline, with TypeScript 7.0.2 as an upgrade candidate after a compatibility check. Node.js 26 is the alternative after it enters LTS on 2026-10-28. Next: owner approval of `KR-BINC-001-001` with the compatibility check, then `KR-BINC-001-002`.
 
 ### 2026-10-10 — KR-BINC-001-005 secret-handling policy proposed
 
@@ -127,23 +142,23 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 - **Security gates:** `SEC-GATE-002`, `SEC-GATE-008`, `SEC-GATE-009` — not assessed
 - **Findings/risks:** Not assessed
 - **Files changed:** `decisions/KR-BINC-001-005-secret-handling-configuration.md`; `TASKS.md` status
-- **Commit:** Pending
-- **Evidence:** `check_docs.py` and `check_backend_traceability.py` results recorded in the commit
+- **Commit:** `d82d0d6`, merged in PR #5 (merge `914e555`)
+- **Evidence:** `check_docs.py` and `check_backend_traceability.py` results recorded in the commit. PR #5 required checks on head `2341ffd`: Source Header Check run 38068101282, docs-check run 38068101275; on `main` after the merge: Source Header Check run 38068170548, docs-check run 38068170376.
 - **Reviewer role:** Security Owner; Cloud/Infrastructure Owner review (pending)
-- **Decision and follow-up:** Policy proposed. Next: `KR-BINC-001-001`, then `KR-BINC-001-002` and `KR-BINC-001-008`.
+- **Decision and follow-up:** Policy proposed. Next: Security Owner approval and Cloud/Infrastructure Owner review. `KR-BINC-001-008` is on hold pending its comparative evaluation.
 
 ### 2026-10-10 — Batch A decisions and readiness planned
 
-- **State:** PLANNED
-- **Tasks:** `KR-BINC-001-001`, `KR-BINC-001-002`, `KR-BINC-001-005`, `KR-BINC-001-008`
+- **State:** PLANNED (planning record merged; no task status change)
+- **Tasks:** None. The record plans `KR-BINC-001-001`, `KR-BINC-001-002`, `KR-BINC-001-005` and `KR-BINC-001-008`
 - **Increment ACs:** `B-INC-001-AC-01`, `B-INC-001-AC-02`, `B-INC-001-AC-04`, `B-INC-001-AC-12`, `B-INC-001-AC-14`, `B-INC-001-AC-16`
 - **Program acceptance:** Not assessed
 - **Tests:** `BTS-001`, `BTS-002`, `BTS-003`, `BTS-009`, `BTS-010`, `BTS-036` — NOT RUN (planning only)
 - **Security gates:** `SEC-GATE-002`, `SEC-GATE-003`, `SEC-GATE-004`, `SEC-GATE-008`, `SEC-GATE-009`, `SEC-GATE-010`, `SEC-GATE-013` — not assessed
 - **Findings/risks:** Not assessed
 - **Files changed:** `decisions/IMPLEMENTATION_READINESS.md`; see `../../BACKEND_CHANGELOG.md` PB-010
-- **Commit:** Pending
-- **Evidence:** `check_docs.py` and `check_backend_traceability.py` results recorded in the commit
+- **Commit:** `c815f5b`, merged in PR #5 (merge `914e555`)
+- **Evidence:** `check_docs.py` and `check_backend_traceability.py` results recorded in the commit. PR #5 required checks on head `2341ffd`: Source Header Check run 38068101282, docs-check run 38068101275; on `main` after the merge: Source Header Check run 38068170548, docs-check run 38068170376.
 - **Reviewer role:** External review; owner approval pending
 - **Decision and follow-up:** Readiness is Blocked for stack-dependent implementation until `KR-BINC-001-001` and `KR-BINC-001-002` are approved. `KR-BINC-001-008` is held out of the first commit series until a comparative scanner evaluation is done. Batch B covers `KR-BINC-001-003` and `KR-BINC-001-004`.
 
