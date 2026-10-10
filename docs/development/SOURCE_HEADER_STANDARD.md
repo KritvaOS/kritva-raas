@@ -114,7 +114,7 @@ Exempt:
 
 - Directories `.git`, `build`, `out`, `dist`, `target`, `coverage`, `node_modules`, `third_party`, `vendor`, `generated` and `external`, in any position in the path.
 - Files that cannot carry comments or are tool-generated: JSON (including lockfiles and manifests), Markdown, `*.min.js` and `requirements.txt`. Handwritten `*.d.ts` declaration files are in scope; generated ones live in excluded output directories.
-- `tests/source_header_check/`, whose fixtures are deliberately malformed.
+- `tests/source_header_check/fixtures/`, for deliberately malformed fixture files only. The test module `tests/source_header_check/test_check_source_headers.py` is in scope and must carry a header.
 
 Do not put handwritten source in an exempt directory. A new exemption must be explicit (a directory, file name or suffix), documented here and reviewed.
 
@@ -122,23 +122,25 @@ Do not put handwritten source in an exempt directory. A new exemption must be ex
 
 | Rule | Failure |
 |---|---|
-| HEADER-001 | SPDX identifier missing or not `LicenseRef-KritvaOS-Proprietary` |
+| HEADER-001 | `SPDX-License-Identifier` missing, duplicated, or not exactly `LicenseRef-KritvaOS-Proprietary` |
 | HEADER-002 | `Created` missing, not `DD-MM-YYYY`, or not a real date |
-| HEADER-003 | Copyright line missing |
-| HEADER-004 | A required field is missing or empty |
+| HEADER-003 | Not exactly one copyright line, or that line is not exactly `Copyright (c) 2026 KritvaOS` |
+| HEADER-004 | A required field is missing, empty or duplicated |
 | HEADER-005 | `File` matches neither the repository-relative path nor the file name (RaaS addition) |
 | HEADER-006 | File is unreadable or not valid UTF-8 |
-| HEADER-007 | `Component` or `Layer` is outside the controlled vocabulary (RaaS addition) |
-| HEADER-008 | Leading header block missing or malformed |
+| HEADER-007 | `Component` or `Layer` is outside the controlled vocabulary, or `Author` is not `KritvaOS` (RaaS addition) |
+| HEADER-008 | Header missing, malformed, or not starting on line 1 (line 2 after a shebang) |
 
-HEADER-001 to 004, 006 and 008 have the same meaning as in Kritva Core. Kritva Core does not use HEADER-005 or HEADER-007; RaaS defines them as above.
+HEADER-001 to 004, 006 and 008 keep their Kritva Core meanings. RaaS checks them more strictly: values are compared exactly rather than as substrings, duplicates are rejected, and the header must start at the top of the file. Kritva Core does not use HEADER-005 or HEADER-007; RaaS defines them as above.
+
+Checker-enforced rules: everything in this table. Review-checked conventions, which the checker cannot judge: Description is specific, Module is descriptive, Requirements cites real IDs (Section 5), API describes the real interface, and Created is the original creation date.
 
 ## 8. Enforcement
 
 | Mechanism | Command or file | Role |
 |---|---|---|
-| CI | `.github/workflows/source-header-check.yml`, on every push and pull request | Authoritative; blocks merges when red |
-| Checker | `python3 scripts/lint/check_source_headers.py --mode tracked --strict` | Same command locally and in CI |
+| CI | `.github/workflows/source-header-check.yml`, on every push and pull request | Authoritative automated check. It blocks merges only once `Source Header Check` and `docs-check` are configured as required status checks in branch protection for `main`; until that configuration is verified, it is an automated check, not proven merge enforcement. |
+| Checker | `python3 scripts/lint/check_source_headers.py --mode tracked --strict` | Same command locally and in CI. Without `--strict` the checker is report-only (it lists violations and exits 0); `--strict` exits 1 on any violation. |
 | Checker tests | `python3 -m unittest discover -s tests/source_header_check -v` | Run in CI before the check |
 | Pre-commit hook | `.githooks/pre-commit`; enable with `git config core.hooksPath .githooks` | Optional local convenience |
 

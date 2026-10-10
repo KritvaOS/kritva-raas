@@ -300,7 +300,7 @@ Source header standard (aligned with kritva-core):
 1. Added `docs/development/SOURCE_HEADER_STANDARD.md`. It keeps the Kritva Core header fields and rule IDs, uses `SPDX-License-Identifier: LicenseRef-KritvaOS-Proprietary` (owner decision: RaaS is proprietary), and defines the Component and Layer vocabularies, the Requirements and API conventions, the scope and the exemptions.
 2. Ported `scripts/lint/check_source_headers.py` from kritva-core. Additions:
    - the TypeScript/JavaScript, Rust and SQL (`--`) sources are in scope;
-   - build output directories and `*.d.ts`/`*.min.js` are excluded;
+   - build output directories and `*.min.js` are excluded (handwritten `*.d.ts` files are in scope);
    - HEADER-005 checks that the File field matches the file;
    - HEADER-007 checks the Component and Layer vocabularies;
    - Created dates must be real calendar dates.
@@ -318,6 +318,37 @@ Local validation on the working tree:
 | `python3 scripts/docs/check_backend_traceability.py` | 4 dossiers, 0 problems |
 
 `B-INC-001-AC-21` is accepted only after a green `Source Header Check` run on the pushed revision.
+
+## 3E. PB-006 — Source Header Review Corrections (review of `8b51577`)
+
+| Field | Value |
+|---|---|
+| Change ID | PB-006 |
+| Date | 2026-10-10 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Reviewed revision | `8b51577` on main; both workflows green (Source Header Check run 38050714894, docs-check run 38050714885) |
+
+| Review finding | Disposition |
+|---|---|
+| P1: HEADER-001 and HEADER-003 used substring matching | The checker parses header lines and compares the SPDX identifier and copyright line exactly. Duplicates are rejected. Tests cover a suffixed SPDX value, a duplicate SPDX line and an extended copyright line. |
+| P1: Author rule documented but not enforced | HEADER-007 now requires `Author : KritvaOS`, with a test. The standard separates checker-enforced rules from review-checked conventions. |
+| P2: `tests/source_header_check/` wholly exempt | The exemption is narrowed to `tests/source_header_check/fixtures/`, so the test module is checked (test added). |
+| P2: merge-blocking not proven | The standard now says CI blocks merges only once both checks are required status checks in `main` branch protection. Repository-owner action: configure and verify branch protection. |
+| PB-005 said `*.d.ts` was excluded | Corrected above. |
+| `BAC-038` range references | `TEST_PLAN.md` and the B-INC-001 changelog now cite `BAC-001` to `BAC-039`. |
+| Unused `--strict` | Defined: without it the checker is report-only (exit 0); with it, exit 1. CI and the hook use `--strict`. Tested. |
+| Blank lines before the header | Rejected (HEADER-008): the header must start on line 1, or line 2 after a shebang. Tested. |
+| `KR-BINC-001-018` commit trace | Exception recorded below. |
+
+Commit-trace exception for KR-BINC-001-018: the initial implementation was pushed as `44cb244` ("Git flow activation") and `8b51577` ("git flow update"), not as the planned `ci(repo): adopt source header standard and CI check [KR-BINC-001-018]`. Shared history is not rewritten. The exception is recorded here, and those two commits are the KR-BINC-001-018 implementation commits. Follow-up commits use the prescribed format, for example `fix(backend): enforce exact source header values [KR-BINC-001-018]`.
+
+Validation on the working tree: 19 checker unit tests OK; strict tracked-file check PASSED; `check_docs.py` and `check_backend_traceability.py` report 0 problems.
+
+Remaining before `B-INC-001-AC-21` and `BAC-039` can be accepted:
+- green workflow runs on the pushed correction commit;
+- a controlled failing run on a disposable branch;
+- verified branch protection with both checks required.
 
 ## 4. Future Entries
 

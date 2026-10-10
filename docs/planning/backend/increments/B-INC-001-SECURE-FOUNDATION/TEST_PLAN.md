@@ -51,7 +51,7 @@ The following documents own the canonical program-level IDs:
 
 - `../../BACKEND_TEST_STRATEGY.md` — test IDs `BTS-001` through `BTS-037`.
 - `../../BACKEND_SECURITY_GATE.md` — security-gate IDs `SEC-GATE-001` through `SEC-GATE-013`.
-- `../../BACKEND_ACCEPTANCE_CRITERIA.md` — program acceptance IDs `BAC-001` through `BAC-038`.
+- `../../BACKEND_ACCEPTANCE_CRITERIA.md` — program acceptance IDs `BAC-001` through `BAC-039`.
 - `ACCEPTANCE_CRITERIA.md` — increment acceptance IDs `B-INC-001-AC-01` through `B-INC-001-AC-21`.
 - `TASKS.md` — task-to-acceptance, test, and security-gate traceability.
 - `REVIEW_CHECKLIST.md` — human review and release-blocking checks.
