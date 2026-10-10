@@ -430,7 +430,7 @@ All new tasks below have an estimate of **TBD**. Each must be refined and approv
 - **Linked AC:** B-INC-001-AC-19.
 - **Linked tests:** BTS-001, BTS-036.
 - **Linked security gates:** SEC-GATE-003.
-- **Status:** Proposed.
+- **Status:** Accepted on 2026-10-10 by the repository owner (`BACKEND_CHANGELOG.md` PB-009). `B-INC-001-AC-19` itself stays open because other tasks also contribute to it.
 
 ## 5. Cross-Task Dependencies
 

@@ -407,6 +407,27 @@ The new task `KR-BINC-001-019`, "Add repository Makefile for local validation", 
   - With a failing tool (`make check PYTHON=false`), it exited non-zero without printing the success summary.
   - `make test` exited non-zero as designed.
 
+## 3H. PB-009 — KR-BINC-001-019 Accepted
+
+| Field | Value |
+|---|---|
+| Change ID | PB-009 |
+| Date | 2026-10-10 |
+| Status | Accepted |
+| Owner role | Repository owner |
+| Accepted revision | `3c96924` on main (merge of PR #3) |
+
+The repository owner accepted `KR-BINC-001-019`, "Add repository Makefile for local validation".
+
+| Evidence | Reference |
+|---|---|
+| Local validation | Owner ran `make check` on branch `ci/repository-makefile`: 20 header unit tests OK; header check of 10 files PASSED; documentation check 0 problems; traceability check 0 problems |
+| Pull request through the merge gate | PR [#3](https://github.com/KritvaOS/kritva-raas/pull/3): Source Header Check run 38064045393 and docs-check run 38064045435 passed |
+| `main` green after merge | Source Header Check run [38064087028](https://github.com/KritvaOS/kritva-raas/actions/runs/38064087028); docs-check run [38064087036](https://github.com/KritvaOS/kritva-raas/actions/runs/38064087036) |
+| Merged content | Identical to the reviewed commits `docs(backend): plan repository Makefile task [KR-BINC-001-019]` and `ci(backend): add repository Makefile for local validation [KR-BINC-001-019]` |
+
+`B-INC-001-AC-19` (documentation and workflow match actual behavior) stays open: this task contributes to it, but other B-INC-001 tasks are also linked to it.
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:
