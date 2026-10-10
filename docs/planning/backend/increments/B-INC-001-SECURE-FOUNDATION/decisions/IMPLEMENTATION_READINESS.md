@@ -57,6 +57,12 @@ The linked tests and gates are traceability obligations. A decision-only commit 
 
 Held: the first series does not include a scanner decision. A partial trial of one candidate (detect-secrets) found fail-open behavior on a missing file argument and on plain `scan`, and the other candidates (gitleaks, trufflehog) could not be run in the cloud sandbox because release downloads and the Go module proxy are blocked there. The task is committed after a comparative evaluation that also tests the intended local-hook and CI invocation, the fail-closed behavior for missing input, scanner errors and invalid configuration, and the history-scan capability.
 
+Approval packages for the three decision records are in [`docs/planning/backend/decisions/approvals/`](../../../decisions/approvals/). They are review requests and are Draft. The decision records stay authoritative for the final disposition, and this review is not an approval register:
+
+- [KR-BINC-001-001 runtime and language](../../../decisions/approvals/APPROVAL-KR-BINC-001-001-runtime-language.md)
+- [KR-BINC-001-002 package manager and lockfile](../../../decisions/approvals/APPROVAL-KR-BINC-001-002-package-manager.md)
+- [KR-BINC-001-005 secret handling and configuration](../../../decisions/approvals/APPROVAL-KR-BINC-001-005-secret-handling.md)
+
 ## 4. Batch B — Dependency Order
 
 Batch B follows the task dependencies in `../TASKS.md`. It does not wait for every Batch A task, only for the approvals named in each step. Framework selection must not start before the application scaffold and the module-boundary review exist.

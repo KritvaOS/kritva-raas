@@ -13,6 +13,7 @@
 ## Related documents
 
 - [Readiness review](IMPLEMENTATION_READINESS.md)
+- [Approval package](../../../decisions/approvals/APPROVAL-KR-BINC-001-002-package-manager.md)
 - [Runtime and language decision record](KR-BINC-001-001-runtime-language.md)
 - [Secret-handling and configuration boundary](KR-BINC-001-005-secret-handling-configuration.md)
 - [Increment tasks](../TASKS.md)
