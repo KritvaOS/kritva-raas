@@ -87,6 +87,21 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-10 — KR-BINC-001-001 runtime and language recommendation proposed
+
+- **State:** IMPLEMENTED (decision record Proposed; not approved)
+- **Tasks:** `KR-BINC-001-001`
+- **Increment ACs:** `B-INC-001-AC-01`
+- **Program acceptance:** Not assessed
+- **Tests:** `BTS-001`, `BTS-036` — NOT RUN (decision record only)
+- **Security gates:** `SEC-GATE-004`, `SEC-GATE-013` — not assessed
+- **Findings/risks:** Compatibility of the later toolchain with the proposed versions is not yet verified (record Section 6)
+- **Files changed:** `decisions/KR-BINC-001-001-runtime-language.md`; `TASKS.md` status
+- **Commit:** Pending
+- **Evidence:** Node.js release schedule and npm registry queried 2026-10-10 (record Section 3)
+- **Reviewer role:** Backend Technical Lead (approval pending)
+- **Decision and follow-up:** Recommend Node.js 24 LTS and TypeScript 6.0.3 as the baseline, with TypeScript 7.0.2 as an upgrade candidate after a compatibility check. Node.js 26 is the alternative after it enters LTS on 2026-10-28. Next: `KR-BINC-001-002`.
+
 ### 2026-10-10 — KR-BINC-001-005 secret-handling policy proposed
 
 - **State:** IMPLEMENTED (decision record Proposed; not reviewed or accepted)

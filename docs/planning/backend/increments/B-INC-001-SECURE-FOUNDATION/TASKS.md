@@ -188,6 +188,7 @@ All new tasks below have an estimate of **TBD**. Each must be refined and approv
 - **Linked AC:** B-INC-001-AC-01.
 - **Linked tests:** BTS-001, BTS-036.
 - **Linked security gates:** SEC-GATE-004, SEC-GATE-013.
+- **Status:** In Review. Recommendation record [`decisions/KR-BINC-001-001-runtime-language.md`](decisions/KR-BINC-001-001-runtime-language.md) is Proposed; Backend Technical Lead approval and the compatibility check in its Section 6 are pending. Not Accepted.
 
 ### KR-BINC-001-002 — Decide package manager and lockfile policy
 
