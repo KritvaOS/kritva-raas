@@ -81,7 +81,7 @@ Traceability rules for every dossier:
 - `ACCEPTANCE_CRITERIA.md` is the single source for each criterion's `BAC-*`, `BTS-*` and `SEC-GATE-*` trace.
 - A task's linked tests and security gates in `TASKS.md` are exactly the union of its linked criteria's traces.
 - The `TEST_PLAN.md` matrix reproduces the acceptance-criteria traces exactly.
-- `GIT_COMMIT_STEP.md` Section 9 gives a ready-to-use commit message for every task, with trailers identical to `TASKS.md`, plus the branch, closing commit and annotated tag.
+- The per-task commit section of each increment's `GIT_COMMIT_STEP.md` (Section 9 in B-INC-001 and B-INC-002; Section 6 in B-INC-003 and B-INC-004, whose Section 9 holds the branch, closing commit and tag) gives a ready-to-use commit message for every task, with trailers identical to `TASKS.md`, plus the branch, closing commit and annotated tag.
 - Shared tasks (`KR-BE-1-043` to `KR-BE-1-045`) keep their whole-task B-M01 estimates; each increment commits only its scoped slice.
 
 All dossiers are Proposed. Dossier completeness and trace validation confirm documentation consistency only, not implementation, test or acceptance results.

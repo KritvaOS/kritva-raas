@@ -169,6 +169,8 @@
 
 ### KR-BE-1-047 — Add migration tests
 
+- **Ownership note:** B-INC-004 is the sole owner of this task. The B-INC-001 migration-tool readiness prerequisite is `KR-BINC-001-004` with `B-INC-001-AC-13`, not a slice of KR-BE-1-047.
+
 - **Description:** Implement migration regression tests for the approved database migration baseline and persistence behavior.
 - **Inputs:** Migration baseline; approved migration-tool decision KR-BINC-001-004; DB-M01 FOUNDATION requirements; supported database test environment.
 - **Outputs/files:** Migration tests, schema/version verification, repeat/failure-path results as applicable, and sanitized test evidence.

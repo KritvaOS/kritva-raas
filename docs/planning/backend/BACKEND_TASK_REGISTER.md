@@ -141,7 +141,7 @@ The mapping of KR-BE-1-032 to B-INC-004 is a proposed sequencing choice, not a c
 | KR-BE-1-044 | Authorization tests | B-INC-002 and B-INC-003 | Must include permitted and denied operations |
 | KR-BE-1-045 | Tenant-isolation tests | B-INC-002 and B-INC-003 | Must cover application and required database enforcement |
 | KR-BE-1-046 | Audit tests | B-INC-004 | Must cover required events, failure behavior, and sensitive-data exclusion |
-| KR-BE-1-047 | Migration tests | B-INC-001 prerequisite and B-INC-004 | Foundation migration tooling must be validated before dependent work |
+| KR-BE-1-047 | Migration tests | B-INC-004 (sole owner) | The B-INC-001 prerequisite is migration-tool readiness, delivered by `KR-BINC-001-004` and verified by `B-INC-001-AC-13`; it is not a slice of KR-BE-1-047. KR-BE-1-047 is committed, statused and accepted only in B-INC-004. |
 | KR-BE-1-048 | API integration tests | Cross-increment | Must be scoped to each increment and the integrated milestone |
 | KR-BE-1-049 | End-to-end tests | Cross-increment | Must verify the applicable approved user journey and integration behavior |
 | KR-BE-1-050 | Security review | Cross-increment | B-INC-001 requires an initial security review and enforceable secret controls |

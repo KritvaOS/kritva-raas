@@ -453,9 +453,13 @@ Completion of an increment does not automatically mean that B-M01 CONTROL PLANE,
 
 **Current planning status: Proposed.**
 
-The immediate next action is to complete and review the B-INC-001 SECURE FOUNDATION dossier. Its tasks and acceptance criteria must be sufficiently precise to allow implementation and repository-checker validation without relying on undocumented assumptions.
+All four increment dossiers (B-INC-001 to B-INC-004) are prepared, with status Proposed. Their documentation traceability has been validated (see `BACKEND_CHANGELOG.md` PB-003). That is planning validation only: no increment has implementation evidence, executed tests or a security-review decision, and every acceptance record remains TBD.
 
-B-INC-002 through B-INC-004 are intentionally not detailed in this pass. Their dossiers should follow after B-INC-001 has been reviewed and frozen, with any newly discovered dependencies recorded before subsequent work is authorized.
+Next actions, in order:
+
+1. Review and freeze the B-INC-001 SECURE FOUNDATION dossier and approve its open technology decisions (`KR-BINC-001-001` to `KR-BINC-001-004` and `KR-BINC-001-008`).
+2. Implement B-INC-001, including the blocking CI secret scan, and record real evidence against `B-INC-001-AC-01` to `AC-20`.
+3. Authorize B-INC-002 to B-INC-004 in order, each only after its predecessor is accepted and the dependencies recorded in its dossier are satisfied.
 
 ## 20. Increment IDs and Git Commit Conventions
 
@@ -489,6 +493,6 @@ Ready-to-use per-task commit messages are defined in each increment's `GIT_COMMI
 
 `docs/planning/backend/increments/B-INC-001-SECURE-FOUNDATION/GIT_COMMIT_STEP.md`
 
-Per-task commit text for B-INC-002, B-INC-003 and B-INC-004 is in Section 9 of each increment's `GIT_COMMIT_STEP.md`, together with the branch, closing commit and annotated tag.
+Per-task commit text for every increment is in the per-task commit section of each increment's `GIT_COMMIT_STEP.md` (Section 9 in B-INC-001 and B-INC-002; Section 6 in B-INC-003 and B-INC-004, whose Section 9 holds the branch, closing commit and tag).
 
 Do not reuse B-INC-001 task traces for another increment. The increment dossier and saved canonical definitions are the sources for each increment's commit text.

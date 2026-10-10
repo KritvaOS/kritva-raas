@@ -193,6 +193,7 @@ No official milestone scope has been changed by this entry. No technology decisi
 | Field | Value |
 |---|---|
 | Change ID | PB-002 |
+| Date | 2026-10-10 |
 | Status | Proposed |
 | Owner role | Backend Technical Lead |
 | Reason | Add the B-INC-001 SECURE FOUNDATION dossier and correct cross-document traceability found in the documentation review |
@@ -212,6 +213,7 @@ Validation: the documentation checker reports 0 errors. The new ID namespaces (`
 | Field | Value |
 |---|---|
 | Change ID | PB-003 |
+| Date | 2026-10-10 |
 | Status | Proposed |
 | Owner role | Backend Technical Lead |
 | Reason | Close the external-audit finding that B-INC-002 to B-INC-004 had no dossiers and no per-task Git commit text |
@@ -219,7 +221,7 @@ Validation: the documentation checker reports 0 errors. The new ID namespaces (`
 Changes:
 
 1. Added the eight-file dossiers for B-INC-002 IDENTITY-ORGANIZATION (18 acceptance criteria, 14 tasks), B-INC-003 PROJECTS-PLATFORM-CATALOG (17, 13) and B-INC-004 AUDIT-TRANSACTIONS-IDEMPOTENCY (16, 13).
-2. Every task in all four increments now has ready-to-use commit text in its dossier's `GIT_COMMIT_STEP.md` Section 9, with an increment branch, closing commit and annotated tag matching `BACKEND_IMPLEMENTATION_PLAN.md` Section 20.
+2. Every task in all four increments now has ready-to-use commit text in the per-task commit section of each increment's `GIT_COMMIT_STEP.md` (Section 9 in B-INC-001 and B-INC-002; Section 6 in B-INC-003 and B-INC-004, whose Section 9 holds the branch, closing commit and tag), with an increment branch, closing commit and annotated tag matching `BACKEND_IMPLEMENTATION_PLAN.md` Section 20.
 3. Updated `README.md` Section 4, `BACKEND_TASK_REGISTER.md` Sections 4 and 5 and `BACKEND_IMPLEMENTATION_PLAN.md` Sections 5.1 and 7 to 9 to point to the dossiers instead of describing them as deferred.
 
 Validation, with the same checks applied to all four dossiers:
@@ -238,6 +240,39 @@ Corrections made during validation:
 - B-INC-001: a commit example's trailer was corrected.
 
 Shared tasks `KR-BE-1-043` to `KR-BE-1-045` keep whole-task estimates; increments commit scoped slices. `KR-CA-022` to `KR-CA-026` remain deferred.
+
+## 3C. PB-004 — External Repository Audit Reconciliation (RAAS-AUD-01 to RAAS-AUD-06)
+
+| Field | Value |
+|---|---|
+| Change ID | PB-004 |
+| Date | 2026-10-10 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Audited revision | `6eb8ef6` on main |
+| Reason | Reconcile the external audit findings on the backend planning baseline |
+
+| Finding | Disposition | Validation type |
+|---|---|---|
+| RAAS-AUD-01 | `BACKEND_IMPLEMENTATION_PLAN.md` Section 19 rewritten to state the current dossier status and the ordered next actions. | Planning |
+| RAAS-AUD-02 | Remains open, as expected. B-INC-004 acceptance records stay TBD and security findings stay not assessed until implementation evidence and a security-review decision exist. No dossier claims implementation. | Implementation (not started) |
+| RAAS-AUD-03 | Dates added to PB-002 and PB-003. This entry separates planning validation from implementation validation. B-INC-004 part B (TEST_PLAN, SECURITY_REVIEW, CHANGELOG, GIT_COMMIT_STEP) was saved and validated under PB-003, with 16 test-plan rows matching the criteria and 13 commit messages matching `TASKS.md`. | Planning |
+| RAAS-AUD-04 | `KR-BE-1-047` is owned only by B-INC-004. The B-INC-001 migration prerequisite is `KR-BINC-001-004` with `B-INC-001-AC-13`. The task register and the B-INC-004 task entry state this. | Planning |
+| RAAS-AUD-05 | Added `.github/workflows/docs-check.yml`, which runs `scripts/docs/check_docs.py` and `scripts/docs/check_backend_traceability.py` on every push and pull request and fails on any error. This is documentation CI only; the blocking secret-scan CI check remains task `KR-BINC-001-010` in B-INC-001. A successful run must be linked here after the next push. | CI wiring added; run evidence pending |
+| RAAS-AUD-06 | The root `README.md` now links the documentation entry point, the backend planning index, the phase model and the checker command. | Planning |
+
+Also corrected: references to "Section 9" for per-task commit text now name the right section in each dossier (Section 9 in B-INC-001 and B-INC-002; Section 6 in B-INC-003 and B-INC-004).
+
+Validation evidence for this entry, recorded against base revision `6eb8ef6` plus the PB-004 working-tree changes:
+
+| Command | Result |
+|---|---|
+| `python3 scripts/docs/check_docs.py` | 367 docs checked, 0 problems (exit 0) |
+| `python3 scripts/docs/check_backend_traceability.py` | 4 dossiers checked, 0 problems (exit 0): B-INC-001 has 20 criteria, 27 tasks, 27 commit messages and 20 test-plan rows; B-INC-002 has 18, 14, 14 and 18; B-INC-003 has 17, 13, 13 and 17; B-INC-004 has 16, 13, 13 and 16 |
+
+The traceability checker was confirmed to fail on a deliberately altered commit trailer. After push, replace the base revision with the pushed commit and link the CI run.
+
+Planning validation confirms documentation consistency only. It is not implementation, test or security acceptance evidence.
 
 ## 4. Future Entries
 
