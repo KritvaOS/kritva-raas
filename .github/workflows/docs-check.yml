@@ -1,3 +1,21 @@
+#==============================================================================
+# Copyright (c) 2026 KritvaOS
+# SPDX-License-Identifier: LicenseRef-KritvaOS-Proprietary
+#
+# File        : docs-check.yml
+# Description : GitHub Actions documentation and backend traceability validation
+#
+# Component   : Infrastructure
+# Module      : Documentation Checker
+# Layer       : Development Infrastructure
+#
+# Requirements: N/A — repository documentation governance (RAAS-AUD-05)
+# API         : GitHub Actions workflow
+#
+# Author      : KritvaOS
+# Created     : 10-10-2026
+#==============================================================================
+
 name: docs-check
 
 on:
@@ -13,8 +31,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
       - name: Run documentation checker
