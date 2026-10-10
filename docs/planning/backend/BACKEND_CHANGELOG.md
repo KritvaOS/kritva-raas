@@ -437,7 +437,7 @@ The repository owner accepted `KR-BINC-001-019`, "Add repository Makefile for lo
 | Status | Proposed |
 | Owner role | Backend Technical Lead |
 
-Reason: the next B-INC-001 work is the decision and security-policy batch (`KR-BINC-001-005`, `KR-BINC-001-001`, `KR-BINC-001-002`, `KR-BINC-001-008`). The sequencing and the record location were aligned in the external review chat "Raas Implementation" before any commit.
+Reason: the next B-INC-001 work is the decision and security-policy batch (`KR-BINC-001-005`, `KR-BINC-001-001`, `KR-BINC-001-002`, `KR-BINC-001-008`). The sequencing and the record location were agreed with the external reviewer before any commit. The canonical records are `docs/planning/backend/increments/B-INC-001-SECURE-FOUNDATION/decisions/IMPLEMENTATION_READINESS.md` and PR #5 (merge `914e555`).
 
 | Item | Result |
 |---|---|
@@ -447,9 +447,33 @@ Reason: the next B-INC-001 work is the decision and security-policy batch (`KR-B
 | Readiness decision | Blocked for stack-dependent implementation until `KR-BINC-001-001` and `KR-BINC-001-002` are approved; `KR-BE-1-001` stays blocked |
 | Deferred to Batch B | `KR-BINC-001-003` (HTTP framework) and `KR-BINC-001-004` (migration tool) |
 | SYS-ADR-004 | Recorded as a prerequisite for B-INC-002 only; B-INC-001 does not close it |
-| Trace review | The four task traces equal the union of their linked acceptance criteria (confirmed in the review chat) |
+| Trace review | The four task traces equal the union of their linked acceptance criteria in `increments/B-INC-001-SECURE-FOUNDATION/TASKS.md` and `ACCEPTANCE_CRITERIA.md`; the commit trailers in PR #5 (merge `914e555`) match |
 
 No task status changes in this entry. A decision record committed as Proposed is not an approval.
+
+## 3J. PB-011 — PR #5 Follow-Up
+
+| Field | Value |
+|---|---|
+| Change ID | PB-011 |
+| Date | 2026-10-10 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Follows | PR #5 (merge `914e555`) |
+
+Reason: an independent external audit of the merged PR #5 found its scope, trailers, task statuses and readiness decision correct and recommended no revert. It listed five documentation and governance follow-ups. This change addresses them.
+
+| Item | Priority | Disposition |
+|---|---|---|
+| Make the Batch B order explicit | P1 | Done: `decisions/IMPLEMENTATION_READINESS.md` Section 4 is a dependency-ordered table (approvals, `KR-BE-1-001`, `KR-BE-1-002`, `KR-BINC-001-003`, `KR-BINC-001-004`, `KR-BINC-001-008`) |
+| Replace "Commit: Pending" and fix the "Next: 008" wording | P1 | Done: the four merged entries in the increment changelog cite `c815f5b`, `d82d0d6`, `681abf0` and `2341ffd`, merged in PR #5, with the required-check run IDs. `KR-BINC-001-008` is stated as on hold |
+| Remove chat references from PB-010 | P2 | Done: PB-010 now points to the readiness record and PR #5 |
+| Define a planning-only commit form | P2 | Done: `GIT_COMMIT_STEP.md` Section 4.1. The historical commit is not rewritten |
+| Review the `Claude-Session` trailer | P2 | Open: owner decision. The trailer is an opaque session URL in public history and is not a secret value. Until the owner decides, the existing attribution convention continues |
+
+Evidence for PR #5: Source Header Check run 38068101282 and docs-check run 38068101275 on head `2341ffd`; Source Header Check run 38068170548 and docs-check run 38068170376 on `main` after the merge. The PR description was empty, so this entry and the increment changelog are the tracking record.
+
+No task status changes in this entry. `KR-BINC-001-001`, `KR-BINC-001-002` and `KR-BINC-001-005` stay In Review, and `KR-BINC-001-008` stays on hold.
 
 ## 4. Future Entries
 

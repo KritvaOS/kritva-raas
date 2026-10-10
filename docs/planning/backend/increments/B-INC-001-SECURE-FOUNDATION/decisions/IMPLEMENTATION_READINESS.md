@@ -57,12 +57,18 @@ The linked tests and gates are traceability obligations. A decision-only commit 
 
 Held: the first series does not include a scanner decision. A partial trial of one candidate (detect-secrets) found fail-open behavior on a missing file argument and on plain `scan`, and the other candidates (gitleaks, trufflehog) could not be run in the cloud sandbox because release downloads and the Go module proxy are blocked there. The task is committed after a comparative evaluation that also tests the intended local-hook and CI invocation, the fail-closed behavior for missing input, scanner errors and invalid configuration, and the history-scan capability.
 
-## 4. Batch B (after Batch A approvals)
+## 4. Batch B — Dependency Order
 
-| Task | Reason for deferral |
-|---|---|
-| KR-BINC-001-003 HTTP framework | Depends on KR-BINC-001-001 and KR-BE-1-002 (module boundaries) |
-| KR-BINC-001-004 Migration tool | Needs Database Technical Lead review and runtime compatibility |
+Batch B follows the task dependencies in `../TASKS.md`. It does not wait for every Batch A task, only for the approvals named in each step. Framework selection must not start before the application scaffold and the module-boundary review exist.
+
+| Step | Work | Depends on | Notes |
+|---|---|---|---|
+| 1 | Approvals: `KR-BINC-001-001`, `KR-BINC-001-002` (Backend Technical Lead, with the compatibility check in the runtime record Section 6); `KR-BINC-001-005` (Security Owner, Cloud/Infrastructure Owner review) | Batch A records | `KR-BE-1-001` stays blocked until 001 and 002 are approved |
+| 2 | `KR-BE-1-001` Create Control Plane application structure | Step 1 approvals of 001 and 002 | Minimal reproducible scaffold; clean-checkout evidence retained before any criterion is claimed |
+| 3 | `KR-BE-1-002` Define backend module boundaries | `KR-BE-1-001`; architecture review input | Architecture Owner review; unlocks the module-boundary dependency of 003 |
+| 4 | `KR-BINC-001-003` Decide HTTP framework | `KR-BINC-001-001`; `KR-BE-1-002` | Decision record only; a representative route proves the boundaries. Full transport and routing come in `KR-BE-1-004` and `KR-BE-1-006` |
+| 5 | `KR-BINC-001-004` Decide database migration tool | Database Technical Lead review; runtime and package compatibility | May run in parallel with step 4 unless a concrete compatibility dependency is found. A decision record is not an executed migration test |
+| 6 | `KR-BINC-001-008` Secret scanner comparative evaluation | `KR-BINC-001-005` | May start at any time, in parallel. Held: needs gitleaks and trufflehog trials, the real local-hook and CI invocations, fail-closed behavior for missing input, scanner errors and invalid configuration, and the history-scan decision. Security Owner and Repository/CI Owner review before committing |
 
 ## 5. Outstanding Dependencies
 
