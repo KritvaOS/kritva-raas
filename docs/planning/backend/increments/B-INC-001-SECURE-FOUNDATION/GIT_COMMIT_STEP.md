@@ -147,6 +147,7 @@ Create one implementation commit per task by default. If a task requires multipl
 | `KR-BINC-001-013` through `KR-BINC-001-015` | One commit per verification task | Safe configuration, redaction, exception verification |
 | `KR-BINC-001-016` through `KR-BINC-001-017` | One commit per documentation/reproducibility task | Security documentation and clean-checkout procedure |
 | `KR-BINC-001-018` | One commit | Source header standard, checker, tests, workflow and hook |
+| `KR-BINC-001-019` | One commit | Root Makefile and its header-check coverage |
 
 The ranges above are grouping guidance, not permission to combine all tasks in a range into one commit. Each `KR-BINC-001-nnn` task is a separate atomic boundary unless the task register explicitly documents an inseparable dependency and the reviewer approves the exception.
 
@@ -647,6 +648,18 @@ Security-Gates: Not applicable
 Evidence: <replace with sanitized evidence reference>
 ```
 
+#### KR-BINC-001-019 — Add repository Makefile for local validation
+
+```text
+ci(backend): add repository Makefile for local validation [KR-BINC-001-019]
+
+Tasks: KR-BINC-001-019
+Acceptance: B-INC-001-AC-19
+Tests: BTS-001, BTS-036
+Security-Gates: SEC-GATE-003
+Evidence: <replace with sanitized evidence reference>
+```
+
 ### 9.4 Commit execution requirements
 
 Before creating each task commit:
@@ -662,7 +675,7 @@ Do not commit real secret or key material. A scanner exception must not be used 
 
 ### 9.5 Closing commit
 
-Create the closing commit only after all 28 tasks have been reviewed against their linked acceptance criteria, applicable tests, and security gates. Do not close the increment merely because all task commits exist.
+Create the closing commit only after all 29 tasks have been reviewed against their linked acceptance criteria, applicable tests, and security gates. Do not close the increment merely because all task commits exist.
 
 Closing commit subject:
 
@@ -676,7 +689,7 @@ Closing commit body:
 Tasks accepted:
 - KR-BE-1-001 through KR-BE-1-009
 - KR-BE-1-041
-- KR-BINC-001-001 through KR-BINC-001-018
+- KR-BINC-001-001 through KR-BINC-001-019
 
 Acceptance:
 - B-INC-001-AC-01 through B-INC-001-AC-21 reviewed against the saved acceptance criteria.

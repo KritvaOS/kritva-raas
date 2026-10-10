@@ -107,7 +107,7 @@ It excludes the separate coding-agent policy task estimates and all new B-INC-00
 
 ## 6. New B-INC-001 Security and Foundation Work
 
-The new tasks KR-BINC-001-001 through KR-BINC-001-018 cover technology decisions, repository protections, secret scanning, CI enforcement, history assessment, safe configuration, redaction tests, and reproducible setup.
+The new tasks KR-BINC-001-001 through KR-BINC-001-019 cover technology decisions, repository protections, secret scanning, CI enforcement, history assessment, safe configuration, redaction tests, and reproducible setup.
 
 Their estimates are **TBD** because they do not have approved effort estimates in the existing B-M01 task register.
 
@@ -120,6 +120,7 @@ Their estimates are **TBD** because they do not have approved effort estimates i
 | KR-BINC-001-013 to KR-BINC-001-015 | Configuration failure, log redaction, and scanner exception verification | Backend Technical Lead; Security Owner | TBD | Backend Technical Lead for application tests; Security Owner for scanner policy |
 | KR-BINC-001-016 to KR-BINC-001-017 | Security documentation and clean-checkout workflow verification | Documentation Owner; Backend Technical Lead | TBD | Backend Technical Lead |
 | KR-BINC-001-018 | Source header standard and CI check | Backend Technical Lead | TBD | Backend Technical Lead |
+| KR-BINC-001-019 | Repository Makefile for local validation | Repository/CI Owner | TBD | Repository/CI Owner |
 
 These tasks must not be treated as zero-effort work merely because no estimate is currently available.
 
@@ -170,7 +171,7 @@ No value in this table is a commitment to hire, spend, deliver, or complete by a
 Before approving a resource commitment for B-INC-001:
 
 - Refine the 16.0 engineering-day direct implementation baseline.
-- Estimate the 18 new foundation and security tasks.
+- Estimate the 19 new foundation and security tasks.
 - Confirm the required backend, architecture, database, security, QA, documentation, and repository/CI owner roles.
 - Allocate shared test and review effort to the appropriate foundation scenarios.
 - Record the runtime, package manager, HTTP framework, migration tool, and scanner decisions.
