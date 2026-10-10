@@ -139,7 +139,7 @@ Checker-enforced rules: everything in this table. Review-checked conventions, wh
 
 | Mechanism | Command or file | Role |
 |---|---|---|
-| CI | `.github/workflows/source-header-check.yml`, on every push and pull request | Authoritative automated check. It blocks merges only once `Source Header Check` and `docs-check` are configured as required status checks in branch protection for `main`; until that configuration is verified, it is an automated check, not proven merge enforcement. |
+| CI | `.github/workflows/source-header-check.yml`, on every push and pull request | Authoritative merge gate. Repository ruleset 24843399 requires a pull request and the `source-header-check` and `docs-check` status checks for every change to `main`, with no bypass. |
 | Checker | `python3 scripts/lint/check_source_headers.py --mode tracked --strict` | Same command locally and in CI. Without `--strict` the checker is report-only (it lists violations and exits 0); `--strict` exits 1 on any violation. |
 | Checker tests | `python3 -m unittest discover -s tests/source_header_check -v` | Run in CI before the check |
 | Pre-commit hook | `.githooks/pre-commit`; enable with `git config core.hooksPath .githooks` | Optional local convenience |
