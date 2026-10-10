@@ -384,6 +384,29 @@ Follow-ups, outside acceptance scope:
 
 The other B-INC-001 tasks and acceptance criteria are unaffected and remain open.
 
+## 3G. PB-008 — KR-BINC-001-019 Repository Makefile
+
+| Field | Value |
+|---|---|
+| Change ID | PB-008 |
+| Date | 2026-10-10 |
+| Status | Proposed |
+| Owner role | Repository/CI Owner |
+| Base revision | `32321fa` on main |
+
+The new task `KR-BINC-001-019`, "Add repository Makefile for local validation", follows the external design review.
+
+- **Design:** modelled on the kritva-core `Makefile`: standard header, `.DEFAULT_GOAL := help` with self-documenting help, `[tag]` output, and `make check` as the pre-PR command. CMake, coverage and install targets are omitted because RaaS has no application code and its toolchain is undecided.
+- **`make check`:** runs `header-test`, `header-check`, `docs-check` and `traceability-check`, exactly the commands of the two required CI workflows.
+- **CI workflows:** unchanged, so the required status-check contexts `source-header-check` and `docs-check` stay the same.
+- **Application targets:** `build`, `test`, `lint`, `format` and `format-check` exit non-zero with "Not configured: pending toolchain decisions KR-BINC-001-001 to KR-BINC-001-004" and are not part of `make check`. Unlike Core's TODO placeholders, which exit 0, these cannot report checks that never ran.
+- **Header enforcement:** `Makefile` is now classified as source by exact file name and enforced by the header checker, with a test. `Dockerfile` stays out of scope until a naming policy is defined.
+- **Trace:** `B-INC-001-AC-19` (`BAC-037`; `BTS-001`, `BTS-036`; `SEC-GATE-003` from the AC's gate trace). No new AC.
+- **Local validation:**
+  - `make check` passed: 20 header unit tests, the header check over 10 files, `check_docs.py` 0 problems and traceability 0 problems.
+  - With a failing tool (`make check PYTHON=false`), it exited non-zero without printing the success summary.
+  - `make test` exited non-zero as designed.
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

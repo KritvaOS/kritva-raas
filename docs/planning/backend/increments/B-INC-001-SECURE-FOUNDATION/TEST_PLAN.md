@@ -41,7 +41,7 @@ The scope covers:
 - Security and configuration documentation.
 - Reproducible verification from a clean checkout.
 
-The increment includes existing tasks `KR-BE-1-001` through `KR-BE-1-009` and `KR-BE-1-041`, plus new tasks `KR-BINC-001-001` through `KR-BINC-001-018`. Use `TASKS.md` for task-level ownership, dependencies, outputs, and acceptance links.
+The increment includes existing tasks `KR-BE-1-001` through `KR-BE-1-009` and `KR-BE-1-041`, plus new tasks `KR-BINC-001-001` through `KR-BINC-001-019`. Use `TASKS.md` for task-level ownership, dependencies, outputs, and acceptance links.
 
 This plan does not approve an unselected technology, authorize production credentials, or claim that the application is production-ready. Technology choices remain open until recorded in an approved decision record.
 

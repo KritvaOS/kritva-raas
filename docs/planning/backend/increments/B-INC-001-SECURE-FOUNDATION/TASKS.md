@@ -411,6 +411,27 @@ All new tasks below have an estimate of **TBD**. Each must be refined and approv
 - **Linked security gates:** Not applicable.
 - **Status:** Accepted on 2026-10-10 by the repository owner (`BACKEND_CHANGELOG.md` PB-007).
 
+### KR-BINC-001-019 — Add repository Makefile for local validation
+
+- **Description:** Add a root `Makefile`, modelled on the kritva-core Makefile, that gives a stable local command interface for the repository checks and reserves the application targets until the toolchain is decided.
+- **Inputs:** kritva-core `Makefile`; the `Source Header Check` and `docs-check` workflows; `.githooks/pre-commit`.
+- **Outputs/files:** `Makefile`; Makefile classification in `scripts/lint/check_source_headers.py`, with a test; `docs/development/SOURCE_HEADER_STANDARD.md` scope update.
+- **Dependencies:** KR-BINC-001-018; existing validation scripts and CI workflows.
+- **Owner role:** Repository/CI Owner.
+- **Estimate:** TBD.
+- **Definition of done:**
+  - `make help` lists every target.
+  - `make check` runs exactly the four commands of the two required CI workflows (header unit tests, strict header check, documentation check, backend traceability check) and stops with a non-zero status, without the success summary, when any of them fails.
+  - `build`, `test`, `lint`, `format` and `format-check` are documented as not configured, exit non-zero, and are not part of `make check`.
+  - `make clean` removes only Python caches.
+  - `make info` reports the configuration accurately.
+  - The Makefile header is enforced by the header checker.
+  - The CI workflows and their required status-check contexts are unchanged.
+- **Linked AC:** B-INC-001-AC-19.
+- **Linked tests:** BTS-001, BTS-036.
+- **Linked security gates:** SEC-GATE-003.
+- **Status:** Proposed.
+
 ## 5. Cross-Task Dependencies
 
 The principal implementation sequence is:

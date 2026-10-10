@@ -108,6 +108,7 @@ The checker examines tracked files only. In scope:
 | Python and shell | `.py`, `.sh`, `.bash` | `#` |
 | CI workflows | `.github/workflows/*.yml`, `.yaml` | `#` |
 | Git hook | `.githooks/pre-commit` | `#` |
+| Make | `Makefile`, matched by exact file name in any directory | `#` |
 | C, C++, HDL and device tree (inherited from Kritva Core) | `.c`, `.cpp`, `.h`, `.hpp`, `.v`, `.sv`, `.dts` and related | `//` or `#` |
 
 Exempt:
@@ -115,6 +116,8 @@ Exempt:
 - Directories `.git`, `build`, `out`, `dist`, `target`, `coverage`, `node_modules`, `third_party`, `vendor`, `generated` and `external`, in any position in the path.
 - Files that cannot carry comments or are tool-generated: JSON (including lockfiles and manifests), Markdown, `*.min.js` and `requirements.txt`. Handwritten `*.d.ts` declaration files are in scope; generated ones live in excluded output directories.
 - `tests/source_header_check/fixtures/`, for deliberately malformed fixture files only. The test module `tests/source_header_check/test_check_source_headers.py` is in scope and must carry a header.
+
+`Dockerfile` and its variants are not yet in scope; adding them requires a documented naming policy, a checker rule and tests.
 
 Do not put handwritten source in an exempt directory. A new exemption must be explicit (a directory, file name or suffix), documented here and reviewed.
 
