@@ -240,6 +240,7 @@ All new tasks below have an estimate of **TBD**. Each must be refined and approv
 - **Linked AC:** B-INC-001-AC-04, B-INC-001-AC-12, B-INC-001-AC-14.
 - **Linked tests:** BTS-002, BTS-003, BTS-009, BTS-010.
 - **Linked security gates:** SEC-GATE-002, SEC-GATE-008, SEC-GATE-009.
+- **Status:** In Review. Policy record [`decisions/KR-BINC-001-005-secret-handling-configuration.md`](decisions/KR-BINC-001-005-secret-handling-configuration.md) is Proposed; Security Owner approval and Cloud/Infrastructure Owner review are pending. Not Accepted.
 
 ### KR-BINC-001-006 — Establish repository ignore rules
 

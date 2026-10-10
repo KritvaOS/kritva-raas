@@ -87,6 +87,21 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-10 — KR-BINC-001-005 secret-handling policy proposed
+
+- **State:** IMPLEMENTED (decision record Proposed; not reviewed or accepted)
+- **Tasks:** `KR-BINC-001-005`
+- **Increment ACs:** `B-INC-001-AC-04`, `B-INC-001-AC-12`, `B-INC-001-AC-14`
+- **Program acceptance:** Not assessed
+- **Tests:** `BTS-002`, `BTS-003`, `BTS-009`, `BTS-010` — NOT IMPLEMENTED (policy only; the implementing tasks provide the tests)
+- **Security gates:** `SEC-GATE-002`, `SEC-GATE-008`, `SEC-GATE-009` — not assessed
+- **Findings/risks:** Not assessed
+- **Files changed:** `decisions/KR-BINC-001-005-secret-handling-configuration.md`; `TASKS.md` status
+- **Commit:** Pending
+- **Evidence:** `check_docs.py` and `check_backend_traceability.py` results recorded in the commit
+- **Reviewer role:** Security Owner; Cloud/Infrastructure Owner review (pending)
+- **Decision and follow-up:** Policy proposed. Next: `KR-BINC-001-001`, then `KR-BINC-001-002` and `KR-BINC-001-008`.
+
 ### 2026-10-10 — Batch A decisions and readiness planned
 
 - **State:** PLANNED
