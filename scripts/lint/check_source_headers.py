@@ -52,6 +52,9 @@ LAYERS = {
     "Development Infrastructure",
 }
 
+# Extensionless files that must carry a header.
+SOURCE_FILENAMES = {"Makefile"}
+
 # Leading comment markers accepted in a header block.
 COMMENT_PREFIXES = ("#", "//", "--")
 
@@ -90,6 +93,11 @@ def classify(path: Path) -> str:
         return "skip"
 
     if s == ".githooks/pre-commit":
+        return "source"
+
+    # Named build files without an extension (explicit list; Dockerfile and
+    # variants are not in scope until the standard defines them).
+    if path.name in SOURCE_FILENAMES:
         return "source"
 
     if s.startswith(".github/workflows/") and path.suffix in {".yml", ".yaml"}:

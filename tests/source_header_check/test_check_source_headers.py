@@ -108,6 +108,13 @@ class SourceHeaderTests(unittest.TestCase):
     def test_author_must_be_canonical(self):
         self.assertIn("HEADER-007", self.ids(self.check("a.ts", header("//", "a.ts", Author="Unknown"))))
 
+    def test_makefile_in_scope(self):
+        self.assertEqual(chk.classify(Path("Makefile")), "source")
+        self.assertEqual(chk.classify(Path("docs/Makefile")), "source")
+        self.assertEqual(chk.classify(Path("Dockerfile")), "skip")
+        self.assertEqual(self.check("Makefile", header("#", "Makefile") + "all:\n"), [])
+        self.assertEqual(self.ids(self.check("Makefile", "all:\n\techo hi\n")), {"HEADER-008"})
+
     def test_header_must_start_at_top(self):
         self.assertEqual(self.ids(self.check("a.ts", "\n" + header("//", "a.ts"))), {"HEADER-008"})
         self.assertEqual(self.ids(self.check(
