@@ -9,7 +9,7 @@
 // Module      : HTTP Transport
 // Layer       : API
 //
-// Requirements: KR-BE-1-004, KR-BE-1-005, KR-BE-1-006, KR-BINC-001-003, B-INC-001-AC-06
+// Requirements: KR-BE-1-004, KR-BE-1-005, KR-BE-1-006, KR-BE-1-007, KR-BINC-001-003, B-INC-001-AC-06, B-INC-001-AC-08
 // API         : buildHttpServer(options); route groups are mounted under /api/v1
 //
 // Author      : KritvaOS
@@ -19,7 +19,7 @@
 import Fastify, { type FastifyInstance } from "fastify";
 import { API_V1_PREFIX, mountApiV1, validateRouteGroups, type RouteGroup } from "./api-v1.js";
 import { ERRORS, classifyError, errorBody } from "./error-contract.js";
-import { registerRequestContext } from "./request-context.js";
+import { registerRequestContext, requestIdOf } from "./request-context.js";
 
 export { API_V1_PREFIX };
 // Provisional limit; the configuration framework (KR-BE-1-003) may make it configurable.
@@ -62,18 +62,18 @@ export function buildHttpServer(options: HttpServerOptions = {}): FastifyInstanc
   app.addHook("onRequest", async (request, reply) => {
     const path = request.url.split("?")[0] ?? "";
     if (path.includes("//") || (path.length > 1 && path.endsWith("/"))) {
-      return reply.code(404).send(errorBody(ERRORS.notFound, [], request.requestContext?.requestId ?? null));
+      return reply.code(404).send(errorBody(ERRORS.notFound, [], requestIdOf(request)));
     }
     return undefined;
   });
 
   app.setErrorHandler((error, request, reply) => {
-    const { spec, details } = classifyError(error);
-    return reply.code(spec.status).send(errorBody(spec, details, request.requestContext?.requestId ?? null));
+    const { spec, fieldErrors } = classifyError(error);
+    return reply.code(spec.httpStatus).send(errorBody(spec, fieldErrors, requestIdOf(request)));
   });
 
   app.setNotFoundHandler((request, reply) => {
-    const id = request.requestContext?.requestId ?? null;
+    const id = requestIdOf(request);
     const path = request.url.split("?")[0] ?? "";
     const allowed = [...new Set(registered.filter((r) => r.matcher.test(path)).map((r) => r.method))].sort();
     if (allowed.length > 0) {

@@ -41,7 +41,8 @@ Only this directory imports Fastify (the "API layer only" constraint of `KR-BINC
 |---|---|
 | `http-server.ts` | `buildHttpServer({ groups })` builds the app. Route groups passed in are mounted under `/api/v1` (see `api-v1.ts`). Unknown paths return 404 and a known path with another method returns 405 with `Allow`. Validation is strict: no type coercion and no removal of unknown properties |
 | `api-v1.ts` | The route-registration pattern: a `RouteGroup` has a name, one path root (for example `/projects`) and a `register` function that adds routes relative to that root. `buildHttpServer({ groups })` checks the groups before any port opens and mounts each in its own scope at `/api/v1` plus its root |
-| `error-contract.ts` | The one place that turns a failure into an error body (`API_CONTRACT.md` Section 18, provisional until `KR-BE-1-007`). Bodies carry no internal message, stack or submitted value. `request_id` and `correlation_id` are null until `KR-BE-1-005` |
+| `response-contract.ts` | The response envelope (`RESPONSES.md` Section 7) and `successBody(spec, data, requestId)`. Every REST API v1 response with a body, success or error, has `protocol_version`, `request_id`, `timestamp`, `status`, `code`, `message`, `data` and `error`. A handler gets the ID from `requestIdOf(request)` and chooses the HTTP status (200, 201, 202); a `204` has no body |
+| `error-contract.ts` | The one place that turns a failure into an error envelope with registry codes (`ERROR_CODES.md`): `INVALID_REQUEST` (400, with `MISSING_REQUIRED_FIELD` or `FIELD_INVALID` in `error.field_errors`), `UNSUPPORTED_CONTENT_TYPE` (415), `RESOURCE_NOT_FOUND` (404), `METHOD_NOT_ALLOWED` (405), `PAYLOAD_TOO_LARGE` (413), `INTERNAL_ERROR` (500, retryable). Bodies carry no internal message, stack or submitted value |
 | `lifecycle.ts` | `startHttpServer(app, { host, port })` and `stop()`; `installShutdownHandlers(server, process, onStopped)` |
 
 Startup: `startHttpServer` listens and returns the bound address. If listening fails it throws `HttpStartupError` carrying only the error code (for example `EADDRINUSE`).
@@ -71,7 +72,7 @@ Run: `KRITVA_HTTP_PORT=8080 node dist/src/main.js` after `npm run build`. The fi
 - A module's API layer exposes one `RouteGroup` with one path root. Roots are lower-case segments joined by single hyphens; two groups may not share a root or nest one inside the other, so each path root has one owner. Invalid or overlapping groups throw `RouteRegistrationError` when the server is built.
 - A route registered as `/` in a group is served at the bare root without a trailing slash.
 - Matching is exact: no trailing slash, no doubled slash, no case folding. This also means an empty identifier never matches a path parameter.
-- A known path with another method returns 405 with `Allow` (OPTIONS included, as no CORS is configured); an unknown path is 404 whatever the method. Both are JSON in the provisional error body.
+- A known path with another method returns 405 with `Allow` (OPTIONS included, as no CORS is configured); an unknown path is 404 whatever the method. Both are JSON in the error envelope.
 - Each group is its own scope, so a hook added by one group does not run for another.
 - No group exists yet, so the server serves no route. Domain APIs are added by their own tasks.
 
