@@ -1302,6 +1302,26 @@ Reason: step 3 of `PLANNING_MIGRATION_PLAN.md`, requested by the owner to match 
 | Rollback | Revert this change. The checkers accept both locations |
 | Review | Written by Claude. No independent human review |
 
+## 3AW. PB-050 — Root Planning Entry Documents (Migration Step 4)
+
+| Field | Value |
+|---|---|
+| Change ID | PB-050 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Follows | PB-049 |
+
+Reason: step 4 of `PLANNING_MIGRATION_PLAN.md`. `kritva-core` and `kritvaos-community` give their `planning/` directory a README with roles, a current plan, a review checklist and agent rules. Kritva RaaS had none at program level.
+
+| Item | Disposition |
+|---|---|
+| Added | `README.md` (purpose, roles, hierarchy, authority, flow), `CURRENT_PLAN.md` (ordered next work, a view with no status), `REVIEW_CHECKLIST.md` (planning and implementation pull requests) and `AGENT_RULES.md` (rules for implementation agents), all under `planning/` |
+| Source | Each rule comes from a document that already holds it: the session handoff, the increment commit contracts, the approval workflow, the authority matrix and the code review process. The documents add no requirement and say so |
+| Changed | The authority matrix (two rows), the migration plan (progress line) and the signpost at `docs/planning/README.md` (one row) |
+| Unchanged | Task, decision, acceptance and gate statuses and identifiers; frozen phase names; checkers; commit trailers; dependencies; CI |
+| Review | Written by Claude. No independent human review |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:
