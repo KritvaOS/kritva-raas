@@ -87,6 +87,18 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-11 — KR-BE-1-006 API v1 routing
+
+- **State:** IN REVIEW (implementation delivered; not accepted)
+- **Tasks:** KR-BE-1-006 (In Review)
+- **Increment ACs:** B-INC-001-AC-06 (partly evidenced; not satisfied), B-INC-001-AC-08 (not touched)
+- **Program acceptance:** Not applicable
+- **Tests:** BTS-007, BTS-032 (15 routing tests added; sandbox run on Node.js 22 is feasibility only; Node.js 24.21.0 run posted by the delivery script)
+- **Security gates:** SEC-GATE-009 (not closed)
+- **Findings/risks:** The router let a trailing slash match a path parameter with an empty value; paths are now matched exactly. The `routes` option of `KR-BE-1-004` is replaced by `groups`; no caller outside tests used it. The error body stays provisional. No independent review
+- **Files changed:** `apps/backend/src/transport/api-v1.ts` (new), `http-server.ts`, `tests/transport/api-v1.test.ts` (new), `http-server.test.ts`, `lifecycle.test.ts`, `README.md`, `TASKS.md`, `CHANGELOG.md`, `../../BACKEND_CHANGELOG.md`, `claude/Handoff.md`
+- **Commit:** Pending until this change is merged
+
 ### 2026-10-11 — KR-BE-1-003 hostname validation fix after review
 
 - **State:** IN REVIEW (fix; not accepted)

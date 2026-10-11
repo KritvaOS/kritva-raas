@@ -123,6 +123,7 @@ A task must not be marked Accepted solely because files or code exist. Required 
 - **Linked AC:** B-INC-001-AC-06, B-INC-001-AC-08.
 - **Linked tests:** BTS-007, BTS-032.
 - **Linked security gates:** SEC-GATE-009.
+- **Status:** In Review (`BACKEND_CHANGELOG.md` PB-040). `src/transport/api-v1.ts` defines the `RouteGroup` pattern and mounts groups under `/api/v1`; the mount rules, exact matching and the 404 and 405 behavior are tested (15 new tests, 53 in the suite). No domain route is added. The error body is still the provisional one of `KR-BE-1-004`; `KR-BE-1-007` and the unresolved `API_CONTRACT.md` versus `RESPONSES.md` conflict settle it, so `B-INC-001-AC-08` is not touched. SEC-GATE-009 is not closed. No independent review. Not Accepted.
 
 ### KR-BE-1-007 — Implement validation/error contract
 

@@ -1072,6 +1072,30 @@ Reason: an AI design inspection by ChatGPT of `main` at `777f23f` found the host
 | Task status | In Review. Not Accepted |
 | Not changed | Dependencies, lockfile, CI, other tasks |
 
+## 3AM. PB-040 — KR-BE-1-006 API v1 Routing
+
+| Field | Value |
+|---|---|
+| Change ID | PB-040 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Backend Engineer; Backend Technical Lead accountable |
+| Follows | PB-039 |
+
+Reason: `KR-BE-1-006` establishes versioned routing and the route-registration pattern on the transport of `KR-BE-1-004`, as ranked first among the implementation options by the ChatGPT inspection recorded in PB-039.
+
+| Item | Disposition |
+|---|---|
+| Pattern | `RouteGroup { name, prefix, register }` in `apps/backend/src/transport/api-v1.ts`. A module's API layer will expose one group with one path root below `/api/v1`; routes are registered relative to the root, so a module cannot register outside it |
+| Rules | Roots are lower-case hyphenated segments; names are unique; no two groups share a root or nest one in another. A violation throws `RouteRegistrationError` while the server is built, before any port opens. A duplicate route inside a group stops startup with a sanitized `HttpStartupError`. Each group is its own scope |
+| Behavior | Only `/api/v1` is served; other versions and the bare prefix are 404. Exact matching: no trailing slash, doubled slash or case folding. This closes a router behavior where `/widgets/` matched `/:widget_id` with an empty value. Unsupported method on a known path: 405 with `Allow` (OPTIONS included); unknown path: 404 |
+| Change to KR-BE-1-004 | The test-only `routes` callback of `buildHttpServer` becomes `groups`. No production caller used it |
+| Not done | Any domain route or group; the final error envelope (`KR-BE-1-007`); request IDs (`KR-BE-1-005`); OpenAPI generation; CORS; rate limits |
+| Tests | 15 routing tests; the suite has 53. Node.js 24.21.0 transcript is posted as a PR comment, not committed |
+| Independence | Written by Claude; no independent review |
+| Task status | In Review. Not Accepted |
+| Not changed | Dependencies, lockfile, CI, the configuration boundary |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

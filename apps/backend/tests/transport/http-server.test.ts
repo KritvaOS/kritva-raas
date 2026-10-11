@@ -24,10 +24,10 @@ import { buildHttpServer } from "../../src/transport/http-server.js";
 function testApp(bodyLimitBytes?: number) {
   return buildHttpServer({
     ...(bodyLimitBytes === undefined ? {} : { bodyLimitBytes }),
-    routes: (api) => {
-      api.get("/widgets/:id", async () => ({ ok: true }));
+    groups: [{ name: "widgets", prefix: "/widgets", register: (api) => {
+      api.get("/:id", async () => ({ ok: true }));
       api.post<{ Body: { name: string; quantity: number } }>(
-        "/widgets",
+        "/",
         {
           schema: {
             body: {
@@ -40,8 +40,9 @@ function testApp(bodyLimitBytes?: number) {
         },
         async (request, reply) => reply.code(201).send({ data: { name: request.body.name } }),
       );
-      api.get("/boom", async () => { throw new Error("secret-internal-detail"); });
-    },
+    } }, { name: "boom", prefix: "/boom", register: (api) => {
+      api.get("/", async () => { throw new Error("secret-internal-detail"); });
+    } }],
   });
 }
 
