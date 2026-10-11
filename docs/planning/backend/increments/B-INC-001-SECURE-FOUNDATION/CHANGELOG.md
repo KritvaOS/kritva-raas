@@ -87,6 +87,21 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-11 — Runtime compatibility evidence recorded
+
+- **State:** IMPLEMENTED (documentation; no task status change)
+- **Tasks:** None (evidence for KR-BINC-001-001, which stays In Review)
+- **Increment ACs:** Not applicable
+- **Program acceptance:** Not applicable
+- **Tests:** Not applicable (a sandbox check is recorded, no task test is advanced)
+- **Security gates:** Not applicable (no gate is closed)
+- **Findings/risks:** External audit finding 2 addressed; approval now waits for the Section 6 evidence. Open: pin method, checksum verification, package manager support; see `../../BACKEND_CHANGELOG.md` PB-014
+- **Files changed:** `decisions/KR-BINC-001-001-runtime-language.md`, `../../decisions/approvals/APPROVAL-KR-BINC-001-001-runtime-language.md`, `../../BACKEND_CHANGELOG.md`, `CHANGELOG.md`
+- **Commit:** Pending until this change is merged
+- **Evidence:** `make check` results recorded in the commit message
+- **Reviewer role:** Repository owner
+- **Decision and follow-up:** See PB-014
+
 ### 2026-10-11 — Approval checker consistency hardened
 
 - **State:** IMPLEMENTED (validation tooling; no task status change)

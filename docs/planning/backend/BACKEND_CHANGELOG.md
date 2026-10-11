@@ -520,6 +520,28 @@ Reason: the external audit of `main` at `19e1ae4` found that `check_backend_appr
 
 No task status changes. `KR-BINC-001-001`, `KR-BINC-001-002` and `KR-BINC-001-005` stay In Review and their records stay Proposed. A passing check is not an approval.
 
+## 3M. PB-014 — Runtime Compatibility Evidence and Approval Wording
+
+| Field | Value |
+|---|---|
+| Change ID | PB-014 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Follows | PB-013 |
+
+Reason: the external audit found that the runtime approval package let the approver decide whether approval waits for the compatibility evidence, although Section 6 of the decision record already requires it before approval.
+
+| Item | Disposition |
+|---|---|
+| Executed check | Node.js 24.21.0 (from the npm registry package, not nodejs.org) ran a strict TypeScript 6.0.3 sample, the same sample under TypeScript 7.0.2 with no deprecated or removed option reported, eslint 10.12.0 with typescript-eslint 8.71.1, vitest 5.0.3 and an import of pg 8.23.1. All exited with status 0 |
+| Finding | TypeScript 6 needs an explicit `rootDir` (TS5011) |
+| Not demonstrated | The pin method, official checksum verification, the bundled npm 11 (npm 10.9.4 was used), the HTTP framework, the migration tool, CI, and TypeScript 7.0.2 with typescript-eslint |
+| Wording | The approval package now states that approval waits for the Section 6 evidence. The open question about conditional approval is replaced |
+| Scope | The runtime decision record (Section 6), the runtime approval package and the changelogs |
+
+No task status changes and no decision is approved. `KR-BINC-001-001` stays In Review and its record stays Proposed.
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:
