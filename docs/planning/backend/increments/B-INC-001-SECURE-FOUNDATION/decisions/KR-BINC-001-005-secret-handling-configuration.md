@@ -52,18 +52,20 @@ Classes follow `SECRETS_MANAGEMENT.md` Section 7.
 | S1 | Internal, non-sensitive configuration | May be committed as defaults or documented examples |
 | S2 | Confidential, such as service API credentials | Never committed; supplied at runtime |
 | S3 | Restricted, such as database credentials | Never committed; supplied at runtime; redacted in all output |
-| S4 | Critical, such as root signing keys | Never present in this repository, in local development, or in test fixtures |
+| S4 | Critical, such as root signing keys | Actual critical key material is never present in this repository, in local development, or in test fixtures |
 
 S2 to S4 values are secrets. S0 and S1 values remain configuration data.
+
+The S4 rule prohibits actual critical key material. It does not prohibit cryptographic tests that use ephemeral, synthetic, non-production keys whose lifecycle the test controls, which are not persisted and whose private material is never printed (`BACKEND_SECURITY_GATE.md` Section 5.6, `KEY_MANAGEMENT.md` Section 86).
 
 ## 4. Permitted Secret Sources
 
 A running backend process may receive S2 and S3 values only through:
 
-1. Environment variables injected by the runtime environment.
+1. Environment variables injected by the runtime environment. Injection is a delivery mechanism and does not keep a value confidential: environment values must not reach diagnostics, crash reports, telemetry or support bundles (Section 7).
 2. A secret reference resolved at startup through the secret-manager interface defined by the cloud workstream (`SECRETS_MANAGEMENT.md` Sections 14 and 15).
-3. For local development only: an untracked local file such as `.env`, per `SECRETS_MANAGEMENT.md` Section 59 (never shared, never used for production).
-4. In tests: values generated at runtime and not persisted, or controlled test credentials supplied outside tracked files.
+3. For local development only: an untracked local file such as `.env`, per `SECRETS_MANAGEMENT.md` Section 59: excluded from source control, protected by filesystem permissions, documented as non-production, never shared and never used for production.
+4. In tests: values generated at runtime and not persisted, or test credentials supplied outside tracked files. Being outside tracked files is not sufficient by itself: test credentials must be synthetic, environment-specific, non-production and disposable (`SECRETS_MANAGEMENT.md` Section 80), and production credentials are never used in automated tests.
 
 Production and staging must not depend on developer `.env` files. Development must not use production credentials (`SECRETS_MANAGEMENT.md` Sections 5.4 and 58).
 
@@ -90,7 +92,7 @@ Placeholders must be unmistakably nonfunctional. A placeholder must not parse as
 3. Defaults are explicit and safe. A default must never be a credential, and an unsafe default is rejected.
 4. S2 and S3 values are held only as secret-typed values that cannot be rendered by default string formatting, serialization or logging.
 5. Database credential-bearing URL components are redacted wherever a connection setting is reported (`SEC-GATE-011`, completed by KR-BINC-001-007 and KR-BINC-001-013).
-6. Separate credentials exist for application runtime, migrations and administration. The application runtime never uses a database superuser credential (`SECRETS_MANAGEMENT.md` Section 45).
+6. Separate credentials exist for application runtime, migrations and administration. Separate means distinct identities with distinct privilege scopes, not three setting names that hold the same credential. The application runtime never uses a database superuser credential (`SECRETS_MANAGEMENT.md` Section 45). Provisioning the identities is the responsibility of the cloud and database workstreams, not of the backend application.
 7. The Cloud/Infrastructure Owner owns production secret storage, rotation, workload identity and IAM. The Backend Technical Lead owns the application's configuration schema and its validation.
 
 ## 7. Logging, Error and Diagnostic Redaction
@@ -101,7 +103,14 @@ Per `SECRETS_MANAGEMENT.md` Sections 5.5, 67 and 68:
 2. Redaction happens in one central utility, applied before a value is persisted or emitted.
 3. Structured logs use an allowlist of fields. Fields such as `password`, `token`, `access_token`, `refresh_token`, `api_key`, `client_secret` and `private_key`, and sensitive request headers (including `Authorization` and cookies), are excluded.
 4. Correlation uses request identifiers, never credential values.
-5. Redaction is verified with synthetic credential-like values injected into representative logging paths (`B-INC-001-AC-12`, `SEC-GATE-009`). KR-BE-1-041 and KR-BINC-001-014 implement and test this.
+5. Redaction covers every output path, not only structured application logs:
+   - URL user-info, sensitive query parameters and credential-bearing connection strings are redacted before a request URL or an HTTP client error is recorded.
+   - Exception messages, causes, nested errors and attached request or configuration objects pass through redaction.
+   - Telemetry metadata (span attributes, baggage, metric labels and exporter error diagnostics) is sanitized at the instrumentation or export boundary.
+   - Health and readiness responses carry safe status information only, never configuration values, raw connection errors or secret-manager response details.
+   - Header matching for credential-bearing headers is case-insensitive, and request and response bodies are excluded by default.
+6. If redaction fails, the unsafe field or event is dropped. Unredacted data is never emitted as a fallback, and only a safe diagnostic that redaction failed is recorded.
+7. Redaction is verified with synthetic credential-like values injected into representative paths: direct logging, nested objects, exceptions, HTTP client and server errors, URL query strings, health output, traces and crash or support reporting where used (`B-INC-001-AC-12`, `SEC-GATE-009`). KR-BE-1-041 and KR-BINC-001-014 implement and test this.
 
 ## 8. Repository Protection Requirements
 
@@ -117,7 +126,9 @@ The following are requirements for later tasks, listed here so those tasks have 
 2. The finder reports a suspected exposure to the Security Owner without reproducing the value in a ticket, chat, log or pull request.
 3. The Security Owner classifies severity (`SECRETS_MANAGEMENT.md` Section 66). Critical and High exposure triggers immediate rotation or revocation.
 4. The flow is detect, classify, revoke or rotate, investigate, remove, rescan, audit (`SECRETS_MANAGEMENT.md` Section 65).
-5. Responsibilities and the closure criteria are completed in KR-BINC-001-012. Evidence records cite the finding by sanitized reference only.
+5. The response owner records, by sanitized reference and without the value: whether the value was real, valid or reused; its credential type, owner, environment and scope; the likely exposure window and whether it was used outside local development; whether revocation or rotation is required and, if not, why; whether history needs rewriting or other remediation under an approved procedure; and a final rescan and closure decision that names the refs, history and limitations covered (`SECRETS_MANAGEMENT.md` Section 113, `BACKEND_SECURITY_GATE.md` Sections 5.4, 6 and 7.2).
+6. Responsibilities and the closure criteria are completed in KR-BINC-001-012. Evidence records cite the finding by sanitized reference only.
+7. Approving this policy does not dispose of any finding already on record. The credential-shaped example that remains in Git history is recorded in `BACKEND_SECURITY_GATE.md` Section 4.2.1, and its exposure assessment is pending with the Security Owner.
 
 ## 10. Options Considered
 

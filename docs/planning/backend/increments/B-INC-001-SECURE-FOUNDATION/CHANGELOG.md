@@ -87,6 +87,21 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-11 — Secret-handling pre-approval corrections
+
+- **State:** IMPLEMENTED (documentation; no task status change)
+- **Tasks:** None (corrections to the KR-BINC-001-005 record and approval package)
+- **Increment ACs:** Not applicable
+- **Program acceptance:** Not applicable
+- **Tests:** Not applicable
+- **Security gates:** Not applicable (no gate is closed)
+- **Findings/risks:** Independent review findings SH-01 to SH-06 addressed; the Git-history exposure assessment remains pending with the Security Owner; see `../../BACKEND_CHANGELOG.md` PB-016
+- **Files changed:** `decisions/KR-BINC-001-005-secret-handling-configuration.md`, `../../decisions/approvals/APPROVAL-KR-BINC-001-005-secret-handling.md`, `../../BACKEND_SECURITY_GATE.md`, `../../BACKEND_CHANGELOG.md`, `CHANGELOG.md`
+- **Commit:** Pending until this change is merged
+- **Evidence:** `make check` results recorded in the commit message
+- **Reviewer role:** Repository owner
+- **Decision and follow-up:** See PB-016. The review requests to the two owners follow after this merges
+
 ### 2026-10-11 — Credential-shaped example removed and rescan recorded
 
 - **State:** IMPLEMENTED (documentation; no task status change)
