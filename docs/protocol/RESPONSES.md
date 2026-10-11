@@ -215,6 +215,8 @@ This allows:
 - audit correlation;
 - retry analysis.
 
+REST API v1 rule: the server generates the `request_id` of every REST response and returns it in the body and in the `X-Request-ID` response header, with the same value. A client-supplied `X-Request-ID` or `X-Correlation-ID` is ignored, not echoed and not used as the `request_id`, unless a later approved decision says otherwise. The echo rule above applies to protocols whose request carries a `request_id` field.
+
 ## 12. Timestamp
 
 Response timestamps use UTC.
@@ -709,7 +711,9 @@ A side-effecting command must still use an idempotency key before retry.
 | 401 | `UNAUTHORIZED` |
 | 403 | `FORBIDDEN` |
 | 404 | `NOT_FOUND` |
+| 405 | `INVALID_REQUEST` (`METHOD_NOT_ALLOWED`) |
 | 409 | `CONFLICT` |
+| 413 | `REJECTED` (`PAYLOAD_TOO_LARGE`) |
 | 422 | `REJECTED` or validation-specific status |
 | 429 | `UNAVAILABLE` or rate-limit-specific code |
 | 500 | `FAILED` |

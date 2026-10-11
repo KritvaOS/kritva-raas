@@ -116,7 +116,7 @@ The increment is not accepted merely because its source files exist or a develop
 - **Evidence to retain:** Contract tests; negative request results; sanitized error samples.
 - **Backend acceptance trace:** BAC-004.
 - **Test trace:** BTS-007.
-- **Security-gate trace:** SEC-GATE-009.
+- **Security-gate trace:** SEC-GATE-009. This gate is logging redaction; here it covers error content reaching logs only and is not closed by response-contract tests (`decisions/KR-BE-1-007-response-contract.md`, decision 6).
 - **Owner:** Backend Technical Lead.
 
 ### B-INC-001-AC-09 — Request validation is testable

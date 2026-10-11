@@ -52,6 +52,8 @@ The canonical error-response envelope for REST API v1 is the full response envel
 
 ## 5. Gaps This Decision Exposes (Proposed, not approved)
 
+> Update 2026-10-11: `KR-BE-1-007-response-contract.md` approves `METHOD_NOT_ALLOWED` and `PAYLOAD_TOO_LARGE`, defers `RESOURCE_GONE`, wraps success responses, fixes the request-ID rule and states the `SEC-GATE-009` relationship. The text below is the record as approved on that date.
+
 The registry has no generic code for three cases the transport already produces or the contract already names. These are proposals for the owner. None is approved and `ERROR_CODES.md` is not changed.
 
 | Case | Proposal | HTTP and `status` |
