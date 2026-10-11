@@ -806,6 +806,27 @@ Reason: the independent review of `KR-BE-1-001` (BTS-036, reviewer ChatGPT, 2026
 | Changed | `.node-version` (moved), `apps/backend/README.md`, the plan scaffold table, `TASKS.md` status line, this entry, the increment `CHANGELOG.md` entry, `claude/Handoff.md` |
 | Not changed | Any dependency, the lockfile, CI, `DEVELOPMENT_SETUP.md` |
 
+## 3AA. PB-028 — KR-BE-1-001 Evidence and BTS-036 Review Record
+
+| Field | Value |
+|---|---|
+| Change ID | PB-028 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Follows | PB-027 |
+
+Reason: record the plan Section 6 evidence for `KR-BE-1-001` and the BTS-036 review with its disposition, as the review's third finding asked.
+
+| Item | Disposition |
+|---|---|
+| Added | `evidence/KR-BE-1-001-evidence.md` (clean-checkout run on commit `ffc42d1`, tree hashes, lockfile review, mismatch test, entry point statement, gate contributions, the review record) |
+| Task status | In Review. Not Accepted. Acceptance is the Backend Technical Lead's separate record |
+| Gates | None closed. SEC-GATE-003 and SEC-GATE-004 receive contributions only; local secret detection is not claimed; SEC-GATE-013 keeps its open items |
+| Review | ChatGPT returned "changes required"; the blockers are fixed or recorded; the reviewer has not re-reviewed the fixes |
+| Changed | `TASKS.md` status line, increment `CHANGELOG.md`, this entry, `claude/Handoff.md` |
+| Not changed | Code, dependencies, lockfile, CI |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:
