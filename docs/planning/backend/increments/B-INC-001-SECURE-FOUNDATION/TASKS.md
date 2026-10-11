@@ -54,7 +54,7 @@ A task must not be marked Accepted solely because files or code exist. Required 
 - **Linked AC:** B-INC-001-AC-01, B-INC-001-AC-02.
 - **Linked tests:** BTS-001, BTS-036.
 - **Linked security gates:** SEC-GATE-003, SEC-GATE-004, SEC-GATE-013.
-- **Status:** In Progress. The scaffold under `apps/backend` is implemented in the change recorded as PB-026, following [`plans/KR-BE-1-001-application-structure-plan.md`](plans/KR-BE-1-001-application-structure-plan.md). The clean-checkout evidence with the pinned toolchain (plan Section 6) and the BTS-036 review are not recorded yet. Linked tests and gates are NOT RUN as task evidence. Not Accepted.
+- **Status:** In Progress. The scaffold under `apps/backend` is implemented in the change recorded as PB-026, following [`plans/KR-BE-1-001-application-structure-plan.md`](plans/KR-BE-1-001-application-structure-plan.md). The BTS-036 review by ChatGPT (2026-10-11) required changes: the canonical `.node-version` moved to the repository root (PB-027), and the clean-checkout evidence is to be re-run on the corrected tree and recorded in a later change. Plan Section 6 evidence and the review disposition are not recorded yet. Linked tests and gates are NOT RUN as task evidence. Not Accepted.
 
 ### KR-BE-1-002 — Define backend module boundaries
 

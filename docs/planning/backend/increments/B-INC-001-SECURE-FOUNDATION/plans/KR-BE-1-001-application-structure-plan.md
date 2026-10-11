@@ -61,7 +61,7 @@ Minimal, with no dependency that a later task has not decided. No HTTP framework
 |---|---|
 | `package.json` | `type: module`, `engines.node` for the approved release, the three scripts below. Direct dependencies pinned exactly |
 | `package-lock.json` | The single source of resolved versions. Reviewed as part of the change |
-| `.node-version` | The canonical exact Node.js pin of the approved pin method (`KR-BINC-001-001` Section 5.1): one line, `24.21.0`. Added by this task in `apps/backend`; the CI consistency check is `KR-BINC-001-017` |
+| `.node-version` | The canonical exact Node.js pin of the approved pin method (`KR-BINC-001-001` Section 5.1): one line, `24.21.0`. Added by this task at the repository root, as the approved method requires (corrected after the BTS-036 review, PB-027); `apps/backend/package.json` `engines.node` and `.npmrc` `engine-strict` enforce the same version; the CI consistency check is `KR-BINC-001-017` and does not exist yet |
 | `.npmrc` | `save-exact=true` and `engine-strict=true`. No registry token |
 | `tsconfig.json` | The strict options approved in `KR-BINC-001-001`, with an explicit `rootDir` (required by TypeScript 6). It includes both `src` and `tests` |
 | `src/main.ts` | The explicit entry point. It is intentionally inert: it composes nothing and opens no port. The README says so and does not describe a running service |

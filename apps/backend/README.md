@@ -6,7 +6,7 @@ This package is the minimal structure created by `KR-BE-1-001`. It is **not a ru
 
 | Item | Version | Source of the decision |
 |---|---|---|
-| Node.js | 24.21.0 (`.node-version`, `engines.node`) | `KR-BINC-001-001` |
+| Node.js | 24.21.0 (`.node-version` at the repository root, `engines.node` here) | `KR-BINC-001-001` |
 | npm | 11.19.0, the version bundled with Node.js 24.21.0 | `KR-BINC-001-002` |
 | TypeScript | 6.0.3, exact | `KR-BINC-001-001` |
 | `@types/node` | 24.19.2, exact | `KR-BE-1-001` plan |
