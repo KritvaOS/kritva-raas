@@ -50,8 +50,8 @@ It does not prescribe every SQL statement, API endpoint, service method, UI scre
 
 The following responsibilities remain with their authoritative documents and milestones:
 
-- Canonical phase definitions: `docs/planning/PHASES.md`.
-- Cross-domain architectural decisions: `docs/planning/DECISIONS.md`.
+- Canonical phase definitions: `planning/PHASES.md`.
+- Cross-domain architectural decisions: `planning/DECISIONS.md`.
 - System architecture: `docs/architecture/`.
 - Database foundation, migration conventions, identity, organization, project schema, foundational RLS, and audit foundation: DB-M01 FOUNDATION (P0-P3).
 - Booking and commercial data: DB-M03 BOOKING DATA (P4).
@@ -73,9 +73,9 @@ The following responsibilities remain with their authoritative documents and mil
 
 | Concern | Authoritative owner | DB-M02 CORE DATA responsibility |
 |---|---|---|
-| Canonical phase definitions | `docs/planning/PHASES.md` | Use the frozen model exactly |
+| Canonical phase definitions | `planning/PHASES.md` | Use the frozen model exactly |
 | System architecture | `docs/architecture/` | Follow approved system boundaries |
-| Cross-domain decisions | `docs/planning/DECISIONS.md` | Consume approved decisions |
+| Cross-domain decisions | `planning/DECISIONS.md` | Consume approved decisions |
 | PostgreSQL and migration foundation | DB-M01 FOUNDATION (P0-P3) | Extend established conventions |
 | Identity, organization, membership, and project foundation | DB-M01 FOUNDATION (P0-P3) | Reference existing foundational entities |
 | Foundational RLS and audit conventions | DB-M01 FOUNDATION (P0-P3) | Apply approved conventions to owned records |

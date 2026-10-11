@@ -10,7 +10,7 @@
 **Technology:** TypeScript/Node.js, PostgreSQL, provider-neutral object storage,
 REST API v1, artifact security/signing services  
 **Architecture:** Production-oriented Modular Monolith  
-**Priority:** PRI-0 (critical invariant per Priority Matrix; see `docs/planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
+**Priority:** PRI-0 (critical invariant per Priority Matrix; see `planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
 **Status:** PLANNED  
 **Primary Outcome:** Establish the authoritative backend artifact registry and
 secure artifact lifecycle for `.krv` packages, including upload, validation,

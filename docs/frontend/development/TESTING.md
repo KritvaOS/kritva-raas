@@ -77,8 +77,8 @@ Frontend-specific coverage targets in this document are domain targets. They do 
 | Frontend architecture and implementation | Applicable architecture documents under `docs/frontend/` |
 | Frontend architecture decisions | `docs/frontend/planning/DECISIONS.md` |
 | Frontend milestone scope and acceptance | Authoritative dossiers under `docs/frontend/milestones/` |
-| Canonical phase definitions | `docs/planning/PHASES.md` |
-| Product and system decisions | `docs/planning/DECISIONS.md` |
+| Canonical phase definitions | `planning/PHASES.md` |
+| Product and system decisions | `planning/DECISIONS.md` |
 | API wire contract | `docs/protocol/API_CONTRACT.md` |
 | Event wire contract | `docs/protocol/EVENT_CONTRACT.md` |
 | Artifact contract and manifest | `docs/protocol/ARTIFACT_MANIFEST.md` |
@@ -1066,7 +1066,7 @@ This file describes how testing is organized and what it verifies; it does not r
 
 ### 16.1 Phase Authority
 
-`docs/planning/PHASES.md` is the canonical source for phase definitions.
+`planning/PHASES.md` is the canonical source for phase definitions.
 
 This document MUST NOT redefine phase scope or use testing guidance to create additional product deliverables.
 
@@ -1146,7 +1146,7 @@ Frontend tests MUST be updated to match approved contract changes.
 
 Material frontend testing architecture changes SHOULD be reviewed against the frontend architecture and recorded through `docs/frontend/planning/DECISIONS.md` when appropriate.
 
-Cross-domain decisions MUST follow `docs/planning/DECISIONS.md`.
+Cross-domain decisions MUST follow `planning/DECISIONS.md`.
 
 ### 17.5 Review of Testing Guidance
 

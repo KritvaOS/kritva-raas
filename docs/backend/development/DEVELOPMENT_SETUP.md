@@ -77,8 +77,8 @@ This file MUST link to the global setup document instead of duplicating its inst
 | Backend API implementation | `docs/backend/architecture/API_IMPLEMENTATION.md` |
 | Backend architecture decisions | `docs/backend/planning/DECISIONS.md` |
 | System backend responsibilities | `docs/architecture/BACKEND_ARCHITECTURE.md` |
-| Product and system decisions | `docs/planning/DECISIONS.md` |
-| Canonical phase definitions | `docs/planning/PHASES.md` |
+| Product and system decisions | `planning/DECISIONS.md` |
+| Canonical phase definitions | `planning/PHASES.md` |
 | API wire contract | `docs/protocol/API_CONTRACT.md` |
 | Event wire contract | `docs/protocol/EVENT_CONTRACT.md` |
 | Artifact contract and manifest | `docs/protocol/ARTIFACT_MANIFEST.md` |
@@ -1138,7 +1138,7 @@ If the environment cannot be restored reproducibly, document the missing setup s
 
 ### 18.1 Phase Authority
 
-`docs/planning/PHASES.md` is the canonical source for phase definitions.
+`planning/PHASES.md` is the canonical source for phase definitions.
 
 This document describes backend setup only and MUST NOT redefine phase scope.
 

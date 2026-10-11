@@ -277,7 +277,7 @@ Architecture review is required when a PR:
 
 Relevant decisions are recorded in:
 
-    docs/planning/DECISIONS.md
+    planning/DECISIONS.md
 
 An implementation must not silently override an accepted ADR.
 

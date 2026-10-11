@@ -8,7 +8,7 @@
 **Primary Surface:** RaaS Studio  
 **Supporting Services:** Control Plane, Object Storage, Results Service, Artifact Service, Execution Service  
 **Technology:** Tauri + Rust + React + TypeScript + REST + WebSocket/events  
-**Priority:** PRI-1 (primary product path per Priority Matrix; see `docs/planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
+**Priority:** PRI-1 (primary product path per Priority Matrix; see `planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
 **Status:** PLANNED  
 **Primary Outcome:** A production-grade results experience that converts completed
 Runs into durable, discoverable and downloadable evidence, supports metrics and
@@ -494,7 +494,7 @@ F-M07 depends on:
 | `docs/security/AUDIT_LOGGING.md` | Audit |
 | `docs/ui/UI_ACCEPTANCE_CRITERIA.md` | UI acceptance |
 | `docs/ui/UI_REVIEW_CHECKLIST.md` | UI review |
-| `docs/planning/INTEGRATION_PLAN.md` | Integration |
+| `planning/INTEGRATION_PLAN.md` | Integration |
 
 ## 3.3 Run Dependency
 

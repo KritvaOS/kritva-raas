@@ -24,10 +24,10 @@ This document describes database sequencing and delivery responsibilities. It do
 
 | Concern | Authoritative source |
 |---|---|
-| Canonical phase definitions | `docs/planning/PHASES.md` |
-| Program implementation sequence | `docs/planning/IMPLEMENTATION_ROADMAP.md` |
-| Cross-domain dependencies | `docs/planning/DEPENDENCY_MAP.md` |
-| Release sequencing | `docs/planning/RELEASE_ROADMAP.md` |
+| Canonical phase definitions | `planning/PHASES.md` |
+| Program implementation sequence | `planning/IMPLEMENTATION_ROADMAP.md` |
+| Cross-domain dependencies | `planning/DEPENDENCY_MAP.md` |
+| Release sequencing | `planning/RELEASE_ROADMAP.md` |
 | Database milestone scope | `docs/database/milestones/` |
 | Database task backlog | `docs/database/planning/DATABASE_TASKS.md` |
 | Backend roadmap | `docs/backend/planning/BACKEND_ROADMAP.md` |
@@ -41,7 +41,7 @@ This document describes database sequencing and delivery responsibilities. It do
 
 The existing milestone dossiers under `docs/database/milestones/` are authoritative for the detailed scope of their respective milestones.
 
-The canonical phase model is maintained exclusively in `docs/planning/PHASES.md`. This roadmap references the phase model but does not redefine it.
+The canonical phase model is maintained exclusively in `planning/PHASES.md`. This roadmap references the phase model but does not redefine it.
 
 ## 3. Frozen Database Milestone Mapping
 
@@ -816,7 +816,7 @@ For every material change, record:
 - reviewer and decision
 - required updates to milestone dossiers and task tracking
 
-Do not redefine phase boundaries in this file. Refer to `docs/planning/PHASES.md`.
+Do not redefine phase boundaries in this file. Refer to `planning/PHASES.md`.
 
 Do not duplicate detailed milestone acceptance requirements. Refer to the authoritative dossier under `docs/database/milestones/`.
 
@@ -836,12 +836,12 @@ Do not duplicate detailed milestone acceptance requirements. Refer to the author
 - [ ] Job and Run remain distinct.
 - [ ] Result provenance and retention are covered.
 - [ ] Backup and recovery are covered.
-- [ ] `docs/planning/PHASES.md` remains the canonical phase definition.
+- [ ] `planning/PHASES.md` remains the canonical phase definition.
 - [ ] Existing database milestone dossiers remain authoritative for detailed scope.
 
 ## 21. Final Invariants
 
-1. The canonical phase model is defined only in `docs/planning/PHASES.md`.
+1. The canonical phase model is defined only in `planning/PHASES.md`.
 2. The frozen database milestones are DB-M01 through DB-M04 with the names and mappings specified in this roadmap.
 3. The milestone dossiers under `docs/database/milestones/` are authoritative for detailed milestone scope.
 4. Database schema delivery follows approved domain contracts.
@@ -863,7 +863,7 @@ Do not duplicate detailed milestone acceptance requirements. Refer to the author
 
 - Established the consolidated database roadmap for DB-M01 through DB-M04.
 - Aligned database milestone names and phase mappings with the frozen canonical model.
-- Delegated phase definitions to `docs/planning/PHASES.md`.
+- Delegated phase definitions to `planning/PHASES.md`.
 - Delegated detailed milestone scope to authoritative database milestone dossiers.
 - Defined the expected schema delivery sequence across the four database milestones.
 - Added schema dependencies, transaction requirements, risks, and exit criteria.

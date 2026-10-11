@@ -23,8 +23,8 @@ This index supports cross-domain traceability, governance reviews, milestone pla
 
 | Concern | Reference |
 |---|---|
-| Canonical phase definitions | `docs/planning/PHASES.md` |
-| Project-level decisions | `docs/planning/DECISIONS.md` |
+| Canonical phase definitions | `planning/PHASES.md` |
+| Project-level decisions | `planning/DECISIONS.md` |
 | Master project status | `docs/tracking/STATUS.md` |
 | Phase status | `docs/tracking/PHASE_STATUS.md` |
 | Milestone status | `docs/tracking/MILESTONE_STATUS.md` |
@@ -103,7 +103,7 @@ Entries must be added only after their authoritative ADRs have been located and 
 
 ### 6.1 Initial reconciliation requirements
 
-- [ ] Inspect `docs/planning/DECISIONS.md`.
+- [ ] Inspect `planning/DECISIONS.md`.
 - [ ] Inspect `docs/frontend/planning/DECISIONS.md`, if present.
 - [ ] Inspect `docs/backend/planning/DECISIONS.md`, if present.
 - [ ] Inspect `docs/database/planning/DECISIONS.md`, if present.
@@ -119,7 +119,7 @@ Entries must be added only after their authoritative ADRs have been located and 
 
 ## 7. Project-Wide Decisions
 
-**Owning register:** `docs/planning/DECISIONS.md`
+**Owning register:** `planning/DECISIONS.md`
 
 Project-wide decisions affect multiple engineering domains, governance, canonical planning, or overall product direction.
 
@@ -127,7 +127,7 @@ Index only verified entries from the owning register.
 
 | ID | Date | Title | Status | Owner | ADR link |
 |---|---|---|---|---|---|
-| No verified entries indexed | — | — | — | — | Reconcile `docs/planning/DECISIONS.md` |
+| No verified entries indexed | — | — | — | — | Reconcile `planning/DECISIONS.md` |
 
 Project-wide decisions should use frozen phase names and milestone identifiers when the ADR's scope requires traceability to the delivery plan.
 
@@ -225,7 +225,7 @@ UI decisions may affect visual conventions, interaction patterns, navigation, re
 |---|---|---|---|---|---|
 | No verified entries indexed | — | — | — | — | Reconcile `docs/ui/DECISIONS.md` |
 
-When a UI decision affects delivery planning, use the frozen frontend milestone identifiers and the canonical phase mapping in `docs/planning/PHASES.md`.
+When a UI decision affects delivery planning, use the frozen frontend milestone identifiers and the canonical phase mapping in `planning/PHASES.md`.
 
 The UI decision index must not duplicate screen specifications, design rationale, or implementation details from its ADR.
 
@@ -267,7 +267,7 @@ Use these exact phase names when phase traceability is required:
 | P7 | LIVE & RESULTS |
 | P8 | PRODUCTION |
 
-This table is an index reference only. `docs/planning/PHASES.md` remains the sole authority for phase definitions and boundaries.
+This table is an index reference only. `planning/PHASES.md` remains the sole authority for phase definitions and boundaries.
 
 ### 14.2 Milestone reference rules
 
@@ -284,7 +284,7 @@ Each index entry must link directly to the ADR section or standalone ADR file in
 
 Recommended link patterns include:
 
-- `[KR-ADR-001](../planning/DECISIONS.md#kr-adr-001)`
+- `[KR-ADR-001](../../planning/DECISIONS.md#kr-adr-001)`
 - `[KR-BE-ADR-001](../backend/planning/DECISIONS.md#kr-be-adr-001)`
 - `[KR-DB-ADR-001](../database/planning/DECISIONS.md#kr-db-adr-001)`
 
@@ -380,7 +380,7 @@ Use this checklist when reviewing changes to the index.
 
 This index may be updated to reflect verified decision metadata and link changes.
 
-Changes to phase definitions must be made only in `docs/planning/PHASES.md` through the approved project governance process.
+Changes to phase definitions must be made only in `planning/PHASES.md` through the approved project governance process.
 
 Changes to milestone scope must be made in the relevant authoritative dossier under `docs/**/milestones/`.
 
@@ -394,7 +394,7 @@ Use the following table to track source-register reconciliation. These are docum
 
 | Register | Expected location | Reconciliation status | Owner |
 |---|---|---|---|
-| Project-wide decisions | `docs/planning/DECISIONS.md` | PENDING | TBD |
+| Project-wide decisions | `planning/DECISIONS.md` | PENDING | TBD |
 | Frontend decisions | `docs/frontend/planning/DECISIONS.md` | PENDING | TBD |
 | Backend decisions | `docs/backend/planning/DECISIONS.md` | PENDING | TBD |
 | Database decisions | `docs/database/planning/DECISIONS.md` | PENDING | TBD |
@@ -417,7 +417,7 @@ Before committing an index update:
 - [ ] The status matches the ADR.
 - [ ] The owner is recorded.
 - [ ] The link resolves correctly.
-- [ ] Phase references match `docs/planning/PHASES.md`.
+- [ ] Phase references match `planning/PHASES.md`.
 - [ ] Milestone references use the frozen canonical model.
 - [ ] No ADR rationale or content has been duplicated.
 - [ ] Supersession and retirement links remain intact.
@@ -447,7 +447,7 @@ Baseline acceptance confirms that the index structure is ready. It does not impl
 
 - Established this file as a decision log index only.
 - Defined the required fields: ID, date, title, status, owner, and ADR link.
-- Established `docs/planning/PHASES.md` as the canonical phase definition.
+- Established `planning/PHASES.md` as the canonical phase definition.
 - Preserved owning `DECISIONS.md` files as the authority for ADR content.
 - Added domain index sections for project-wide, frontend, backend, database, cloud, UI, and security decisions.
 - Defined decision status and link-validation rules.

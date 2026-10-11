@@ -50,8 +50,8 @@ This document does not replace the system architecture, backend implementation a
 
 | Concern | Authoritative owner | P6 relationship |
 |---|---|---|
-| Canonical phase definitions | `docs/planning/PHASES.md` | Uses the frozen phase model |
-| System-level decisions | `docs/planning/DECISIONS.md` | Consumes approved system decisions |
+| Canonical phase definitions | `planning/PHASES.md` | Uses the frozen phase model |
+| System-level decisions | `planning/DECISIONS.md` | Consumes approved system decisions |
 | System architecture | `docs/architecture/` | Follows cross-domain ownership boundaries |
 | Backend implementation architecture | `docs/backend/architecture/BACKEND_ARCHITECTURE.md` | Implements Lab Agent and robot integration services |
 | API wire contract | `docs/protocol/API_CONTRACT.md` | Uses the approved request, response, and error contract |

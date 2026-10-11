@@ -74,8 +74,8 @@ Frontend-specific review preparation MAY add evidence requirements, but MUST NOT
 | Frontend architecture and implementation | Applicable architecture documents under `docs/frontend/` |
 | Frontend architecture decisions | `docs/frontend/planning/DECISIONS.md` |
 | Frontend milestone scope and acceptance | Authoritative dossiers under `docs/frontend/milestones/` |
-| Product/system-level decisions | `docs/planning/DECISIONS.md` |
-| Canonical phase definitions | `docs/planning/PHASES.md` |
+| Product/system-level decisions | `planning/DECISIONS.md` |
+| Canonical phase definitions | `planning/PHASES.md` |
 | System backend responsibilities and ownership | `docs/architecture/BACKEND_ARCHITECTURE.md` |
 | Backend implementation architecture | `docs/backend/architecture/BACKEND_ARCHITECTURE.md` |
 | Backend API implementation | `docs/backend/architecture/API_IMPLEMENTATION.md` |
@@ -564,7 +564,7 @@ The IPC contract MUST have an identifiable authoritative owner.
 
 If the IPC interface is documented in a dedicated protocol or system architecture document, that document remains authoritative.
 
-If an IPC contract change affects product-wide behavior or crosses domain boundaries, the decision MUST be reviewed through `docs/planning/DECISIONS.md`.
+If an IPC contract change affects product-wide behavior or crosses domain boundaries, the decision MUST be reviewed through `planning/DECISIONS.md`.
 
 Frontend implementation details MUST NOT silently redefine command names, payload fields, error semantics, or compatibility requirements.
 
@@ -978,7 +978,7 @@ Do not fix the mismatch by silently changing the frontend's assumed contract.
 
 ### 14.1 Phase Authority
 
-`docs/planning/PHASES.md` is the canonical source for phase definitions.
+`planning/PHASES.md` is the canonical source for phase definitions.
 
 This workflow MUST NOT redefine phase meaning or use phase references to expand milestone scope.
 
@@ -1055,7 +1055,7 @@ Changes to frontend module boundaries, state ownership, or major implementation 
 
 A consequential frontend architecture choice MUST be recorded in `docs/frontend/planning/DECISIONS.md`.
 
-A cross-domain architecture change MUST be reviewed through `docs/planning/DECISIONS.md`.
+A cross-domain architecture change MUST be reviewed through `planning/DECISIONS.md`.
 
 ### 15.4 Contract Changes
 

@@ -12,7 +12,7 @@ This document records architectural decisions specific to the database implement
 
 It preserves the rationale, alternatives, consequences, and validation expectations behind database implementation choices. Its purpose is to make persistence decisions explicit, reviewable, and traceable without duplicating product/system architecture or backend and cloud implementation decisions.
 
-This register MUST contain only database-specific architecture decisions. Product-wide and cross-domain decisions MUST be recorded in `docs/planning/DECISIONS.md` and referenced here when they constrain database implementation.
+This register MUST contain only database-specific architecture decisions. Product-wide and cross-domain decisions MUST be recorded in `planning/DECISIONS.md` and referenced here when they constrain database implementation.
 
 The register MUST remain consistent with the authoritative system database architecture, PostgreSQL implementation architecture, backend implementation architecture, security documents, protocol contracts, and milestone dossiers.
 
@@ -45,7 +45,7 @@ Each decision MUST concern database implementation. It MUST NOT redefine product
 
 ### 2.2 Product-Wide Decision Ownership
 
-`docs/planning/DECISIONS.md` owns product/system-level architecture decisions and the index to domain decision registers.
+`planning/DECISIONS.md` owns product/system-level architecture decisions and the index to domain decision registers.
 
 This database register MUST NOT independently define or override:
 
@@ -62,7 +62,7 @@ This database register MUST NOT independently define or override:
 - Product-wide retention obligations.
 - Service ownership and responsibilities.
 
-When a database proposal changes one of these concerns, the proposal MUST be reviewed through `docs/planning/DECISIONS.md`.
+When a database proposal changes one of these concerns, the proposal MUST be reviewed through `planning/DECISIONS.md`.
 
 A database decision MAY describe how an approved system requirement is implemented in PostgreSQL, but MUST NOT create a competing definition of that requirement.
 
@@ -70,8 +70,8 @@ A database decision MAY describe how an approved system requirement is implement
 
 | Concern | Authoritative document |
 |---|---|
-| Product/system-level decisions | `docs/planning/DECISIONS.md` |
-| Canonical phase definitions | `docs/planning/PHASES.md` |
+| Product/system-level decisions | `planning/DECISIONS.md` |
+| Canonical phase definitions | `planning/PHASES.md` |
 | Product/system database role and authority | `docs/architecture/DATABASE_ARCHITECTURE.md` |
 | PostgreSQL implementation architecture | `docs/database/architecture/DATABASE_ARCHITECTURE.md` |
 | Database-specific architecture decisions | `docs/database/planning/DECISIONS.md` |
@@ -231,7 +231,7 @@ Examples:
 
 An ID MUST NOT be reused after rejection, withdrawal, or supersession.
 
-Product/system decision IDs MUST follow the convention defined in `docs/planning/DECISIONS.md`.
+Product/system decision IDs MUST follow the convention defined in `planning/DECISIONS.md`.
 
 ### 4.3 Status Definitions
 
@@ -318,7 +318,7 @@ When a decision is accepted, the index MUST link to its complete record and show
 
 When a decision is superseded, the index MUST identify its successor.
 
-When a decision depends on a product/system decision, the full record SHOULD link to the relevant entry in `docs/planning/DECISIONS.md`.
+When a decision depends on a product/system decision, the full record SHOULD link to the relevant entry in `planning/DECISIONS.md`.
 
 The index MUST NOT duplicate product-wide decision content.
 
@@ -337,7 +337,7 @@ Without explicit ownership, implementation details may be mistaken for product-w
 
 Database-specific architecture decisions MUST be recorded in this register.
 
-Product/system-level decisions MUST be recorded in `docs/planning/DECISIONS.md`.
+Product/system-level decisions MUST be recorded in `planning/DECISIONS.md`.
 
 The product/system role and authority of the database MUST be documented in `docs/architecture/DATABASE_ARCHITECTURE.md`.
 
@@ -456,7 +456,7 @@ The chosen mechanism MUST be justified by the deployment model, review workflow,
 
 This decision covers database migration tooling and implementation strategy.
 
-Product-level compatibility requirements belong to `docs/planning/DECISIONS.md` and the relevant system architecture documents.
+Product-level compatibility requirements belong to `planning/DECISIONS.md` and the relevant system architecture documents.
 
 Cloud deployment sequencing belongs to `docs/cloud/architecture/CLOUD_ARCHITECTURE.md`.
 
@@ -741,7 +741,7 @@ This record owns database backup and restoration implementation choices.
 
 Cloud backup infrastructure and storage configuration belong to `docs/cloud/architecture/CLOUD_ARCHITECTURE.md`.
 
-Product-level recovery objectives belong to the product/system architecture and `docs/planning/DECISIONS.md`.
+Product-level recovery objectives belong to the product/system architecture and `planning/DECISIONS.md`.
 
 ### 14.6 Review Triggers
 
@@ -849,7 +849,7 @@ The database owner responsible for the affected implementation MUST review the p
 
 Backend, cloud, and security owners SHOULD participate when the decision affects their implementation responsibilities, contracts, or operational assumptions.
 
-A proposal that changes product-wide data authority or another cross-domain constraint MUST be escalated to `docs/planning/DECISIONS.md`.
+A proposal that changes product-wide data authority or another cross-domain constraint MUST be escalated to `planning/DECISIONS.md`.
 
 ### 17.3 Acceptance
 
@@ -887,7 +887,7 @@ Implementation completion does not prevent a future decision from superseding th
 
 ### 18.1 Phase Authority
 
-`docs/planning/PHASES.md` is the canonical source for phase definitions.
+`planning/PHASES.md` is the canonical source for phase definitions.
 
 This register MUST NOT redefine phase meaning or use phase references to expand milestone scope.
 
@@ -1050,7 +1050,7 @@ A temporary deviation MUST NOT silently become the permanent database design.
 ### 21.1 Ownership
 
 - [ ] Database-specific decisions are recorded here.
-- [ ] Product/system decisions link to `docs/planning/DECISIONS.md`.
+- [ ] Product/system decisions link to `planning/DECISIONS.md`.
 - [ ] Product/system database role and authority remain in `docs/architecture/DATABASE_ARCHITECTURE.md`.
 - [ ] PostgreSQL implementation architecture remains in `docs/database/architecture/DATABASE_ARCHITECTURE.md`.
 - [ ] Backend persistence invocation remains in backend implementation documents.
@@ -1082,7 +1082,7 @@ A temporary deviation MUST NOT silently become the permanent database design.
 
 ### 21.4 Phase and Milestone Traceability
 
-- [ ] Phase references use the canonical model in `docs/planning/PHASES.md`.
+- [ ] Phase references use the canonical model in `planning/PHASES.md`.
 - [ ] Database milestone identifiers and names use the frozen canonical model.
 - [ ] Milestone scope is obtained from authoritative database milestone dossiers.
 - [ ] Cross-domain impacts link to relevant domain dossiers.
@@ -1093,7 +1093,7 @@ A temporary deviation MUST NOT silently become the permanent database design.
 The database decision register is ready for ongoing use when:
 
 1. Its database-only ownership boundary is explicit.
-2. Product/system decisions are referenced through `docs/planning/DECISIONS.md`.
+2. Product/system decisions are referenced through `planning/DECISIONS.md`.
 3. Database decisions have stable IDs, statuses, owners, and review triggers.
 4. Current PostgreSQL implementation architecture remains documented in the appropriate architecture document.
 5. Product/system data authority remains documented in its designated system architecture.
@@ -1103,4 +1103,4 @@ The database decision register is ready for ongoing use when:
 9. Phase and milestone references use the frozen canonical model.
 10. Decisions can be verified without turning this register into a migration runbook or implementation task tracker.
 
-This document owns database-specific architecture decisions only. Product-wide decisions remain owned by `docs/planning/DECISIONS.md`, and all other domain decisions remain in their respective authoritative registers, architecture documents, contracts, and milestone dossiers. All changes MUST preserve this ownership boundary.
+This document owns database-specific architecture decisions only. Product-wide decisions remain owned by `planning/DECISIONS.md`, and all other domain decisions remain in their respective authoritative registers, architecture documents, contracts, and milestone dossiers. All changes MUST preserve this ownership boundary.

@@ -7,7 +7,7 @@
 **Primary Phase:** P1 STUDIO  
 **Primary Surface:** RaaS Studio  
 **Technology:** Tauri + Rust + React + TypeScript  
-**Priority:** PRI-1 (primary product path per Priority Matrix; see `docs/planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
+**Priority:** PRI-1 (primary product path per Priority Matrix; see `planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
 **Status:** PLANNED  
 **Primary Outcome:** A production-grade project workspace that allows authenticated
 users to create, list, open, configure and manage local RaaS projects while
@@ -319,11 +319,11 @@ The UI must never assume that possession of a project ID grants access.
 
 Relevant planning documents:
 
-- `docs/planning/IMPLEMENTATION_ROADMAP.md`;
-- `docs/planning/PHASES.md`;
-- `docs/planning/INTEGRATION_PLAN.md`;
-- `docs/planning/DECISIONS.md`;
-- `docs/planning/RESOURCE_PLAN.md`.
+- `planning/IMPLEMENTATION_ROADMAP.md`;
+- `planning/PHASES.md`;
+- `planning/INTEGRATION_PLAN.md`;
+- `planning/DECISIONS.md`;
+- `planning/RESOURCE_PLAN.md`.
 
 ## 3.7 Dependency Flow
 

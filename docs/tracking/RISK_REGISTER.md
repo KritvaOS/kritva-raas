@@ -69,7 +69,7 @@ This register covers risks associated with:
 - operations.
 
 The register applies to P0 FOUNDATION through P8 PRODUCTION. The Phase column uses canonical
-identifiers from `docs/planning/PHASES.md`. Physical robot operation, emergency-stop
+identifiers from `planning/PHASES.md`. Physical robot operation, emergency-stop
 qualification, and hardware-specific safety risks belong to P6 LAB & ROBOT; P5 EXECUTION
 owns only simulated-execution and simulation-fidelity risks. A risk that spans phases
 is split into separate rows, each owned by one phase, or lists every owning phase explicitly.
@@ -191,7 +191,7 @@ Example:
 
 Material decisions shall be recorded in:
 
-    docs/planning/DECISIONS.md
+    planning/DECISIONS.md
 
 ## 9. Risk Categories
 
@@ -1116,9 +1116,9 @@ Critical tasks must not remain ownerless.
 
 Schedule risk is measured against the canonical program sequence and critical path. This register does not define its own sequence:
 
-- Phase sequence (P0 FOUNDATION through P8 PRODUCTION): `docs/planning/PHASES.md`, Sections 3 and 5.
-- Milestone critical path: `docs/planning/IMPLEMENTATION_ROADMAP.md`, Section 25.
-- Cross-domain dependencies: `docs/planning/DEPENDENCY_MAP.md`.
+- Phase sequence (P0 FOUNDATION through P8 PRODUCTION): `planning/PHASES.md`, Sections 3 and 5.
+- Milestone critical path: `planning/IMPLEMENTATION_ROADMAP.md`, Section 25.
+- Cross-domain dependencies: `planning/DEPENDENCY_MAP.md`.
 
 For reference only, the canonical phase order is:
 

@@ -8,7 +8,7 @@
 **API implementation architecture:** `docs/backend/architecture/API_IMPLEMENTATION.md`  
 **Product API architecture:** `docs/architecture/API_ARCHITECTURE.md`  
 **REST wire contract:** `docs/protocol/API_CONTRACT.md`  
-**Canonical phase definitions:** `docs/planning/PHASES.md`
+**Canonical phase definitions:** `planning/PHASES.md`
 
 ---
 
@@ -114,7 +114,7 @@ This document MUST refer to those sources rather than restate their public schem
 | WebSocket transport | `docs/protocol/WEBSOCKET_CONTRACT.md` | Provide implementation seams where needed |
 | Lab Agent protocol | `docs/protocol/LAB_PROTOCOL.md` | Provide adapters and worker integration |
 | Artifact manifest | `docs/protocol/ARTIFACT_MANIFEST.md` | Provide storage and validation integration seams |
-| Phase definitions | `docs/planning/PHASES.md` | Use canonical phase names and identifiers |
+| Phase definitions | `planning/PHASES.md` | Use canonical phase names and identifiers |
 | Milestone scope | `docs/**/milestones/` | Implement the scope defined by each dossier |
 
 ## 3. Normative language
@@ -1155,7 +1155,7 @@ Operational alerts SHOULD use stable metrics and thresholds rather than parsing 
 
 ## 55. Phase and milestone traceability
 
-Canonical phase definitions are maintained in `docs/planning/PHASES.md`.
+Canonical phase definitions are maintained in `planning/PHASES.md`.
 
 Existing milestone dossiers under `docs/**/milestones/` are authoritative for milestone scope.
 

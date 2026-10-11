@@ -8,7 +8,7 @@
 **Transport alignment:** `docs/protocol/WEBSOCKET_CONTRACT.md`, `docs/protocol/LAB_PROTOCOL.md`  
 **Architecture alignment:** `docs/architecture/PROTOCOL_ARCHITECTURE.md`  
 **Related contract:** `docs/protocol/ARTIFACT_MANIFEST.md`  
-**Canonical phase definitions:** `docs/planning/PHASES.md`
+**Canonical phase definitions:** `planning/PHASES.md`
 
 ---
 
@@ -1743,7 +1743,7 @@ The existence of an artifact event MUST NOT override the manifest's integrity, a
 
 ## 63. Phase and milestone traceability
 
-The event contract supports the frozen Kritva RaaS delivery model. Phase and milestone definitions remain authoritative in `docs/planning/PHASES.md` and the corresponding milestone dossiers under `docs/**/milestones/`.
+The event contract supports the frozen Kritva RaaS delivery model. Phase and milestone definitions remain authoritative in `planning/PHASES.md` and the corresponding milestone dossiers under `docs/**/milestones/`.
 
 | Phase | Event-contract relevance |
 |---|---|
@@ -2184,7 +2184,7 @@ An implementation MUST satisfy every applicable item before claiming conformance
 - [ ] Lab Agent integration follows `docs/protocol/LAB_PROTOCOL.md`.
 - [ ] Artifact and result references follow `docs/protocol/ARTIFACT_MANIFEST.md`.
 - [ ] Architecture responsibilities align with `docs/architecture/PROTOCOL_ARCHITECTURE.md`.
-- [ ] Phase references align with `docs/planning/PHASES.md`.
+- [ ] Phase references align with `planning/PHASES.md`.
 - [ ] Milestone scope remains governed by the authoritative milestone dossiers.
 - [ ] Producer, consumer, broker, replay, and negative conformance tests pass.
 

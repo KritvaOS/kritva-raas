@@ -14,7 +14,7 @@ It provides a consistent record of frontend implementation choices, the context 
 
 The register is intended to help frontend engineers make consistent decisions while preserving the separation between frontend implementation, product/system architecture, backend implementation, protocol contracts, cloud infrastructure, and database implementation.
 
-This document MUST contain only frontend-specific architectural decisions. Product-wide and cross-domain decisions MUST be recorded in `docs/planning/DECISIONS.md` and referenced here when they constrain frontend behavior.
+This document MUST contain only frontend-specific architectural decisions. Product-wide and cross-domain decisions MUST be recorded in `planning/DECISIONS.md` and referenced here when they constrain frontend behavior.
 
 ## 2. Ownership and Boundaries
 
@@ -44,7 +44,7 @@ Each decision MUST be limited to a frontend concern or to the frontend implement
 
 ### 2.2 Product-Wide Decision Ownership
 
-`docs/planning/DECISIONS.md` owns product/system-level architectural decisions and the index to domain decision registers.
+`planning/DECISIONS.md` owns product/system-level architectural decisions and the index to domain decision registers.
 
 A frontend decision MUST reference the product-wide register when it implements, depends on, or proposes changing a cross-domain architectural constraint.
 
@@ -59,14 +59,14 @@ This document MUST NOT independently redefine:
 - Product-level business rules.
 - Shared cross-domain compatibility requirements.
 
-If a frontend proposal requires changing a product/system-level decision, the proposal MUST be raised for review in `docs/planning/DECISIONS.md` before it is treated as an approved frontend architecture choice.
+If a frontend proposal requires changing a product/system-level decision, the proposal MUST be raised for review in `planning/DECISIONS.md` before it is treated as an approved frontend architecture choice.
 
 ### 2.3 Other Document Ownership
 
 | Concern | Authoritative document |
 |---|---|
-| Product/system-level decisions | `docs/planning/DECISIONS.md` |
-| Canonical phase definitions | `docs/planning/PHASES.md` |
+| Product/system-level decisions | `planning/DECISIONS.md` |
+| Canonical phase definitions | `planning/PHASES.md` |
 | Frontend architecture and implementation | Applicable architecture documents under `docs/frontend/` |
 | Frontend-specific decisions | `docs/frontend/planning/DECISIONS.md` |
 | Frontend milestone scope and acceptance | Authoritative dossiers under `docs/frontend/milestones/` |
@@ -211,7 +211,7 @@ Examples:
 
 An ID MUST NOT be reused after rejection, withdrawal, or supersession.
 
-Product/system decision IDs MUST remain under the convention used by `docs/planning/DECISIONS.md`.
+Product/system decision IDs MUST remain under the convention used by `planning/DECISIONS.md`.
 
 ### 4.3 Status Definitions
 
@@ -296,7 +296,7 @@ When a decision is accepted, the index MUST link to its complete record and iden
 
 When a decision is superseded, the index MUST identify the successor.
 
-When a frontend decision depends on a product/system decision, the index or full record SHOULD link to the corresponding record in `docs/planning/DECISIONS.md`.
+When a frontend decision depends on a product/system decision, the index or full record SHOULD link to the corresponding record in `planning/DECISIONS.md`.
 
 The index MUST NOT duplicate product/system-level decision content.
 
@@ -315,7 +315,7 @@ Without explicit ownership, it becomes unclear whether a statement represents an
 
 Frontend-specific architectural decisions MUST be recorded in this register.
 
-Product/system-level decisions MUST be recorded in `docs/planning/DECISIONS.md`.
+Product/system-level decisions MUST be recorded in `planning/DECISIONS.md`.
 
 Current frontend architecture MUST be described in the applicable frontend architecture documents.
 
@@ -464,7 +464,7 @@ A consistent data-access boundary makes request behavior, cancellation, error ha
 
 A frontend decision MUST NOT independently alter API routes, request schemas, response schemas, or error semantics.
 
-A required wire-contract change MUST be reviewed with the API contract owner and, when it changes a product/system-level constraint, referenced in `docs/planning/DECISIONS.md`.
+A required wire-contract change MUST be reviewed with the API contract owner and, when it changes a product/system-level constraint, referenced in `planning/DECISIONS.md`.
 
 ### 9.6 Review Triggers
 
@@ -607,7 +607,7 @@ Review this decision if user-perceived performance regresses, client diagnostics
 
 **Status:** Proposed  
 **Scope:** Studio UI and Rust Local Runtime implementation of coding-agent integration  
-**Implements:** SYS-ADR-007 (`docs/planning/DECISIONS.md`); architecture in `docs/architecture/CODING_AGENT_INTEGRATION.md`
+**Implements:** SYS-ADR-007 (`planning/DECISIONS.md`); architecture in `docs/architecture/CODING_AGENT_INTEGRATION.md`
 
 ### 13.1 Context
 
@@ -666,7 +666,7 @@ The review MUST include the frontend owner responsible for the affected area.
 
 Other domain owners SHOULD participate when the proposal affects their contracts, dependencies, or implementation responsibilities.
 
-A product/system decision MUST be escalated to `docs/planning/DECISIONS.md` when the proposal would change a cross-domain architectural constraint.
+A product/system decision MUST be escalated to `planning/DECISIONS.md` when the proposal would change a cross-domain architectural constraint.
 
 ### 14.3 Acceptance
 
@@ -704,7 +704,7 @@ Implementation completion does not prevent a future decision from superseding th
 
 ### 15.1 Phase Authority
 
-`docs/planning/PHASES.md` is the canonical source for phase definitions.
+`planning/PHASES.md` is the canonical source for phase definitions.
 
 This register MUST NOT redefine the phases or use phase references to expand milestone scope.
 
@@ -868,7 +868,7 @@ A temporary deviation MUST NOT silently become the permanent implementation.
 ### 18.1 Ownership
 
 - [ ] Frontend-specific decisions are recorded here.
-- [ ] Product/system decisions link to `docs/planning/DECISIONS.md`.
+- [ ] Product/system decisions link to `planning/DECISIONS.md`.
 - [ ] Frontend architecture documents describe the current design.
 - [ ] Frontend milestone dossiers remain authoritative for acceptance.
 - [ ] Backend, cloud, and database implementation decisions remain in their domain registers.
@@ -898,7 +898,7 @@ A temporary deviation MUST NOT silently become the permanent implementation.
 
 ### 18.4 Phase and Milestone Traceability
 
-- [ ] Phase references use the canonical model in `docs/planning/PHASES.md`.
+- [ ] Phase references use the canonical model in `planning/PHASES.md`.
 - [ ] Frontend milestone identifiers and names use the frozen canonical model.
 - [ ] Milestone scope is obtained from authoritative frontend milestone dossiers.
 - [ ] Cross-domain impacts link to the relevant domain dossiers.
@@ -909,7 +909,7 @@ A temporary deviation MUST NOT silently become the permanent implementation.
 The frontend decision register is ready for ongoing use when:
 
 1. Its frontend-only ownership boundary is explicit.
-2. Product/system-level decisions are referenced through `docs/planning/DECISIONS.md`.
+2. Product/system-level decisions are referenced through `planning/DECISIONS.md`.
 3. Frontend decisions have stable IDs, statuses, owners, and review triggers.
 4. Current frontend architecture remains documented in the appropriate architecture documents.
 5. API, event, artifact, and product/system contracts remain authoritative in their designated documents.
@@ -919,4 +919,4 @@ The frontend decision register is ready for ongoing use when:
 9. Phase and milestone references use the frozen canonical model.
 10. Decisions can be verified without turning this register into a task tracker or implementation manual.
 
-This document owns frontend-specific architecture decisions only. Product-wide decisions remain owned by `docs/planning/DECISIONS.md`, and all other domain decisions remain in their respective authoritative registers and architecture documents. All changes MUST preserve this ownership boundary.
+This document owns frontend-specific architecture decisions only. Product-wide decisions remain owned by `planning/DECISIONS.md`, and all other domain decisions remain in their respective authoritative registers and architecture documents. All changes MUST preserve this ownership boundary.

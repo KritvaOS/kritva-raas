@@ -9,7 +9,7 @@
 **Primary Surface:** RaaS Control Plane / Backend  
 **Technology:** TypeScript/Node.js backend, PostgreSQL, REST API v1  
 **Architecture:** Production-oriented Modular Monolith  
-**Priority:** PRI-0 (critical invariant per Priority Matrix; see `docs/planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
+**Priority:** PRI-0 (critical invariant per Priority Matrix; see `planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
 **Status:** PLANNED  
 **Primary Outcome:** Establish the authoritative Control Plane foundation for identity,
 organizations, authorization, projects, platform catalog, repositories, API v1,

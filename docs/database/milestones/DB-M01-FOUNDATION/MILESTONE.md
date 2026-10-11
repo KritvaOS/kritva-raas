@@ -46,8 +46,8 @@ This dossier describes required outcomes and ownership boundaries. It does not d
 
 The following concerns remain with their authoritative documents or domain owners:
 
-- Canonical phase definitions: `docs/planning/PHASES.md`.
-- Cross-domain architectural decisions: `docs/planning/DECISIONS.md`.
+- Canonical phase definitions: `planning/PHASES.md`.
+- Cross-domain architectural decisions: `planning/DECISIONS.md`.
 - System architecture: `docs/architecture/`.
 - Backend architecture and service boundaries: `docs/backend/architecture/BACKEND_ARCHITECTURE.md`.
 - API and wire-level contracts: `docs/protocol/API_CONTRACT.md`.
@@ -65,9 +65,9 @@ The following concerns remain with their authoritative documents or domain owner
 
 | Concern | Authoritative owner | DB-M01 FOUNDATION responsibility |
 |---|---|---|
-| Canonical phase model | `docs/planning/PHASES.md` | Follow the frozen phase names and numbering |
+| Canonical phase model | `planning/PHASES.md` | Follow the frozen phase names and numbering |
 | System architecture | `docs/architecture/` | Implement the database foundation consistently with approved architecture |
-| Architectural decisions | `docs/planning/DECISIONS.md` | Consume approved decisions and avoid creating undocumented alternatives |
+| Architectural decisions | `planning/DECISIONS.md` | Consume approved decisions and avoid creating undocumented alternatives |
 | PostgreSQL schema conventions | Database domain | Establish foundational schema conventions |
 | PostgreSQL environment requirements | Database and cloud architecture documents | Define baseline requirements and configuration boundaries |
 | Migration tooling and conventions | Database domain | Establish repeatable schema evolution |

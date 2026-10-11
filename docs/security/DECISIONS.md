@@ -1,6 +1,6 @@
 # Security Decision Register
 
-This register holds security-specific architecture decisions (ADRs). Product/system-wide decisions are recorded in [../planning/DECISIONS.md](../planning/DECISIONS.md); the decision index is [../tracking/DECISION_LOG.md](../tracking/DECISION_LOG.md).
+This register holds security-specific architecture decisions (ADRs). Product/system-wide decisions are recorded in [../planning/DECISIONS.md](../../planning/DECISIONS.md); the decision index is [../tracking/DECISION_LOG.md](../tracking/DECISION_LOG.md).
 
 Security ADRs MUST be recorded here when they concern: authentication and authorization models, source-code privacy controls, artifact signing and trust, key and secrets management, tenant isolation mechanisms, and audit logging policy.
 

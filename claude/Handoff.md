@@ -54,9 +54,9 @@ CI: `source-header-check` and `docs-check` (the `docs-check` job also runs the a
 
 ## 4. Key documents
 
-- `docs/planning/backend/` — program plan, task register, dependency map, security gate (SEC-GATE-001 to 013), test strategy (BTS-001 to 037), acceptance criteria (BAC-001 to 039), risk register, resource plan, `BACKEND_CHANGELOG.md` (PB-001 to PB-021 on `d5fcb39`; PB-022 and PB-023 merged (#19, #20); PB-024 merged (#21); PB-025 merged (#22); PB-026 in PR O).
-- `docs/planning/backend/increments/B-INC-001` to `B-INC-004` — 8 files each. B-INC-001 has 21 criteria and 29 tasks.
-- `docs/planning/backend/decisions/` — approval workflow and packages: README, `approvals/APPROVAL-<DECISION-ID>-<slug>.md`. The decision record in its increment `decisions/` directory is the only source of truth for the final disposition.
+- `planning/backend/` — program plan, task register, dependency map, security gate (SEC-GATE-001 to 013), test strategy (BTS-001 to 037), acceptance criteria (BAC-001 to 039), risk register, resource plan, `BACKEND_CHANGELOG.md` (PB-001 to PB-021 on `d5fcb39`; PB-022 and PB-023 merged (#19, #20); PB-024 merged (#21); PB-025 merged (#22); PB-026 in PR O).
+- `planning/backend/increments/B-INC-001` to `B-INC-004` — 8 files each. B-INC-001 has 21 criteria and 29 tasks.
+- `planning/backend/decisions/` — approval workflow and packages: README, `approvals/APPROVAL-<DECISION-ID>-<slug>.md`. The decision record in its increment `decisions/` directory is the only source of truth for the final disposition.
 - `docs/development/SOURCE_HEADER_STANDARD.md`, `docs/security/SECRETS_MANAGEMENT.md`, `docs/security/KEY_MANAGEMENT.md`, `Makefile`.
 
 ## 5. Status

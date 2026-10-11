@@ -63,8 +63,8 @@ Its scope includes:
 
 The following responsibilities belong to their authoritative documents and milestones:
 
-- Canonical phase definitions: `docs/planning/PHASES.md`.
-- System-level architecture and cross-domain decisions: `docs/planning/DECISIONS.md` and `docs/architecture/`.
+- Canonical phase definitions: `planning/PHASES.md`.
+- System-level architecture and cross-domain decisions: `planning/DECISIONS.md` and `docs/architecture/`.
 - System cloud topology: `docs/architecture/CLOUD_ARCHITECTURE.md`.
 - Cloud implementation architecture: `docs/cloud/architecture/CLOUD_ARCHITECTURE.md`.
 - Cloud infrastructure security architecture: `docs/cloud/architecture/SECURITY_ARCHITECTURE.md`.
@@ -97,7 +97,7 @@ C-M04 PRODUCTION supplies and operates the production infrastructure required by
 
 | Concern | Authoritative owner | C-M04 PRODUCTION responsibility |
 |---|---|---|
-| Canonical phase definitions | `docs/planning/PHASES.md` | Follow the frozen model exactly |
+| Canonical phase definitions | `planning/PHASES.md` | Follow the frozen model exactly |
 | System architecture | `docs/architecture/` | Implement approved production infrastructure boundaries |
 | System cloud topology | `docs/architecture/CLOUD_ARCHITECTURE.md` | Apply the approved topology |
 | Cloud implementation architecture | `docs/cloud/architecture/CLOUD_ARCHITECTURE.md` | Follow cloud implementation conventions |

@@ -22,8 +22,8 @@ This file defines the tracking process and register structure. It does not repla
 
 | Concern | Authoritative reference |
 |---|---|
-| Canonical phase definitions | `docs/planning/PHASES.md` |
-| Project-wide decisions | `docs/planning/DECISIONS.md` |
+| Canonical phase definitions | `planning/PHASES.md` |
+| Project-wide decisions | `planning/DECISIONS.md` |
 | Project status | `docs/tracking/STATUS.md` |
 | Phase status | `docs/tracking/PHASE_STATUS.md` |
 | Milestone status | `docs/tracking/MILESTONE_STATUS.md` |
@@ -38,7 +38,7 @@ This file defines the tracking process and register structure. It does not repla
 | Security decisions and plans | `docs/security/` |
 | Milestone scope and acceptance | `docs/**/milestones/` |
 
-The canonical phase definition is maintained only in `docs/planning/PHASES.md`. This document references the canonical phase identifiers and names for traceability; it does not establish alternative phase definitions.
+The canonical phase definition is maintained only in `planning/PHASES.md`. This document references the canonical phase identifiers and names for traceability; it does not establish alternative phase definitions.
 
 Existing milestone dossiers under `docs/**/milestones/` are authoritative for milestone scope, deliverables, dependencies, and acceptance criteria.
 
@@ -343,7 +343,7 @@ Where the provider does not give a reliable date, use `TBD`, record the follow-u
 
 Phase and milestone dependencies describe delivery sequencing and readiness relationships. They must not redefine the phases or milestones.
 
-The canonical phase names are maintained in `docs/planning/PHASES.md`.
+The canonical phase names are maintained in `planning/PHASES.md`.
 
 | Phase ID | Canonical phase name |
 |---|---|
@@ -557,12 +557,12 @@ The initial dependency inventory must be populated by reviewing existing project
 
 | Source | Reconciliation activity | Status | Owner |
 |---|---|---|---|
-| `docs/planning/PHASES.md` | Verify canonical phase references | PENDING | TBD |
+| `planning/PHASES.md` | Verify canonical phase references | PENDING | TBD |
 | `docs/tracking/TASK_STATUS.md` | Identify task prerequisites and blockers | PENDING | TBD |
 | `docs/tracking/MILESTONE_STATUS.md` | Identify milestone dependencies and acceptance gates | PENDING | TBD |
 | `docs/tracking/PHASE_STATUS.md` | Identify phase readiness constraints | PENDING | TBD |
 | `docs/tracking/RISK_REGISTER.md` | Link dependency-related risks | PENDING | TBD |
-| `docs/planning/DECISIONS.md` | Identify decisions that block implementation | PENDING | TBD |
+| `planning/DECISIONS.md` | Identify decisions that block implementation | PENDING | TBD |
 | `docs/frontend/` | Review frontend dependencies | PENDING | TBD |
 | `docs/backend/` | Review backend dependencies | PENDING | TBD |
 | `docs/database/` | Review database dependencies | PENDING | TBD |
@@ -601,7 +601,7 @@ If any required item remains incomplete, keep the dependency open or in validati
 - Keep acceptance conditions observable and testable.
 - Record evidence rather than relying on verbal confirmation.
 - Use frozen phase and milestone identifiers.
-- Refer to `docs/planning/PHASES.md` for canonical phase definitions.
+- Refer to `planning/PHASES.md` for canonical phase definitions.
 - Refer to milestone dossiers for scope and acceptance.
 - Keep external commitments distinct from internal estimates.
 - Escalate based on impact, not only elapsed time.
@@ -639,7 +639,7 @@ Baseline acceptance confirms that the tracking process is defined. It does not i
 - Defined readiness evidence and consumer verification requirements.
 - Defined escalation levels, triggers, and recovery workflow.
 - Added cross-domain references using the frozen frontend, backend, database, and cloud milestone identifiers.
-- Established `docs/planning/PHASES.md` as the canonical phase definition.
+- Established `planning/PHASES.md` as the canonical phase definition.
 - Preserved milestone dossiers under `docs/**/milestones/` as authoritative for scope and acceptance.
 - Added reconciliation, review, change-control, and acceptance checklists.
 - Avoided inventing dependency records, owners, dates, or commitments.

@@ -77,8 +77,8 @@ Where a global policy requires approval, tagging, or authorization, the frontend
 | Frontend architecture | Applicable architecture documents under `docs/frontend/` |
 | Frontend architecture decisions | `docs/frontend/planning/DECISIONS.md` |
 | Frontend milestone scope and acceptance | Authoritative dossiers under `docs/frontend/milestones/` |
-| Canonical phase definitions | `docs/planning/PHASES.md` |
-| Product and system decisions | `docs/planning/DECISIONS.md` |
+| Canonical phase definitions | `planning/PHASES.md` |
+| Product and system decisions | `planning/DECISIONS.md` |
 | API contract | `docs/protocol/API_CONTRACT.md` |
 | Event contract | `docs/protocol/EVENT_CONTRACT.md` |
 | Artifact contract and manifest | `docs/protocol/ARTIFACT_MANIFEST.md` |
@@ -976,7 +976,7 @@ Do not publish internal diagnostics or environment details that expose secrets o
 
 ### 16.1 Phase Authority
 
-`docs/planning/PHASES.md` is the canonical source for phase definitions.
+`planning/PHASES.md` is the canonical source for phase definitions.
 
 This document describes release implementation practices and does not redefine phase scope.
 

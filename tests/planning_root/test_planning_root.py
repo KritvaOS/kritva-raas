@@ -78,6 +78,13 @@ class LocatorTests(unittest.TestCase):
             pr.planning_rel(self.root)
 
 
+class RepositoryTests(unittest.TestCase):
+    def test_the_repository_keeps_planning_at_the_root(self):
+        self.assertEqual(pr.planning_rel(ROOT), "planning")
+        self.assertTrue((ROOT / "planning/PHASES.md").is_file())
+        self.assertFalse((ROOT / "docs/planning/backend").exists(), "docs/planning/ may hold only the signpost")
+
+
 class CheckerLocationTests(unittest.TestCase):
     def setUp(self):
         self._tmp = tempfile.TemporaryDirectory()
@@ -95,7 +102,7 @@ class CheckerLocationTests(unittest.TestCase):
         return p.returncode, p.stdout + p.stderr
 
     def copy_backend(self, dest):
-        shutil.copytree(ROOT / "docs/planning/backend", self.root / dest / "backend")
+        shutil.copytree(pr.planning_dir(ROOT) / "backend", self.root / dest / "backend")
 
     def test_traceability_gives_the_same_result_in_both_locations(self):
         self.copy_backend("docs/planning")

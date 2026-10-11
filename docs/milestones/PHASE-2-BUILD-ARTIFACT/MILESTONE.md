@@ -25,8 +25,8 @@ Other documentation owns the following concerns:
 
 | Concern | Authoritative owner |
 |---|---|
-| Canonical phase definitions | `docs/planning/PHASES.md` |
-| System-level architecture and decisions | Applicable documents under `docs/architecture/` and `docs/planning/DECISIONS.md` |
+| Canonical phase definitions | `planning/PHASES.md` |
+| System-level architecture and decisions | Applicable documents under `docs/architecture/` and `planning/DECISIONS.md` |
 | Frontend implementation architecture | Applicable documents under `docs/frontend/architecture/` |
 | Desktop Studio foundation | `docs/milestones/PHASE-1-STUDIO/MILESTONE.md` and applicable frontend documentation |
 | Backend implementation architecture | `docs/backend/architecture/BACKEND_ARCHITECTURE.md` |

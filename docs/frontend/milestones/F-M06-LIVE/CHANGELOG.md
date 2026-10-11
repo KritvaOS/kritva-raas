@@ -52,7 +52,7 @@ Milestone: F-M06 — Live Execution
 
 # Appendix A — Phase Mapping
 
-The canonical mapping for F-M06 LIVE (P7) is defined in `docs/planning/PHASES.md` (Section 6). Cross-phase dependencies are owned by `docs/planning/DEPENDENCY_MAP.md` and `docs/planning/IMPLEMENTATION_ROADMAP.md`; milestone scope is owned by this milestone's `MILESTONE.md`. This appendix does not redefine either.
+The canonical mapping for F-M06 LIVE (P7) is defined in `planning/PHASES.md` (Section 6). Cross-phase dependencies are owned by `planning/DEPENDENCY_MAP.md` and `planning/IMPLEMENTATION_ROADMAP.md`; milestone scope is owned by this milestone's `MILESTONE.md`. This appendix does not redefine either.
 
 | Phase | Relationship to this milestone | Boundary note |
 |---|---|---|

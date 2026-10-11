@@ -14,7 +14,7 @@ It provides a consistent, traceable record of backend implementation choices, th
 
 The register exists to keep backend decisions explicit and reviewable without duplicating product/system decisions or the authoritative architecture and protocol documents.
 
-Backend decisions MUST remain consistent with the product/system architecture and contracts. When a backend proposal requires a change to a product-wide architectural constraint, that change MUST be reviewed through `docs/planning/DECISIONS.md`.
+Backend decisions MUST remain consistent with the product/system architecture and contracts. When a backend proposal requires a change to a product-wide architectural constraint, that change MUST be reviewed through `planning/DECISIONS.md`.
 
 ## 2. Ownership and Boundaries
 
@@ -46,7 +46,7 @@ Each record MUST describe a backend implementation decision rather than restate 
 
 ### 2.2 Product-Wide Decision Ownership
 
-`docs/planning/DECISIONS.md` owns product/system-level architecture decisions and the index to domain decision registers.
+`planning/DECISIONS.md` owns product/system-level architecture decisions and the index to domain decision registers.
 
 This backend register MUST NOT independently define or override:
 
@@ -68,8 +68,8 @@ When a backend proposal changes one of these concerns, the proposal MUST referen
 
 | Concern | Authoritative document |
 |---|---|
-| Product/system-level decisions | `docs/planning/DECISIONS.md` |
-| Canonical phase definitions | `docs/planning/PHASES.md` |
+| Product/system-level decisions | `planning/DECISIONS.md` |
+| Canonical phase definitions | `planning/PHASES.md` |
 | System backend responsibilities and ownership | `docs/architecture/BACKEND_ARCHITECTURE.md` |
 | Backend implementation architecture | `docs/backend/architecture/BACKEND_ARCHITECTURE.md` |
 | Backend API implementation | `docs/backend/architecture/API_IMPLEMENTATION.md` |
@@ -225,7 +225,7 @@ Examples:
 
 IDs MUST NOT be reused after a decision is rejected, withdrawn, or superseded.
 
-Product/system decision IDs MUST follow the convention defined in `docs/planning/DECISIONS.md`.
+Product/system decision IDs MUST follow the convention defined in `planning/DECISIONS.md`.
 
 ### 4.3 Status Definitions
 
@@ -312,7 +312,7 @@ When a decision is accepted, the index MUST link to its complete record and show
 
 When a decision is superseded, the index MUST identify the successor.
 
-When a decision depends on a product/system decision, the full record SHOULD link to the relevant entry in `docs/planning/DECISIONS.md`.
+When a decision depends on a product/system decision, the full record SHOULD link to the relevant entry in `planning/DECISIONS.md`.
 
 The index MUST NOT duplicate product-wide decision content.
 
@@ -331,7 +331,7 @@ Without explicit ownership, proposed approaches may be mistaken for accepted arc
 
 Backend-specific architecture decisions MUST be recorded in this register.
 
-Product/system-level decisions MUST be recorded in `docs/planning/DECISIONS.md`.
+Product/system-level decisions MUST be recorded in `planning/DECISIONS.md`.
 
 Backend implementation architecture MUST be described in `docs/backend/architecture/BACKEND_ARCHITECTURE.md`.
 
@@ -769,7 +769,7 @@ Review this decision if production incidents cannot be diagnosed reliably, telem
 
 **Status:** Proposed  
 **Scope:** Control Plane implementation of the coding-agent organization policy and provider metadata  
-**Implements:** SYS-ADR-007 (`docs/planning/DECISIONS.md`); architecture in `docs/architecture/CODING_AGENT_INTEGRATION.md` Section 8
+**Implements:** SYS-ADR-007 (`planning/DECISIONS.md`); architecture in `docs/architecture/CODING_AGENT_INTEGRATION.md` Section 8
 
 ### 16.1 Context
 
@@ -822,7 +822,7 @@ The backend owner responsible for the affected implementation area MUST review t
 
 Other domain owners SHOULD participate when the decision affects their contracts, implementation responsibilities, or operational assumptions.
 
-A decision that changes product-wide behavior MUST be escalated to `docs/planning/DECISIONS.md`.
+A decision that changes product-wide behavior MUST be escalated to `planning/DECISIONS.md`.
 
 ### 17.3 Acceptance
 
@@ -860,7 +860,7 @@ Implementation completion does not prevent a future decision from superseding th
 
 ### 18.1 Phase Authority
 
-`docs/planning/PHASES.md` is the canonical source for phase definitions.
+`planning/PHASES.md` is the canonical source for phase definitions.
 
 This register MUST NOT redefine phase meaning or use phase references to expand milestone scope.
 
@@ -1024,7 +1024,7 @@ A temporary deviation MUST NOT silently become the permanent implementation.
 ### 21.1 Ownership
 
 - [ ] Backend-specific decisions are recorded here.
-- [ ] Product/system decisions link to `docs/planning/DECISIONS.md`.
+- [ ] Product/system decisions link to `planning/DECISIONS.md`.
 - [ ] System backend responsibilities remain in `docs/architecture/BACKEND_ARCHITECTURE.md`.
 - [ ] Backend implementation architecture remains in `docs/backend/architecture/BACKEND_ARCHITECTURE.md`.
 - [ ] Backend API implementation remains in `docs/backend/architecture/API_IMPLEMENTATION.md`.
@@ -1056,7 +1056,7 @@ A temporary deviation MUST NOT silently become the permanent implementation.
 
 ### 21.4 Phase and Milestone Traceability
 
-- [ ] Phase references use the canonical model in `docs/planning/PHASES.md`.
+- [ ] Phase references use the canonical model in `planning/PHASES.md`.
 - [ ] Backend milestone identifiers and names use the frozen canonical model.
 - [ ] Milestone scope is obtained from authoritative backend milestone dossiers.
 - [ ] Cross-domain impacts link to relevant domain dossiers.
@@ -1067,7 +1067,7 @@ A temporary deviation MUST NOT silently become the permanent implementation.
 The backend decision register is ready for ongoing use when:
 
 1. Its backend-only ownership boundary is explicit.
-2. Product/system decisions are referenced through `docs/planning/DECISIONS.md`.
+2. Product/system decisions are referenced through `planning/DECISIONS.md`.
 3. Backend decisions have stable IDs, statuses, owners, and review triggers.
 4. Current backend implementation architecture remains documented in the appropriate architecture documents.
 5. API, event, and artifact contracts remain authoritative in their designated documents.
@@ -1077,4 +1077,4 @@ The backend decision register is ready for ongoing use when:
 9. Phase and milestone references use the frozen canonical model.
 10. Decisions can be verified without turning this register into a task tracker or implementation manual.
 
-This document owns backend-specific architecture decisions only. Product-wide decisions remain owned by `docs/planning/DECISIONS.md`, and all other domain decisions remain in their respective authoritative registers, architecture documents, contracts, and milestone dossiers. All changes MUST preserve this ownership boundary.
+This document owns backend-specific architecture decisions only. Product-wide decisions remain owned by `planning/DECISIONS.md`, and all other domain decisions remain in their respective authoritative registers, architecture documents, contracts, and milestone dossiers. All changes MUST preserve this ownership boundary.

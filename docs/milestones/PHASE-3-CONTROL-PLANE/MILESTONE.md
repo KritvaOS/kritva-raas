@@ -27,8 +27,8 @@ Other documentation owns the following concerns:
 
 | Concern | Authoritative owner |
 |---|---|
-| Canonical phase definitions | `docs/planning/PHASES.md` |
-| System-level architecture and product-wide decisions | Applicable documents under `docs/architecture/` and `docs/planning/DECISIONS.md` |
+| Canonical phase definitions | `planning/PHASES.md` |
+| System-level architecture and product-wide decisions | Applicable documents under `docs/architecture/` and `planning/DECISIONS.md` |
 | Backend implementation architecture | `docs/backend/architecture/BACKEND_ARCHITECTURE.md` |
 | Backend API implementation | `docs/backend/architecture/API_IMPLEMENTATION.md` |
 | API and event wire contracts | Applicable authoritative documents under `docs/protocol/` |

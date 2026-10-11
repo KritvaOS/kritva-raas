@@ -9,7 +9,7 @@
 **Transport:** HTTPS  
 **Architecture reference:** `docs/architecture/PROTOCOL_ARCHITECTURE.md`  
 **Related contracts:** `docs/protocol/EVENT_CONTRACT.md`, `docs/protocol/WEBSOCKET_CONTRACT.md`, `docs/protocol/LAB_PROTOCOL.md`, `docs/protocol/ARTIFACT_MANIFEST.md`  
-**Canonical phase definitions:** `docs/planning/PHASES.md`
+**Canonical phase definitions:** `planning/PHASES.md`
 
 ---
 
@@ -2005,7 +2005,7 @@ If `Retry-After` is provided, the client MUST honor the indicated retry delay.
 
 ## 65. Phase and milestone traceability
 
-Canonical phase definitions are maintained in `docs/planning/PHASES.md`. Existing milestone dossiers under `docs/**/milestones/` remain authoritative for milestone scope.
+Canonical phase definitions are maintained in `planning/PHASES.md`. Existing milestone dossiers under `docs/**/milestones/` remain authoritative for milestone scope.
 
 | Phase | API contract relevance |
 |---|---|
@@ -2131,7 +2131,7 @@ An implementation MUST satisfy every applicable item before claiming API contrac
 - [ ] Lab integration aligns with `docs/protocol/LAB_PROTOCOL.md`.
 - [ ] Artifact and result manifest references align with `docs/protocol/ARTIFACT_MANIFEST.md`.
 - [ ] Architecture responsibilities align with `docs/architecture/PROTOCOL_ARCHITECTURE.md`.
-- [ ] Phase references align with `docs/planning/PHASES.md`.
+- [ ] Phase references align with `planning/PHASES.md`.
 - [ ] Milestone scope remains governed by the authoritative milestone dossiers.
 - [ ] Server, client, security, and OpenAPI conformance tests pass.
 

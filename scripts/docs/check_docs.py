@@ -34,7 +34,7 @@ from planning_root import PlanningRootError, planning_dir, planning_rel
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 DOCS = ROOT / "docs"
 try:
-    PLAN = planning_dir(ROOT)      # docs/planning today, planning/ after the move
+    PLAN = planning_dir(ROOT)      # planning/ (legacy: docs/planning/)
     PLAN_REL = planning_rel(ROOT)
 except PlanningRootError as exc:
     print(f"ERROR {exc}")
@@ -79,6 +79,12 @@ REF = re.compile(r"`(docs/[A-Za-z0-9_./-]+\.md)`")
 for f in md:
     for m in REF.finditer(f.read_text()):
         if not (ROOT / m.group(1)).exists(): err(f"{f.relative_to(ROOT)}: missing referenced doc {m.group(1)}")
+# 4b backtick planning/ references that do not exist (only when planning is at the repository root)
+if PLAN_REL == "planning":
+    REF_PLAN = re.compile(r"(?<![A-Za-z0-9_./-])`?(planning/[A-Za-z0-9_./-]+\.md)`")
+    for f in md:
+        for m in REF_PLAN.finditer(f.read_text()):
+            if not (ROOT / m.group(1)).exists(): err(f"{f.relative_to(ROOT)}: missing referenced planning doc {m.group(1)}")
 # 5 title
 for f in md:
     if not f.read_text().lstrip().startswith("#"): err(f"{f.relative_to(ROOT)}: no H1 title")

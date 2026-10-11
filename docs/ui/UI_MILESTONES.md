@@ -30,7 +30,7 @@ The intended outcomes are:
 
 | Concern | Authoritative source |
 |---|---|
-| Canonical phase definitions | `docs/planning/PHASES.md` |
+| Canonical phase definitions | `planning/PHASES.md` |
 | Frontend milestone scope | `docs/frontend/milestones/` |
 | UI milestone delivery plan | `docs/ui/UI_MILESTONES.md` |
 | Frontend task backlog | `docs/frontend/planning/FRONTEND_TASKS.md` |
@@ -52,7 +52,7 @@ If a referenced file does not yet exist, its creation must be tracked as a separ
 
 The existing milestone dossiers under `docs/**/milestones/` are authoritative for their respective milestone scopes.
 
-`docs/planning/PHASES.md` is the sole canonical definition of phase names and boundaries. This document records UI delivery mapping and does not redefine the phases.
+`planning/PHASES.md` is the sole canonical definition of phase names and boundaries. This document records UI delivery mapping and does not redefine the phases.
 
 ## 3. Frozen Frontend Milestone Mapping
 
@@ -66,7 +66,7 @@ The existing milestone dossiers under `docs/**/milestones/` are authoritative fo
 | F-M06 | LIVE | P7 | Live session entry, connection state, telemetry presentation, and operator awareness |
 | F-M07 | RESULTS | P7 | Result discovery, files, metrics, comparisons, and execution history |
 
-The phase mapping in this table is frozen. Phase definitions remain in `docs/planning/PHASES.md`.
+The phase mapping in this table is frozen. Phase definitions remain in `planning/PHASES.md`.
 
 ## 4. UI Delivery Principles
 
@@ -815,7 +815,7 @@ This inventory is the complete frozen frontend milestone list for this document.
 
 ## 20. Final Review Checklist
 
-- [ ] The document references `docs/planning/PHASES.md` as the canonical phase definition.
+- [ ] The document references `planning/PHASES.md` as the canonical phase definition.
 - [ ] All seven frontend milestones use the frozen identifiers and names.
 - [ ] Each milestone has an explicit phase mapping.
 - [ ] Screen delivery expectations are defined for each milestone.
@@ -847,7 +847,7 @@ For each approved change, record:
 - test and acceptance impact
 - review outcome
 
-Changes to phase definitions must be made only in `docs/planning/PHASES.md` through the appropriate project governance process.
+Changes to phase definitions must be made only in `planning/PHASES.md` through the appropriate project governance process.
 
 Changes to milestone scope must be reflected in the corresponding authoritative dossier under `docs/frontend/milestones/` and then propagated to this UI delivery plan.
 
@@ -862,7 +862,7 @@ Changes to milestone scope must be reflected in the corresponding authoritative 
 - Standardized milestone review gates and acceptance evidence.
 - Added shared navigation, state, accessibility, and security expectations.
 - Explicitly preserved Job/Run, Booking/Execution, and Result provenance distinctions.
-- Delegated phase definitions to `docs/planning/PHASES.md`.
+- Delegated phase definitions to `planning/PHASES.md`.
 - Preserved existing milestone dossiers as the authoritative source for detailed scope.
 
 ### Future Changes

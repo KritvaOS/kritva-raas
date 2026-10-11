@@ -794,7 +794,7 @@ Example:
 
 The decision must be recorded in:
 
-    docs/planning/DECISIONS.md
+    planning/DECISIONS.md
 
 ## 44. Issue Resolution Types
 

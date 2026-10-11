@@ -25,10 +25,10 @@ This roadmap is the backend sequencing and dependency-planning document. It does
 
 | Concern | Authoritative source |
 |---|---|
-| Canonical phase definitions | `docs/planning/PHASES.md` |
-| Program implementation sequence | `docs/planning/IMPLEMENTATION_ROADMAP.md` |
-| Cross-domain dependencies | `docs/planning/DEPENDENCY_MAP.md` |
-| Release sequencing | `docs/planning/RELEASE_ROADMAP.md` |
+| Canonical phase definitions | `planning/PHASES.md` |
+| Program implementation sequence | `planning/IMPLEMENTATION_ROADMAP.md` |
+| Cross-domain dependencies | `planning/DEPENDENCY_MAP.md` |
+| Release sequencing | `planning/RELEASE_ROADMAP.md` |
 | Backend milestone scope | `docs/backend/milestones/` |
 | Frontend integration sequence | `docs/frontend/planning/FRONTEND_ROADMAP.md` |
 | Database implementation sequence | `docs/database/planning/DATABASE_ROADMAP.md` |
@@ -52,7 +52,7 @@ The milestone dossiers under `docs/backend/milestones/` are authoritative for th
 | B-M06 | RESULTS | P6-P7 |
 | B-M07 | PRODUCTION | P8 |
 
-Phase names and boundaries are defined exclusively in `docs/planning/PHASES.md`. The mapping above associates backend milestones with the canonical phase model; it does not redefine those phases.
+Phase names and boundaries are defined exclusively in `planning/PHASES.md`. The mapping above associates backend milestones with the canonical phase model; it does not redefine those phases.
 
 ### 2.3 Roadmap Maintenance
 
@@ -811,7 +811,7 @@ For every material change, record:
 - reviewer and decision
 - required updates to milestone dossiers and tracking documents
 
-Do not redefine phase boundaries in this file. Refer to `docs/planning/PHASES.md`.
+Do not redefine phase boundaries in this file. Refer to `planning/PHASES.md`.
 
 Do not duplicate detailed milestone acceptance requirements. Refer to the authoritative dossier under `docs/backend/milestones/`.
 
@@ -833,12 +833,12 @@ Do not duplicate detailed milestone acceptance requirements. Refer to the author
 - [ ] Job and Run are treated as distinct entities.
 - [ ] Durable backend state is authoritative.
 - [ ] Production qualification has explicit evidence requirements.
-- [ ] `docs/planning/PHASES.md` remains the canonical phase definition.
+- [ ] `planning/PHASES.md` remains the canonical phase definition.
 - [ ] Milestone dossiers remain authoritative for detailed milestone scope.
 
 ## 19. Final Invariants
 
-1. The canonical phase model is defined only in `docs/planning/PHASES.md`.
+1. The canonical phase model is defined only in `planning/PHASES.md`.
 2. The frozen backend milestones are B-M01 through B-M07 with the names and mappings specified in this roadmap.
 3. The milestone dossiers under `docs/backend/milestones/` are authoritative for detailed milestone scope.
 4. Backend authorization is enforced by services, not trusted to frontend behavior.
@@ -860,7 +860,7 @@ Do not duplicate detailed milestone acceptance requirements. Refer to the author
 
 - Established the consolidated backend roadmap for B-M01 through B-M07.
 - Aligned all backend milestone names and phase mappings with the frozen canonical model.
-- Delegated phase definitions to `docs/planning/PHASES.md`.
+- Delegated phase definitions to `planning/PHASES.md`.
 - Delegated detailed milestone scope to authoritative backend milestone dossiers.
 - Added cross-domain dependencies for frontend, database, cloud, and protocol work.
 - Added risks, mitigations, and exit criteria for every backend milestone.

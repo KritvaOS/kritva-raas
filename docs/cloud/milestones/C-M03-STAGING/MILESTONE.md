@@ -58,8 +58,8 @@ Its scope includes:
 
 The following responsibilities belong to their authoritative documents and milestones:
 
-- Canonical phase definitions: `docs/planning/PHASES.md`.
-- Cross-domain architecture and system-level decisions: `docs/planning/DECISIONS.md` and `docs/architecture/`.
+- Canonical phase definitions: `planning/PHASES.md`.
+- Cross-domain architecture and system-level decisions: `planning/DECISIONS.md` and `docs/architecture/`.
 - Cloud architecture and system topology: `docs/architecture/CLOUD_ARCHITECTURE.md`.
 - Cloud implementation architecture: `docs/cloud/architecture/CLOUD_ARCHITECTURE.md`.
 - Cloud security architecture: `docs/cloud/architecture/SECURITY_ARCHITECTURE.md`.
@@ -97,7 +97,7 @@ C-M03 STAGING provisions and operates the infrastructure required to validate th
 
 | Concern | Authoritative owner | C-M03 STAGING responsibility |
 |---|---|---|
-| Canonical phase definitions | `docs/planning/PHASES.md` | Follow the frozen model exactly |
+| Canonical phase definitions | `planning/PHASES.md` | Follow the frozen model exactly |
 | System architecture | `docs/architecture/` | Implement approved infrastructure boundaries |
 | Cloud topology | `docs/architecture/CLOUD_ARCHITECTURE.md` | Provide staging topology consistent with system architecture |
 | Cloud implementation architecture | `docs/cloud/architecture/CLOUD_ARCHITECTURE.md` | Follow cloud implementation conventions |

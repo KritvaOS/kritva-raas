@@ -38,7 +38,7 @@ from planning_root import PlanningRootError, planning_dir
 
 ROOT = Path(__file__).resolve().parents[2]
 try:
-    BACKEND = planning_dir(ROOT) / "backend"      # docs/planning today, planning/ after the move
+    BACKEND = planning_dir(ROOT) / "backend"      # planning/ (legacy: docs/planning/)
 except PlanningRootError as exc:
     print(f"ERROR {exc}")
     sys.exit(1)

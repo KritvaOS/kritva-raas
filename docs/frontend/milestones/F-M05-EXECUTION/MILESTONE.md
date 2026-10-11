@@ -7,7 +7,7 @@
 **Primary Phase:** P5 EXECUTION  
 **Primary Surface:** RaaS Studio + Control Plane  
 **Technology:** Tauri + Rust + React + TypeScript + WebSocket/REST  
-**Priority:** PRI-1 (primary product path per Priority Matrix; see `docs/planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
+**Priority:** PRI-1 (primary product path per Priority Matrix; see `planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
 **Status:** PLANNED  
 **Primary Outcome:** A production-grade remote execution workflow that creates
 Jobs from validated artifacts and confirmed bookings, displays Job and Run
@@ -357,7 +357,7 @@ F-M05 depends on:
 | `docs/security/ARTIFACT_SECURITY.md` | Artifact trust |
 | `docs/security/AUDIT_LOGGING.md` | Execution audit |
 | `docs/security/TENANT_ISOLATION.md` | Tenant isolation |
-| `docs/planning/INTEGRATION_PLAN.md` | Lab integration |
+| `planning/INTEGRATION_PLAN.md` | Lab integration |
 | `docs/ui/UI_ACCEPTANCE_CRITERIA.md` | UI acceptance |
 | `docs/ui/UI_REVIEW_CHECKLIST.md` | UI review |
 

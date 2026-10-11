@@ -52,8 +52,8 @@ This dossier defines the required persistence semantics and integrity boundaries
 
 The following responsibilities remain with their authoritative documents and milestones:
 
-- Canonical phase definitions: `docs/planning/PHASES.md`.
-- Cross-domain architectural decisions: `docs/planning/DECISIONS.md`.
+- Canonical phase definitions: `planning/PHASES.md`.
+- Cross-domain architectural decisions: `planning/DECISIONS.md`.
 - System architecture: `docs/architecture/`.
 - PostgreSQL baseline, migration tooling, identity/organization/project schema, foundational RLS, and audit schema: DB-M01 FOUNDATION (P0-P3).
 - Platform, resource, artifact, and storage metadata: DB-M02 CORE DATA (P3).
@@ -74,9 +74,9 @@ The following responsibilities remain with their authoritative documents and mil
 
 | Concern | Authoritative owner | DB-M03 BOOKING DATA responsibility |
 |---|---|---|
-| Canonical phase definitions | `docs/planning/PHASES.md` | Follow the frozen model exactly |
+| Canonical phase definitions | `planning/PHASES.md` | Follow the frozen model exactly |
 | System architecture | `docs/architecture/` | Follow approved system boundaries |
-| Cross-domain decisions | `docs/planning/DECISIONS.md` | Consume approved decisions |
+| Cross-domain decisions | `planning/DECISIONS.md` | Consume approved decisions |
 | PostgreSQL and migration foundation | DB-M01 FOUNDATION (P0-P3) | Reuse established conventions |
 | Identity, organization, membership, and project schema | DB-M01 FOUNDATION (P0-P3) | Reference foundational entities |
 | Platform, resource, artifact, and storage metadata | DB-M02 CORE DATA (P3) | Reference core entities where applicable |

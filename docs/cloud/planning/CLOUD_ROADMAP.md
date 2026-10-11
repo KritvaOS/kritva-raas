@@ -41,8 +41,8 @@ It establishes:
 
 This roadmap does not replace or duplicate:
 
-- Canonical phase definitions: `docs/planning/PHASES.md`.
-- System-level planning decisions: `docs/planning/DECISIONS.md`.
+- Canonical phase definitions: `planning/PHASES.md`.
+- System-level planning decisions: `planning/DECISIONS.md`.
 - System architecture: `docs/architecture/`.
 - System cloud topology: `docs/architecture/CLOUD_ARCHITECTURE.md`.
 - Cloud implementation architecture: `docs/cloud/architecture/CLOUD_ARCHITECTURE.md`.
@@ -63,13 +63,13 @@ The roadmap identifies these owners and their dependencies but does not redefine
 
 Use the following authority order when planning or reviewing cloud work:
 
-1. `docs/planning/PHASES.md` defines canonical phase names and phase boundaries.
+1. `planning/PHASES.md` defines canonical phase names and phase boundaries.
 2. The milestone dossier for a milestone under `docs/**/milestones/` defines that milestone's scope.
 3. System architecture and approved decisions define cross-domain architecture and constraints.
 4. This roadmap defines the cloud delivery sequence, cross-domain dependencies, and roadmap-level risks.
 5. Sibling task and acceptance files define task execution and detailed evidence requirements.
 
-If a roadmap statement conflicts with an authoritative milestone dossier, the dossier controls milestone scope. If a phase name or number conflicts with `docs/planning/PHASES.md`, the canonical phase model controls.
+If a roadmap statement conflicts with an authoritative milestone dossier, the dossier controls milestone scope. If a phase name or number conflicts with `planning/PHASES.md`, the canonical phase model controls.
 
 ### 4. Canonical naming rule
 
@@ -1023,8 +1023,8 @@ Roadmap completion does not independently establish application correctness, con
 
 ## References and Related Documents
 
-- `docs/planning/PHASES.md` — canonical phase definitions.
-- `docs/planning/DECISIONS.md` — system-level planning decisions.
+- `planning/PHASES.md` — canonical phase definitions.
+- `planning/DECISIONS.md` — system-level planning decisions.
 - `docs/architecture/CLOUD_ARCHITECTURE.md` — system cloud topology.
 - `docs/cloud/architecture/CLOUD_ARCHITECTURE.md` — cloud implementation architecture.
 - `docs/cloud/architecture/SECURITY_ARCHITECTURE.md` — cloud infrastructure security architecture.

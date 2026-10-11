@@ -7,7 +7,7 @@
 **Primary Phase:** P7 LIVE & RESULTS  
 **Primary Surface:** RaaS Studio + Control Plane + Lab  
 **Technology:** Tauri + Rust + React + TypeScript + WebRTC + WebSocket  
-**Priority:** PRI-1 (primary product path per Priority Matrix; see `docs/planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
+**Priority:** PRI-1 (primary product path per Priority Matrix; see `planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
 **Status:** PLANNED  
 **Primary Outcome:** A production-grade live execution experience providing
 low-latency robot video, realtime telemetry, execution logs/events, lab and
@@ -316,7 +316,7 @@ F-M06 depends on:
 | `docs/security/AUTHORIZATION.md` | Access control |
 | `docs/security/AUDIT_LOGGING.md` | Audit |
 | `docs/security/TENANT_ISOLATION.md` | Tenant isolation |
-| `docs/planning/INTEGRATION_PLAN.md` | Realtime integration |
+| `planning/INTEGRATION_PLAN.md` | Realtime integration |
 | `docs/ui/UI_ACCEPTANCE_CRITERIA.md` | UI acceptance |
 | `docs/ui/UI_REVIEW_CHECKLIST.md` | UI review |
 | `docs/cloud/architecture/CLOUD_ARCHITECTURE.md` | Network/cloud design |

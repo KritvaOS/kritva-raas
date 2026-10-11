@@ -19,7 +19,7 @@ The backlog supports:
 
 The canonical phase definition is maintained exclusively in:
 
-    docs/planning/PHASES.md
+    planning/PHASES.md
 
 The frontend roadmap is maintained in:
 
@@ -37,11 +37,11 @@ This file is the consolidated frontend task inventory. Task-specific execution i
 
 | Concern | Authoritative source |
 |---|---|
-| Phase names and boundaries | `docs/planning/PHASES.md` |
+| Phase names and boundaries | `planning/PHASES.md` |
 | Frontend milestone scope | `docs/frontend/milestones/` |
 | Frontend sequencing | `docs/frontend/planning/FRONTEND_ROADMAP.md` |
-| Cross-domain dependencies | `docs/planning/DEPENDENCY_MAP.md` |
-| Program implementation sequence | `docs/planning/IMPLEMENTATION_ROADMAP.md` |
+| Cross-domain dependencies | `planning/DEPENDENCY_MAP.md` |
+| Program implementation sequence | `planning/IMPLEMENTATION_ROADMAP.md` |
 | Normative protocol contracts | `docs/protocol/` |
 | Security requirements | `docs/security/` |
 | Task status | `docs/tracking/TASK_STATUS.md` |
@@ -126,7 +126,7 @@ One role is the accountable owner. Additional contributors may be assigned in th
 | F-M06 | LIVE | P7 |
 | F-M07 | RESULTS | P7 |
 
-The phase mapping above is a reference to `docs/planning/PHASES.md`.
+The phase mapping above is a reference to `planning/PHASES.md`.
 
 No task in this backlog creates or renames a phase or milestone.
 
@@ -1116,7 +1116,7 @@ Task-specific details belong in:
 
 The task backlog must not duplicate the complete contents of every task dossier.
 
-The canonical phase definition remains in `docs/planning/PHASES.md`.
+The canonical phase definition remains in `planning/PHASES.md`.
 
 ## 19. Backlog Acceptance Checklist
 
@@ -1138,13 +1138,13 @@ The canonical phase definition remains in `docs/planning/PHASES.md`.
 - [ ] Job and Run remain distinct.
 - [ ] Live and Results dependencies are represented.
 - [ ] Production qualification is represented.
-- [ ] Phase definitions are delegated to `docs/planning/PHASES.md`.
+- [ ] Phase definitions are delegated to `planning/PHASES.md`.
 - [ ] Detailed milestone scope remains delegated to milestone dossiers.
 
 ## 20. Final Invariants
 
 1. This file is the consolidated frontend task inventory.
-2. `docs/planning/PHASES.md` is the canonical phase definition.
+2. `planning/PHASES.md` is the canonical phase definition.
 3. The existing milestone dossiers under `docs/frontend/milestones/` are authoritative for milestone scope.
 4. Task IDs follow `KR-FE-<phase>-<nnn>`.
 5. Task estimates use engineering person-days.
@@ -1170,7 +1170,7 @@ The canonical phase definition remains in `docs/planning/PHASES.md`.
 - Added person-day estimates and accountable owner roles.
 - Added acceptance references for all tasks.
 - Included source privacy, execution safety, reconnect, Results, and production qualification tasks.
-- Delegated canonical phase definitions to `docs/planning/PHASES.md`.
+- Delegated canonical phase definitions to `planning/PHASES.md`.
 - Delegated detailed milestone scope to the authoritative milestone dossiers.
 
 ### Future Changes

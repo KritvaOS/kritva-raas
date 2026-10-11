@@ -1461,7 +1461,7 @@ A change affecting critical-path work requires:
 
 ## 93. Change and the Primary Product Path (MVP)
 
-Changes to the primary product path (MVP), defined in `docs/planning/PHASES.md` Section 3.1, require explicit product approval. The MVP is a product-scope concept, not a phase or milestone.
+Changes to the primary product path (MVP), defined in `planning/PHASES.md` Section 3.1, require explicit product approval. The MVP is a product-scope concept, not a phase or milestone.
 
 The primary product path is:
 

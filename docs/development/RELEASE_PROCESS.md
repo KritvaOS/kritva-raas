@@ -473,7 +473,7 @@ No release may contain unreviewed production code.
 
 Architecture changes must be reconciled with:
 
-    docs/planning/DECISIONS.md
+    planning/DECISIONS.md
 
 If implementation differs from an accepted decision, the decision must be
 updated or superseded before release.

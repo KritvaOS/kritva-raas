@@ -38,8 +38,8 @@ This dossier defines outcomes and boundaries, not implementation-level API speci
 
 The following responsibilities remain with their authoritative documents and phases:
 
-- Canonical phase definitions: `docs/planning/PHASES.md`.
-- System-level architecture and decisions: `docs/architecture/` and `docs/planning/DECISIONS.md`.
+- Canonical phase definitions: `planning/PHASES.md`.
+- System-level architecture and decisions: `docs/architecture/` and `planning/DECISIONS.md`.
 - Frontend implementation patterns and application structure: `docs/frontend/`.
 - Backend service architecture and implementation: `docs/backend/architecture/`.
 - API wire contracts: `docs/protocol/API_CONTRACT.md`.
@@ -68,9 +68,9 @@ This dossier links to those files instead of reproducing their contents.
 
 | Concern | Authoritative owner | P7 relationship |
 |---|---|---|
-| Canonical phase definitions | `docs/planning/PHASES.md` | Uses the frozen phase model |
+| Canonical phase definitions | `planning/PHASES.md` | Uses the frozen phase model |
 | System architecture | `docs/architecture/` | Follows system-wide ownership boundaries |
-| System-level decisions | `docs/planning/DECISIONS.md` | Consumes approved cross-domain decisions |
+| System-level decisions | `planning/DECISIONS.md` | Consumes approved cross-domain decisions |
 | Frontend implementation | `docs/frontend/` | Implements live and results user experiences |
 | Backend implementation | `docs/backend/architecture/BACKEND_ARCHITECTURE.md` | Implements live-session and results services |
 | API wire contract | `docs/protocol/API_CONTRACT.md` | Uses approved request, response, and error semantics |

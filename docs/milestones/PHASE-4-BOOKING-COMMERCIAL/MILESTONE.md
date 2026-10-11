@@ -46,8 +46,8 @@ This document also does not replace domain architecture, protocol specifications
 
 | Concern | Owner | P4 relationship |
 |---|---|---|
-| Canonical phase definitions | `docs/planning/PHASES.md` | Uses the frozen phase model |
-| System-level decisions | `docs/planning/DECISIONS.md` | Consumes approved product and system decisions |
+| Canonical phase definitions | `planning/PHASES.md` | Uses the frozen phase model |
+| System-level decisions | `planning/DECISIONS.md` | Consumes approved product and system decisions |
 | System architecture and cross-domain boundaries | `docs/architecture/` | Follows defined subsystem responsibilities |
 | Frontend implementation | `docs/frontend/` | Defines the user-facing booking workflow requirements through the applicable frontend milestone |
 | Backend implementation | `docs/backend/` | Defines the booking services and API behavior through the applicable backend milestone |

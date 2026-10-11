@@ -23,10 +23,10 @@ This document is the consolidated task inventory. Detailed task execution record
 
 | Concern | Authoritative source |
 |---|---|
-| Canonical phase definitions | `docs/planning/PHASES.md` |
-| Program implementation sequence | `docs/planning/IMPLEMENTATION_ROADMAP.md` |
-| Cross-domain dependencies | `docs/planning/DEPENDENCY_MAP.md` |
-| Release sequencing | `docs/planning/RELEASE_ROADMAP.md` |
+| Canonical phase definitions | `planning/PHASES.md` |
+| Program implementation sequence | `planning/IMPLEMENTATION_ROADMAP.md` |
+| Cross-domain dependencies | `planning/DEPENDENCY_MAP.md` |
+| Release sequencing | `planning/RELEASE_ROADMAP.md` |
 | Backend sequencing | `docs/backend/planning/BACKEND_ROADMAP.md` |
 | Backend milestone scope | `docs/backend/milestones/` |
 | Frontend integration sequence | `docs/frontend/planning/FRONTEND_ROADMAP.md` |
@@ -40,7 +40,7 @@ This document is the consolidated task inventory. Detailed task execution record
 
 The existing milestone dossiers under `docs/backend/milestones/` are authoritative for detailed milestone scope. This backlog provides consolidated task planning and must not redefine milestone boundaries.
 
-The canonical phase definition is exclusively maintained in `docs/planning/PHASES.md`.
+The canonical phase definition is exclusively maintained in `planning/PHASES.md`.
 
 ## 3. Frozen Backend Milestone Mapping
 
@@ -54,7 +54,7 @@ The canonical phase definition is exclusively maintained in `docs/planning/PHASE
 | B-M06 | RESULTS | P6-P7 |
 | B-M07 | PRODUCTION | P8 |
 
-The phase mapping is a reference to `docs/planning/PHASES.md`. It does not redefine phases or introduce additional milestones.
+The phase mapping is a reference to `planning/PHASES.md`. It does not redefine phases or introduce additional milestones.
 
 ## 4. Task ID, Estimates, and Ownership
 
@@ -941,13 +941,13 @@ Do not create duplicate acceptance files for the same task.
 - [ ] Job and Run lifecycle correctness is covered.
 - [ ] Results, telemetry, and live access are covered.
 - [ ] Production security and operational readiness are covered.
-- [ ] `docs/planning/PHASES.md` remains the canonical phase definition.
+- [ ] `planning/PHASES.md` remains the canonical phase definition.
 - [ ] Existing backend milestone dossiers remain authoritative for milestone scope.
 
 ## 18. Final Invariants
 
 1. This file is the consolidated backend task inventory.
-2. `docs/planning/PHASES.md` is the sole canonical phase definition.
+2. `planning/PHASES.md` is the sole canonical phase definition.
 3. Backend milestone scope is governed by the dossiers under `docs/backend/milestones/`.
 4. Task IDs follow `KR-BE-<phase>-<nnn>`.
 5. Every task has an explicit milestone, phase, dependencies, estimate, owner role, and acceptance reference.
@@ -972,7 +972,7 @@ Do not create duplicate acceptance files for the same task.
 - Added dependencies, effort estimates, owner roles, and acceptance references.
 - Added API, artifact, platform, booking, execution, Results, and production tasks.
 - Added cross-domain integration, testing, and backlog governance guidance.
-- Delegated canonical phase definitions to `docs/planning/PHASES.md`.
+- Delegated canonical phase definitions to `planning/PHASES.md`.
 - Delegated detailed milestone scope to the authoritative backend milestone dossiers.
 
 ### Future Updates

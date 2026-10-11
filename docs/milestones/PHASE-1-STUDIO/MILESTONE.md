@@ -27,8 +27,8 @@ Other documentation owns the following concerns:
 
 | Concern | Authoritative owner |
 |---|---|
-| Canonical phase definitions | `docs/planning/PHASES.md` |
-| System-level architecture and product-wide decisions | Applicable documents under `docs/architecture/` and `docs/planning/DECISIONS.md` |
+| Canonical phase definitions | `planning/PHASES.md` |
+| System-level architecture and product-wide decisions | Applicable documents under `docs/architecture/` and `planning/DECISIONS.md` |
 | Frontend architecture | Applicable documents under `docs/frontend/architecture/` |
 | Frontend development setup | `docs/frontend/development/DEVELOPMENT_SETUP.md` |
 | Frontend development workflow | `docs/frontend/development/DEVELOPMENT_WORKFLOW.md` |

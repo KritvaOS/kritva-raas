@@ -24,10 +24,10 @@ This file is the consolidated database task inventory. Detailed implementation i
 
 | Concern | Authoritative source |
 |---|---|
-| Canonical phase definitions | `docs/planning/PHASES.md` |
-| Program implementation sequence | `docs/planning/IMPLEMENTATION_ROADMAP.md` |
-| Cross-domain dependencies | `docs/planning/DEPENDENCY_MAP.md` |
-| Release sequencing | `docs/planning/RELEASE_ROADMAP.md` |
+| Canonical phase definitions | `planning/PHASES.md` |
+| Program implementation sequence | `planning/IMPLEMENTATION_ROADMAP.md` |
+| Cross-domain dependencies | `planning/DEPENDENCY_MAP.md` |
+| Release sequencing | `planning/RELEASE_ROADMAP.md` |
 | Database sequencing | `docs/database/planning/DATABASE_ROADMAP.md` |
 | Database milestone scope | `docs/database/milestones/` |
 | Backend roadmap | `docs/backend/planning/BACKEND_ROADMAP.md` |
@@ -42,7 +42,7 @@ This file is the consolidated database task inventory. Detailed implementation i
 
 The existing milestone dossiers under `docs/database/milestones/` are authoritative for detailed milestone scope. This backlog does not replace those dossiers or redefine their boundaries.
 
-The canonical phase definition is maintained exclusively in `docs/planning/PHASES.md`.
+The canonical phase definition is maintained exclusively in `planning/PHASES.md`.
 
 ## 3. Frozen Database Milestone Mapping
 
@@ -53,7 +53,7 @@ The canonical phase definition is maintained exclusively in `docs/planning/PHASE
 | DB-M03 | BOOKING DATA | P4 |
 | DB-M04 | EXECUTION DATA | P5-P7 |
 
-Phase names and boundaries are defined in `docs/planning/PHASES.md`. The table above records the frozen database milestone mapping and is not an alternative phase definition.
+Phase names and boundaries are defined in `planning/PHASES.md`. The table above records the frozen database milestone mapping and is not an alternative phase definition.
 
 ## 4. Task ID, Estimate, and Ownership Rules
 
@@ -715,13 +715,13 @@ Avoid duplicate acceptance files for the same task.
 - [ ] Result provenance and retention are covered.
 - [ ] Backup, restoration, and operational acceptance are covered.
 - [ ] Backend and cloud dependencies use canonical milestone names.
-- [ ] `docs/planning/PHASES.md` remains the canonical phase definition.
+- [ ] `planning/PHASES.md` remains the canonical phase definition.
 - [ ] Existing database milestone dossiers remain authoritative for milestone scope.
 
 ## 16. Final Invariants
 
 1. This file is the consolidated database task inventory.
-2. `docs/planning/PHASES.md` is the sole canonical phase definition.
+2. `planning/PHASES.md` is the sole canonical phase definition.
 3. The milestone dossiers under `docs/database/milestones/` govern detailed milestone scope.
 4. Task IDs follow `KR-DB-<phase>-<nnn>`.
 5. Every task has a title, description, milestone, phase, dependencies, estimate, owner role, and acceptance reference.
@@ -747,7 +747,7 @@ Avoid duplicate acceptance files for the same task.
 - Added task IDs, estimates, owner roles, and acceptance references.
 - Added booking, credit, Job/Run, Result, and retention integrity tasks.
 - Added cross-milestone production qualification tasks.
-- Delegated phase definitions to `docs/planning/PHASES.md`.
+- Delegated phase definitions to `planning/PHASES.md`.
 - Delegated detailed milestone scope to authoritative database milestone dossiers.
 
 ### Future Updates

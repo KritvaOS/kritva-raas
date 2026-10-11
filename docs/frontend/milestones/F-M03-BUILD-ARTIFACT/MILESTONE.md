@@ -7,7 +7,7 @@
 **Primary Phase:** P2 BUILD & ARTIFACT  
 **Primary Surface:** RaaS Studio + Local Runtime  
 **Technology:** Tauri + Rust + React + TypeScript + Local Toolchain  
-**Priority:** PRI-1 (primary product path per Priority Matrix; see `docs/planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
+**Priority:** PRI-1 (primary product path per Priority Matrix; see `planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
 **Status:** PLANNED  
 **Primary Outcome:** A secure local build and artifact workflow that detects the
 developer toolchain, builds and tests the project locally, produces a validated
@@ -367,7 +367,7 @@ Primary references:
 | `docs/security/KEY_MANAGEMENT.md` | Signing/key controls |
 | `docs/security/SECRETS_MANAGEMENT.md` | Secret handling |
 | `docs/protocol/ARTIFACT_MANIFEST.md` | Artifact contract |
-| `docs/planning/INTEGRATION_PLAN.md` | Integration |
+| `planning/INTEGRATION_PLAN.md` | Integration |
 | `docs/development/TESTING_STRATEGY.md` | Testing |
 | `docs/database/schema/PROJECTS.md` | Project metadata |
 

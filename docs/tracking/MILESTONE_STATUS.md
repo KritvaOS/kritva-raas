@@ -27,7 +27,7 @@ The initial baseline sets every milestone to `NOT STARTED`, unless verified P0 F
 
 | Concern | Reference |
 |---|---|
-| Canonical phase definitions | `docs/planning/PHASES.md` |
+| Canonical phase definitions | `planning/PHASES.md` |
 | Master project status | `docs/tracking/STATUS.md` |
 | Phase status tracker | `docs/tracking/PHASE_STATUS.md` |
 | Milestone status tracker | `docs/tracking/MILESTONE_STATUS.md` |
@@ -44,13 +44,13 @@ The initial baseline sets every milestone to `NOT STARTED`, unless verified P0 F
 | Database task backlog | `docs/database/planning/DATABASE_TASKS.md` |
 | Cloud roadmap | `docs/cloud/planning/CLOUD_ROADMAP.md` |
 | Risk register | `docs/tracking/RISK_REGISTER.md` |
-| Project decisions | `docs/planning/DECISIONS.md` |
+| Project decisions | `planning/DECISIONS.md` |
 
 If a referenced file does not exist, record that as a documentation gap. Do not infer that a document, milestone, or acceptance record exists merely because its expected path appears in this table.
 
 ## 3. Authority and Tracking Rules
 
-1. `docs/planning/PHASES.md` is the sole canonical definition of phase names and boundaries.
+1. `planning/PHASES.md` is the sole canonical definition of phase names and boundaries.
 2. The milestone dossiers under `docs/**/milestones/` define the scope and acceptance requirements for their respective milestones.
 3. This file consolidates milestone status and does not redefine milestone scope.
 4. Task backlogs track implementation tasks and their individual status.
@@ -1082,7 +1082,7 @@ Perform a formal review when a milestone approaches acceptance, when a critical 
 
 ### Step 1: Confirm canonical identity
 
-Verify the milestone identifier, exact name, and phase mapping against this inventory and `docs/planning/PHASES.md`.
+Verify the milestone identifier, exact name, and phase mapping against this inventory and `planning/PHASES.md`.
 
 ### Step 2: Read the authoritative dossier
 
@@ -1239,7 +1239,7 @@ Do not publish a consolidated progress percentage unless the weighting methodolo
 
 Changes to status, progress, ownership, dates, dependencies, evidence, risks, and blockers may be made as part of normal tracking.
 
-Changes to phase definitions must be made only in `docs/planning/PHASES.md` through the approved governance process.
+Changes to phase definitions must be made only in `planning/PHASES.md` through the approved governance process.
 
 Changes to milestone scope must be made in the relevant authoritative dossier under `docs/**/milestones/`.
 
@@ -1264,7 +1264,7 @@ Do not create substitute phase names, alternative milestone names, or additional
 The milestone tracker is ready for routine use when:
 
 - all 22 canonical milestones are listed
-- the phase mappings match `docs/planning/PHASES.md`
+- the phase mappings match `planning/PHASES.md`
 - initial statuses and acceptance states are recorded
 - actual P0 FOUNDATION documentation work is identified without overstating progress
 - milestone owners and dates are assigned or explicitly marked `TBD`
@@ -1282,7 +1282,7 @@ Baseline acceptance confirms the tracking structure is ready. It does not accept
 
 - Initialized the consolidated milestone tracker for all frozen frontend, backend, database, and cloud milestones.
 - Added all 22 milestone identifiers with their exact canonical names and phase mappings.
-- Established `docs/planning/PHASES.md` as the canonical phase definition.
+- Established `planning/PHASES.md` as the canonical phase definition.
 - Preserved milestone dossiers under `docs/**/milestones/` as authoritative for scope.
 - Defined implementation status and acceptance state separately.
 - Added per-milestone objectives, dependencies, exit checklists, owners, and risk prompts.
