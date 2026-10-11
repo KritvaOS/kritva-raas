@@ -1024,6 +1024,32 @@ Reason: the Backend Technical Lead reported that the review requests for `KR-BIN
 | Related, outside this package | The Database Technical Lead request on `KR-BINC-001-004` was sent the same day |
 | Not changed | `apps/backend`, dependencies, CI, the decision record |
 
+## 3AK. PB-038 — KR-BE-1-003 Configuration Boundary (Non-Secret Settings)
+
+| Field | Value |
+|---|---|
+| Change ID | PB-038 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Backend Engineer; Backend Technical Lead accountable |
+| Follows | PB-037 |
+
+Reason: the owner chose to start `KR-BE-1-003` with the non-secret settings while the `KR-BINC-001-005` reviews are pending, so that the entry point can open a port.
+
+| Item | Disposition |
+|---|---|
+| Boundary | `apps/backend/src/config/config.ts`: `loadConfig(env)` validates and returns a frozen typed value. No dependency was added |
+| Settings | `KRITVA_HTTP_PORT` (required, 1 to 65535); `KRITVA_HTTP_HOST` (default 127.0.0.1); `KRITVA_HTTP_SHUTDOWN_GRACE_MS` (default 10000, 0 to 300000); `KRITVA_HTTP_BODY_LIMIT_BYTES` (default 1048576, 1 to 104857600). Names and defaults are the implementer's proposal for the owner to confirm |
+| Failure behavior | Missing, empty, malformed or out-of-range values and unknown `KRITVA_` names are rejected together. The message names the setting and the reason and never the value. Whitespace is not trimmed |
+| Composition | `src/run.ts` loads configuration before the server is built; `main.ts` calls it with the process environment. Invalid configuration exits 1 before any port opens. SIGINT and SIGTERM stop the server and exit 0 |
+| Example | `apps/backend/.env.example`: placeholders and defaults only; the application does not read it |
+| Not done | Secret-typed values, credential and connection settings, database settings, logging settings (`KR-BE-1-041`); redaction beyond the no-value rule; the scanner-backed example check (`KR-BINC-001-007`, `-008`) |
+| Dependency risk | `KR-BINC-001-005` is Requested, not approved, and `KR-BINC-001-007` is not done. If the Security Owner changes the boundary, `config.ts` changes |
+| Tests | 13 configuration tests and 5 startup tests, two of which run `main.js` as a child process. Node.js 24.21.0 transcript is posted as a PR comment, not committed |
+| Independence | Written by Claude; no independent review |
+| Task status | In Review. Not Accepted |
+| Not changed | CI, other tasks' status, the transport |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

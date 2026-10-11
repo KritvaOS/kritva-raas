@@ -82,6 +82,7 @@ A task must not be marked Accepted solely because files or code exist. Required 
 - **Linked AC:** B-INC-001-AC-04, B-INC-001-AC-05.
 - **Linked tests:** BTS-002, BTS-003, BTS-010.
 - **Linked security gates:** SEC-GATE-003, SEC-GATE-008.
+- **Status:** In Review (`BACKEND_CHANGELOG.md` PB-038), for the non-secret settings only. `src/config/config.ts` is the configuration boundary; `src/run.ts` and `main.ts` compose it with the HTTP server so the service listens only after validation passes. Secret-typed values and credential settings are not built: they wait for the approval of `KR-BINC-001-005`, which is Requested and not approved, so this task started before its dependencies `KR-BINC-001-005` and `KR-BINC-001-007` were satisfied, on the owner's decision to proceed with non-secret settings. The Definition of Done is therefore only partly met (secret values and the full example set remain). Linked tests are not run for the secret and scanner parts; BTS-002 is covered for the non-secret settings by 13 tests. Not Accepted.
 
 ### KR-BE-1-004 — Establish HTTP transport
 

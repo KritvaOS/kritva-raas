@@ -1,6 +1,6 @@
 # Control Plane backend
 
-This package is the structure created by `KR-BE-1-001` plus the HTTP transport of `KR-BE-1-004`. It is **not a running service yet**: `src/main.ts` is an inert entry point that composes nothing, opens no port and reads no configuration, because host and port need the configuration framework (`KR-BE-1-003`). There is no database access, logging library, configuration module or secrets handling yet. Those belong to later tasks.
+This package is the structure created by `KR-BE-1-001`, the HTTP transport of `KR-BE-1-004` and the non-secret configuration of `KR-BE-1-003`. It starts an HTTP server with no domain routes yet: `src/main.ts` reads the `KRITVA_*` settings below and listens. There is no database access, logging library or secrets handling yet. Those belong to later tasks.
 
 ## Pinned versions
 
@@ -47,4 +47,19 @@ Startup: `startHttpServer` listens and returns the bound address. If listening f
 
 Shutdown: `stop()` is idempotent. It stops accepting connections, lets in-flight requests finish, and after `shutdownGraceMs` (default 10 000) closes connections that are still open. `installShutdownHandlers` calls `stop()` on the first `SIGINT` or `SIGTERM`; a second signal is ignored while stopping.
 
-Tests: `tests/transport/http-server.test.ts` uses `app.inject` and opens no port. `tests/transport/lifecycle.test.ts` listens on `127.0.0.1` with an operating-system-assigned port.
+Tests: `tests/transport/http-server.test.ts` uses `app.inject` and opens no port. `tests/transport/lifecycle.test.ts` listens on `127.0.0.1` with an operating-system-assigned port. `tests/run.test.ts` also runs `main.js` as a child process.
+
+## Configuration (`src/config`)
+
+`loadConfig(env)` is the only place that reads settings; `run.ts` passes it the process environment. Validation happens before the server is built, so invalid configuration never listens. Failures name the setting and the reason, never the value, and all problems are reported together. A `KRITVA_` name that is not listed here is rejected, so a typo cannot silently fall back to a default. Values are not trimmed.
+
+| Setting | Required | Default | Range |
+|---|---|---|---|
+| `KRITVA_HTTP_PORT` | Yes | none | 1 to 65535 |
+| `KRITVA_HTTP_HOST` | No | `127.0.0.1` | IP address or hostname |
+| `KRITVA_HTTP_SHUTDOWN_GRACE_MS` | No | `10000` | 0 to 300000 |
+| `KRITVA_HTTP_BODY_LIMIT_BYTES` | No | `1048576` | 1 to 104857600 |
+
+These are non-secret settings. Secret and credential settings are not implemented yet; they follow the approval of `KR-BINC-001-005`. `.env.example` lists the settings with placeholders; the application does not read it, so export the values in your shell or inject them from your runtime, and keep real local values outside tracked files.
+
+Run: `KRITVA_HTTP_PORT=8080 node dist/src/main.js` after `npm run build`. The first signal (`SIGINT` or `SIGTERM`) stops the server and exits 0. Invalid configuration or a port that is in use exits 1.
