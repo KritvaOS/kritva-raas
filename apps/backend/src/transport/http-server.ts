@@ -16,10 +16,10 @@
 // Created     : 11-10-2026
 //==============================================================================
 
-import Fastify, { type FastifyInstance } from "fastify";
+import Fastify, { type FastifyInstance, type FastifyReply } from "fastify";
 import { API_V1_PREFIX, mountApiV1, validateRouteGroups, type RouteGroup } from "./api-v1.js";
 import { ERRORS, classifyError, errorBody } from "./error-contract.js";
-import { registerRequestContext, requestIdOf } from "./request-context.js";
+import { ensureRequestId, registerRequestContext } from "./request-context.js";
 
 export { API_V1_PREFIX };
 // Provisional limit; the configuration framework (KR-BE-1-003) may make it configurable.
@@ -46,6 +46,13 @@ export function buildHttpServer(options: HttpServerOptions = {}): FastifyInstanc
     // Fastify's default validator coerces types ("2" becomes 2) and silently removes unknown properties.
     // Both hide client errors, so they are switched off: input that does not match the schema is rejected.
     ajv: { customOptions: { coerceTypes: false, removeAdditional: false, useDefaults: false } },
+    // Errors raised by the router before any hook runs, for example an invalid percent-encoded URL, would
+    // otherwise get Fastify's own body, which is not the envelope, has no X-Request-ID and repeats the URL.
+    frameworkErrors: (_error, request, rawReply) => {
+      const reply = rawReply as unknown as FastifyReply;
+      const { spec } = classifyError({ statusCode: 400 });
+      return reply.code(spec.httpStatus).send(errorBody(spec, [], ensureRequestId(request, reply)));
+    },
   });
 
   registerRequestContext(app);
@@ -62,18 +69,18 @@ export function buildHttpServer(options: HttpServerOptions = {}): FastifyInstanc
   app.addHook("onRequest", async (request, reply) => {
     const path = request.url.split("?")[0] ?? "";
     if (path.includes("//") || (path.length > 1 && path.endsWith("/"))) {
-      return reply.code(404).send(errorBody(ERRORS.notFound, [], requestIdOf(request)));
+      return reply.code(404).send(errorBody(ERRORS.notFound, [], ensureRequestId(request, reply)));
     }
     return undefined;
   });
 
   app.setErrorHandler((error, request, reply) => {
     const { spec, fieldErrors } = classifyError(error);
-    return reply.code(spec.httpStatus).send(errorBody(spec, fieldErrors, requestIdOf(request)));
+    return reply.code(spec.httpStatus).send(errorBody(spec, fieldErrors, ensureRequestId(request, reply)));
   });
 
   app.setNotFoundHandler((request, reply) => {
-    const id = requestIdOf(request);
+    const id = ensureRequestId(request, reply);
     const path = request.url.split("?")[0] ?? "";
     const allowed = [...new Set(registered.filter((r) => r.matcher.test(path)).map((r) => r.method))].sort();
     if (allowed.length > 0) {

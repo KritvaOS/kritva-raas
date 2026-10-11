@@ -16,8 +16,8 @@
 // Created     : 11-10-2026
 //==============================================================================
 
-import type { FastifyInstance, FastifyRequest } from "fastify";
-import { createRequestContext, runWithRequestContext, type RequestContext } from "../shared/request-context.js";
+import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
+import { createRequestContext, RequestContextMissingError, runWithRequestContext, type RequestContext } from "../shared/request-context.js";
 
 declare module "fastify" {
   interface FastifyRequest {
@@ -44,8 +44,25 @@ export function registerRequestContext(app: FastifyInstance): void {
   });
 }
 
-// The request ID for a response body. The hook above always sets the context, so the fallback is a safety net
-// that keeps request_id a string (the envelope forbids null); it would not match a header in that case.
+// The request ID of a request that is being handled. The hook above has run before any handler, so a missing
+// context here is a programming error, not a state to paper over.
 export function requestIdOf(request: FastifyRequest): string {
-  return request.requestContext?.requestId ?? createRequestContext().requestId;
+  if (!request.requestContext) throw new RequestContextMissingError();
+  return request.requestContext.requestId;
+}
+
+// For error paths that can run before the hook above: a framework error such as an invalid URL is raised by the
+// router before any hook runs. This creates the context once, attaches it to the request and sets the header, so
+// the body and the X-Request-ID header carry the same value. Calling it again returns the same ID. It does not
+// open an AsyncLocalStorage scope; nothing downstream runs for such a response.
+export function ensureRequestId(request: FastifyRequest, reply: FastifyReply): string {
+  // The router builds the request for a framework error without the decorations, so the property may be
+  // undefined as well as null.
+  if (!request.requestContext) {
+    const context = createRequestContext();
+    request.requestContext = context;
+    reply.header(REQUEST_ID_HEADER, context.requestId);
+    return context.requestId;
+  }
+  return request.requestContext.requestId;
 }
