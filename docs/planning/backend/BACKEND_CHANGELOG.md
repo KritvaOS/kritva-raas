@@ -1050,6 +1050,28 @@ Reason: the owner chose to start `KR-BE-1-003` with the non-secret settings whil
 | Task status | In Review. Not Accepted |
 | Not changed | CI, other tasks' status, the transport |
 
+## 3AL. PB-039 — KR-BE-1-003 Hostname Validation Fix
+
+| Field | Value |
+|---|---|
+| Change ID | PB-039 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Backend Engineer; Backend Technical Lead accountable |
+| Follows | PB-038 |
+
+Reason: an AI design inspection by ChatGPT of `main` at `777f23f` found the hostname check of `KRITVA_HTTP_HOST` too permissive. This was confirmed by running the pattern against `api..internal` and `api.-internal`.
+
+| Item | Disposition |
+|---|---|
+| Fix | A host must be an IP address or a DNS name of at most 253 characters in dot-separated labels of 1 to 63 letters, digits or hyphens; a label does not start or end with a hyphen. Empty labels, a trailing dot and underscores are rejected |
+| Tests | Negative cases added (empty label, hyphen at a label edge, leading and trailing dot, 64-character label, 305-character name) and a positive list. Suite 38 tests |
+| Same review, not changed here | The review also states `B-INC-001-AC-05` is not demonstrated (safe-example review, scans and Security Owner disposition are open); the early start of `KR-BE-1-003` is adequately disclosed; unknown `KRITVA_` rejection and no trimming are the right policy; no module-boundary or secret-policy violation was found. The reviewer did not rerun the tests |
+| Next activity (ranked by the review) | `KR-BE-1-006` API v1 routing; decide the canonical error envelope for `KR-BE-1-007` (which depends on `KR-BE-1-006`); keep `KR-BE-1-005` in refinement until identity decisions exist |
+| Independence | AI design inspection, not an independent human review |
+| Task status | In Review. Not Accepted |
+| Not changed | Dependencies, lockfile, CI, other tasks |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

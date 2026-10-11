@@ -65,7 +65,13 @@ const HOST_NAME = "KRITVA_HTTP_HOST";
 const HOST_FALLBACK = "127.0.0.1";
 
 const KNOWN = new Set([PORT.name, GRACE.name, BODY.name, HOST_NAME]);
-const HOSTNAME = /^[A-Za-z0-9]([A-Za-z0-9.-]{0,251}[A-Za-z0-9])?$/;
+// A DNS name: at most 253 characters in dot-separated labels of 1 to 63 letters, digits or hyphens, where a label
+// neither starts nor ends with a hyphen. No empty label, no trailing dot, no underscore.
+const LABEL = /^[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?$/;
+
+function isHostname(value: string): boolean {
+  return value.length <= 253 && value.split(".").every((label) => LABEL.test(label));
+}
 
 function readInteger(env: Environment, rule: IntegerRule, issues: ConfigIssue[]): number {
   const raw = env[rule.name];
@@ -97,7 +103,7 @@ function readHost(env: Environment, issues: ConfigIssue[]): string {
     issues.push({ setting: HOST_NAME, problem: "empty" });
     return HOST_FALLBACK;
   }
-  if (isIP(raw) === 0 && !HOSTNAME.test(raw)) {
+  if (isIP(raw) === 0 && !isHostname(raw)) {
     issues.push({ setting: HOST_NAME, problem: "malformed" });
     return HOST_FALLBACK;
   }

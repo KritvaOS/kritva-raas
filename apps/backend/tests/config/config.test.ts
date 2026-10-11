@@ -47,8 +47,10 @@ test("every setting can be supplied", () => {
   assert.deepEqual(config.http, { host: "::1", port: 65535, shutdownGraceMs: 0, bodyLimitBytes: 2048 });
 });
 
-test("a hostname is accepted as the host", () => {
-  assert.equal(loadConfig({ KRITVA_HTTP_PORT: "1", KRITVA_HTTP_HOST: "api.internal" }).http.host, "api.internal");
+test("valid hostnames are accepted as the host", () => {
+  for (const good of ["api.internal", "localhost", "a", "a-b.c-d.example", "node1.lab-2.example.com", "a".repeat(63), "1.2.3.4", "10.0.0.1"]) {
+    assert.equal(loadConfig({ KRITVA_HTTP_PORT: "1", KRITVA_HTTP_HOST: good }).http.host, good, good);
+  }
 });
 
 test("the result is frozen", () => {
@@ -84,7 +86,9 @@ test("numbers outside the allowed range are rejected", () => {
 });
 
 test("a malformed host is rejected", () => {
-  for (const bad of ["bad host", "host/path", "http://x", "-leading", "trailing-", "a_b", "[::1]"]) {
+  const longLabel = "a".repeat(64);
+  const longName = `${"a".repeat(60)}.`.repeat(5) + "com";
+  for (const bad of ["bad host", "host/path", "http://x", "-leading", "trailing-", "a_b", "[::1]", "api..internal", "api.-internal", "api-.internal", ".api", "api.", "api.internal.", longLabel, longName]) {
     assert.deepEqual(failure({ KRITVA_HTTP_PORT: "80", KRITVA_HTTP_HOST: bad }).issues, [{ setting: "KRITVA_HTTP_HOST", problem: "malformed" }], bad);
   }
 });
