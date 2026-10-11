@@ -53,10 +53,18 @@ def package(status="Draft", task="KR-BINC-001-001", decision="KR-BINC-001-001", 
     return "".join(body) + extra
 
 
-def record(status="Proposed", row="Pending"):
+def record(status="Proposed", rows=None, required="Backend Technical Lead", task_record=True):
+    """Decision record fixture. rows: list of (role, decision, date, evidence)."""
+    rows = rows if rows is not None else [("Backend Technical Lead", "Pending", "—", "—")]
+    task = (f"## 1. Task Record\n\n| Field | Value |\n|---|---|\n| Task | Test |\n"
+            f"| Required approvers | {required} |\n\n") if task_record else ""
+    table = "".join(f"| {r} | {d} | {dt} | {ev} |\n" for r, d, dt, ev in rows)
     return (f"# Record\n\n## Document Control\n\n| Field | Value |\n|---|---|\n| Status | {status} |\n\n"
-            f"## 9. Approval Record\n\n| Approver role | Decision | Date | Evidence |\n|---|---|---|---|\n"
-            f"| Backend Technical Lead | {row} | — | — |\n")
+            f"{task}## 9. Approval Record\n\n| Approver role | Decision | Date | Evidence |\n|---|---|---|---|\n{table}")
+
+
+def approved_row(role="Backend Technical Lead"):
+    return (role, "Approved", "2026-10-11", "review ref 1")
 
 
 TASKS = "# Tasks\n\n### KR-BINC-001-001 — Decide runtime\n\nBody.\n"
@@ -139,11 +147,61 @@ class ApprovalCheckerTests(unittest.TestCase):
         self.has(errors, "not a decision disposition")
 
     def test_approved_record_cannot_have_pending_row(self):
-        errors, _ = self.build(rec=record(status="Approved", row="Pending"))
-        self.has(errors, "Pending")
+        errors, _ = self.build(rec=record(status="Approved", rows=[("Backend Technical Lead", "Pending", "—", "—")]))
+        self.has(errors, "is recorded as Pending")
 
-    def test_approved_record_with_approved_row_is_valid(self):
-        errors, _ = self.build(rec=record(status="Approved", row="Approved"))
+    def test_approved_record_with_rejected_row_fails(self):
+        errors, _ = self.build(rec=record(status="Approved", rows=[("Backend Technical Lead", "Rejected", "2026-10-11", "ref")]))
+        self.has(errors, "is recorded as Rejected")
+
+    def test_approved_record_with_returned_row_fails(self):
+        errors, _ = self.build(rec=record(
+            status="Approved", rows=[("Backend Technical Lead", "Returned for revision", "2026-10-11", "ref")]))
+        self.has(errors, "is recorded as Returned for revision")
+
+    def test_approved_record_with_all_required_approved_is_valid(self):
+        errors, _ = self.build(rec=record(status="Approved", rows=[approved_row()]))
+        self.assertEqual(errors, [])
+
+    def test_approved_record_missing_required_approver_fails(self):
+        errors, _ = self.build(rec=record(
+            status="Approved", required="Security Owner; Cloud/Infrastructure Owner review",
+            rows=[approved_row("Security Owner")]))
+        self.has(errors, "'cloud/infrastructure owner' has no Approval Record row")
+
+    def test_approved_record_with_other_rejected_required_fails(self):
+        errors, _ = self.build(rec=record(
+            status="Approved", required="Security Owner; Cloud/Infrastructure Owner review",
+            rows=[approved_row("Security Owner"), ("Cloud/Infrastructure Owner (review)", "Rejected", "2026-10-11", "ref")]))
+        self.has(errors, "is recorded as Rejected")
+
+    def test_review_qualifier_matches_required_role(self):
+        errors, _ = self.build(rec=record(
+            status="Approved", required="Security Owner; Cloud/Infrastructure Owner review",
+            rows=[approved_row("Security Owner"), approved_row("Cloud/Infrastructure Owner (review)")]))
+        self.assertEqual(errors, [])
+
+    def test_approved_record_without_rows_fails(self):
+        errors, _ = self.build(rec=record(status="Approved", rows=[]))
+        self.has(errors, "no rows")
+
+    def test_approved_row_needs_date_and_evidence(self):
+        for row in (("Backend Technical Lead", "Approved", "—", "ref"), ("Backend Technical Lead", "Approved", "2026-10-11", "—")):
+            errors, _ = self.build(rec=record(status="Approved", rows=[row]))
+            self.has(errors, "must record a date and evidence")
+
+    def test_approved_record_without_required_approvers_fails(self):
+        errors, _ = self.build(rec=record(status="Approved", rows=[approved_row()], task_record=False))
+        self.has(errors, "required approvers cannot be determined")
+
+    def test_approval_row_vocabulary(self):
+        errors, _ = self.build(rec=record(rows=[("Backend Technical Lead", "Maybe", "—", "—")]))
+        self.has(errors, "is not one of")
+
+    def test_proposed_record_with_mixed_rows_is_valid(self):
+        errors, _ = self.build(rec=record(
+            status="Proposed", required="Security Owner; Cloud/Infrastructure Owner review",
+            rows=[approved_row("Security Owner"), ("Cloud/Infrastructure Owner (review)", "Pending", "—", "—")]))
         self.assertEqual(errors, [])
 
     def test_readme_must_list_package(self):
