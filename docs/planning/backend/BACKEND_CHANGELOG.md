@@ -784,6 +784,28 @@ Reason: implementation of `KR-BE-1-001`, the first application code, using the a
 | Plan change | The plan scaffold table now lists `.node-version` and the narrow `.gitignore` as decided |
 | Not changed | `DEVELOPMENT_SETUP.md` (aligned by `KR-BINC-001-016`), CI, `Makefile` targets `build`, `test`, `lint`, `format`, `format-check` (still fail on purpose; wiring is a toolchain task) |
 
+## 3Z. PB-027 — Node.js Pin Moved to the Repository Root After the BTS-036 Review
+
+| Field | Value |
+|---|---|
+| Change ID | PB-027 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Follows | PB-026 |
+
+Reason: the independent review of `KR-BE-1-001` (BTS-036, reviewer ChatGPT, 2026-10-11, on merged PR #23, commit `a3b40b0`) found that the approved pin method (`KR-BINC-001-001` Section 5.1) names `.node-version` at the repository root, while PB-026 added it under `apps/backend`. The review also found that the clean-checkout transcript names a base revision (`1af7877`, before the final commit) and not the exact tested tree.
+
+| Item | Disposition |
+|---|---|
+| Review finding 1 (blocker) | Accepted. `apps/backend/.node-version` is moved to the repository root (`.node-version`, `24.21.0`). `apps/backend/package.json` `engines.node` stays `24.21.0` and `apps/backend/.npmrc` keeps `engine-strict=true`. The CI consistency check remains `KR-BINC-001-017` and does not exist yet |
+| Review finding 2 (blocker) | Accepted. The clean-checkout run is repeated on the merged tree of this change, recording the exact commit and tree hash. The result is recorded in the next change; the earlier transcript is kept as history, not as task evidence |
+| Review finding 3 (should-fix) | Accepted. The next change records the evidence, the lockfile review, the mismatch test and the review disposition in the task records |
+| Review notes 4 to 7 | No change requested by the reviewer. The malformed-input note on `runtimeInfo` is accepted as a limit of a scaffold helper and is not a validation contract |
+| Task status | In Progress. Not Accepted. No gate closed |
+| Changed | `.node-version` (moved), `apps/backend/README.md`, the plan scaffold table, `TASKS.md` status line, this entry, the increment `CHANGELOG.md` entry, `claude/Handoff.md` |
+| Not changed | Any dependency, the lockfile, CI, `DEVELOPMENT_SETUP.md` |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

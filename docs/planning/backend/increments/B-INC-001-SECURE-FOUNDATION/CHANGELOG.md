@@ -87,6 +87,21 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-11 — Node.js pin moved to the repository root (KR-BE-1-001)
+
+- **State:** IMPLEMENTED (correction after the BTS-036 review; evidence not yet recorded)
+- **Tasks:** KR-BE-1-001
+- **Increment ACs:** B-INC-001-AC-01, B-INC-001-AC-02
+- **Program acceptance:** Not applicable
+- **Tests:** BTS-001, BTS-036 (review returned changes required; re-run and disposition recorded in the next change)
+- **Security gates:** SEC-GATE-003, SEC-GATE-004, SEC-GATE-013 (none closed)
+- **Findings/risks:** Reviewer blockers: pin file location (fixed here) and exact tested tree in the evidence (re-run after this change merges); see `../../BACKEND_CHANGELOG.md` PB-027
+- **Files changed:** `.node-version` (moved from `apps/backend`), `apps/backend/README.md`, `plans/KR-BE-1-001-application-structure-plan.md`, `TASKS.md`, `CHANGELOG.md`, `../../BACKEND_CHANGELOG.md`, `claude/Handoff.md`
+- **Commit:** Pending until this change is merged
+- **Evidence:** Review text of 2026-10-11, to be recorded in full in the next change
+- **Reviewer role:** Repository owner
+- **Decision and follow-up:** See PB-027
+
 ### 2026-10-11 — Application structure scaffold (KR-BE-1-001)
 
 - **State:** IMPLEMENTED (code; evidence with the pinned toolchain not recorded yet)
