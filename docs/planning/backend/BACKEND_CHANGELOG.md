@@ -603,6 +603,26 @@ Reason: `KR-BE-1-001` is the first application task and stays Blocked until `KR-
 | Review | An independent review returned the plan for a small revision, which is applied: explicit compiled-test command contract (a sandbox trial showed a directory argument to `node --test` fails), runtime pin mechanism taken from the approved record, a disposable lockfile mismatch test, and per-gate contribution against what stays open |
 | Not changed | No scaffold, package metadata or lockfile exists. `KR-BE-1-001` stays Blocked. No decision approved, no task status changed, no gate closed |
 
+## 3Q. PB-018 — Audit Follow-Up Corrections
+
+| Field | Value |
+|---|---|
+| Change ID | PB-018 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Follows | PB-017 |
+
+Reason: an external re-audit of `main` at `f7483db` closed the earlier findings 1 and the 005 corrections, left findings 2 and 4 partly closed for reasons that need owner action, and found four documentation issues.
+
+| Item | Disposition |
+|---|---|
+| N-01 | `BACKEND_SECURITY_GATE.md` 4.2.2 records a rescan of `main` at `f7483db` with its revision, method, categories and limits, labels the placeholder forms as intentional and nonfunctional, and states that "no match" does not mean no URL-shaped template exists. The scan run on the PR #12 branch is superseded |
+| N-02 | `claude/Handoff.md` refreshed to `f7483db` and the merged state of PRs #12 to #14 |
+| N-03 | Six increment changelog entries now cite the real commits and merges instead of "Pending" |
+| N-04 | The secret-handling record states that backend workloads use controlled cryptographic interfaces for high-value key operations and that the Cloud/Infrastructure Owner confirms the boundary |
+| Not changed | No approval, no status change, no gate closed. The Git-history exposure assessment, the open `KR-BINC-001-001` evidence and `KR-BINC-001-008` (on hold) are unchanged |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

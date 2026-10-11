@@ -56,6 +56,8 @@ Classes follow `SECRETS_MANAGEMENT.md` Section 7.
 
 S2 to S4 values are secrets. S0 and S1 values remain configuration data.
 
+Backend workloads use controlled cryptographic interfaces for operations with root or other high-value private keys and do not receive that key material, in line with `KEY_MANAGEMENT.md`. The interface itself belongs to the cloud and key-management workstream, and the Cloud/Infrastructure Owner confirms the boundary in review.
+
 The S4 rule prohibits actual critical key material. It does not prohibit cryptographic tests that use ephemeral, synthetic, non-production keys whose lifecycle the test controls, which are not persisted and whose private material is never printed (`BACKEND_SECURITY_GATE.md` Section 5.6, `KEY_MANAGEMENT.md` Section 86).
 
 ## 4. Permitted Secret Sources
