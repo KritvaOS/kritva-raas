@@ -95,6 +95,7 @@ A task must not be marked Accepted solely because files or code exist. Required 
 - **Linked AC:** B-INC-001-AC-06.
 - **Linked tests:** BTS-007, BTS-032.
 - **Linked security gates:** Not applicable.
+- **Status:** In Review (`BACKEND_CHANGELOG.md` PB-036). Fastify 5.12.5 exact is added and `apps/backend/src/transport` provides the server builder, one error handler, a not-found and method-not-allowed handler, API v1 mounting, and start/stop with signal handling; `main.ts` stays inert because host and port configuration is `KR-BE-1-003`. Tests are 19 `node:test` cases (route, validation, error contract, lifecycle). The run on Node.js 24.21.0 is produced by the delivered script and posted as a PR comment; it is not part of the commit. The error body follows `API_CONTRACT.md` Section 18, which differs from `RESPONSES.md` and `ERROR_CODES.md`; `KR-BE-1-007` settles it. No independent review. Not Accepted.
 
 ### KR-BE-1-005 — Implement request context
 

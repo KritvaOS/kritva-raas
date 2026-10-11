@@ -10,7 +10,10 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "npm run build && node --test dist/tests/runtime-info.test.js"
+    "test": "npm run build && node --test \"dist/tests/**/*.test.js\""
+  },
+  "dependencies": {
+    "fastify": "5.12.5"
   },
   "devDependencies": {
     "@types/node": "24.19.2",
