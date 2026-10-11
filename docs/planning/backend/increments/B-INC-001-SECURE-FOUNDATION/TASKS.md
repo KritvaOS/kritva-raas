@@ -110,6 +110,7 @@ A task must not be marked Accepted solely because files or code exist. Required 
 - **Linked AC:** B-INC-001-AC-07.
 - **Linked tests:** BTS-005, BTS-006.
 - **Linked security gates:** SEC-GATE-009.
+- **Status:** In Review, request ID only (`BACKEND_CHANGELOG.md` PB-042). The server creates a `RequestContext` per request with a generated `req-<uuid>` ID, held in `AsyncLocalStorage`, returned in `X-Request-ID` and in the error body `request_id`; client-supplied IDs are ignored. 14 `node:test` cases; the suite has 67. Correlation ID, principal and tenant are not done (`KR-BE-1-008` and identity tasks), so B-INC-001-AC-07 and BTS-006 are not satisfied and `SEC-GATE-009` is not closed. The run on Node.js 24.21.0 is produced by the delivered script and posted as a PR comment. No independent review. Not Accepted.
 
 ### KR-BE-1-006 — Implement API v1 routing
 

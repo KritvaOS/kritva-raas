@@ -1118,6 +1118,30 @@ Reason: `API_CONTRACT.md` Section 18 and `RESPONSES.md` with `ERROR_CODES.md` de
 | Independence | Approver is also the owner who directed the work; no independent human reviewer |
 | Not changed | `apps/backend`, dependencies, CI, `RESPONSES.md`, `ERROR_CODES.md`, task statuses other than the `KR-BE-1-007` note |
 
+## 3AO. PB-042 — Request Context and Server-Generated Request IDs (KR-BE-1-005, request ID only)
+
+| Field | Value |
+|---|---|
+| Change ID | PB-042 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Backend Engineer; Backend Technical Lead accountable |
+| Follows | PB-041 |
+
+Reason: the canonical error envelope (PB-041) requires a non-null `request_id`, and the transport had none. The Backend Technical Lead asked for the request-ID part of `KR-BE-1-005` before `KR-BE-1-007`.
+
+| Item | Disposition |
+|---|---|
+| Context | `RequestContext { requestId }` in `apps/backend/src/shared/request-context.ts`, created per request, frozen, held in `AsyncLocalStorage`. `currentRequestContext()` returns it or nothing; `requireRequestContext()` throws `RequestContextMissingError` outside a request |
+| Transport | `src/transport/request-context.ts` registers the first `onRequest` hook, sets `request.requestContext`, adds the `X-Request-ID` response header and runs the rest of the request inside the context. Only this file knows Fastify, consistent with `KR-BE-1-002` |
+| Policy | The server always generates `req-<uuid>`. A client `X-Request-ID` or `X-Correlation-ID` is ignored and not echoed, so callers cannot choose or forge the ID. A trusted-gateway exception would need its own decision |
+| Error body | `request_id` is filled in the provisional nested body for 404, 405, validation and server errors, and equals the response header |
+| Not done | Correlation ID (`KR-BE-1-008`); principal and tenant (identity tasks); log fields (`KR-BE-1-041`); the full envelope and success wrapping (`KR-BE-1-007`, wrapping undecided) |
+| Tests | 14 new tests (format, uniqueness, isolation across 50 and 40 concurrent requests, propagation across awaits and timers, no leak after a request, client headers ignored); one existing 404 assertion updated; suite 67. BTS-006 and B-INC-001-AC-07 are not satisfied; `SEC-GATE-009` is not closed |
+| Independence | Written by Claude; no independent review |
+| Task status | In Review, request ID only. Not Accepted |
+| Not changed | Dependencies, lockfile, CI, configuration |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

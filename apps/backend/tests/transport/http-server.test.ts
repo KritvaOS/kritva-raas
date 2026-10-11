@@ -19,6 +19,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { buildHttpServer } from "../../src/transport/http-server.js";
+import { REQUEST_ID_PATTERN } from "../../src/shared/request-context.js";
 
 // Test-only routes. The production server mounts no domain route in this task.
 function testApp(bodyLimitBytes?: number) {
@@ -68,8 +69,11 @@ test("an unknown route returns the documented 404 body", async () => {
   const app = testApp();
   const res = await app.inject({ method: "GET", url: "/api/v1/nothing" });
   assert.equal(res.statusCode, 404);
-  assert.deepEqual(res.json(), {
-    error: { code: "RESOURCE_NOT_FOUND", message: "The requested resource was not found.", retryable: false, request_id: null, correlation_id: null, details: [] },
+  const body = res.json() as { error: { request_id: string } };
+  assert.match(body.error.request_id, REQUEST_ID_PATTERN);
+  assert.equal(body.error.request_id, res.headers["x-request-id"]);
+  assert.deepEqual(body, {
+    error: { code: "RESOURCE_NOT_FOUND", message: "The requested resource was not found.", retryable: false, request_id: body.error.request_id, correlation_id: null, details: [] },
   });
   await app.close();
 });

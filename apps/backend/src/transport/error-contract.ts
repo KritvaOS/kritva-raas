@@ -32,7 +32,7 @@ export interface ErrorBody {
     readonly code: string;
     readonly message: string;
     readonly retryable: boolean;
-    // Null until request context exists (KR-BE-1-005).
+    // The request ID of the failing request; null only if no request context was created.
     readonly request_id: string | null;
     readonly correlation_id: string | null;
     readonly details: readonly ErrorDetail[];
@@ -56,13 +56,13 @@ export const ERRORS = {
   internal: { status: 500, code: "INTERNAL_ERROR", message: "An unexpected error occurred. Please try again.", retryable: true },
 } as const satisfies Record<string, ErrorSpec>;
 
-export function errorBody(spec: ErrorSpec, details: readonly ErrorDetail[] = []): ErrorBody {
+export function errorBody(spec: ErrorSpec, details: readonly ErrorDetail[] = [], requestId: string | null = null): ErrorBody {
   return {
     error: {
       code: spec.code,
       message: spec.message,
       retryable: spec.retryable,
-      request_id: null,
+      request_id: requestId,
       correlation_id: null,
       details,
     },

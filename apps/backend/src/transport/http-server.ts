@@ -9,7 +9,7 @@
 // Module      : HTTP Transport
 // Layer       : API
 //
-// Requirements: KR-BE-1-004, KR-BE-1-006, KR-BINC-001-003, B-INC-001-AC-06
+// Requirements: KR-BE-1-004, KR-BE-1-005, KR-BE-1-006, KR-BINC-001-003, B-INC-001-AC-06
 // API         : buildHttpServer(options); route groups are mounted under /api/v1
 //
 // Author      : KritvaOS
@@ -19,6 +19,7 @@
 import Fastify, { type FastifyInstance } from "fastify";
 import { API_V1_PREFIX, mountApiV1, validateRouteGroups, type RouteGroup } from "./api-v1.js";
 import { ERRORS, classifyError, errorBody } from "./error-contract.js";
+import { registerRequestContext } from "./request-context.js";
 
 export { API_V1_PREFIX };
 // Provisional limit; the configuration framework (KR-BE-1-003) may make it configurable.
@@ -47,6 +48,8 @@ export function buildHttpServer(options: HttpServerOptions = {}): FastifyInstanc
     ajv: { customOptions: { coerceTypes: false, removeAdditional: false, useDefaults: false } },
   });
 
+  registerRequestContext(app);
+
   const registered: { matcher: RegExp; method: string }[] = [];
   app.addHook("onRoute", (route) => {
     const methods = Array.isArray(route.method) ? route.method : [route.method];
@@ -59,23 +62,24 @@ export function buildHttpServer(options: HttpServerOptions = {}): FastifyInstanc
   app.addHook("onRequest", async (request, reply) => {
     const path = request.url.split("?")[0] ?? "";
     if (path.includes("//") || (path.length > 1 && path.endsWith("/"))) {
-      return reply.code(404).send(errorBody(ERRORS.notFound));
+      return reply.code(404).send(errorBody(ERRORS.notFound, [], request.requestContext?.requestId ?? null));
     }
     return undefined;
   });
 
-  app.setErrorHandler((error, _request, reply) => {
+  app.setErrorHandler((error, request, reply) => {
     const { spec, details } = classifyError(error);
-    return reply.code(spec.status).send(errorBody(spec, details));
+    return reply.code(spec.status).send(errorBody(spec, details, request.requestContext?.requestId ?? null));
   });
 
   app.setNotFoundHandler((request, reply) => {
+    const id = request.requestContext?.requestId ?? null;
     const path = request.url.split("?")[0] ?? "";
     const allowed = [...new Set(registered.filter((r) => r.matcher.test(path)).map((r) => r.method))].sort();
     if (allowed.length > 0) {
-      return reply.code(405).header("Allow", allowed.join(", ")).send(errorBody(ERRORS.methodNotAllowed));
+      return reply.code(405).header("Allow", allowed.join(", ")).send(errorBody(ERRORS.methodNotAllowed, [], id));
     }
-    return reply.code(404).send(errorBody(ERRORS.notFound));
+    return reply.code(404).send(errorBody(ERRORS.notFound, [], id));
   });
 
   mountApiV1(app, groups);
