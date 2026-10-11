@@ -912,6 +912,28 @@ Reason: the independent review (BTS-004, reviewer ChatGPT, 2026-10-11) returned 
 | Task status | In Progress. The decision stays Proposed. The reviewer has not re-reviewed revision 2. Not Accepted |
 | Changed | The decision record, `TASKS.md` status line, increment `CHANGELOG.md`, this entry, `claude/Handoff.md` |
 
+## 3AF. PB-033 — KR-BE-1-002 Decision Approved
+
+| Field | Value |
+|---|---|
+| Change ID | PB-033 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Architecture Owner |
+| Follows | PB-032 |
+
+Reason: the independent re-review (ChatGPT, 2026-10-11, on `main` `734edfa`) found revision 2 approvable, subject to the owner's confirmation of two choices. The Architecture Owner confirmed both and approved the decision in session.
+
+| Item | Disposition |
+|---|---|
+| Decision | `KR-BE-1-002` module boundaries: Approved on 2026-10-11 by the Architecture Owner (revision 2) |
+| Confirmed choices | Synchronous audit writes (event-driven Audit stays optional and needs a recorded exception); architecture Section 25 "execution state" means Lab-side tracking and Runs owns persisted run lifecycle |
+| Re-review | Findings 1, 2, 5, 7 and 9 resolved; 3, 4 resolved once the owner confirmed; 6 resolved at design level; 8 partly resolved within the stated scope. No new blocker or should-fix finding |
+| Follow-up constraints | Policy layer and tenant context stay shared application-layer capabilities (`KR-BE-1-019`); idempotency domain-neutral (`KR-BE-1-034`); migration baseline without shared repositories (`KR-BE-1-032`); transaction atomicity decided in `KR-BE-1-033` |
+| Task status | In Review. Not Accepted. `B-INC-001-AC-03` not closed. BTS-004 is design-review evidence only |
+| Independence | The approver is also the owner who directed the answers; the independent element is the AI review |
+| Not changed | Code, dependencies, CI, `BACKEND_ARCHITECTURE.md`, the foreign-key policy (Database Technical Lead) |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

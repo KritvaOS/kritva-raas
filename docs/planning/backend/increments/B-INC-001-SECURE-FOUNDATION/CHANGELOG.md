@@ -87,6 +87,21 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-11 — KR-BE-1-002 decision approved
+
+- **State:** DECISION APPROVED (task In Review, not accepted)
+- **Tasks:** KR-BE-1-002
+- **Increment ACs:** B-INC-001-AC-02, B-INC-001-AC-03 (AC-03 not closed by this record alone)
+- **Program acceptance:** Not applicable
+- **Tests:** BTS-001, BTS-004 (design review only; no automated enforcement)
+- **Security gates:** SEC-GATE-003 (not closed)
+- **Findings/risks:** Re-review found no new blocker; follow-up constraints for `KR-BE-1-019`, `-032`, `-033`, `-034`; foreign-key policy with the Database Technical Lead; increments after B-INC-004 not reconciled
+- **Files changed:** `decisions/KR-BE-1-002-module-boundaries.md`, `TASKS.md`, `CHANGELOG.md`, `../../BACKEND_CHANGELOG.md`, `claude/Handoff.md`
+- **Commit:** Pending until this change is merged
+- **Evidence:** Decision record Sections 10, 11 and 12
+- **Reviewer role:** Architecture Owner (approver, also author of the direction); ChatGPT (independent AI review)
+- **Decision and follow-up:** See PB-033. Task acceptance is a separate record
+
 ### 2026-10-11 — KR-BE-1-002 decision revised after the BTS-004 review
 
 - **State:** PROPOSED (revision 2; re-review pending)

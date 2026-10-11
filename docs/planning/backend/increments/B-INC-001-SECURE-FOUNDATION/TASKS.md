@@ -68,7 +68,7 @@ A task must not be marked Accepted solely because files or code exist. Required 
 - **Linked AC:** B-INC-001-AC-02, B-INC-001-AC-03.
 - **Linked tests:** BTS-001, BTS-004.
 - **Linked security gates:** SEC-GATE-003.
-- **Status:** In Progress. The plan is in [`plans/KR-BE-1-002-module-boundaries-plan.md`](plans/KR-BE-1-002-module-boundaries-plan.md) (PB-030). The Architecture Owner answered its nine questions on 2026-10-11 and the decision record [`decisions/KR-BE-1-002-module-boundaries.md`](decisions/KR-BE-1-002-module-boundaries.md) is Proposed (PB-031). The independent review (BTS-004) by ChatGPT returned "return for revision"; revision 2 answers its nine findings (PB-032) and has not been re-reviewed. Linked tests and gates are NOT RUN. Not Accepted.
+- **Status:** In Review. The decision record [`decisions/KR-BE-1-002-module-boundaries.md`](decisions/KR-BE-1-002-module-boundaries.md) is Approved by the Architecture Owner on 2026-10-11 (revision 2), after an independent BTS-004 review that returned it for revision and a re-review that found it approvable (PB-033). The Architecture Owner is also the repository owner who directed it, and the review is an AI design inspection. Linked tests and gates are NOT RUN as passing evidence; `B-INC-001-AC-03` stays open. Not Accepted: the task acceptance is a separate record.
 
 ### KR-BE-1-003 — Establish configuration framework
 

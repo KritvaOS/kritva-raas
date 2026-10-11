@@ -6,7 +6,7 @@
 |---|---|
 | Document | KR-BE-1-002 Module Boundaries Decision Record |
 | Path | `docs/planning/backend/increments/B-INC-001-SECURE-FOUNDATION/decisions/KR-BE-1-002-module-boundaries.md` |
-| Status | Proposed |
+| Status | Approved |
 | Owner role | Architecture Owner |
 | Related milestones | B-M01 CONTROL PLANE |
 
@@ -32,11 +32,11 @@
 
 ## 2. Status and Scope
 
-This record states the initial modules, their tiers, the allowed and prohibited dependencies and the dispositions of the open points listed in the plan. It follows `BACKEND_ARCHITECTURE.md` and adds the dependency direction that document leaves open. It is a design record. Nothing is enforced in code, no module directory exists and no automated check exists. It is Proposed until the review of Section 8 is done and the Architecture Owner records the decision. Revision 2 (2026-10-11) answers the independent review recorded in Section 11; the reviewer has not re-reviewed it. An Approved decision would not make the task Accepted.
+This record states the initial modules, their tiers, the allowed and prohibited dependencies and the dispositions of the open points listed in the plan. It follows `BACKEND_ARCHITECTURE.md` and adds the dependency direction that document leaves open. It is a design record. Nothing is enforced in code, no module directory exists and no automated check exists. It was Proposed until the independent review of Section 8 was done. Revision 2 (2026-10-11) answered the first review, the reviewer re-reviewed it and found it approvable, and the Architecture Owner approved it on 2026-10-11 (Section 10). The approval does not make the task Accepted. An Approved decision would not make the task Accepted.
 
 ## 3. Owner Answers (2026-10-11)
 
-Dinesh Annayya, who states that he owns the architecture, answered the plan questions in session on 2026-10-11. These are directions for this record, not an approval.
+Dinesh Annayya, who states that he owns the architecture, answered the plan questions in session on 2026-10-11. These are directions for this record. The approval is in Section 10.
 
 | # | Question (plan Section 5) | Answer |
 |---|---|---|
@@ -157,15 +157,15 @@ This is inspection of a design, not of code. No module code exists. The review s
 
 | # | Check | Result |
 |---|---|---|
-| 1 | Each of the fifteen modules has one responsibility and one tier | Reviewer: finding (overlaps). Revision 2 adds Section 5.4. Not re-reviewed |
-| 2 | Every allowed dependency in Section 5.1 points to a lower tier | Reviewer: pass |
+| 1 | Each of the fifteen modules has one responsibility and one tier | Reviewer: finding (overlaps). Revision 2 adds Section 5.4. Re-review: resolved |
+| 2 | Every allowed dependency in Section 5.1 points to a lower tier | Reviewer: pass (both reviews) |
 | 3 | No module appears twice in a dependency cycle through Section 5.1 | Reviewer: pass for the listed graph, with the qualification that future event subscriptions are not proved cycle-free |
-| 4 | The prohibited list covers direct table access, shared repositories and cross-domain writes | Reviewer: pass |
-| 5 | Each pressure point of Section 7 has one owner and one direction | Reviewer: finding. Revision 2 adds Section 5.4. Not re-reviewed |
-| 6 | The decision does not contradict `BACKEND_ARCHITECTURE.md` | Reviewer: finding (Audit as event consumer, run state, booking and resource reservation). Revision 2 resolves them in Sections 5.4 to 5.6. Not re-reviewed |
-| 7 | The tier order holds against the task lists of the later increments (B-INC-002 and after) | Reviewer: partial. Revision 2 adds the reconciliation of Section 12 for B-INC-002 to B-INC-004. Later increments are not covered. Not re-reviewed |
-| 8 | The event rule (Section 6, items 8 and 9) leaves no hidden cycle | Reviewer: pass in principle, wording to clarify. Revision 2 adds the event wording of Section 5.4. Not re-reviewed |
-| 9 | The record claims no enforcement, no automated check and no module code | Reviewer: pass |
+| 4 | The prohibited list covers direct table access, shared repositories and cross-domain writes | Reviewer: pass (both reviews) |
+| 5 | Each pressure point of Section 7 has one owner and one direction | Reviewer: finding. Revision 2 adds Section 5.4. Re-review: resolved |
+| 6 | The decision does not contradict `BACKEND_ARCHITECTURE.md` | Reviewer: finding (Audit as event consumer, run state, booking and resource reservation). Revision 2 resolves them in Sections 5.4 to 5.6. Re-review: resolved, with the two owner confirmations of Section 10.0 |
+| 7 | The tier order holds against the task lists of the later increments (B-INC-002 and after) | Reviewer: partial. Revision 2 adds the reconciliation of Section 12 for B-INC-002 to B-INC-004. Later increments are not covered. Re-review: partly resolved within the stated scope |
+| 8 | The event rule (Section 6, items 8 and 9) leaves no hidden cycle | Reviewer: pass in principle, wording to clarify. Revision 2 adds the event wording of Section 5.4. Re-review: resolved |
+| 9 | The record claims no enforcement, no automated check and no module code | Reviewer: pass (both reviews) |
 
 ## 9. Consequences and Follow-Up
 
@@ -178,21 +178,26 @@ This is inspection of a design, not of code. No module code exists. The review s
 
 | Approver role | Decision | Date | Evidence |
 |---|---|---|---|
-| Architecture Owner | Pending | Not recorded | Waiting for the re-review of revision 2 (Section 11) and the Architecture Owner's decision |
+| Architecture Owner | Approved | 2026-10-11 | Dinesh Annayya, who states that he owns the architecture, approved this record (revision 2) in session on 2026-10-11 and confirmed the two choices of Section 10.0. Reviewed: this record, the independent review and the re-review of Section 11 |
 
-### 10.0 Open owner confirmation
+### 10.0 Owner confirmation
 
-Revision 2 chooses synchronous audit writes (Section 5.4) and reads architecture Section 25 "execution state" as Lab-side tracking. Both are choices for the Architecture Owner to confirm at approval. If either is rejected, it is an architecture change and not a boundary clarification.
+The Architecture Owner confirmed on 2026-10-11, in answer to a direct question: (1) audit writes are synchronous in the foundation scope, and event-driven Audit stays an optional later capability that needs a recorded exception to Section 6, item 9; (2) the "execution state" in architecture Section 25 means Lab-side dispatch and agent tracking, and Runs owns the persisted run lifecycle. The reviewer regards both as clarifications and not as architecture changes, provided architecture Section 28 stays an optional event-consumer capability. Rejecting either would have been an architecture change.
 
-### 10.1 Not approved by this record
+### 10.1 Approved scope and what is not approved
+
+Approved: the modules, tiers, allowed dependencies, prohibited couplings, ownership clarifications (Sections 4 to 7) and the two confirmations above, as inspected by design review only.
+
+Not approved by this record:
 
 - Enforcement in code, an automated dependency check or any module implementation.
 - The foreign-key policy (Database Technical Lead).
 - Any change to `BACKEND_ARCHITECTURE.md`.
+- The reconciliation of increments after B-INC-004.
 
 ### 10.2 Independence
 
-The Architecture Owner is also the repository owner who directed these answers. The review of Section 8 must come from a reviewer other than the author of this record, and its record must state who reviewed and the limits of that review.
+The approver is also the repository owner who directed these answers and no human reviewer took part. The only independent element is the AI review of Section 11, which is design inspection from supplied text. An Approved decision does not make `KR-BE-1-002` Accepted, and `B-INC-001-AC-03` is not closed by this record alone.
 
 ## 11. Independent Review Record (BTS-004, B-INC-001-AC-03)
 
@@ -201,7 +206,7 @@ The Architecture Owner is also the repository owner who directed these answers. 
 | Reviewer | ChatGPT (external AI reviewer chosen by the repository owner), 2026-10-11 |
 | Subject | Revision 1 of this record, supplied as text, against `BACKEND_ARCHITECTURE.md` Sections 6 to 13, 29 to 34 and 59 |
 | Verdict | Return for revision. `B-INC-001-AC-03` does not pass yet |
-| Limits | Design inspection only. The reviewer is an AI assistant working from the text it was given. It did not re-review revision 2. The Architecture Owner directed the answers and also decides |
+| Limits | Design inspection only. The reviewer is an AI assistant working from the text it was given. The Architecture Owner directed the answers and also decides |
 
 | # | Severity | Finding (reviewer) | Disposition |
 |---|---|---|---|
@@ -233,3 +238,31 @@ Source: the task lists of B-INC-002, B-INC-003 and B-INC-004. Dependencies by ta
 | `KR-BE-1-043` to `-049` tests and E2E | Test code | All | Not a module dependency. Tests follow the same rules for production code they exercise |
 
 No task in B-INC-002 to B-INC-004 requires Projects, Platforms and Artifacts to depend on one another. Artifacts and later-increment modules (Credits, Booking, Jobs and the rest) have no task in these three increments and are not reconciled.
+
+### 11.1 Re-review of revision 2
+
+| Field | Value |
+|---|---|
+| Reviewer | ChatGPT, 2026-10-11, reading the merged record at `main` `734edfa` |
+| Verdict | Approvable by the Architecture Owner, subject to explicit confirmation of the two choices (confirmed in Section 10.0). No new blocker or should-fix finding |
+
+| Finding | Re-review result |
+|---|---|
+| 1 Booking and Resource Allocation | Resolved |
+| 2 Lab and Resource Allocation inventory | Resolved |
+| 3 Runs and Lab run state | Partly resolved; remaining item was the owner confirmation, now recorded |
+| 4 Audit as event consumer | Partly resolved; remaining item was the owner confirmation, now recorded |
+| 5 Compatibility split | Resolved |
+| 6 CreateBooking transaction contract | Resolved at design level. Atomicity is not proved and stays with `KR-BE-1-033` |
+| 7 Event wording | Resolved |
+| 8 Later-increment reconciliation | Partly resolved within the stated scope (B-INC-002 to B-INC-004) |
+| 9 Bounded claims | Resolved |
+
+Direct inspection of Section 5.1 found no same-tier dependency, no upward dependency and no cycle in the listed graph. This is design evidence, not enforcement of future code.
+
+### 11.2 Follow-up constraints from the re-review
+
+- The role and permission policy layer and tenant context (`KR-BE-1-019`, `-020`, `-021`) stay shared application-layer capabilities and not an undeclared module dependency. The owner of `KR-BE-1-019` records this before implementation depends on it.
+- Idempotency stays domain-neutral infrastructure unless `KR-BE-1-034` records a different reviewed disposition.
+- The migration baseline (`KR-BE-1-032`) must not introduce shared repositories or let application code bypass ownership.
+- `KR-BE-1-033` decides whether one transaction across the contracts is implementable, or records the alternative consistency and recovery strategy.
