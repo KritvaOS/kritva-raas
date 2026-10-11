@@ -87,6 +87,21 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-11 — Evidence and BTS-036 review record (KR-BE-1-001)
+
+- **State:** IN REVIEW (evidence recorded; not accepted)
+- **Tasks:** KR-BE-1-001
+- **Increment ACs:** B-INC-001-AC-01, B-INC-001-AC-02
+- **Program acceptance:** Not applicable
+- **Tests:** BTS-001 (clean-checkout run on `ffc42d1`, all steps exit 0), BTS-036 (review returned changes required; findings dispositioned; no re-review yet)
+- **Security gates:** SEC-GATE-003, SEC-GATE-004, SEC-GATE-013 (none closed; contributions recorded)
+- **Findings/risks:** Reviewer blockers fixed or recorded; `runtimeInfo` accepts malformed input by design of a scaffold helper
+- **Files changed:** `evidence/KR-BE-1-001-evidence.md` (new), `TASKS.md`, `CHANGELOG.md`, `../../BACKEND_CHANGELOG.md`, `claude/Handoff.md`
+- **Commit:** Pending until this change is merged
+- **Evidence:** `evidence/KR-BE-1-001-evidence.md`
+- **Reviewer role:** Repository owner
+- **Decision and follow-up:** See PB-028. Acceptance by the Backend Technical Lead is a separate step
+
 ### 2026-10-11 — Node.js pin moved to the repository root (KR-BE-1-001)
 
 - **State:** IMPLEMENTED (correction after the BTS-036 review; evidence not yet recorded)
