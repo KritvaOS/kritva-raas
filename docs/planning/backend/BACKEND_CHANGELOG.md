@@ -1096,6 +1096,28 @@ Reason: `KR-BE-1-006` establishes versioned routing and the route-registration p
 | Task status | In Review. Not Accepted |
 | Not changed | Dependencies, lockfile, CI, the configuration boundary |
 
+## 3AN. PB-041 — Canonical REST API v1 Error Envelope
+
+| Field | Value |
+|---|---|
+| Change ID | PB-041 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Follows | PB-040 |
+
+Reason: `API_CONTRACT.md` Section 18 and `RESPONSES.md` with `ERROR_CODES.md` described different error bodies and codes, and `KR-BE-1-007` needs one. The Backend Technical Lead chose the full `RESPONSES.md` envelope in session after an AI design inspection (ChatGPT, `main` at `fb01b9e`) recommended it.
+
+| Item | Disposition |
+|---|---|
+| Decision | The canonical REST API v1 error envelope is the full response envelope of `RESPONSES.md` with the error model and registry of `ERROR_CODES.md`. Record: `decisions/KR-BE-1-007-error-envelope.md`. Approved 2026-10-11 |
+| Document change | `API_CONTRACT.md` Section 18 rewritten; Section 20 now maps each retired code to its registry code and `status`; the idempotency, cancel-conflict, rate-limit and conformance references and three examples use registry codes |
+| Proposed, not approved | Registry additions `METHOD_NOT_ALLOWED` (405), `PAYLOAD_TOO_LARGE` (413) and `RESOURCE_GONE` (410), and 405 and 410 in the HTTP mapping table |
+| Open | Whether success responses are also wrapped; the request-ID source (recommend the request-ID part of `KR-BE-1-005` before `KR-BE-1-007`); the correlation field; other documents that may describe the older shape; the `SEC-GATE-009` mapping to AC-08 |
+| Same inspection, recorded | BTS-032 requires HTTP, service and persistence integration, so the 53 transport tests are component evidence and BTS-032 is not satisfied. The in-repo handoff header and "main at last check" were stale and are refreshed in this change |
+| Independence | Approver is also the owner who directed the work; no independent human reviewer |
+| Not changed | `apps/backend`, dependencies, CI, `RESPONSES.md`, `ERROR_CODES.md`, task statuses other than the `KR-BE-1-007` note |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

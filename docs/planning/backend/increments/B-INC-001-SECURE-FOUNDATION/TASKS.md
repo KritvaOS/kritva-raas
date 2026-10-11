@@ -137,6 +137,7 @@ A task must not be marked Accepted solely because files or code exist. Required 
 - **Linked AC:** B-INC-001-AC-08, B-INC-001-AC-09.
 - **Linked tests:** BTS-007.
 - **Linked security gates:** SEC-GATE-009.
+- **Status:** Proposed, not started. The canonical error envelope is decided: the full `RESPONSES.md` envelope with the `ERROR_CODES.md` registry ([`decisions/KR-BE-1-007-error-envelope.md`](decisions/KR-BE-1-007-error-envelope.md), PB-041). Open before or during the task: whether success responses are also wrapped, the request-ID source (`KR-BE-1-005`), three proposed registry additions, and the `SEC-GATE-009` mapping. The dependency list is unchanged.
 
 ### KR-BE-1-008 — Implement request correlation
 

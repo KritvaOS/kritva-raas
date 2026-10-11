@@ -475,43 +475,34 @@ If a multi-resource operation is supported, its atomicity semantics MUST be expl
 
 ## 18. Error response contract
 
-Errors MUST use the following JSON representation:
+Error responses MUST use the full response envelope defined in [`RESPONSES.md`](RESPONSES.md) Section 7 with the error model of [`ERROR_CODES.md`](ERROR_CODES.md) Sections 6 to 8. This is the canonical REST API v1 error contract, approved by the Backend Technical Lead on 2026-10-11 (decision record `KR-BE-1-007-error-envelope.md`). It replaces the nested `error` object that this section described before that date.
 
     {
+        "protocol_version": "1.0",
+        "request_id": "req-7a91",
+        "timestamp": "2026-10-11T00:00:01Z",
+        "status": "INVALID_REQUEST",
+        "code": "INVALID_REQUEST",
+        "message": "The request is invalid. Check the provided information and try again.",
+        "data": null,
         "error": {
-            "code": "VALIDATION_ERROR",
-            "message": "The request contains invalid fields.",
+            "details": {},
             "retryable": false,
-            "request_id": "req-7a91",
-            "correlation_id": "workflow-9f2c",
-            "details": [
+            "field_errors": [
                 {
                     "field": "name",
-                    "code": "REQUIRED_FIELD",
-                    "message": "The field is required."
+                    "code": "MISSING_REQUIRED_FIELD",
+                    "message": "A required field is missing."
                 }
             ]
         }
     }
 
-The `error` object MUST contain:
+The envelope MUST contain `protocol_version`, `request_id`, `timestamp`, `status`, `code`, `message`, `data` and `error`. For a failure `data` is `null`. `status` is the application outcome of `RESPONSES.md` Section 13 and is independent of the HTTP status. `code` is a stable machine-readable code from the `ERROR_CODES.md` registry. The `error` object MUST contain `retryable` and `field_errors`, and `details` is an object that MAY be empty. Each `field_errors` entry MUST contain `field`, `code` and `message` when field-level information is available.
 
-| Field | Type | Requirement |
-|---|---|---|
-| `code` | string | Required |
-| `message` | string | Required |
-| `retryable` | boolean | Required |
-| `request_id` | string or null | Required |
-| `correlation_id` | string or null | Required |
-| `details` | array | Required |
+Clients MUST NOT parse `message` to decide behavior. Error messages MUST NOT contain credentials, private keys, access tokens, sensitive stack traces, internal exception text or submitted values.
 
-Each `details` entry MUST contain `field`, `code`, and `message` when field-level details are available.
-
-`details` MAY be an empty array.
-
-Error messages MUST NOT contain credentials, private keys, access tokens, or sensitive stack traces.
-
-Clients MUST branch on `code` or HTTP status, not on human-readable message text.
+`X-Correlation-ID` (Section 12) remains a request header. The envelope has no correlation field. How a correlation identifier is reflected is decided with the request-context task (`KR-BE-1-005`).
 
 ## 19. Standard HTTP status codes
 
@@ -544,31 +535,29 @@ The server SHOULD use `404 Not Found` when revealing the existence of a protecte
 
 ## 20. Standard error codes
 
-The API MUST use stable machine-readable error codes.
+The API MUST use the stable machine-readable codes of the [`ERROR_CODES.md`](ERROR_CODES.md) registry. The server MAY define additional documented codes in that registry. A code MUST retain the same meaning across compatible API revisions.
 
-| Code | Meaning | Typical status |
+The codes this section listed before 2026-10-11 are retired. The table gives the registry code that replaces each. A row marked "not in the registry" is a code the registry does not yet define; the decision record `KR-BE-1-007-error-envelope.md` proposes additions and none is approved until `ERROR_CODES.md` lists it.
+
+| Retired code | Canonical code and `status` | HTTP |
 |---|---|---|
-| `VALIDATION_ERROR` | Request fields failed validation | 400 |
-| `INVALID_JSON` | Request body is malformed JSON | 400 |
-| `UNAUTHENTICATED` | Authentication is missing or invalid | 401 |
-| `FORBIDDEN` | Permission is insufficient | 403 |
-| `RESOURCE_NOT_FOUND` | Resource is absent or not visible | 404 |
-| `METHOD_NOT_ALLOWED` | HTTP method is unsupported | 405 |
-| `STATE_CONFLICT` | Requested state transition conflicts with current state | 409 |
-| `IDEMPOTENCY_CONFLICT` | Idempotency key conflicts with prior request content | 409 |
-| `VERSION_CONFLICT` | Resource revision conflicts with request precondition | 412 |
-| `RESOURCE_GONE` | Resource is permanently unavailable | 410 |
-| `PAYLOAD_TOO_LARGE` | Request body exceeds limit | 413 |
-| `UNSUPPORTED_MEDIA_TYPE` | Content type is unsupported | 415 |
-| `DOMAIN_CONSTRAINT_VIOLATION` | Request violates domain rules | 422 |
-| `RATE_LIMITED` | Caller exceeded a configured limit | 429 |
-| `TEMPORARY_UNAVAILABLE` | A transient dependency is unavailable | 503 |
-| `UPSTREAM_TIMEOUT` | An upstream dependency timed out | 504 |
-| `INTERNAL_ERROR` | Unexpected server error | 500 |
-
-The server MAY define additional documented error codes.
-
-A code MUST retain the same meaning across compatible API revisions.
+| `VALIDATION_ERROR` | `INVALID_REQUEST`, with `MISSING_REQUIRED_FIELD` or `FIELD_INVALID` in `field_errors`; `status` `INVALID_REQUEST` | 400 |
+| `INVALID_JSON` | `INVALID_REQUEST`; `status` `INVALID_REQUEST` | 400 |
+| `UNAUTHENTICATED` | `AUTH_REQUIRED`; `status` `UNAUTHORIZED` | 401 |
+| `FORBIDDEN` | `AUTHZ_DENIED`; `status` `FORBIDDEN` | 403 |
+| `RESOURCE_NOT_FOUND` | `RESOURCE_NOT_FOUND`; `status` `NOT_FOUND` | 404 |
+| `METHOD_NOT_ALLOWED` | not in the registry (proposed) | 405 |
+| `STATE_CONFLICT` | the domain code of the conflict, for example `BOOKING_CONFLICT`; `status` `CONFLICT` | 409 |
+| `IDEMPOTENCY_CONFLICT` | `IDEMPOTENCY_KEY_REUSED`; `status` `CONFLICT` | 409 |
+| `VERSION_CONFLICT` | `VERSION_CONFLICT`; `status` `CONFLICT` | 412 |
+| `RESOURCE_GONE` | not in the registry (proposed) | 410 |
+| `PAYLOAD_TOO_LARGE` | not in the registry (proposed; `ARTIFACT_TOO_LARGE` is artifact-specific) | 413 |
+| `UNSUPPORTED_MEDIA_TYPE` | `UNSUPPORTED_CONTENT_TYPE`; `status` `INVALID_REQUEST` | 415 |
+| `DOMAIN_CONSTRAINT_VIOLATION` | `VALIDATION_FAILED` or `VALIDATION_CONSTRAINT`; `status` `REJECTED` | 422 |
+| `RATE_LIMITED` | `RATE_LIMIT_EXCEEDED`; `status` `UNAVAILABLE` | 429 |
+| `TEMPORARY_UNAVAILABLE` | `SERVICE_UNAVAILABLE`; `status` `UNAVAILABLE` | 503 |
+| `UPSTREAM_TIMEOUT` | `UPSTREAM_TIMEOUT`; `status` `TIMEOUT` | 504 |
+| `INTERNAL_ERROR` | `INTERNAL_ERROR`; `status` `FAILED` | 500 |
 
 ## 21. Idempotency contract
 
@@ -584,7 +573,7 @@ The server MUST associate the key with a fingerprint of the canonical request co
 
 Repeating the same operation with the same key and equivalent request content MUST return the original logical outcome.
 
-Reusing the same key with conflicting request content MUST return `409 Conflict` with `IDEMPOTENCY_CONFLICT`.
+Reusing the same key with conflicting request content MUST return `409 Conflict` with `IDEMPOTENCY_KEY_REUSED`.
 
 The server MUST NOT execute the same logical billable operation twice because of a retry.
 
@@ -1051,7 +1040,7 @@ A successful response MUST return the authoritative booking representation.
 
 The operation MUST NOT claim that associated execution has stopped unless the execution system confirms that outcome.
 
-If cancellation is not possible in the current state, the server MUST return `409 Conflict` with `STATE_CONFLICT`.
+If cancellation is not possible in the current state, the server MUST return `409 Conflict` with the domain code of the conflict (Section 20).
 
 ### 29.5 Reschedule booking
 
@@ -1471,7 +1460,7 @@ The server SHOULD return the following headers when rate limiting is applied:
 
 A rate-limited request MUST return `429 Too Many Requests`.
 
-The error body MUST use the standard error envelope with code `RATE_LIMITED`.
+The error body MUST use the standard error envelope with code `RATE_LIMIT_EXCEEDED`.
 
 Clients MUST respect `Retry-After` when provided.
 
@@ -1796,7 +1785,7 @@ A conforming API server MUST pass tests that verify:
 11. Pagination respects limits and opaque cursors.
 12. Invalid filters and cursors return documented errors.
 13. Idempotency keys prevent duplicate billable or executable operations.
-14. Conflicting idempotency reuse returns `IDEMPOTENCY_CONFLICT`.
+14. Conflicting idempotency reuse returns `IDEMPOTENCY_KEY_REUSED`.
 15. Conditional updates enforce ETag or documented version preconditions.
 16. Rate limits return `429 Too Many Requests`.
 17. Request-size limits are enforced.
@@ -1946,13 +1935,17 @@ The response MUST NOT imply that the job has been scheduled or that execution ha
 If a client reuses an idempotency key with conflicting request content, the server MUST return `409 Conflict`.
 
     {
+        "protocol_version": "1.0",
+        "request_id": "req-8821",
+        "timestamp": "2026-10-11T00:00:01Z",
+        "status": "CONFLICT",
+        "code": "IDEMPOTENCY_KEY_REUSED",
+        "message": "This idempotency key has already been used for a different request.",
+        "data": null,
         "error": {
-            "code": "IDEMPOTENCY_CONFLICT",
-            "message": "The idempotency key was previously used with different request content.",
+            "details": {},
             "retryable": false,
-            "request_id": "req-8821",
-            "correlation_id": "workflow-9f2c",
-            "details": []
+            "field_errors": []
         }
     }
 
@@ -1963,16 +1956,20 @@ The server MUST NOT execute the conflicting operation.
 A malformed booking interval MUST be rejected before any booking or credit side effect occurs.
 
     {
+        "protocol_version": "1.0",
+        "request_id": "req-9012",
+        "timestamp": "2026-10-11T00:00:01Z",
+        "status": "REJECTED",
+        "code": "VALIDATION_CONSTRAINT",
+        "message": "The requested operation violates a system requirement.",
+        "data": null,
         "error": {
-            "code": "DOMAIN_CONSTRAINT_VIOLATION",
-            "message": "The booking end time must be later than its start time.",
+            "details": {},
             "retryable": false,
-            "request_id": "req-9012",
-            "correlation_id": "workflow-booking-91",
-            "details": [
+            "field_errors": [
                 {
                     "field": "ends_at",
-                    "code": "INVALID_TIME_INTERVAL",
+                    "code": "FIELD_INVALID",
                     "message": "The end time must be later than the start time."
                 }
             ]
@@ -1986,13 +1983,17 @@ The server MUST NOT partially create the booking.
 A rate-limited request MUST return `429 Too Many Requests`.
 
     {
+        "protocol_version": "1.0",
+        "request_id": "req-10001",
+        "timestamp": "2026-10-11T00:00:01Z",
+        "status": "UNAVAILABLE",
+        "code": "RATE_LIMIT_EXCEEDED",
+        "message": "The request rate limit has been exceeded.",
+        "data": null,
         "error": {
-            "code": "RATE_LIMITED",
-            "message": "The request rate limit has been exceeded.",
+            "details": {},
             "retryable": true,
-            "request_id": "req-10001",
-            "correlation_id": null,
-            "details": []
+            "field_errors": []
         }
     }
 

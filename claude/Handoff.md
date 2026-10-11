@@ -1,6 +1,6 @@
 # Kritva RaaS — Session Handoff
 
-Updated: 11-10-2026 (PR #5 to PR #18 recorded; official Node.js evidence merged; key authentication in PR K; owner direction in PR L; approvals of 001 and 002 merged as #21; KR-BE-1-001 Ready merged as #22; scaffold in PR O). For any Claude session (any model) continuing work on KritvaOS/kritva-raas.
+Updated: 11-10-2026 (PR #5 to PR #37 recorded; backend transport, configuration and API v1 routing merged; error envelope decision in PR AD). For any Claude session (any model) continuing work on KritvaOS/kritva-raas
 
 ## 1. Repositories
 
@@ -9,7 +9,7 @@ Updated: 11-10-2026 (PR #5 to PR #18 recorded; official Node.js evidence merged;
 | Repo | `KritvaOS/kritva-raas` (proprietary; SPDX `LicenseRef-KritvaOS-Proprietary`) |
 | Local folder on Dinesh's machine | `/home/dinesha/workarea/kritvaOS/kritva-raas` |
 | Reference repo | `KritvaOS/kritva-core` (Apache-2.0; source of the header standard and Makefile style) |
-| `main` at last check | `37ed0ef` (PR #16). This line is always one PR behind: run `git ls-remote origin HEAD` for the real head |
+| `main` at last check | `fb01b9e` (PR #37). This line is always one PR behind: run `git ls-remote origin HEAD` for the real head |
 
 ## 2. How we work
 
@@ -79,7 +79,7 @@ Done and accepted: KR-BINC-001-018 (PR #2) and KR-BINC-001-019 (PR #4). Audit fi
 - **Recommendations (not approvals):** Node.js 24 LTS pinned exactly (Node 26 after it enters LTS on 2026-10-28); TypeScript 6.0.3 baseline with 7.0.2 as an upgrade candidate; npm with `package-lock.json` and `npm ci`. The runtime record must still state the pin mechanism, the exact Node.js and npm releases and the checksum source.
 - **Batch B order** (readiness Section 4): approvals of 001, 002 and 005; KR-BE-1-001; KR-BE-1-002; KR-BINC-001-003 and 004; the 008 comparative scanner evaluation in parallel. KR-BE-1-001 stays blocked until 001 and 002 are approved.
 - **KR-BINC-001-008 is held**: only a detect-secrets 1.5.0 trial exists (missing file argument and plain `scan` fail open). gitleaks and trufflehog need a machine with network access.
-- **Next steps (start only when Dinesh asks):** PR AC (PB-040) delivers KR-BE-1-006 API v1 routing (RouteGroup pattern, exact matching, 404/405; 53 tests; In Review). Hostname fix PR AB merged. Next per the ChatGPT ranking: owner decision on the canonical error envelope (API_CONTRACT Section 18 vs RESPONSES/ERROR_CODES) so KR-BE-1-007 can follow; KR-BE-1-005 request context only after identity decisions. 005 package is Requested; replies pending from Security Owner, Cloud owner and Database lead (KR-BINC-001-004). AC-05 evidence still open.
+- **Next steps (start only when Dinesh asks):** PR AD (PB-041) records the owner's decision: the canonical REST error envelope is the full RESPONSES.md envelope with the ERROR_CODES.md registry, and API_CONTRACT.md Sections 18 and 20 are reconciled. Open before KR-BE-1-007: success-response wrapping (not decided), request-ID source (recommend the request-ID part of KR-BE-1-005 first), proposed registry additions METHOD_NOT_ALLOWED, PAYLOAD_TOO_LARGE, RESOURCE_GONE (not approved), SEC-GATE-009 mapping to AC-08. ChatGPT's order: error decision; fix gate mapping and handoff; advance AC-05 evidence independently; refine KR-BE-1-005 scope; independent reviews of 003/004/006; then KR-BE-1-007. BTS-032 is not satisfied (component tests only). 005 package Requested; replies pending from Security Owner, Cloud owner and Database lead (KR-BINC-001-004).
 - **Open owner decisions:** the `Claude-Session` trailer (PB-011); approvals of 001, 002 and 005; the Git-history exposure disposition; the three plan questions.
 - Web search is disabled for the organization. Version facts were read through the built-in browser and the npm registry (reachable from the sandbox; nodejs.org is blocked from it).
 
