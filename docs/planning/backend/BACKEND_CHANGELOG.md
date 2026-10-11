@@ -1142,6 +1142,29 @@ Reason: the canonical error envelope (PB-041) requires a non-null `request_id`, 
 | Task status | In Review, request ID only. Not Accepted |
 | Not changed | Dependencies, lockfile, CI, configuration |
 
+## 3AP. PB-043 — REST API v1 Response Contract
+
+| Field | Value |
+|---|---|
+| Change ID | PB-043 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Follows | PB-042 |
+
+Reason: `KR-BE-1-007` needed the success-wrapping, request-ID, registry and gate-mapping questions left open by PB-041. The Backend Technical Lead chose, in session, to decide the whole response contract before implementing, after an AI design inspection (ChatGPT) ranked that option first of five.
+
+| Item | Disposition |
+|---|---|
+| Decision | Every REST API v1 response with a body uses the full `RESPONSES.md` envelope, success and error. `204` has no body. Record: `decisions/KR-BE-1-007-response-contract.md`. Approved 2026-10-11 |
+| Request ID | Server-generated, equal to `X-Request-ID`; client `X-Request-ID` and `X-Correlation-ID` ignored and not echoed. `RESPONSES.md` Section 11 amended for REST API v1 |
+| Registry | `METHOD_NOT_ALLOWED` (405) and `PAYLOAD_TOO_LARGE` (413) added to `ERROR_CODES.md`; HTTP mapping tables updated; `RESOURCE_GONE` deferred |
+| Gate mapping | `SEC-GATE-009` stated as logging redaction, not response-contract evidence; AC-08 notes added; links and merged commit trailers unchanged |
+| Documents | `API_CONTRACT.md` Sections 12, 13, 15.1, 18, 20; `RESPONSES.md`; `ERROR_CODES.md`; `ACCEPTANCE_CRITERIA.md`; `TEST_PLAN.md`; `TASKS.md` (`KR-BE-1-007` note) |
+| Open | Success `code` values per endpoint; correlation handling (`KR-BE-1-008`); `RESOURCE_GONE`; whether to remove the `SEC-GATE-009` link from AC-08, `KR-BE-1-006` and `KR-BE-1-007`; `BACKEND_ARCHITECTURE.md` and `API_ARCHITECTURE.md` not checked |
+| Independence | Approver is also the owner who directed the work; no independent human reviewer. Details beyond the chosen option are Claude's recommendation and take effect on merge |
+| Not changed | `apps/backend`, dependencies, CI, task statuses |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

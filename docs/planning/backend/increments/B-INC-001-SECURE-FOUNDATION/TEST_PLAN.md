@@ -124,7 +124,7 @@ This matrix is generated from `ACCEPTANCE_CRITERIA.md`, which is authoritative f
 | `B-INC-001-AC-05` | Safe configuration examples | BTS-003, BTS-010 | SEC-GATE-003 | File diff; safe-example review; sanitized working-tree scan result; history-scan scope and result; exposure disposition if applicable |
 | `B-INC-001-AC-06` | HTTP transport and API v1 routing | BTS-007, BTS-032 | Not applicable | Framework decision; route tests; lifecycle tests; reviewed API routing |
 | `B-INC-001-AC-07` | Request context and correlation | BTS-005, BTS-006 | SEC-GATE-009 | Request-context and correlation test results; sanitized log samples |
-| `B-INC-001-AC-08` | API error and validation contract | BTS-007 | SEC-GATE-009 | Contract tests; negative request results; sanitized error samples |
+| `B-INC-001-AC-08` | API error and validation contract | BTS-007 | SEC-GATE-009 | Contract tests; negative request results; sanitized error samples. SEC-GATE-009 here covers error content in logs only and is not closed by these tests |
 | `B-INC-001-AC-09` | Request validation is testable | BTS-007 | Not applicable | Validation test suite and sanitized results |
 | `B-INC-001-AC-10` | Request correlation is reflected in structured logs | BTS-006, BTS-009 | SEC-GATE-009 | Sanitized captured log output; automated assertions; logging configuration review |
 | `B-INC-001-AC-11` | Health and readiness semantics | BTS-008 | SEC-GATE-008 | Lifecycle test results; endpoint contract; sanitized response samples |

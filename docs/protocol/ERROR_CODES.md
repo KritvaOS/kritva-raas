@@ -318,7 +318,8 @@ code-specific policies.
 | 404 | `NOT_FOUND` | `JOB_NOT_FOUND` |
 | 409 | `CONFLICT` | `BOOKING_CONFLICT` |
 | 412 | `CONFLICT` | `VERSION_CONFLICT` |
-| 413 | `REJECTED` | `ARTIFACT_TOO_LARGE` |
+| 405 | `INVALID_REQUEST` | `METHOD_NOT_ALLOWED` |
+| 413 | `REJECTED` | `PAYLOAD_TOO_LARGE` (generic), `ARTIFACT_TOO_LARGE` (artifact) |
 | 415 | `INVALID_REQUEST` | `UNSUPPORTED_CONTENT_TYPE` |
 | 422 | `REJECTED` | `ARTIFACT_INVALID` |
 | 429 | `UNAVAILABLE` | `RATE_LIMIT_EXCEEDED` |
@@ -683,6 +684,46 @@ Remediation:
     Check current operation state before retrying.
 
 Phase: 8.
+
+## 25.11 `METHOD_NOT_ALLOWED`
+
+Meaning:
+
+The HTTP method is not supported for the requested path. The response includes an `Allow` header listing the supported methods.
+
+HTTP: 405.
+
+Retryable: No.
+
+Message:
+
+    "The request method is not supported for this resource."
+
+Remediation:
+
+    Use one of the methods listed in the Allow header.
+
+Phase: 0.
+
+## 25.12 `PAYLOAD_TOO_LARGE`
+
+Meaning:
+
+The request body exceeds the configured size limit. This is the generic code; `ARTIFACT_TOO_LARGE` remains specific to artifacts.
+
+HTTP: 413.
+
+Retryable: No.
+
+Message:
+
+    "The request is too large."
+
+Remediation:
+
+    Reduce the size of the request body and resubmit.
+
+Phase: 0.
 
 # 26. Validation Error Registry
 

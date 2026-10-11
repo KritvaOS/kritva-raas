@@ -87,6 +87,18 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-11 — REST API v1 response contract decided
+
+- **State:** DECISION APPROVED (documents reconciled; no implementation)
+- **Tasks:** None (decision input for KR-BE-1-007, which stays Proposed and is ready to start)
+- **Increment ACs:** B-INC-001-AC-08 (not satisfied), B-INC-001-AC-07 (not satisfied)
+- **Program acceptance:** Not applicable
+- **Tests:** BTS-007 (NOT RUN against the final contract), BTS-032 (not satisfied)
+- **Security gates:** SEC-GATE-009 (not closed; stated as the logging-redaction gate, links unchanged)
+- **Findings/risks:** `RESPONSES.md` Section 11 said the response echoes the client's request ID, which conflicts with the server-generated rule; amended for REST API v1. Success wrapping changes every future endpoint response shape. Decisions 2 to 6 and the registry details are Claude's recommendation within the option the owner chose and take effect on merge. `BACKEND_ARCHITECTURE.md` and `API_ARCHITECTURE.md` are still unchecked for the older shape. The inspection behind the option is not an independent review
+- **Files changed:** `decisions/KR-BE-1-007-response-contract.md` (new), `decisions/KR-BE-1-007-error-envelope.md`, `docs/protocol/API_CONTRACT.md`, `RESPONSES.md`, `ERROR_CODES.md`, `ACCEPTANCE_CRITERIA.md`, `TEST_PLAN.md`, `TASKS.md`, `CHANGELOG.md`, `../../BACKEND_CHANGELOG.md`, `claude/Handoff.md`
+- **Commit:** Pending until this change is merged
+
 ### 2026-10-11 — KR-BE-1-005 request context (request ID only)
 
 - **State:** IN REVIEW (partial implementation delivered; not accepted)
