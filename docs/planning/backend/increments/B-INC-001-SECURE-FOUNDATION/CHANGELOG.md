@@ -87,6 +87,18 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-11 — KR-BE-1-004 HTTP transport implemented
+
+- **State:** IN REVIEW (implementation delivered; not accepted)
+- **Tasks:** KR-BE-1-004 (In Review)
+- **Increment ACs:** B-INC-001-AC-06 (partly evidenced; not satisfied until review and the Node.js 24.21.0 run)
+- **Program acceptance:** Not applicable
+- **Tests:** BTS-007, BTS-032 (19 node:test cases written; sandbox run on Node.js 22 is feasibility only; the Node.js 24.21.0 run is posted as a PR comment by the delivery script)
+- **Security gates:** Not applicable
+- **Findings/risks:** Fastify's default validator coerces types and removes unknown properties; both are switched off and tested. Error envelope differs between `API_CONTRACT.md` and `RESPONSES.md`/`ERROR_CODES.md` (`KR-BE-1-007`). `main.ts` does not open a port until configuration exists (`KR-BE-1-003`). No independent review
+- **Files changed:** `apps/backend/package.json`, `apps/backend/package-lock.json`, `apps/backend/src/transport/*`, `apps/backend/tests/transport/*`, `apps/backend/README.md`, `TASKS.md`, `CHANGELOG.md`, `../../BACKEND_CHANGELOG.md`, `claude/Handoff.md`
+- **Commit:** Pending until this change is merged
+
 ### 2026-10-11 — KR-BINC-001-003 HTTP framework approved
 
 - **State:** DECISION APPROVED (task In Review, not accepted)
