@@ -956,6 +956,28 @@ Reason: `KR-BINC-001-003` depends on the approved runtime and module-boundary de
 | Changed | The decision record, `TASKS.md` status line, increment `CHANGELOG.md`, this entry, `claude/Handoff.md` |
 | Not changed | `apps/backend`, dependencies, lockfile, CI |
 
+## 3AH. PB-035 — KR-BINC-001-003 HTTP Framework Approved
+
+| Field | Value |
+|---|---|
+| Change ID | PB-035 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Follows | PB-034 |
+
+Reason: the Backend Technical Lead approved the recommendation of PB-034 in session.
+
+| Item | Disposition |
+|---|---|
+| Decision | `KR-BINC-001-003`: Fastify, exact 5.12.5, as the HTTP framework of the API layer, with the seven constraints of the record. Approved on 2026-10-11 |
+| Not selected | NestJS, Express |
+| Unblocks | `KR-BE-1-004` (HTTP transport), `KR-BE-1-006` (API v1 routing) and `KR-BE-1-007` (validation and error contract) with respect to the framework choice. Their other dependencies still apply |
+| Open verification | Install from the lockfile and run the representative route on Node.js 24.21.0 and npm 11.19.0 (`KR-BE-1-004`); real-module boundary check (BTS-004); error contract tests (BTS-007) |
+| Independence | The approver is also the owner who stated the preference; no independent reviewer took part |
+| Task status | In Review. Not Accepted. BTS-004, BTS-007 and BTS-032 are NOT RUN |
+| Not changed | `apps/backend`, dependencies, lockfile, CI |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

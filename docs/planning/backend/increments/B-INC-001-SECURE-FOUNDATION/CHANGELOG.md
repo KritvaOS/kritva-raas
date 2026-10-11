@@ -87,6 +87,21 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-11 — KR-BINC-001-003 HTTP framework approved
+
+- **State:** DECISION APPROVED (task In Review, not accepted)
+- **Tasks:** KR-BINC-001-003
+- **Increment ACs:** B-INC-001-AC-03, B-INC-001-AC-06 (not satisfied)
+- **Program acceptance:** Not applicable
+- **Tests:** BTS-004, BTS-007, BTS-032 (NOT RUN)
+- **Security gates:** Not applicable
+- **Findings/risks:** Compatibility of Fastify with Node.js 24.21.0 is shown in `KR-BE-1-004`; no independent review
+- **Files changed:** `decisions/KR-BINC-001-003-http-framework.md`, `TASKS.md`, `CHANGELOG.md`, `../../BACKEND_CHANGELOG.md`, `claude/Handoff.md`
+- **Commit:** Pending until this change is merged
+- **Evidence:** The decision record Sections 3 and 8
+- **Reviewer role:** Backend Technical Lead (approver)
+- **Decision and follow-up:** See PB-035. Next: `KR-BE-1-004` adds Fastify and shows the route on the pinned runtime
+
 ### 2026-10-11 — KR-BINC-001-003 HTTP framework decision record
 
 - **State:** PROPOSED (recommendation written; owner approval pending)

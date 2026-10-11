@@ -218,7 +218,7 @@ All new tasks below have an estimate of **TBD**. Each must be refined and approv
 - **Linked AC:** B-INC-001-AC-03, B-INC-001-AC-06.
 - **Linked tests:** BTS-004, BTS-007, BTS-032.
 - **Linked security gates:** Not applicable.
-- **Status:** In Review. Decision record [`decisions/KR-BINC-001-003-http-framework.md`](decisions/KR-BINC-001-003-http-framework.md) is Proposed (PB-034): it recommends Fastify 5.12.5 with constraints and records sandbox feasibility evidence under Node.js 22. The owner has not approved it. Linked tests are NOT RUN. Not Accepted.
+- **Status:** In Review. Decision record [`decisions/KR-BINC-001-003-http-framework.md`](decisions/KR-BINC-001-003-http-framework.md) is Approved by the Backend Technical Lead on 2026-10-11 (PB-035): Fastify 5.12.5 with seven constraints. The approver is also the owner who preferred it, and no independent reviewer took part. The representative route on Node.js 24.21.0 is still to be shown in `KR-BE-1-004`. Linked tests are NOT RUN. Not Accepted.
 
 ### KR-BINC-001-004 — Decide database migration tool
 
