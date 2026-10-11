@@ -39,7 +39,8 @@ Only this directory imports Fastify (the "API layer only" constraint of `KR-BINC
 
 | File | Purpose |
 |---|---|
-| `http-server.ts` | `buildHttpServer({ routes })` builds the app. Routes passed in are mounted under `/api/v1`. Unknown paths return 404 and a known path with another method returns 405 with `Allow`. Validation is strict: no type coercion and no removal of unknown properties |
+| `http-server.ts` | `buildHttpServer({ groups })` builds the app. Route groups passed in are mounted under `/api/v1` (see `api-v1.ts`). Unknown paths return 404 and a known path with another method returns 405 with `Allow`. Validation is strict: no type coercion and no removal of unknown properties |
+| `api-v1.ts` | The route-registration pattern: a `RouteGroup` has a name, one path root (for example `/projects`) and a `register` function that adds routes relative to that root. `buildHttpServer({ groups })` checks the groups before any port opens and mounts each in its own scope at `/api/v1` plus its root |
 | `error-contract.ts` | The one place that turns a failure into an error body (`API_CONTRACT.md` Section 18, provisional until `KR-BE-1-007`). Bodies carry no internal message, stack or submitted value. `request_id` and `correlation_id` are null until `KR-BE-1-005` |
 | `lifecycle.ts` | `startHttpServer(app, { host, port })` and `stop()`; `installShutdownHandlers(server, process, onStopped)` |
 
@@ -63,3 +64,13 @@ Tests: `tests/transport/http-server.test.ts` uses `app.inject` and opens no port
 These are non-secret settings. Secret and credential settings are not implemented yet; they follow the approval of `KR-BINC-001-005`. `.env.example` lists the settings with placeholders; the application does not read it, so export the values in your shell or inject them from your runtime, and keep real local values outside tracked files.
 
 Run: `KRITVA_HTTP_PORT=8080 node dist/src/main.js` after `npm run build`. The first signal (`SIGINT` or `SIGTERM`) stops the server and exits 0. Invalid configuration or a port that is in use exits 1.
+
+## API v1 routing rules (`KR-BE-1-006`)
+
+- The version is in the path: everything is under `/api/v1`. Any other prefix (`/api/v2`, `/api`, `/api/v1` itself) is 404.
+- A module's API layer exposes one `RouteGroup` with one path root. Roots are lower-case segments joined by single hyphens; two groups may not share a root or nest one inside the other, so each path root has one owner. Invalid or overlapping groups throw `RouteRegistrationError` when the server is built.
+- A route registered as `/` in a group is served at the bare root without a trailing slash.
+- Matching is exact: no trailing slash, no doubled slash, no case folding. This also means an empty identifier never matches a path parameter.
+- A known path with another method returns 405 with `Allow` (OPTIONS included, as no CORS is configured); an unknown path is 404 whatever the method. Both are JSON in the provisional error body.
+- Each group is its own scope, so a hook added by one group does not run for another.
+- No group exists yet, so the server serves no route. Domain APIs are added by their own tasks.

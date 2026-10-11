@@ -40,9 +40,9 @@ function get(port: number, path: string): Promise<{ status: number; body: string
 
 function slowApp(delayMs: number) {
   return buildHttpServer({
-    routes: (api) => {
-      api.get("/slow", async () => { await new Promise((r) => setTimeout(r, delayMs)); return { done: true }; });
-    },
+    groups: [{ name: "slow", prefix: "/slow", register: (api) => {
+      api.get("/", async () => { await new Promise((r) => setTimeout(r, delayMs)); return { done: true }; });
+    } }],
   });
 }
 
