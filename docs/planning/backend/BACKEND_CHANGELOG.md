@@ -1189,6 +1189,33 @@ Reason: `KR-BE-1-007` implements the response contract decided in PB-041 and PB-
 | Task status | In Review. Not Accepted |
 | Not changed | Dependencies, lockfile, CI, protocol documents |
 
+## 3AR. PB-045 — External Audit Fixes for the Response Contract
+
+| Field | Value |
+|---|---|
+| Change ID | PB-045 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Backend Engineer; Backend Technical Lead accountable |
+| Follows | PB-044 |
+
+Reason: an AI external audit (ChatGPT, `main` at `2de2897`) found eight issues in the merged response work; none was a false closure of a task, criterion or gate.
+
+| Item | Disposition |
+|---|---|
+| F-01 (P1) | `classifyError` no longer relabels every 4xx as 400. 400, 401 (`AUTH_REQUIRED`), 403 (`AUTHZ_DENIED`), 404 and 429 (`RATE_LIMIT_EXCEEDED`) map to registry codes; any other status becomes `INTERNAL_ERROR`. Tests assert HTTP status, envelope status and code agree |
+| F-02 (P1) | `requestIdOf` throws without a context. `ensureRequestId(request, reply)` serves error paths: it creates the context once and sets the header, so body and header match. A `frameworkErrors` handler makes an invalid URL return the envelope with `X-Request-ID`; before, Fastify's own body repeated the URL and had no header |
+| F-03 (P1) | `RESPONSES.md` Sections 38 and 39 and its 12 error examples reconciled: `code` and `message` are top-level, `error` holds `details`, `retryable`, `field_errors` and optional `causes`; `field_errors` is no longer inside `details` |
+| F-04 (P2) | `API_ARCHITECTURE.md` Sections 36 to 39 and 49 to 51 reconciled with the approved envelope, the server-generated request ID and registry codes |
+| F-05 (P2) | SEC-GATE-009 links qualified on `KR-BE-1-006` and `KR-BE-1-007`; not removed, because merged commit trailers carry them. Removal stays an owner decision |
+| F-06 (P2) | Request context classified as shared infrastructure (`KR-BE-1-002` Section 5.5) in a decision-record note, the file header and the README |
+| F-07, F-08 (P2) | Handoff main revision and next steps refreshed; `KR-BE-1-006` narrative no longer calls the body provisional |
+| Tests | 4 net new; suite 81. Node.js 24.21.0 transcript posted as a PR comment. Component tests only; BTS-032 is not satisfied |
+| Open | AC-05 evidence and Security Owner disposition; owner reviews of 003 to 007; removal of the gate links; success codes per endpoint; `KR-BE-1-008` correlation |
+| Independence | Written by Claude; the audit is AI inspection; no independent human review |
+| Task status | Unchanged: In Review. Not Accepted |
+| Not changed | Dependencies, lockfile, CI |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

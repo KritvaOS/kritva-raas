@@ -415,8 +415,12 @@ Example:
             "run_id": "run-001"
         },
         "error": {
-            "code": "RUNTIME_UNAVAILABLE",
-            "message": "Kritva Runtime became unavailable",
+            "causes": [
+                {
+                    "code": "RUNTIME_UNAVAILABLE",
+                    "message": "Kritva Runtime became unavailable"
+                }
+            ],
             "details": {}
         }
     }
@@ -620,8 +624,6 @@ Example:
             "requested_end": "2026-10-10T11:00:00Z"
         },
         "error": {
-            "code": "BOOKING_CONFLICT",
-            "message": "Requested resource is already booked",
             "details": {}
         }
     }
@@ -644,26 +646,35 @@ The `error` object provides structured failure detail.
 
 ## 38. Error Fields
 
+The failure code and message are the top-level `code` and `message` of the envelope (Section 7). The `error` object carries the structured detail. It is defined by `ERROR_CODES.md` Section 8 and, for REST API v1, by `API_CONTRACT.md` Section 18.
+
 | Field | Required | Purpose |
 |---|---:|---|
-| `code` | Yes | Stable error code |
-| `message` | Yes | Human-readable explanation |
-| `details` | Optional | Structured diagnostic information |
-| `retryable` | Optional | Whether retry may be appropriate |
-| `field_errors` | Optional | Field-level validation errors |
+| `details` | Yes (an object, may be empty) | Structured, non-sensitive diagnostic information |
+| `retryable` | Yes | Whether retry may be appropriate |
+| `field_errors` | Yes (an array, may be empty) | Field-level validation errors |
+| `causes` | Optional | Underlying causes, each with a `code` and `message` |
+
+Examples in this document may leave out `retryable` and `field_errors` where they do not matter to the point shown. A REST API v1 response always contains both.
 
 ## 39. Error Details
+
+`field_errors` is a field of the `error` object, not of `details`.
 
 Example:
 
     {
-        "code": "VALIDATION_FAILED",
-        "message": "Request validation failed",
-        "details": {
+        "status": "INVALID_REQUEST",
+        "code": "INVALID_REQUEST",
+        "message": "The request is invalid. Check the provided information and try again.",
+        "data": null,
+        "error": {
+            "details": {},
+            "retryable": false,
             "field_errors": [
                 {
                     "field": "end_time",
-                    "code": "INVALID_TIME_RANGE",
+                    "code": "FIELD_INVALID",
                     "message": "End time must be after start time"
                 }
             ]
@@ -825,17 +836,15 @@ Example:
         "message": "Request validation failed",
         "data": null,
         "error": {
-            "code": "VALIDATION_FAILED",
-            "message": "One or more fields are invalid",
-            "details": {
-                "field_errors": [
-                    {
-                        "field": "platform_id",
-                        "code": "REQUIRED",
-                        "message": "Platform is required"
-                    }
-                ]
-            }
+            "details": {},
+            "retryable": false,
+            "field_errors": [
+                {
+                    "field": "platform_id",
+                    "code": "MISSING_REQUIRED_FIELD",
+                    "message": "Platform is required"
+                }
+            ]
         }
     }
 
@@ -849,8 +858,6 @@ Example:
         "message": "You do not have access to this project",
         "data": null,
         "error": {
-            "code": "PROJECT_ACCESS_DENIED",
-            "message": "Project access denied",
             "details": {}
         }
     }
@@ -867,8 +874,6 @@ Example:
             "platform_id": "humanoid-a"
         },
         "error": {
-            "code": "BOOKING_CONFLICT",
-            "message": "Requested time slot is unavailable",
             "details": {
                 "retryable": true
             }
@@ -888,8 +893,6 @@ Example:
             "available_credits": 300
         },
         "error": {
-            "code": "INSUFFICIENT_CREDITS",
-            "message": "The selected platform wallet does not have enough credits",
             "details": {}
         }
     }
@@ -907,8 +910,6 @@ Example:
             "platform_id": "humanoid-a"
         },
         "error": {
-            "code": "ARTIFACT_INCOMPATIBLE",
-            "message": "Runtime requirements are not satisfied",
             "details": {
                 "required_runtime": "2.0",
                 "available_runtime": "1.5"
@@ -929,8 +930,6 @@ Example:
             "last_seen": "2026-10-08T00:00:00Z"
         },
         "error": {
-            "code": "AGENT_OFFLINE",
-            "message": "Execution cannot currently be dispatched",
             "details": {
                 "retryable": true
             }
@@ -950,8 +949,12 @@ Example:
             "run_id": "run-001"
         },
         "error": {
-            "code": "RUNTIME_UNAVAILABLE",
-            "message": "Runtime stopped responding",
+            "causes": [
+                {
+                    "code": "RUNTIME_UNAVAILABLE",
+                    "message": "Runtime stopped responding"
+                }
+            ],
             "details": {
                 "recovery_required": true
             }
@@ -1047,8 +1050,6 @@ Example:
         "message": "The supplied pagination cursor is invalid",
         "data": null,
         "error": {
-            "code": "INVALID_CURSOR",
-            "message": "Cursor cannot be used",
             "details": {}
         }
     }
@@ -1278,8 +1279,6 @@ Example:
         "message": "Idempotency key was previously used with different request data",
         "data": null,
         "error": {
-            "code": "IDEMPOTENCY_CONFLICT",
-            "message": "The request does not match the stored operation",
             "details": {}
         }
     }
@@ -1642,8 +1641,12 @@ Example:
             "operation_id": "op-001"
         },
         "error": {
-            "code": "TIMEOUT",
-            "message": "Operation timed out",
+            "causes": [
+                {
+                    "code": "TIMEOUT",
+                    "message": "Operation timed out"
+                }
+            ],
             "details": {
                 "reconciliation_required": true
             }

@@ -87,6 +87,18 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-11 — External audit fixes for the response contract
+
+- **State:** IN REVIEW (fixes delivered; tasks not accepted)
+- **Tasks:** KR-BE-1-005, KR-BE-1-006, KR-BE-1-007 (In Review)
+- **Increment ACs:** B-INC-001-AC-07, AC-08, AC-09 (not satisfied)
+- **Program acceptance:** Not applicable
+- **Tests:** BTS-007 (component; suite 81, 4 net new), BTS-032 (not satisfied); sandbox run on Node.js 22 is feasibility only; Node.js 24.21.0 run posted by the delivery script
+- **Security gates:** SEC-GATE-009 (not closed; links qualified, not removed)
+- **Findings/risks:** An AI external audit (ChatGPT, main `2de2897`) found F-01 to F-08; none was a false closure. F-01 and F-02 are fixed in code; testing F-02 also exposed that an invalid URL returned Fastify's own body with no `X-Request-ID` and the URL repeated, now fixed. F-03, F-04, F-05, F-06, F-07, F-08 are document changes. The audit is not an independent human review; the owner is also the approver
+- **Files changed:** `apps/backend/src/transport/{error-contract,request-context,http-server}.ts`, `src/shared/request-context.ts` (comment), `tests/transport/response-contract.test.ts`, `README.md`, `docs/protocol/RESPONSES.md`, `docs/architecture/API_ARCHITECTURE.md`, `TASKS.md`, `decisions/KR-BE-1-002-module-boundaries.md` (note), `CHANGELOG.md`, `../../BACKEND_CHANGELOG.md`, `claude/Handoff.md`
+- **Commit:** Pending until this change is merged
+
 ### 2026-10-11 — KR-BE-1-007 response envelope and error contract
 
 - **State:** IN REVIEW (implementation delivered; not accepted)

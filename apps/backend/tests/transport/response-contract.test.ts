@@ -21,7 +21,8 @@ import assert from "node:assert/strict";
 import type { InjectOptions } from "fastify";
 import { REQUEST_ID_PATTERN } from "../../src/shared/request-context.js";
 import { buildHttpServer } from "../../src/transport/http-server.js";
-import { requestIdOf } from "../../src/transport/request-context.js";
+import { ensureRequestId, requestIdOf } from "../../src/transport/request-context.js";
+import { RequestContextMissingError } from "../../src/shared/request-context.js";
 import { classifyError, ERRORS } from "../../src/transport/error-contract.js";
 import { PROTOCOL_VERSION, responseTimestamp, successBody } from "../../src/transport/response-contract.js";
 
@@ -44,6 +45,10 @@ function app(bodyLimitBytes?: number) {
       api.post<{ Body: { n: number } }>("/checked", {
         schema: { body: { type: "object", required: ["n"], additionalProperties: false, properties: { n: { type: "integer" } } } },
       }, async (request) => successBody({ status: "SUCCESS", code: "OK", message: "ok" }, { n: request.body.n }, requestIdOf(request)));
+      api.get("/status/:code", async (request) => {
+        const statusCode = Number((request.params as { code: string }).code);
+        throw Object.assign(new Error("FRAMEWORK-DETAIL-TEXT"), { statusCode });
+      });
       api.get("/boom", async () => { throw new Error("INTERNAL-SECRET-TEXT at /srv/app/secret.ts:1"); });
     } }],
   });
@@ -164,10 +169,67 @@ test("the timestamp is UTC with whole seconds", () => {
   assert.equal(body.timestamp, "2026-10-11T12:30:45Z");
 });
 
-test("transport errors map to registry codes and any other 4xx becomes INVALID_REQUEST", () => {
+test("transport errors map to registry codes and an undefined status is not relabeled as bad input", () => {
   assert.equal(classifyError({ code: "FST_ERR_CTP_BODY_TOO_LARGE" }).spec, ERRORS.payloadTooLarge);
   assert.equal(classifyError({ code: "FST_ERR_CTP_INVALID_MEDIA_TYPE" }).spec, ERRORS.unsupportedMediaType);
-  assert.equal(classifyError({ statusCode: 431 }).spec.code, "INVALID_REQUEST");
+  assert.equal(classifyError({ statusCode: 400 }).spec, ERRORS.validation);
+  assert.equal(classifyError({ statusCode: 401 }).spec, ERRORS.unauthorized);
+  assert.equal(classifyError({ statusCode: 403 }).spec, ERRORS.forbidden);
+  assert.equal(classifyError({ statusCode: 404 }).spec, ERRORS.notFound);
+  assert.equal(classifyError({ statusCode: 429 }).spec, ERRORS.rateLimited);
+  for (const statusCode of [408, 409, 412, 422, 431]) assert.equal(classifyError({ statusCode }).spec, ERRORS.internal, String(statusCode));
   assert.equal(classifyError(new Error("x")).spec, ERRORS.internal);
   assert.equal(classifyError(null).spec, ERRORS.internal);
+});
+
+test("HTTP status, envelope status and code agree for framework-raised statuses", async () => {
+  const a = app();
+  const expected: Record<number, [number, string, string]> = {
+    400: [400, "INVALID_REQUEST", "INVALID_REQUEST"],
+    401: [401, "UNAUTHORIZED", "AUTH_REQUIRED"],
+    403: [403, "FORBIDDEN", "AUTHZ_DENIED"],
+    404: [404, "NOT_FOUND", "RESOURCE_NOT_FOUND"],
+    429: [429, "UNAVAILABLE", "RATE_LIMIT_EXCEEDED"],
+    409: [500, "FAILED", "INTERNAL_ERROR"],
+    422: [500, "FAILED", "INTERNAL_ERROR"],
+  };
+  for (const [code, [http, status, errCode]] of Object.entries(expected)) {
+    const res = await a.inject({ method: "GET", url: `/api/v1/things/status/${code}` });
+    assert.equal(res.statusCode, http, code);
+    const body = assertEnvelope(res);
+    assert.equal(body.status, status, code);
+    assert.equal(body.code, errCode, code);
+    assert.ok(!res.body.includes("FRAMEWORK-DETAIL-TEXT"), code);
+  }
+  await a.close();
+});
+
+test("an invalid URL, raised by the router before any hook, still returns the envelope and X-Request-ID", async () => {
+  const a = app();
+  for (const url of ["/api/v1/%", "/api/v1/things/%zz"]) {
+    const res = await a.inject({ method: "GET", url });
+    assert.equal(res.statusCode, 400, url);
+    const body = assertEnvelope(res);
+    assert.equal(body.status, "INVALID_REQUEST");
+    assert.equal(body.code, "INVALID_REQUEST");
+    assert.ok(!res.body.includes("%zz") && !res.body.includes("not a valid url"), url);
+  }
+  await a.close();
+});
+
+test("ensureRequestId attaches one ID to the request and the header and returns it again", () => {
+  const headers: Record<string, string> = {};
+  const request = { requestContext: null } as unknown as Parameters<typeof ensureRequestId>[0];
+  const reply = { header: (name: string, value: string) => { headers[name] = value; return reply; } } as unknown as Parameters<typeof ensureRequestId>[1];
+  const id = ensureRequestId(request, reply);
+  assert.match(id, REQUEST_ID_PATTERN);
+  assert.equal(headers["x-request-id"], id);
+  assert.equal(request.requestContext?.requestId, id);
+  assert.equal(ensureRequestId(request, reply), id);
+  assert.equal(Object.keys(headers).length, 1);
+});
+
+test("requestIdOf throws when no context was created", () => {
+  const request = { requestContext: null } as unknown as Parameters<typeof requestIdOf>[0];
+  assert.throws(() => requestIdOf(request), RequestContextMissingError);
 });

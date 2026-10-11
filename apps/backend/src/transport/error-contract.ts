@@ -36,6 +36,9 @@ export const ERRORS = {
   methodNotAllowed: { httpStatus: 405, status: "INVALID_REQUEST", code: "METHOD_NOT_ALLOWED", message: "The request method is not supported for this resource.", retryable: false },
   payloadTooLarge: { httpStatus: 413, status: "REJECTED", code: "PAYLOAD_TOO_LARGE", message: "The request is too large.", retryable: false },
   unsupportedMediaType: { httpStatus: 415, status: "INVALID_REQUEST", code: "UNSUPPORTED_CONTENT_TYPE", message: "This content type is not supported.", retryable: false },
+  unauthorized: { httpStatus: 401, status: "UNAUTHORIZED", code: "AUTH_REQUIRED", message: "Please sign in to continue.", retryable: false },
+  forbidden: { httpStatus: 403, status: "FORBIDDEN", code: "AUTHZ_DENIED", message: "You do not have permission to perform this operation.", retryable: false },
+  rateLimited: { httpStatus: 429, status: "UNAVAILABLE", code: "RATE_LIMIT_EXCEEDED", message: "Too many requests. Please try again later.", retryable: true },
   internal: { httpStatus: 500, status: "FAILED", code: "INTERNAL_ERROR", message: "An unexpected error occurred. Please try again.", retryable: true },
 } as const satisfies Record<string, ErrorSpec>;
 
@@ -93,8 +96,21 @@ export function classifyError(error: unknown): { spec: ErrorSpec; fieldErrors: r
     default:
       break;
   }
-  if (typeof e.statusCode === "number" && e.statusCode >= 400 && e.statusCode < 500) {
-    return { spec: ERRORS.validation, fieldErrors: [] };
+  // A status raised by the framework or a plugin is kept only where the registry defines a generic code for it.
+  // Any other status, 4xx included (409, 412, 422 and so on have only domain codes), is not relabeled as bad
+  // input: it is reported as INTERNAL_ERROR, and the module that owns the case must map it before it gets here.
+  switch (e.statusCode) {
+    case 400:
+      return { spec: ERRORS.validation, fieldErrors: [] };
+    case 401:
+      return { spec: ERRORS.unauthorized, fieldErrors: [] };
+    case 403:
+      return { spec: ERRORS.forbidden, fieldErrors: [] };
+    case 404:
+      return { spec: ERRORS.notFound, fieldErrors: [] };
+    case 429:
+      return { spec: ERRORS.rateLimited, fieldErrors: [] };
+    default:
+      return { spec: ERRORS.internal, fieldErrors: [] };
   }
-  return { spec: ERRORS.internal, fieldErrors: [] };
 }
