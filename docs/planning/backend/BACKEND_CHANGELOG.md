@@ -563,6 +563,27 @@ Reason: the external audit found that `BACKEND_SECURITY_GATE.md` quoted the cred
 
 No gate is closed and no task status changes. The scan does not replace the scanner decision `KR-BINC-001-008`, which stays on hold.
 
+## 3O. PB-016 — Secret-Handling Pre-Approval Corrections
+
+| Field | Value |
+|---|---|
+| Change ID | PB-016 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Follows | PB-015 |
+
+Reason: an independent review of the `KR-BINC-001-005` approval package found items to correct before the Security Owner and Cloud/Infrastructure Owner are asked to review it. Each cited program section was checked against the repository before the change.
+
+| Item | Disposition |
+|---|---|
+| Security gate record Section 9 | Stale wording that still called the example an unremediated finding. It now separates the recorded working-tree rescan from the pending history assessment, the missing scanner enforcement and the unclaimed gate closure |
+| Approval package | Revision 2: names the open history finding, states that policy approval does not decide it or close a gate, and adds a Security Owner question for its disposition |
+| Decision record | S4 wording limited to actual critical key material; test credential requirements stated; local file protections; injection is not confidentiality; redaction covers URLs, query strings, nested errors, telemetry and health output and drops events when redaction fails; separate credentials mean distinct identities; exposure outline lists the assessment fields and the closure evidence |
+| Not changed | The disposition stays Proposed. No approval row changes. Scanner selection (`KR-BINC-001-008`) stays on hold |
+
+No task status changes. `KR-BINC-001-005` stays In Review. No security gate is closed.
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

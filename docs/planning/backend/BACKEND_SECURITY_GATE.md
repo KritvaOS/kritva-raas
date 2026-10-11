@@ -265,13 +265,22 @@ The backend must satisfy these requirements in the scope applicable to each incr
 
 ## 9. Current Status
 
-The reported scan at `2c51027` is a manual baseline. The reported private-key, certificate, token, and API-key checks found no matches; the reported local-development database URL example remains the finding requiring remediation and rescan.
+The reported scan at `2c51027` is a manual baseline. The reported private-key, certificate, token, and API-key checks found no matches. The reported local-development database URL example was replaced in the working tree, and a sanitized pattern-based rescan of tracked files is recorded in section 4.2.1 (2026-10-11).
+
+Current evidence, kept separate:
+
+| Item | State |
+|---|---|
+| Current-file remediation and sanitized working-tree rescan | Recorded in section 4.2.1 |
+| Exposure assessment of the earlier value in Git history | Pending with the Security Owner. Not decided, and not decided by the secret-handling policy approval |
+| Automated scanner selection and enforcement | Not established. The manual rescan is not a scanner run (`KR-BINC-001-008` is on hold) |
+| Gate closure | Not asserted |
 
 No `.gitignore` or CI workflow existed at that reported baseline, and automated blocking enforcement has not been established by the supplied evidence.
 
 Accordingly:
 
-- SEC-GATE-001 is not passed until the example is replaced and the required rescan and disposition are retained.
+- SEC-GATE-001 is not passed until the Security Owner has reviewed the recorded evidence, assessed the history exposure and recorded the finding disposition. The example is replaced and the working-tree rescan is recorded, but the disposition is still outstanding.
 - SEC-GATE-002 through SEC-GATE-013 are not passed merely because they are specified here.
 - B-INC-001 cannot be accepted until its mandatory security criteria pass.
 - The current baseline must not be described as CI-enforced or as proof that all repository history and external copies are clean.
