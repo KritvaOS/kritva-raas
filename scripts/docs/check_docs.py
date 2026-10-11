@@ -17,7 +17,7 @@
 # Created     : 10-10-2026
 #==============================================================================
 
-"""Documentation consistency checks for docs/.
+"""Documentation consistency checks for docs/ and the planning root (docs/planning/ or planning/).
 Structural checks: retired phase/milestone names, canonical milestone folders,
 required standard milestone files, broken relative links and backtick doc
 references, document-ID/title presence.
@@ -29,8 +29,16 @@ Exit code 1 on any error. Warnings (legacy phase labels in architecture,
 protocol and security documents) are reported but do not fail the run.
 """
 import re, sys, pathlib
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from planning_root import PlanningRootError, planning_dir, planning_rel
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 DOCS = ROOT / "docs"
+try:
+    PLAN = planning_dir(ROOT)      # docs/planning today, planning/ after the move
+    PLAN_REL = planning_rel(ROOT)
+except PlanningRootError as exc:
+    print(f"ERROR {exc}")
+    sys.exit(1)
 RETIRED = [r"CORE PLATFORM", r"PRODUCT MVP", r"PRODUCTION LAUNCH", r"SCALE (&|and) OPERATIONS",
            r"SECURITY (&|and) PRODUCTION", r"RESOURCE (&|and) COMMERCIAL", r"Async Execution Foundation",
            r"B-M0\d[^\n]*Backend Foundation", r"B-M0\d[^\n]*Control Plane Foundation", r"F-M0\d[^\n]*Identity (&|and) Workspace",
@@ -45,7 +53,7 @@ CANON_MILESTONES = {
 STD = ["MILESTONE.md","TASKS.md","ACCEPTANCE_CRITERIA.md","REVIEW_CHECKLIST.md","CHANGELOG.md","GIT_COMMIT_STEP.md"]
 errors = []
 def err(m): errors.append(m)
-md = sorted(DOCS.rglob("*.md"))
+md = sorted(set(DOCS.rglob("*.md")) | set(PLAN.rglob("*.md")))
 # 1 retired names (PHASES.md may mention them in its retired-names note)
 for f in md:
     t = f.read_text()
@@ -93,8 +101,8 @@ def rel(f): return f.relative_to(ROOT)
 def text(f): return f.read_text()
 
 # 6 canonical phase-to-milestone mapping tables
-for name in ("planning/PHASES.md", "planning/IMPLEMENTATION_ROADMAP.md"):
-    f = DOCS / name
+for name in ("PHASES.md", "IMPLEMENTATION_ROADMAP.md"):
+    f = PLAN / name
     seen = {m: set() for m in FROZEN}
     for line in text(f).splitlines():
         m = re.match(r"\| P(\d) ([A-Z& ]+?) \|(.*\|)$", line)
@@ -134,7 +142,7 @@ for f in md:
                 err(f"{rel(f)}: legacy milestone name '{n}' in: {line.strip()[:80]}")
 
 # 9 phase-label form: "Phase N" must not be used; strict in planning/tracking/milestones
-STRICT = [DOCS/"planning", DOCS/"tracking"] + [p for p in DOCS.glob("**/milestones") if p.is_dir()]
+STRICT = [PLAN, DOCS/"tracking"] + [p for p in DOCS.glob("**/milestones") if p.is_dir()]
 for f in md:
     strict = any(s in f.parents for s in STRICT)
     for i, line in enumerate(text(f).splitlines(), 1):
@@ -181,7 +189,7 @@ for f in md:
                 if re.match(r"^\| `?P\d`? \|", nxt): err(f"{rel(f)}: priority definition '{nxt.strip()[:40]}' uses phase-like notation; use PRI-n")
 
 # 13 MVP is a product-scope concept, never a phase or milestone
-for f in (DOCS/"planning").glob("*.md"):
+for f in PLAN.glob("*.md"):
     for i, line in enumerate(text(f).splitlines(), 1):
         if "MVP" in line and "primary product path" not in line.lower() and not re.search(r'"?MVP"? MUST NOT', line):
             err(f"{rel(f)}:{i}: 'MVP' used outside the primary product path definition")
@@ -227,8 +235,8 @@ for f in md:
 CA_DOC = DOCS/"architecture/CODING_AGENT_INTEGRATION.md"
 if not CA_DOC.exists():
     err("docs/architecture/CODING_AGENT_INTEGRATION.md is missing")
-if "SYS-ADR-007" not in text(DOCS/"planning/DECISIONS.md"):
-    err("docs/planning/DECISIONS.md: SYS-ADR-007 missing from the decision index")
+if "SYS-ADR-007" not in text(PLAN/"DECISIONS.md"):
+    err(f"{PLAN_REL}/DECISIONS.md: SYS-ADR-007 missing from the decision index")
 ALLOWED_MCP = {"kritva.project.info","kritva.platform.describe","kritva.build.run","kritva.test.run",
                "kritva.artifact.package","kritva.artifact.validate","kritva.build.logs"}
 for f in md:

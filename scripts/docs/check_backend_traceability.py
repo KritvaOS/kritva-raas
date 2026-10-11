@@ -19,7 +19,7 @@
 
 """Traceability checks for backend increment dossiers.
 
-For every docs/planning/backend/increments/B-INC-nnn-*/ dossier, verify that:
+For every <planning root>/backend/increments/B-INC-nnn-*/ dossier (docs/planning or planning), verify that:
 1. ACCEPTANCE_CRITERIA.md traces cite only BAC-, BTS- and SEC-GATE- IDs defined in
    BACKEND_ACCEPTANCE_CRITERIA.md, BACKEND_TEST_STRATEGY.md and BACKEND_SECURITY_GATE.md.
 2. Each task in TASKS.md links only existing criteria, and its linked tests and
@@ -33,8 +33,15 @@ Exit status is 1 if any check fails.
 import re, sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from planning_root import PlanningRootError, planning_dir
+
 ROOT = Path(__file__).resolve().parents[2]
-BACKEND = ROOT / "docs/planning/backend"
+try:
+    BACKEND = planning_dir(ROOT) / "backend"      # docs/planning today, planning/ after the move
+except PlanningRootError as exc:
+    print(f"ERROR {exc}")
+    sys.exit(1)
 ID = r"(?:BTS-\d+|SEC-GATE-\d+|BAC-\d+)"
 
 defined = set()
