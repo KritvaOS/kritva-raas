@@ -643,6 +643,25 @@ Reason: a second external re-audit of `main` at `8f1964d` closed N-01, N-03 and 
 | Changelog and handoff | The PB-018 entry cites its real commit and merge; `claude/Handoff.md` is refreshed to `8f1964d` |
 | Not changed | No approval, no status change, no gate closed. The package stays Draft until the review requests are actually sent |
 
+## 3S. PB-020 — Runtime Pin Proposal and TypeScript Scope
+
+| Field | Value |
+|---|---|
+| Change ID | PB-020 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Follows | PB-019 |
+
+Reason: the audit work left two items open for `KR-BINC-001-001`: the pin method was undecided and the TypeScript 7.0.2 check was a pre-approval condition although 7.0.2 is only an upgrade candidate.
+
+| Item | Disposition |
+|---|---|
+| Pin method | A recommendation for the Backend Technical Lead (decision record Section 5.1): `.node-version` as the canonical exact pin, a matching `engines.node` and `engine-strict=true` as guards, the official distribution as the only accepted runtime source, the bundled npm recorded per pin change, a consistency check required of `KR-BINC-001-017`. Not decided |
+| TypeScript scope | The repository owner agreed in session to keep 6.0.3 as the baseline and defer 7.0.2 to a later decision record. The Section 6 condition for 7.0.2 is removed. This is not the Backend Technical Lead's recorded approval |
+| Evidence fields | Section 6.1 lists the fields a verification of the official distribution must record, including the signature check or an explicit statement that none was done |
+| Not changed | No approval, no status change, no gate closed. The official checksum verification and the bundled npm check are still outstanding, so the decision is not ready to approve |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

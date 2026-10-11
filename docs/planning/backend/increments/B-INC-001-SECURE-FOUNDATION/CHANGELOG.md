@@ -87,6 +87,21 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-11 — Runtime pin proposal and TypeScript scope
+
+- **State:** PLANNED (documentation; no task status change)
+- **Tasks:** None (recommendation and scope change for KR-BINC-001-001, which stays In Review)
+- **Increment ACs:** Not applicable
+- **Program acceptance:** Not applicable
+- **Tests:** Not applicable
+- **Security gates:** Not applicable (no gate is closed)
+- **Findings/risks:** Official checksum verification and the bundled npm check are still outstanding; see `../../BACKEND_CHANGELOG.md` PB-020
+- **Files changed:** `decisions/KR-BINC-001-001-runtime-language.md`, `../../decisions/approvals/APPROVAL-KR-BINC-001-001-runtime-language.md`, `CHANGELOG.md`, `../../BACKEND_CHANGELOG.md`, `claude/Handoff.md`
+- **Commit:** Pending until this change is merged
+- **Evidence:** `make check` results recorded in the commit message
+- **Reviewer role:** Repository owner
+- **Decision and follow-up:** See PB-020
+
 ### 2026-10-11 — Approval package pointers corrected after the second re-audit
 
 - **State:** IMPLEMENTED (documentation; no task status change)
