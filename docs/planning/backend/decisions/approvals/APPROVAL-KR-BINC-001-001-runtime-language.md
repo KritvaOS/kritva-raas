@@ -11,7 +11,7 @@
 | Decision ID | KR-BINC-001-001 |
 | Task ID | KR-BINC-001-001 |
 | Increment | B-INC-001 |
-| Revision | 1 (2026-10-10) |
+| Revision | 2 (2026-10-11) |
 
 Status here is the package workflow status (Draft, Requested, Closed, Withdrawn). The decision disposition is recorded in the decision record.
 
@@ -38,6 +38,8 @@ Proposed until approved:
 1. Node.js 24 LTS (Krypton), pinned to an exact patch version in the repository and in CI.
 2. TypeScript 6.0.3 as the initial baseline, pinned exactly. TypeScript 7.0.2 is an upgrade candidate that needs its own decision record after a compatibility check.
 3. One supported Node.js major at a time, recorded in one place and mirrored by package metadata, a local version file and CI. Patch and security updates are taken as reviewed changes.
+4. A proposed pin method (decision record Section 5.1): `.node-version` as the canonical exact pin, a matching `engines.node` and `engine-strict=true` as guards, the official distribution as the only runtime source with the checksum and signature evidence recorded, the bundled npm recorded per pin change, and a CI consistency check required of `KR-BINC-001-017`. It is a recommendation for the Backend Technical Lead, not a decision.
+5. TypeScript 7.0.2 is deferred to a later decision record. The repository owner agreed to this in session on 2026-10-11. It is not a recorded approval, and this package no longer treats the TypeScript 7.0.2 check as a condition of approval.
 
 ## 6. Options and Trade-offs
 
@@ -77,8 +79,8 @@ Findings:
 Executed check, recorded 2026-10-11 in Section 6 of the decision record (sandbox, partial):
 
 1. Done: a strict-mode TypeScript 6.0.3 sample compiled and ran under Node.js 24.21.0. TypeScript 6 requires an explicit `rootDir`.
-2. Partly done: Node.js 24.21.0 was the release used, taken from the npm registry. The pin method is not decided, and the release has not been verified against the official nodejs.org checksums.
-3. Done for one sample: TypeScript 7.0.2 compiled it with no deprecated or removed option reported.
+2. Partly done: Node.js 24.21.0 was the release used, taken from the npm registry. A pin method is proposed in Section 5.1 of the decision record and is not decided. The release has not been verified against the official nodejs.org checksums.
+3. Information only: TypeScript 7.0.2 compiled the sample with no deprecated or removed option reported. TypeScript 7.0.2 is deferred and is not a condition of this approval.
 4. Partly done: eslint 10.12.0 with typescript-eslint 8.71.1, vitest 5.0.3 and pg 8.23.1 ran under Node.js 24.21.0. The HTTP framework and migration tool are not decided. npm 10.9.4 was used, not the npm bundled with Node.js 24.21.0.
 
 Approval waits for the Section 6 evidence of the decision record. The Backend Technical Lead should not approve until the pinned Node.js release, its pin method and its official checksum verification are recorded, and the package manager support is recorded under KR-BINC-001-002. The check above does not replace that evidence.
@@ -86,8 +88,8 @@ Approval waits for the Section 6 evidence of the decision record. The Backend Te
 Review questions:
 
 1. Is Node.js 24 acceptable now, or should the record switch to Node.js 26 after 2026-10-28?
-2. Is TypeScript 6.0.3 the right baseline given the evidence above?
-3. Which remaining Section 6 items must be recorded before approval, beyond those listed above?
+2. Do you confirm TypeScript 6.0.3 as the baseline with 7.0.2 deferred to a later decision record?
+3. Do you approve, change or reject the proposed pin method in Section 5.1 of the decision record, and which remaining Section 6 items must be recorded before approval?
 
 ## 8. Dependencies and Downstream Impact
 

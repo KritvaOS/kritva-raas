@@ -88,6 +88,24 @@ TypeScript:
 2. **TypeScript 6.0.3** as the initial baseline, pinned to an exact version. **TypeScript 7.0.2** is an upgrade candidate, adopted by a new decision record only after the compatibility check in Section 6 passes for it. The baseline is 6.0.3 and not 7.0.x because no evidence yet shows that the framework, test runner, linter and build tools support 7.0.
 3. **Version policy:** one supported Node.js major at a time, recorded in a single place and mirrored by the package metadata `engines` field, a version file for local use and CI. Exact pins give reproducibility, not a frozen patch level: patch and security updates are taken deliberately as reviewed changes that touch the lockfile and are verified by CI, and the pinned Node.js patch is reviewed at least when a security release is published. A new Node.js major is adopted by a new decision record, not silently.
 
+4. **TypeScript scope (2026-10-11).** The repository owner agreed in session to keep TypeScript 6.0.3 as the baseline and to defer TypeScript 7.0.2 to a later decision record. This approval therefore covers 6.0.3 only. It is an owner direction relayed in session and not the Backend Technical Lead's recorded approval, which is still pending in Section 9.
+
+### 5.1 Proposed pin method (recommendation, not decided)
+
+This is a proposal for the Backend Technical Lead to approve, change or reject before approving this record. It is not decided. The mechanisms below serve different purposes, and none substitutes for another.
+
+| Element | Role |
+|---|---|
+| `.node-version` at the repository root | The canonical pin: one line holding the exact Node.js patch version. The approved release is written here when this record is approved. The file is read by several version managers and by the CI setup step. The policy is the content of the file, not a particular tool |
+| `engines.node` in the backend `package.json` | The same exact version, so that the package states what it was verified with. A compatibility guard. It does not install a runtime |
+| `engine-strict=true` in `.npmrc` | Makes an install fail under an incompatible runtime. A guard, not an installer |
+| Runtime source | The official Node.js distribution. A pin change records the release, the source, the matching `SHASUMS256.txt` entry, the computed SHA-256, and the signature check or an explicit statement that none was done. The npm registry `node` package is not an accepted source |
+| Bundled npm | npm is the one bundled with the pinned release (`KR-BINC-001-002`). Its version is recorded in each pin change and is not pinned separately |
+| Consistency check | CI fails when `.node-version`, `engines.node` and the runtime in use disagree. This is a requirement for `KR-BINC-001-017`. No such check exists yet |
+| Changing the pin | A patch or security update is a reviewed change that updates the three places and the lockfile and is verified by CI. A new Node.js major needs a new decision record |
+
+Candidate release: 24.21.0 is the release used in the sandbox check and is the current candidate. The Backend Technical Lead confirms the exact patch after the official distribution is verified (Section 6). The policy is decided before this record is approved. Putting it in place in local setup and in CI belongs to `KR-BINC-001-016` and `KR-BINC-001-017`.
+
 Rationale: Node.js 24 is eligible for production now and has the longest window among the eligible lines, 18 months. Node.js 26 has a longer window (to 2029-04-30) but is not yet LTS.
 
 Decision point for the owner: if the owner prefers the longer window, adopting Node.js 26 after it enters LTS on 2026-10-28 is a reasonable alternative. This record then changes to Node.js 26 before KR-BE-1-001 starts. The choice costs nothing before application code exists, and it costs a migration afterwards.
@@ -96,9 +114,10 @@ Decision point for the owner: if the owner prefers the longer window, adopting N
 
 The recommendation is not final until the following is demonstrated and recorded, because only version availability was verified. The record must name the exact Node.js release used by local development and CI, how it is pinned, and the compatibility matrix of the tools that were actually checked:
 
-1. TypeScript 6.0.3 compiles a strict-mode sample under the proposed Node.js version. For the 7.0.2 upgrade candidate, the same check passes and any deprecated or removed configuration option is listed.
+1. TypeScript 6.0.3 compiles a strict-mode sample under the proposed Node.js version. TypeScript 7.0.2 is deferred to a later decision record (Section 5, item 4) and is not a condition of this approval. The sandbox result for it below is information only.
 2. The shortlisted HTTP framework, test runner, linter and PostgreSQL driver declare support for the proposed Node.js and TypeScript versions.
 3. The proposed package manager (KR-BINC-001-002) supports the proposed Node.js version.
+4. The Node.js release is obtained from the official distribution and verified, with the evidence fields listed in Section 6.1.
 
 If a tool does not support the proposed Node.js version, the approver chooses a different Node.js version or tool before approval, and the reason is recorded here.
 
@@ -120,6 +139,23 @@ This is a partial result from an executed check in a disposable sandbox. It does
 | npm | 10.9.4 was used. The npm bundled with Node.js 24.21.0 was not used. Package manager support is therefore not demonstrated (KR-BINC-001-002 stays open) |
 
 Not demonstrated by this check: the HTTP framework (not decided), the migration tool, TypeScript 7.0.2 together with typescript-eslint (its declared range excludes 7.0.x), the pinned Node.js release from the official distribution with verified checksums, Node.js 26, and any CI run.
+
+### 6.1 Evidence fields for the official distribution check
+
+Recorded per verification, with the commands and outputs, and never as a conclusion alone:
+
+| Field | Content |
+|---|---|
+| Release identity | Node.js version, platform, architecture, exact archive file name |
+| Source | Official distribution URL, the `SHASUMS256.txt` URL and the signature URL if used |
+| Checksum | The matching manifest entry, the expected SHA-256 and the computed SHA-256 |
+| Command and result | The exact checksum command, exit status and output |
+| Signature | Whether it was available and checked, the command and result, the release key fingerprint and how the key was authenticated, or an explicit "not performed" |
+| Runtime | `node --version`, `npm --version`, executable paths, and that the binaries came from the official distribution |
+| Toolchain | Exact versions of TypeScript, eslint, typescript-eslint, vitest and pg, with commands, exit statuses and scope |
+| Limitations | No database connection tried, framework not selected, no CI run, unverified platforms |
+
+A disposable `npm ci` run with the bundled npm is decision evidence of compatibility. The acceptance of reproducible install in the real repository stays with `KR-BE-1-001` and `KR-BINC-001-017`.
 
 ## 7. Consequences and Dependencies
 
