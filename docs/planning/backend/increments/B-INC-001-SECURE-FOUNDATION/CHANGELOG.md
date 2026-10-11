@@ -87,6 +87,21 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-11 — Owner direction on pin method, framework candidate and migration tool shortlist
+
+- **State:** PLANNED (documentation; no task status change)
+- **Tasks:** None (direction recorded for KR-BINC-001-001, which stays In Review; KR-BINC-001-003 and KR-BINC-001-004 are not started)
+- **Increment ACs:** Not applicable
+- **Program acceptance:** Not applicable
+- **Tests:** Not applicable
+- **Security gates:** Not applicable (no gate is closed)
+- **Findings/risks:** graphile-migrate stable release dates from 2022; dbmate ships a native binary; see `../../BACKEND_CHANGELOG.md` PB-023
+- **Files changed:** `decisions/KR-BINC-001-001-runtime-language.md`, `../../decisions/approvals/APPROVAL-KR-BINC-001-001-runtime-language.md`, `CHANGELOG.md`, `../../BACKEND_CHANGELOG.md`, `claude/Handoff.md`
+- **Commit:** Pending until this change is merged
+- **Evidence:** `make check` results recorded in the commit message
+- **Reviewer role:** Repository owner
+- **Decision and follow-up:** See PB-023
+
 ### 2026-10-11 — Node.js release signing key authenticated
 
 - **State:** PLANNED (documentation; no task status change)

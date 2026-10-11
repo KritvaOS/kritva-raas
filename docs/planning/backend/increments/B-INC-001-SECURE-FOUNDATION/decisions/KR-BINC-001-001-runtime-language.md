@@ -110,6 +110,16 @@ Rationale: Node.js 24 is eligible for production now and has the longest window 
 
 Decision point for the owner: if the owner prefers the longer window, adopting Node.js 26 after it enters LTS on 2026-10-28 is a reasonable alternative. This record then changes to Node.js 26 before KR-BE-1-001 starts. The choice costs nothing before application code exists, and it costs a migration afterwards.
 
+### 5.2 Owner direction on 2026-10-11
+
+The repository owner gave these directions in session. They are the owner's choices for the Backend Technical Lead to review. They are not the Backend Technical Lead's approval.
+
+| Topic | Direction | Status |
+|---|---|---|
+| Pin method | Proposal A (Section 5.1) is the recommendation to take to the Backend Technical Lead. A container image pinned by digest for deployment is to be added later | Proposal A is not approved. The container image is a later addition and is not decided. It would have to reconcile with the runtime-source rule in Section 5.1, because the official Docker image is not the `nodejs.org` archive. It belongs to deployment work, not to `KR-BINC-001-016` or `KR-BINC-001-017` as written |
+| HTTP framework | Fastify is the owner's preferred candidate | Not a decision. `KR-BINC-001-003` still evaluates the options and needs its own approved decision record. The other candidates are not ruled out by this record |
+| Migration tool shortlist | node-pg-migrate, graphile-migrate and dbmate | Shortlist only. `KR-BINC-001-004` still decides, with Database Technical Lead review and `SEC-GATE-011` |
+
 ## 6. Compatibility Check Required Before Approval
 
 The recommendation is not final until the following is demonstrated and recorded, because only version availability was verified. The record must name the exact Node.js release used by local development and CI, how it is pinned, and the compatibility matrix of the tools that were actually checked:
@@ -195,7 +205,20 @@ What this shows: the checksum manifest from nodejs.org is validly signed by a ke
 
 This supersedes the signature row of Section 6.2 (not verified). The Section 6.2 text stays as the record of the first run.
 
-Still open before the Backend Technical Lead can decide: the pin decision (Section 5.1), the HTTP framework and migration tool shortlist, and the `KR-BINC-001-002` acceptance of the bundled npm.
+Still open before the Backend Technical Lead can decide: approval of the pin method (Section 5.1, with the owner direction in Section 5.2), review of the tool shortlist metadata in Section 6.4, and the `KR-BINC-001-002` acceptance of the bundled npm.
+
+### 6.4 Shortlisted tools: declared support (registry metadata, 2026-10-11)
+
+Metadata read from the npm registry. It shows what each package declares, not that it works. Nothing in this table was installed or run for this record. The framework and migration tool are decided by `KR-BINC-001-003` and `KR-BINC-001-004`; the table serves Section 6, item 2 only.
+
+| Tool | Version seen | Declared Node.js range | Admits Node.js 24 | TypeScript and types | Notes for the deciding task |
+|---|---|---|---|---|---|
+| fastify (preferred candidate for `KR-BINC-001-003`) | 5.12.5, published 2026-09-16 | None declared | Not declared | Ships `fastify.d.ts`; no TypeScript peer range | Node.js support must be confirmed from the project documentation in `KR-BINC-001-003`. Depends on `pino` for logging, which bears on the redaction requirements of `KR-BINC-001-005` |
+| node-pg-migrate | 9.0.0, published 2026-07-17 | >=20.11.0 | Yes | Ships types; peers `pg >=4.3.0 <9.0.0` and `@types/pg >=6.0.0 <9.0.0`, which admit pg 8.23.1 | Has a CLI; dependencies `glob`, `jiti`, `yargs` |
+| graphile-migrate | Stable 1.4.1, published 2022-12-20. A `2.0.0-rc.5` is on the `rc` tag, published 2026-09-08 | None declared | Not declared | Ships types; `pg` and `@types/pg` are regular dependencies, not peers | The newest stable release is almost four years old and the 2.0 line is a release candidate. This is a maintenance signal for `KR-BINC-001-004` to assess, not a conclusion |
+| dbmate | 2.36.0, published 2026-09-19 | None declared | Not applicable | Ships types for its wrapper | The npm package wraps a native binary supplied through per-platform optional packages (`@dbmate/<platform>`). The metadata declares no install script. Binary provenance and platform coverage (linux x64, arm, arm64 and ia32; macOS x64 and arm64; Windows x64) are for `KR-BINC-001-004` to evaluate. It does not depend on the Node.js or TypeScript version |
+
+None of the four declares a TypeScript peer range, so no conflict with TypeScript 6.0.3 is declared. That is not proof of compatibility. The executed compatibility check for these tools belongs to the deciding tasks.
 
 ## 7. Consequences and Dependencies
 
