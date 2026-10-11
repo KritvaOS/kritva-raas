@@ -827,6 +827,28 @@ Reason: record the plan Section 6 evidence for `KR-BE-1-001` and the BTS-036 rev
 | Changed | `TASKS.md` status line, increment `CHANGELOG.md`, this entry, `claude/Handoff.md` |
 | Not changed | Code, dependencies, lockfile, CI |
 
+## 3AB. PB-029 — KR-BE-1-001 Accepted
+
+| Field | Value |
+|---|---|
+| Change ID | PB-029 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Follows | PB-028 |
+
+Reason: the Backend Technical Lead accepts `KR-BE-1-001` after reviewing its Definition of Done and the evidence in `evidence/KR-BE-1-001-evidence.md`.
+
+| Item | Disposition |
+|---|---|
+| Task status | Accepted on 2026-10-11 by the Backend Technical Lead |
+| Basis | Definition of Done met: the clean checkout installs reproducibly under the pinned toolchain (exit 0 on commit `ffc42d1`), build and the baseline test run, the entry point is explicit and inert, no credential is embedded, and the structure matches the plan. BTS-036 review done with findings dispositioned |
+| Limits | The reviewer did not re-review the fixes of the two blockers. The accepter is also the repository owner who directed the work, so the acceptance is not independent of it |
+| Gates | None closed. SEC-GATE-003, SEC-GATE-004 and SEC-GATE-013 keep their open items. Local secret detection is not claimed |
+| Acceptance criteria | `B-INC-001-AC-01` and `B-INC-001-AC-02` stay open; other tasks contribute to them |
+| Changed | `TASKS.md` status line, the evidence record note, this entry, the increment `CHANGELOG.md` entry, `claude/Handoff.md` |
+| Not changed | Code, dependencies, lockfile, CI |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

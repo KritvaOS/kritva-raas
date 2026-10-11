@@ -87,6 +87,21 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-11 — KR-BE-1-001 accepted
+
+- **State:** ACCEPTED (task only; no gate or acceptance criterion closed)
+- **Tasks:** KR-BE-1-001
+- **Increment ACs:** B-INC-001-AC-01, B-INC-001-AC-02 (remain open; other tasks contribute)
+- **Program acceptance:** Not applicable
+- **Tests:** BTS-001, BTS-036 (evidence recorded in PB-028; no reviewer re-review of the fixes)
+- **Security gates:** SEC-GATE-003, SEC-GATE-004, SEC-GATE-013 (none closed)
+- **Findings/risks:** Acceptance is by the Backend Technical Lead, who is also the owner who directed the work
+- **Files changed:** `TASKS.md`, `evidence/KR-BE-1-001-evidence.md`, `CHANGELOG.md`, `../../BACKEND_CHANGELOG.md`, `claude/Handoff.md`
+- **Commit:** Pending until this change is merged
+- **Evidence:** `evidence/KR-BE-1-001-evidence.md`
+- **Reviewer role:** Repository owner
+- **Decision and follow-up:** See PB-029. Next tasks: KR-BE-1-002 (module boundaries), then decisions KR-BINC-001-003 and -004
+
 ### 2026-10-11 — Evidence and BTS-036 review record (KR-BE-1-001)
 
 - **State:** IN REVIEW (evidence recorded; not accepted)

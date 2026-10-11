@@ -88,4 +88,4 @@ The reviewer has not re-reviewed the fixes of findings 1 and 2. The Backend Tech
 
 ## 7. Status
 
-Plan Section 6 evidence and the BTS-036 review with its disposition are recorded. The task moves to In Review. It is not Accepted: the Backend Technical Lead has not recorded acceptance, and no gate is closed.
+Plan Section 6 evidence and the BTS-036 review with its disposition are recorded. The task moves to In Review. At the time of this record it was not Accepted. The Backend Technical Lead recorded acceptance on 2026-10-11 in PB-029, without a re-review of the fixes by the reviewer. No gate is closed.
