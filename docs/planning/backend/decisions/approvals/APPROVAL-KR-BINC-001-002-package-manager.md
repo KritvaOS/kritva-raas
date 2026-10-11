@@ -11,7 +11,7 @@
 | Decision ID | KR-BINC-001-002 |
 | Task ID | KR-BINC-001-002 |
 | Increment | B-INC-001 |
-| Revision | 1 (2026-10-10) |
+| Revision | 2 (2026-10-11) |
 
 Status here is the package workflow status (Draft, Requested, Closed, Withdrawn). The decision disposition is recorded in the decision record.
 
@@ -57,7 +57,9 @@ Both meet the requirements. The choice is setup simplicity against dependency st
 
 Evidence in the decision record (2026-10-10): npm 12.2.0 is the registry latest with a declared Node.js range of `^22.22.2 || ^24.15.0 || >=26.0.0`; Node.js 24.21.0 bundles npm 11.19.0; pnpm 12.11.2 is the registry latest and declares Node.js >=18. The evidence is version and range metadata only. It does not show lockfile behavior.
 
-Not yet demonstrated, and produced by later tasks: a clean checkout that installs with `npm ci` and runs the baseline build and tests (KR-BE-1-001 and KR-BINC-001-017), and a mismatched lockfile that fails in CI.
+Executed check (2026-10-11, disposable project, Linux x64, bundled npm 11.19.0 of the official Node.js 24.21.0; decision record Section 3): `npm install` and a clean `npm ci` with install scripts disabled both worked, and a mismatched lockfile made `npm ci` exit 1 with an "in sync" error. The release signature behind that Node.js was not verified (KR-BINC-001-001 record, Section 6.2).
+
+Not yet demonstrated, and produced by later tasks: a clean checkout that installs with `npm ci` and runs the baseline build and tests (KR-BE-1-001 and KR-BINC-001-017), and a mismatched lockfile that fails in CI (the local behavior is shown above).
 
 Review questions:
 
