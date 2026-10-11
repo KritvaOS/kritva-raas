@@ -96,7 +96,7 @@ Review questions:
 ## 8. Dependencies and Downstream Impact
 
 - KR-BINC-001-002 depends on this decision.
-- KR-BE-1-001 stays blocked until this decision and KR-BINC-001-002 are approved.
+- KR-BE-1-001 was blocked until this decision and KR-BINC-001-002 were approved. Both were approved on 2026-10-11.
 - KR-BINC-001-003 must support the approved versions.
 - Setup and CI documentation (KR-BINC-001-016 and KR-BINC-001-017) record the exact versions once approved.
 - The Node.js support dates change over time and the version policy is reviewed before the end of life of the chosen line.

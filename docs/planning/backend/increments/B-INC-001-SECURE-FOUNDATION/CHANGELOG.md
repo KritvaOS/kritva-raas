@@ -87,6 +87,21 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-11 — KR-BE-1-001 prerequisites recorded
+
+- **State:** PLANNED (documentation; task moved to Ready, not started)
+- **Tasks:** None (status and plan update for KR-BE-1-001, which has no code yet)
+- **Increment ACs:** Not applicable
+- **Program acceptance:** Not applicable
+- **Tests:** Not applicable
+- **Security gates:** Not applicable (no gate is closed)
+- **Findings/risks:** `DEVELOPMENT_SETUP.md` still shows a root pnpm and turbo layout until `KR-BINC-001-016`; see `../../BACKEND_CHANGELOG.md` PB-025
+- **Files changed:** `TASKS.md`, `plans/KR-BE-1-001-application-structure-plan.md`, `decisions/IMPLEMENTATION_READINESS.md`, both decision records and both approval packages (stale "stays blocked" wording), `CHANGELOG.md`, `../../BACKEND_CHANGELOG.md`, `claude/Handoff.md`
+- **Commit:** Pending until this change is merged
+- **Evidence:** `make check` results recorded in the commit message
+- **Reviewer role:** Repository owner
+- **Decision and follow-up:** See PB-025
+
 ### 2026-10-11 — Runtime and package manager decisions approved
 
 - **State:** IMPLEMENTED (documentation; decisions approved; no task accepted)
