@@ -103,3 +103,9 @@ Done and accepted: KR-BINC-001-018 (PR #2) and KR-BINC-001-019 (PR #4). Audit fi
 - Dinesh's `git pull` can revert local edits Claude made on the device; re-check files before relying on them.
 - A delivery script that narrows `PATH` (to use a pinned Node) must restore the original `PATH` before calling `gh` (PR O failed at `gh pr create` for this reason).
 - When a plan places a file, check it against the approved decision text before building (the `.node-version` location was wrong in the plan and caught only by the BTS-036 review).
+
+## Planning alignment (started 2026-10-11)
+
+PR #43 (PB-046) merged; main is `0737aef`. Owner asked to align `planning/` with kritva-core and kritvaos-community and to move planning to a root `planning/`. Decisions: conventions and shape; consolidate docs/tracking, docs/tasks, docs/milestones; gap report first, then small PRs. PR #44 (PB-047) merged (main `7b6b9ba`): added the gap report, authority matrix and migration plan. Plan order: 2 checker path config (both locations), 3 move to root `planning/`, 4 root entry docs, 5 status vocabulary (build on docs/tracking vocabulary), 6 status consistency check, 7 consolidate tracking, 8 phase and task folders, 9 increments if wanted. Next PB is PB-048. ChatGPT placed the move last; the owner chose to move it early.
+
+PR AK (PB-048, branch `feat/planning-root-config`): step 2, `scripts/docs/planning_root.py` makes the three checkers work with `docs/planning/` or `planning/`; 13 tests; `make planning-root-test` is part of `make check`. Next PB is PB-049; step 3 is the move.

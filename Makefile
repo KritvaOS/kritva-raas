@@ -75,7 +75,7 @@ header-check: ## Validate KritvaOS source headers (strict, tracked files)
 # Same commands as .github/workflows/docs-check.yml.
 #------------------------------------------------------------------------------
 
-.PHONY: docs-check traceability-check approvals-test approvals-check
+.PHONY: docs-check traceability-check approvals-test approvals-check planning-root-test
 
 docs-check: ## Validate documentation structure, phases and milestones
 	@echo "[docs-check] Validating documentation..."
@@ -88,6 +88,10 @@ traceability-check: ## Validate backend increment dossier traceability
 approvals-test: ## Run the backend approval package checker unit tests
 	@echo "[approvals-test] Running approval package checker tests..."
 	$(PYTHON) -m unittest discover -s $(TEST_DIR)/backend_approvals -v
+
+planning-root-test: ## Run the planning root locator and checker location tests
+	@echo "[planning-root-test] Running planning root tests..."
+	$(PYTHON) -m unittest discover -s $(TEST_DIR)/planning_root -v
 
 approvals-check: ## Validate backend decision-approval packages
 	@echo "[approvals] Validating backend decision-approval packages..."
@@ -104,7 +108,7 @@ approvals-check: ## Validate backend decision-approval packages
 
 .PHONY: check
 
-check: header-test header-check docs-check traceability-check approvals-test approvals-check ## Run all repository checks required by CI
+check: header-test header-check docs-check traceability-check approvals-test approvals-check planning-root-test ## Run all repository checks required by CI
 	@echo ""
 	@echo "[check] All repository checks passed."
 

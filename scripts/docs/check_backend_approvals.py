@@ -19,7 +19,7 @@
 
 """Structure checks for backend decision-approval packages.
 
-Packages live in docs/planning/backend/decisions/approvals/APPROVAL-<DECISION-ID>-<slug>.md.
+Packages live in <planning root>/backend/decisions/approvals/APPROVAL-<DECISION-ID>-<slug>.md.
 For every package, verify that:
 1. The file name follows the naming rule and the Decision ID matches it.
 2. The Document Control table has the required fields, the Path equals the real
@@ -46,8 +46,10 @@ import re
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from planning_root import PlanningRootError, planning_rel
+
 ROOT = Path(__file__).resolve().parents[2]
-BACKEND_REL = "docs/planning/backend"
 
 PACKAGE_STATUSES = {"Draft", "Requested", "Closed", "Withdrawn"}
 DISPOSITIONS = {"Proposed", "Approved", "Rejected", "Returned for revision", "Superseded"}
@@ -156,7 +158,11 @@ def check_decision_record(rec, rel, errors):
 
 
 def check(root=ROOT):
-    backend = root / BACKEND_REL
+    try:
+        backend_rel = planning_rel(root) + "/backend"      # docs/planning today, planning/ after the move
+    except PlanningRootError as exc:
+        return [str(exc)], 0
+    backend = root / backend_rel
     approvals = backend / "decisions" / "approvals"
     errors = []
     packages = sorted(approvals.glob("APPROVAL-*.md")) if approvals.is_dir() else []
@@ -215,12 +221,12 @@ def check(root=ROOT):
                 errors.append(f"{rel}: Task ID '{task}' must be a task ID or 'Not applicable'")
     readme = backend / "decisions" / "README.md"
     if packages and not readme.exists():
-        errors.append(f"{BACKEND_REL}/decisions/README.md is missing")
+        errors.append(f"{backend_rel}/decisions/README.md is missing")
     elif readme.exists():
         listed = readme.read_text()
         for pkg in packages:
             if f"approvals/{pkg.name}" not in listed:
-                errors.append(f"{BACKEND_REL}/decisions/README.md does not list {pkg.name}")
+                errors.append(f"{backend_rel}/decisions/README.md does not list {pkg.name}")
     return errors, len(packages)
 
 

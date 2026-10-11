@@ -43,3 +43,5 @@ jobs:
         run: python3 -m unittest discover -s tests/backend_approvals -v
       - name: Run backend approval package checker
         run: python3 scripts/docs/check_backend_approvals.py
+      - name: Run planning root locator tests
+        run: python3 -m unittest discover -s tests/planning_root -v

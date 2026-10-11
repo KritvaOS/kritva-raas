@@ -1258,6 +1258,27 @@ Reason: the owner asked that the planning folder be aligned with `kritva-core` a
 | Not changed | Any path, task status, decision, identifier, commit trailer, checker, dependency or CI file |
 | Review | Drafted by Claude; reviewed by ChatGPT as AI inspection; the owner chose the scope and the move. No independent human review |
 
+## 3AU. PB-048 — Checker Planning Root Configuration (Migration Step 2)
+
+| Field | Value |
+|---|---|
+| Change ID | PB-048 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Follows | PB-047 |
+
+Reason: step 2 of `PLANNING_MIGRATION_PLAN.md`. The documentation, traceability and approval checkers must work with the planning documents in either `docs/planning/` or a root `planning/` before the move, so the move is a separate and reversible change.
+
+| Item | Disposition |
+|---|---|
+| Added | `scripts/docs/planning_root.py` (the one definition of the planning root) and `tests/planning_root/` (13 tests) |
+| Changed | `check_docs.py`, `check_backend_traceability.py` and `check_backend_approvals.py` ask the module for the location. `check_docs.py` also scans a root `planning/` for links, titles, retired names and planning rules |
+| Rule | Exactly one location may hold `backend/`. If both do, each checker fails with a message |
+| Tooling | New `make planning-root-test`, part of `make check`, and one new step in the `docs-check` workflow |
+| Not changed | Any document path, document content, status, identifier, decision or commit trailer. Nothing is moved. A real run gives the same results as before: docs-check 0 problems and 1811 warnings, 4 dossiers, 28 approval tests and 3 packages |
+| Review | Written by Claude. No independent human review |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:
