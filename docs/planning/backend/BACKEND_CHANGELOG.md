@@ -701,6 +701,27 @@ Reason: the repository owner required the Node.js release signing key to be auth
 | Approval packages | `KR-BINC-001-001` revision 4 and `KR-BINC-001-002` revision 3 |
 | Not changed | No approval, no status change, no gate closed, no task accepted. The pin decision and the framework and migration tool shortlist remain open |
 
+## 3V. PB-023 — Owner Direction on Pin Method, Framework Candidate and Migration Tool Shortlist
+
+| Field | Value |
+|---|---|
+| Change ID | PB-023 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Follows | PB-022 |
+
+Reason: the repository owner chose a direction on the three open items of `KR-BINC-001-001` after the options were set out in session.
+
+| Item | Disposition |
+|---|---|
+| Pin method | Proposal A (decision record Section 5.1) is the owner's recommendation to the Backend Technical Lead. A digest-pinned container image for deployment is to be added later and is not decided |
+| HTTP framework | Fastify is the owner's preferred candidate. `KR-BINC-001-003` still decides |
+| Migration tool | node-pg-migrate, graphile-migrate and dbmate are the shortlist. `KR-BINC-001-004` still decides, with Database Technical Lead review |
+| Evidence | Section 6.4 of the decision record lists each tool's declared support from registry metadata (nothing installed or run). Points for the deciding tasks: graphile-migrate's newest stable release dates from 2022 and its 2.0 line is a release candidate; dbmate ships a native binary through per-platform optional packages |
+| Approval package | `KR-BINC-001-001` revision 5 |
+| Not changed | No approval, no status change, no gate closed, no task accepted. `KR-BINC-001-003` and `KR-BINC-001-004` are not started |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

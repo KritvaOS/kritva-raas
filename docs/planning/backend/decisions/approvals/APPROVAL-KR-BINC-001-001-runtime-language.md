@@ -11,7 +11,7 @@
 | Decision ID | KR-BINC-001-001 |
 | Task ID | KR-BINC-001-001 |
 | Increment | B-INC-001 |
-| Revision | 4 (2026-10-11) |
+| Revision | 5 (2026-10-11) |
 
 Status here is the package workflow status (Draft, Requested, Closed, Withdrawn). The decision disposition is recorded in the decision record.
 
@@ -40,6 +40,7 @@ Proposed until approved:
 3. One supported Node.js major at a time, recorded in one place and mirrored by package metadata, a local version file and CI. Patch and security updates are taken as reviewed changes.
 4. A proposed pin method (decision record Section 5.1): `.node-version` as the canonical exact pin, a matching `engines.node` and `engine-strict=true` as guards, the official distribution as the only runtime source with the checksum and signature evidence recorded, the bundled npm recorded per pin change, and a CI consistency check required of `KR-BINC-001-017`. It is a recommendation for the Backend Technical Lead, not a decision.
 5. TypeScript 7.0.2 is deferred to a later decision record. The repository owner agreed to this in session on 2026-10-11. It is not a recorded approval, and this package no longer treats the TypeScript 7.0.2 check as a condition of approval.
+6. Owner direction of 2026-10-11 (decision record Section 5.2), not an approval: pin method proposal A with a digest-pinned container image added later for deployment; Fastify as the preferred candidate for `KR-BINC-001-003`; node-pg-migrate, graphile-migrate and dbmate as the shortlist for `KR-BINC-001-004`. The framework and migration tool remain decisions of those tasks. Section 6.4 of the decision record lists what each shortlisted tool declares.
 
 ## 6. Options and Trade-offs
 
@@ -89,7 +90,7 @@ Review questions:
 
 1. Is Node.js 24 acceptable now, or should the record switch to Node.js 26 after 2026-10-28?
 2. Do you confirm TypeScript 6.0.3 as the baseline with 7.0.2 deferred to a later decision record?
-3. Do you approve, change or reject the proposed pin method in Section 5.1 of the decision record, and which remaining Section 6 items must be recorded before approval?
+3. Do you approve, change or reject the proposed pin method (proposal A, with a digest-pinned container image as a later deployment addition) in Section 5.1 of the decision record, and which remaining Section 6 items must be recorded before approval?
 4. The checksum matched and the manifest signature is valid for the key fingerprint published in the `nodejs/node` README (Section 6.3). The key has no web-of-trust certification. Is this level of authentication sufficient, and how should later releases signed by other releasers be handled?
 
 ## 8. Dependencies and Downstream Impact
