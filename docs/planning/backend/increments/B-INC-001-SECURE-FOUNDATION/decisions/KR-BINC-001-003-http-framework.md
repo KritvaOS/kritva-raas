@@ -6,7 +6,7 @@
 |---|---|
 | Document | KR-BINC-001-003 HTTP Framework Decision Record |
 | Path | `docs/planning/backend/increments/B-INC-001-SECURE-FOUNDATION/decisions/KR-BINC-001-003-http-framework.md` |
-| Status | Proposed |
+| Status | Approved |
 | Owner role | Backend Technical Lead |
 | Related milestones | B-M01 CONTROL PLANE |
 
@@ -31,7 +31,7 @@
 | Acceptance | B-INC-001-AC-03, B-INC-001-AC-06 |
 | Tests | BTS-004, BTS-007, BTS-032 |
 | Security gates | Not applicable |
-| Decision status | Proposed. Nothing here is approved |
+| Decision status | Approved on 2026-10-11 by the Backend Technical Lead, within the scope in Section 8.1. The task stays In Review |
 
 The task asks for options and trade-offs, an approved recommendation, and a representative route that can be implemented and tested without violating the architecture boundaries. This record holds the options, the evidence and the recommendation. The representative route was exercised in a throwaway sandbox project (Section 3). It is not task evidence for the pinned toolchain. The full transport and routing are `KR-BE-1-004` and `KR-BE-1-006`.
 
@@ -121,9 +121,15 @@ Until then, the sandbox run in Section 3.2 is a feasibility check and not task e
 
 | Approver role | Decision | Date | Evidence |
 |---|---|---|---|
-| Backend Technical Lead | Pending | Not recorded | Waiting for the owner's decision on the recommendation of Section 5 |
+| Backend Technical Lead | Approved | 2026-10-11 | Dinesh Annayya, acting as Backend Technical Lead, approved Fastify in session on 2026-10-11 ("approve Fastify") after the recommendation of Section 5 and the evidence of Section 3 were put to him |
 
-### 8.1 Not approved by this record
+### 8.1 Approved scope and what is not approved
+
+Approved: Fastify, exact version 5.12.5, as the HTTP framework of the backend API layer, with the seven constraints of Section 5 (API layer only, reviewed plugins, one error-contract handler, typed-body note, logging left to `KR-BE-1-041`, a testable lifecycle, and the pin by `KR-BE-1-004`). NestJS and Express are not selected.
+
+Evidence accepted: the registry and disposable-lockfile facts of Section 3.1 and the sandbox compile-and-route check of Section 3.2, which is feasibility evidence under Node.js 22.22.0 and not evidence on the pinned toolchain.
+
+Not approved by this record:
 
 - Any dependency, lockfile change, route or server code in `apps/backend`.
 - Any Fastify plugin, type provider or logger.
@@ -132,4 +138,4 @@ Until then, the sandbox run in Section 3.2 is a feasibility check and not task e
 
 ### 8.2 Independence
 
-The recommendation matches the owner's stated preference, and the approver is the same person. No independent reviewer has taken part. The evidence of Section 3 is reproducible from the registry and a disposable project.
+The recommendation matches the owner's stated preference, and the approver is the same person. No independent reviewer has taken part. The evidence of Section 3 is reproducible from the registry and a disposable project. An Approved decision does not make `KR-BINC-001-003` Accepted, and the representative route on the pinned runtime is still to be shown in `KR-BE-1-004` (Section 6).
