@@ -87,6 +87,18 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-11 — KR-BE-1-003 hostname validation fix after review
+
+- **State:** IN REVIEW (fix; not accepted)
+- **Tasks:** KR-BE-1-003 (In Review)
+- **Increment ACs:** B-INC-001-AC-04 (non-secret settings evidenced; not satisfied), B-INC-001-AC-05 (not demonstrated)
+- **Program acceptance:** Not applicable
+- **Tests:** BTS-002 (hostname cases added; sandbox run on Node.js 22 is feasibility only; Node.js 24.21.0 run posted by the delivery script)
+- **Security gates:** SEC-GATE-008 (not closed)
+- **Findings/risks:** ChatGPT (AI design inspection, `main` at `777f23f`, not an independent human review) found that `KRITVA_HTTP_HOST` accepted `api..internal` and `api.-internal`; fixed. AC-05 evidence is still open
+- **Files changed:** `apps/backend/src/config/config.ts`, `tests/config/config.test.ts`, `TASKS.md`, `CHANGELOG.md`, `../../BACKEND_CHANGELOG.md`, `claude/Handoff.md`
+- **Commit:** Pending until this change is merged
+
 ### 2026-10-11 — KR-BE-1-003 configuration boundary (non-secret settings)
 
 - **State:** IN REVIEW (partial implementation; not accepted)
