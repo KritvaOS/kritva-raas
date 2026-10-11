@@ -87,6 +87,21 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-11 — KR-BE-1-002 module boundaries plan
+
+- **State:** PLANNED (no decision, no code)
+- **Tasks:** KR-BE-1-002 (Proposed, not started)
+- **Increment ACs:** B-INC-001-AC-02, B-INC-001-AC-03 (not satisfied)
+- **Program acceptance:** Not applicable
+- **Tests:** BTS-001, BTS-004 (NOT RUN)
+- **Security gates:** SEC-GATE-003 (not closed)
+- **Findings/risks:** Overlaps found in the architecture: credit plan ownership, resource inventory, job state authority, event declaration, cross-module foreign keys
+- **Files changed:** `plans/KR-BE-1-002-module-boundaries-plan.md` (new), `TASKS.md`, `CHANGELOG.md`, `../../BACKEND_CHANGELOG.md`, `claude/Handoff.md`
+- **Commit:** Pending until this change is merged
+- **Evidence:** The plan
+- **Reviewer role:** Architecture Owner
+- **Decision and follow-up:** See PB-030. The Architecture Owner answers the nine questions, then the decision record is written
+
 ### 2026-10-11 — KR-BE-1-001 accepted
 
 - **State:** ACCEPTED (task only; no gate or acceptance criterion closed)

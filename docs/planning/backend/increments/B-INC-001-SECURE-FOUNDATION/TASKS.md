@@ -68,6 +68,7 @@ A task must not be marked Accepted solely because files or code exist. Required 
 - **Linked AC:** B-INC-001-AC-02, B-INC-001-AC-03.
 - **Linked tests:** BTS-001, BTS-004.
 - **Linked security gates:** SEC-GATE-003.
+- **Status:** Proposed. A plan with candidate rules and nine questions for the Architecture Owner is recorded in [`plans/KR-BE-1-002-module-boundaries-plan.md`](plans/KR-BE-1-002-module-boundaries-plan.md) (PB-030). Not started. Linked tests and gates are NOT RUN. Not Accepted.
 
 ### KR-BE-1-003 — Establish configuration framework
 

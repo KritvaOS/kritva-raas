@@ -849,6 +849,26 @@ Reason: the Backend Technical Lead accepts `KR-BE-1-001` after reviewing its Def
 | Changed | `TASKS.md` status line, the evidence record note, this entry, the increment `CHANGELOG.md` entry, `claude/Handoff.md` |
 | Not changed | Code, dependencies, lockfile, CI |
 
+## 3AC. PB-030 — KR-BE-1-002 Module Boundaries Plan
+
+| Field | Value |
+|---|---|
+| Change ID | PB-030 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Architecture Owner |
+| Follows | PB-029 |
+
+Reason: prepare `KR-BE-1-002` now that `KR-BE-1-001` is Accepted.
+
+| Item | Disposition |
+|---|---|
+| Added | `plans/KR-BE-1-002-module-boundaries-plan.md`: what the architecture settles and leaves open, candidate tiered one-way dependency rules, a candidate prohibited-coupling list, six pressure points, nine questions for the Architecture Owner, the evidence and the commit plan |
+| Task status | Proposed, with the plan linked. Not started. Not Accepted |
+| Decision | None. The candidate rules are proposals for review. Nothing is approved and no code or module directory is created |
+| Gates and tests | BTS-001, BTS-004 and SEC-GATE-003 are NOT RUN |
+| Changed | `TASKS.md` status line, increment `CHANGELOG.md`, this entry, `claude/Handoff.md` |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:
