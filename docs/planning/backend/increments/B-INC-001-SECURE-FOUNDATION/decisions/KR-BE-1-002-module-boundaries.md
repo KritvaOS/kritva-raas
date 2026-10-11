@@ -32,7 +32,7 @@
 
 ## 2. Status and Scope
 
-This record states the initial modules, their tiers, the allowed and prohibited dependencies and the dispositions of the open points listed in the plan. It follows `BACKEND_ARCHITECTURE.md` and adds the dependency direction that document leaves open. It is a design record. Nothing is enforced in code, no module directory exists and no automated check exists. It is Proposed until the review of Section 8 is done and the Architecture Owner records the decision. An Approved decision would not make the task Accepted.
+This record states the initial modules, their tiers, the allowed and prohibited dependencies and the dispositions of the open points listed in the plan. It follows `BACKEND_ARCHITECTURE.md` and adds the dependency direction that document leaves open. It is a design record. Nothing is enforced in code, no module directory exists and no automated check exists. It is Proposed until the review of Section 8 is done and the Architecture Owner records the decision. Revision 2 (2026-10-11) answers the independent review recorded in Section 11; the reviewer has not re-reviewed it. An Approved decision would not make the task Accepted.
 
 ## 3. Owner Answers (2026-10-11)
 
@@ -104,6 +104,28 @@ The shared kernel holds identifier, error base, clock and request-context types 
 
 Inside each module the layer order of `BACKEND_ARCHITECTURE.md` Section 29 applies: API, application, domain, ports, infrastructure. Repository interfaces are ports. Implementations are infrastructure and are used only by their own module.
 
+### 5.4 Ownership clarifications (revision 2)
+
+Each row gives one owner and one direction. These clarify the responsibilities of `BACKEND_ARCHITECTURE.md` and do not change them, except where stated.
+
+| Concept | Owner and meaning | Direction |
+|---|---|---|
+| Booking and resource allocation | Booking owns the customer-facing booking: quote, time window, booking lifecycle and cancellation policy. Resource Allocation owns the allocatable resource records and the operational allocation and lock of a resource, including conflict prevention on the resource | Booking calls a Resource Allocation operation to hold or release a resource. Resource Allocation never writes booking state and Booking never writes resource records. Each module owns the state transitions of its own records |
+| Resource inventory | Lab owns what a Lab Agent observes: reported inventory, health, capabilities, heartbeat and telemetry. Resource Allocation owns the authoritative allocatable resource records and locks | Lab reports inventory by calling a Resource Allocation application-service operation. Resource Allocation does not subscribe to Lab events |
+| Run lifecycle | Runs is the sole authority over the persisted run lifecycle and status. Lab is the external-boundary adapter: it reports execution observations by calling the Runs contract. The "execution state" in architecture Section 25 is read as the Lab-side dispatch and agent tracking, not the persisted run lifecycle | Lab, Scheduler and workers never write run state directly. Jobs remains the sole writer of job state |
+| Audit | Synchronous: a use case calls the Audit append contract inside the same transaction (the `CreateBooking` sequence, architecture Section 33). Audit does not subscribe to domain events. The architecture's listing of audit as an event consumer (Section 28) is not used in the foundation increments. Event-driven audit would need a recorded exception to Section 6, item 9 | Higher tier calls Audit (tier 1) |
+| Event consumers that are not modules | The WebSocket publisher, notifications, analytics and workers named in architecture Section 28 are adapters at the API and infrastructure edge. They subscribe to declared event contracts and call module application services. They are not modules and are not given a tier | They sit above all modules and follow Section 6 as callers |
+| Compatibility of an artifact with a platform | Artifacts owns artifact metadata, integrity, validation and artifact-intrinsic requirements. Platforms owns supported platform versions, capabilities and runtime constraints. Jobs owns the job-creation use case that queries both contracts and rejects an incompatible pair | Jobs calls both contracts. Jobs never reads either module's tables |
+| Event wording | Four different things: the bus and envelope (Events); an event type, declared in the publisher's contract area; a subscriber's dependency on that declared type (allowed, and counted as a contract dependency for the tier rule); and the delivery mechanism (infrastructure). Section 6, item 8 forbids dependence on the publisher's implementation, not on its declared event type | A subscriber of a lower-tier publisher is a downward dependency. The Scheduler dispatch event consumed by Lab is downward (tier 10 over tier 8) |
+
+### 5.5 Shared infrastructure that is not a module
+
+Some capabilities used by many modules belong to no module: the transaction boundary port (`KR-BE-1-033`), idempotency (`KR-BE-1-034`, `KR-BE-1-035`), request context, correlation and logging (`KR-BE-1-005`, `KR-BE-1-008`, `KR-BE-1-041`), configuration (`KR-BE-1-003`), and the migration baseline (`KR-BE-1-032`). They have no domain meaning, depend on no module and are used by modules and the API layer. A module reaches them through their ports. This adds the transaction boundary port to the shared items of Section 5.2 and does not change the kernel limit. Idempotency has no module in the architecture's map; its home is decided with `KR-BE-1-034`.
+
+### 5.6 CreateBooking contract
+
+The `CreateBooking` use case belongs to Booking, which owns the orchestration and the transaction boundary. It calls the Credits contract to reserve credits, the Resource Allocation contract to hold the resource, and the Audit append contract. It never writes another module's tables or calls another module's repository implementation. The event is published only after the authoritative state is committed (architecture Section 33). The use case requires that the contracts take part in one transaction. Whether the chosen persistence design can provide this atomicity is decided in `KR-BE-1-033`. If it cannot, that task records the alternative consistency and recovery strategy and does not claim this example is satisfied.
+
 ## 6. Prohibited Coupling
 
 1. A dependency from a lower tier to a higher tier, or between two modules of the same tier, in code. Use an identifier or Events.
@@ -135,15 +157,15 @@ This is inspection of a design, not of code. No module code exists. The review s
 
 | # | Check | Result |
 |---|---|---|
-| 1 | Each of the fifteen modules has one responsibility and one tier | Not yet reviewed |
-| 2 | Every allowed dependency in Section 5.1 points to a lower tier | Not yet reviewed |
-| 3 | No module appears twice in a dependency cycle through Section 5.1 | Not yet reviewed |
-| 4 | The prohibited list covers direct table access, shared repositories and cross-domain writes | Not yet reviewed |
-| 5 | Each pressure point of Section 7 has one owner and one direction | Not yet reviewed |
-| 6 | The decision does not contradict `BACKEND_ARCHITECTURE.md` | Not yet reviewed |
-| 7 | The tier order holds against the task lists of the later increments (B-INC-002 and after) | Not yet reviewed |
-| 8 | The event rule (Section 6, items 8 and 9) leaves no hidden cycle | Not yet reviewed |
-| 9 | The record claims no enforcement, no automated check and no module code | Not yet reviewed |
+| 1 | Each of the fifteen modules has one responsibility and one tier | Reviewer: finding (overlaps). Revision 2 adds Section 5.4. Not re-reviewed |
+| 2 | Every allowed dependency in Section 5.1 points to a lower tier | Reviewer: pass |
+| 3 | No module appears twice in a dependency cycle through Section 5.1 | Reviewer: pass for the listed graph, with the qualification that future event subscriptions are not proved cycle-free |
+| 4 | The prohibited list covers direct table access, shared repositories and cross-domain writes | Reviewer: pass |
+| 5 | Each pressure point of Section 7 has one owner and one direction | Reviewer: finding. Revision 2 adds Section 5.4. Not re-reviewed |
+| 6 | The decision does not contradict `BACKEND_ARCHITECTURE.md` | Reviewer: finding (Audit as event consumer, run state, booking and resource reservation). Revision 2 resolves them in Sections 5.4 to 5.6. Not re-reviewed |
+| 7 | The tier order holds against the task lists of the later increments (B-INC-002 and after) | Reviewer: partial. Revision 2 adds the reconciliation of Section 12 for B-INC-002 to B-INC-004. Later increments are not covered. Not re-reviewed |
+| 8 | The event rule (Section 6, items 8 and 9) leaves no hidden cycle | Reviewer: pass in principle, wording to clarify. Revision 2 adds the event wording of Section 5.4. Not re-reviewed |
+| 9 | The record claims no enforcement, no automated check and no module code | Reviewer: pass |
 
 ## 9. Consequences and Follow-Up
 
@@ -156,7 +178,11 @@ This is inspection of a design, not of code. No module code exists. The review s
 
 | Approver role | Decision | Date | Evidence |
 |---|---|---|---|
-| Architecture Owner | Pending | Not recorded | Waiting for the review of Section 8 |
+| Architecture Owner | Pending | Not recorded | Waiting for the re-review of revision 2 (Section 11) and the Architecture Owner's decision |
+
+### 10.0 Open owner confirmation
+
+Revision 2 chooses synchronous audit writes (Section 5.4) and reads architecture Section 25 "execution state" as Lab-side tracking. Both are choices for the Architecture Owner to confirm at approval. If either is rejected, it is an architecture change and not a boundary clarification.
 
 ### 10.1 Not approved by this record
 
@@ -167,3 +193,43 @@ This is inspection of a design, not of code. No module code exists. The review s
 ### 10.2 Independence
 
 The Architecture Owner is also the repository owner who directed these answers. The review of Section 8 must come from a reviewer other than the author of this record, and its record must state who reviewed and the limits of that review.
+
+## 11. Independent Review Record (BTS-004, B-INC-001-AC-03)
+
+| Field | Value |
+|---|---|
+| Reviewer | ChatGPT (external AI reviewer chosen by the repository owner), 2026-10-11 |
+| Subject | Revision 1 of this record, supplied as text, against `BACKEND_ARCHITECTURE.md` Sections 6 to 13, 29 to 34 and 59 |
+| Verdict | Return for revision. `B-INC-001-AC-03` does not pass yet |
+| Limits | Design inspection only. The reviewer is an AI assistant working from the text it was given. It did not re-review revision 2. The Architecture Owner directed the answers and also decides |
+
+| # | Severity | Finding (reviewer) | Disposition |
+|---|---|---|---|
+| 1 | Blocker | Booking and Resource Allocation both appear to own reservations | Accepted. Section 5.4 row 1 |
+| 2 | Blocker | Lab and Resource Allocation inventory ownership ambiguous | Accepted. Section 5.4 row 2 |
+| 3 | Blocker | Run state ownership not reconciled with Lab's execution state | Accepted. Section 5.4 row 3, with the reading of architecture Section 25 left for the owner to confirm (Section 10.0) |
+| 4 | Blocker | Audit as an event consumer conflicts with the tier and event rules | Accepted. Synchronous audit writes chosen (Section 5.4 row 4); the owner confirms (Section 10.0) |
+| 5 | Should-fix | Artifact and platform compatibility needs an ownership split | Accepted. Section 5.4 row 6 |
+| 6 | Should-fix | CreateBooking needs an explicit transaction contract | Accepted. Section 5.6; atomicity left to `KR-BE-1-033` |
+| 7 | Note | Event rule wording | Accepted. Section 5.4 row 7 |
+| 8 | Should-fix | Later-increment compatibility only partly shown | Accepted for B-INC-002 to B-INC-004 (Section 12). Later increments stay open and are not claimed |
+| 9 | Note | Scope and enforcement claims bounded; the scripted check is not enforcement | Accepted. Nothing in this record claims otherwise |
+
+## 12. Reconciliation with Later Increment Tasks
+
+Source: the task lists of B-INC-002, B-INC-003 and B-INC-004. Dependencies by task ID are read as module dependencies where the task names a module. This is inspection of the task lists, not of code.
+
+| Task(s) | Source module (tier) | Target (tier) | Allowed |
+|---|---|---|---|
+| `KR-BE-1-010`, `-012` identity model and authentication adapter | Identity (2) | Audit, Events (1) later via `KR-BE-1-038` | Yes |
+| `KR-BE-1-014` to `-018` Organization model, repositories, service, APIs | Organizations (3) | Identity (2) (`KR-BE-1-014` depends on `KR-BE-1-010`) | Yes |
+| `KR-BE-1-019`, `-020`, `-021` role and permission model, authorization policy layer, tenant context | Organizations (3) for roles and membership; the policy layer and tenant context are cross-cutting request-context and application-layer work | Identity (2) | Yes if the policy layer is a shared application-layer capability and not a module. Not decided here; the owner of `KR-BE-1-019` records it |
+| `KR-BE-1-022` to `-026` Project model, service, APIs, authorization | Projects (4) | Organizations (3) (`KR-BE-1-022` depends on `KR-BE-1-017` and `-021`) | Yes |
+| `KR-BE-1-027` to `-031` Platform catalog | Platforms (4) | Identity, Organizations (2, 3) for administration authorization | Yes |
+| `KR-BE-1-032` migration baseline | Shared infrastructure (Section 5.5), touching the tables of Identity, Organizations, Projects and Platforms | Not a module dependency | Yes. Schema migration is not a cross-module read or write |
+| `KR-BE-1-033`, `-034`, `-035` transaction boundary, idempotency | Shared infrastructure (Section 5.5) | None | Yes. The home of idempotency is decided in `KR-BE-1-034` |
+| `KR-BE-1-036`, `-037` Audit repository and service | Audit (1) | None | Yes |
+| `KR-BE-1-038`, `-039`, `-040` audit hooks in identity, project and platform operations | Identity (2), Projects (4), Platforms (4) | Audit (1) | Yes. Synchronous append (Section 5.4) |
+| `KR-BE-1-043` to `-049` tests and E2E | Test code | All | Not a module dependency. Tests follow the same rules for production code they exercise |
+
+No task in B-INC-002 to B-INC-004 requires Projects, Platforms and Artifacts to depend on one another. Artifacts and later-increment modules (Credits, Booking, Jobs and the rest) have no task in these three increments and are not reconciled.

@@ -87,6 +87,21 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-11 — KR-BE-1-002 decision revised after the BTS-004 review
+
+- **State:** PROPOSED (revision 2; re-review pending)
+- **Tasks:** KR-BE-1-002 (In Progress)
+- **Increment ACs:** B-INC-001-AC-02, B-INC-001-AC-03 (not satisfied)
+- **Program acceptance:** Not applicable
+- **Tests:** BTS-001, BTS-004 (NOT RUN as passing; review returned for revision)
+- **Security gates:** SEC-GATE-003 (not closed)
+- **Findings/risks:** Four reviewer blockers (reservation, inventory and run-state ownership; Audit as event consumer) answered in revision 2 and not re-reviewed. Later increments beyond B-INC-004 are not reconciled
+- **Files changed:** `decisions/KR-BE-1-002-module-boundaries.md`, `TASKS.md`, `CHANGELOG.md`, `../../BACKEND_CHANGELOG.md`, `claude/Handoff.md`
+- **Commit:** Pending until this change is merged
+- **Evidence:** Decision record Sections 11 and 12
+- **Reviewer role:** Architecture Owner (author); ChatGPT (independent review)
+- **Decision and follow-up:** See PB-032. Next: re-review of revision 2, owner confirmation of the two choices, then the decision is recorded
+
 ### 2026-10-11 — KR-BE-1-002 module boundaries decision record
 
 - **State:** PROPOSED (decision record written; review pending)

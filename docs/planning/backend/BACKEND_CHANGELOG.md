@@ -890,6 +890,28 @@ Reason: the Architecture Owner (the repository owner) answered the nine plan que
 | Gates and tests | BTS-001, BTS-004 and SEC-GATE-003 are NOT RUN. No enforcement is claimed |
 | Changed | `TASKS.md` status line, the plan, increment `CHANGELOG.md`, this entry, `claude/Handoff.md` |
 
+## 3AE. PB-032 — KR-BE-1-002 Decision Revised After the BTS-004 Review
+
+| Field | Value |
+|---|---|
+| Change ID | PB-032 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Architecture Owner |
+| Follows | PB-031 |
+
+Reason: the independent review (BTS-004, reviewer ChatGPT, 2026-10-11) returned revision 1 of the decision record for revision, with four blockers on ownership and the Audit event rule, three should-fix points and two notes.
+
+| Item | Disposition |
+|---|---|
+| Blockers 1 to 4 | Accepted. New Section 5.4 separates Booking from Resource Allocation, Lab observations from allocatable resources, run lifecycle (Runs) from Lab reporting, and chooses synchronous audit writes |
+| Should-fix 5, 6, 8 | Accepted. Compatibility split between Artifacts, Platforms and Jobs; CreateBooking transaction contract (Section 5.6, atomicity left to `KR-BE-1-033`); reconciliation with the B-INC-002 to B-INC-004 task lists (Section 12) |
+| Notes 7, 9 | Accepted. Event wording; enforcement claims stay bounded |
+| New section | 5.5 lists shared infrastructure that is not a module (transaction port, idempotency, request context, configuration, migration baseline) |
+| Owner confirmation | The synchronous-audit choice and the reading of architecture Section 25 are left for the Architecture Owner to confirm at approval |
+| Task status | In Progress. The decision stays Proposed. The reviewer has not re-reviewed revision 2. Not Accepted |
+| Changed | The decision record, `TASKS.md` status line, increment `CHANGELOG.md`, this entry, `claude/Handoff.md` |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:
