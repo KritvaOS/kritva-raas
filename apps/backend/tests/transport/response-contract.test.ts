@@ -20,7 +20,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import type { InjectOptions } from "fastify";
 import { REQUEST_ID_PATTERN } from "../../src/shared/request-context.js";
-import { buildHttpServer } from "../../src/transport/http-server.js";
+import { buildHttpServer, handleFrameworkError } from "../../src/transport/http-server.js";
 import { ensureRequestId, requestIdOf } from "../../src/transport/request-context.js";
 import { RequestContextMissingError } from "../../src/shared/request-context.js";
 import { classifyError, ERRORS } from "../../src/transport/error-contract.js";
@@ -232,4 +232,33 @@ test("ensureRequestId attaches one ID to the request and the header and returns 
 test("requestIdOf throws when no context was created", () => {
   const request = { requestContext: null } as unknown as Parameters<typeof requestIdOf>[0];
   assert.throws(() => requestIdOf(request), RequestContextMissingError);
+});
+
+test("a framework error is classified, not always reported as 400", () => {
+  function run(error: unknown) {
+    const sent: { status: number; body: Record<string, unknown> } = { status: 0, body: {} };
+    const headers: Record<string, string> = {};
+    const reply = {
+      code(n: number) { sent.status = n; return reply; },
+      header(name: string, value: string) { headers[name] = value; return reply; },
+      send(body: Record<string, unknown>) { sent.body = body; return reply; },
+    };
+    const request = {} as unknown as Parameters<typeof handleFrameworkError>[1];
+    handleFrameworkError(error, request, reply as unknown as Parameters<typeof handleFrameworkError>[2]);
+    return { ...sent, headers };
+  }
+  const badUrl = run(Object.assign(new Error("'/x%zz' is not a valid url component"), { code: "FST_ERR_BAD_URL", statusCode: 400 }));
+  assert.equal(badUrl.status, 400);
+  assert.equal(badUrl.body["code"], "INVALID_REQUEST");
+  assert.equal(badUrl.body["request_id"], badUrl.headers["x-request-id"]);
+  assert.match(String(badUrl.body["request_id"]), REQUEST_ID_PATTERN);
+  const other = run(Object.assign(new Error("FRAMEWORK-INTERNAL-TEXT"), { code: "FST_ERR_ASYNC_CONSTRAINT", statusCode: 500 }));
+  assert.equal(other.status, 500);
+  assert.equal(other.body["code"], "INTERNAL_ERROR");
+  assert.equal(other.body["status"], "FAILED");
+  assert.ok(!JSON.stringify(other.body).includes("FRAMEWORK-INTERNAL-TEXT"));
+  const unmapped = run(Object.assign(new Error("x"), { statusCode: 409 }));
+  assert.equal(unmapped.status, 500);
+  assert.equal(unmapped.body["code"], "INTERNAL_ERROR");
+  assert.equal(unmapped.headers["x-request-id"], unmapped.body["request_id"]);
 });

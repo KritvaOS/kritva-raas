@@ -16,7 +16,7 @@
 // Created     : 11-10-2026
 //==============================================================================
 
-import Fastify, { type FastifyInstance, type FastifyReply } from "fastify";
+import Fastify, { type FastifyInstance, type FastifyReply, type FastifyRequest } from "fastify";
 import { API_V1_PREFIX, mountApiV1, validateRouteGroups, type RouteGroup } from "./api-v1.js";
 import { ERRORS, classifyError, errorBody } from "./error-contract.js";
 import { ensureRequestId, registerRequestContext } from "./request-context.js";
@@ -36,6 +36,14 @@ function pathMatcher(url: string): RegExp {
   return new RegExp(`^${escaped.replace(/:[A-Za-z0-9_]+/g, "[^/]+")}$`);
 }
 
+// Errors raised by the router before any hook runs. The error is classified like any other: a malformed URL
+// (FST_ERR_BAD_URL, status 400) is INVALID_REQUEST, and anything else is mapped by classifyError, which reports
+// an unrecognized error as INTERNAL_ERROR. The response carries the envelope, X-Request-ID and no framework text.
+export function handleFrameworkError(error: unknown, request: FastifyRequest, reply: FastifyReply): FastifyReply {
+  const { spec, fieldErrors } = classifyError(error);
+  return reply.code(spec.httpStatus).send(errorBody(spec, fieldErrors, ensureRequestId(request, reply)));
+}
+
 // The framework constraint "API layer only" (KR-BINC-001-003): nothing outside src/transport imports fastify.
 export function buildHttpServer(options: HttpServerOptions = {}): FastifyInstance {
   const groups = options.groups ?? [];
@@ -48,11 +56,7 @@ export function buildHttpServer(options: HttpServerOptions = {}): FastifyInstanc
     ajv: { customOptions: { coerceTypes: false, removeAdditional: false, useDefaults: false } },
     // Errors raised by the router before any hook runs, for example an invalid percent-encoded URL, would
     // otherwise get Fastify's own body, which is not the envelope, has no X-Request-ID and repeats the URL.
-    frameworkErrors: (_error, request, rawReply) => {
-      const reply = rawReply as unknown as FastifyReply;
-      const { spec } = classifyError({ statusCode: 400 });
-      return reply.code(spec.httpStatus).send(errorBody(spec, [], ensureRequestId(request, reply)));
-    },
+    frameworkErrors: (error, request, rawReply) => handleFrameworkError(error, request, rawReply as unknown as FastifyReply),
   });
 
   registerRequestContext(app);

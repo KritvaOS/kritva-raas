@@ -1216,6 +1216,29 @@ Reason: an AI external audit (ChatGPT, `main` at `2de2897`) found eight issues i
 | Task status | Unchanged: In Review. Not Accepted |
 | Not changed | Dependencies, lockfile, CI |
 
+## 3AS. PB-046 — Follow-up Audit Fixes (Router Errors and Response Examples)
+
+| Field | Value |
+|---|---|
+| Change ID | PB-046 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Backend Engineer; Backend Technical Lead accountable |
+| Follows | PB-045 |
+
+Reason: the follow-up AI audit of PR #42 (`main` at `4ab6402`) found four new issues.
+
+| Item | Disposition |
+|---|---|
+| N-01 (P2) | `handleFrameworkError` classifies a router error with `classifyError` instead of always reporting 400. An invalid URL stays 400 `INVALID_REQUEST`; an unrecognized framework error is 500 `INTERNAL_ERROR` with no framework text. The envelope and `X-Request-ID` assertions are kept |
+| N-02 (P2) | `RESPONSES.md` Sections 50 and 53: `retryable` moved from `details` to `error` |
+| N-03 (P2) | `RESPONSES.md` examples now use registry codes: `AUTHZ_RESOURCE_DENIED`, `IDEMPOTENCY_KEY_REUSED`, `UPSTREAM_TIMEOUT`, and `INVALID_REQUEST` with a `cursor` field error in place of `INVALID_CURSOR`. A scan finds no unregistered top-level code in an error example |
+| N-04 | Documented in the README: a domain error such as 409, 412 or 422 must be mapped to its registry code by its module before the generic handler, otherwise it is `INTERNAL_ERROR`. Tests come with the first mapping |
+| F-07 | Handoff main pointer refreshed to the PR #42 merge |
+| Tests | 1 added; suite 82. Node.js 24.21.0 transcript posted as a PR comment. Component tests only; BTS-032 is not satisfied |
+| Not changed | Other protocol documents with their own codes; dependencies; CI; task statuses |
+| Independence | Written by Claude; the audit is AI inspection; no independent human review |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:
