@@ -22,7 +22,7 @@ All progress and status claims must be supported by evidence.
 
 | Concern | Authoritative reference |
 |---|---|
-| Phase definitions and boundaries | `docs/planning/PHASES.md` |
+| Phase definitions and boundaries | `planning/PHASES.md` |
 | Master project dashboard | `docs/tracking/STATUS.md` |
 | Frontend milestone scope | `docs/frontend/milestones/` |
 | Backend milestone scope | `docs/backend/milestones/` |
@@ -37,7 +37,7 @@ All progress and status claims must be supported by evidence.
 | Database task backlog | `docs/database/planning/DATABASE_TASKS.md` |
 | Cloud roadmap | `docs/cloud/planning/CLOUD_ROADMAP.md` |
 | Project risks | `docs/tracking/RISK_REGISTER.md` |
-| Project decisions | `docs/planning/DECISIONS.md` |
+| Project decisions | `planning/DECISIONS.md` |
 | Milestone acceptance evidence | Relevant authoritative milestone dossier |
 | Build and test evidence | CI reports, test reports, and build records |
 | Deployment evidence | Relevant cloud and deployment records |
@@ -46,7 +46,7 @@ Directory references identify the location of authoritative material. They do no
 
 ### 2.1 Authority rules
 
-1. `docs/planning/PHASES.md` is the sole canonical definition of phase names, boundaries, and definitions.
+1. `planning/PHASES.md` is the sole canonical definition of phase names, boundaries, and definitions.
 2. Existing milestone dossiers under `docs/**/milestones/` are authoritative for milestone scope.
 3. This tracker records phase status, objectives, dates, progress, risks, and exit evidence.
 4. The master dashboard in `docs/tracking/STATUS.md` provides the consolidated project status.
@@ -57,7 +57,7 @@ Directory references identify the location of authoritative material. They do no
 
 ## 3. Frozen Phase Inventory
 
-The following inventory must remain aligned with `docs/planning/PHASES.md`.
+The following inventory must remain aligned with `planning/PHASES.md`.
 
 | Phase | Canonical name | Initial status |
 |---|---|---|
@@ -73,7 +73,7 @@ The following inventory must remain aligned with `docs/planning/PHASES.md`.
 
 Phase names and identifiers must not be changed locally in this tracker.
 
-The objective descriptions below summarize tracking intent. They are not substitute phase definitions. For authoritative phase scope and boundaries, consult `docs/planning/PHASES.md`.
+The objective descriptions below summarize tracking intent. They are not substitute phase definitions. For authoritative phase scope and boundaries, consult `planning/PHASES.md`.
 
 ## 4. Status Vocabulary
 
@@ -201,7 +201,7 @@ Weights must be defined before using them for executive reporting. If weights ar
 
 ## 8. P0 FOUNDATION
 
-**Canonical reference:** `docs/planning/PHASES.md`.
+**Canonical reference:** `planning/PHASES.md`.
 
 **Initial status:** NOT STARTED unless verified documentation work is in progress.
 
@@ -235,7 +235,7 @@ A milestone spanning multiple phases must retain its canonical phase mapping. It
 
 ### 8.4 Exit-criteria checklist
 
-- [ ] Canonical phase model is documented in `docs/planning/PHASES.md`.
+- [ ] Canonical phase model is documented in `planning/PHASES.md`.
 - [ ] Master status dashboard is initialized.
 - [ ] Phase owners and supporting domain owners are assigned.
 - [ ] Milestone dossiers have been inventoried and reviewed.
@@ -269,7 +269,7 @@ Do not mark P0 accepted merely because this tracker exists.
 
 ## 9. P1 STUDIO
 
-**Canonical reference:** `docs/planning/PHASES.md`.
+**Canonical reference:** `planning/PHASES.md`.
 
 **Initial status:** NOT STARTED.
 
@@ -299,7 +299,7 @@ Track delivery of the Studio-facing capabilities assigned to P1, including the a
 
 ### 9.4 Exit-criteria checklist
 
-- [ ] Applicable P1 scope is confirmed against `docs/planning/PHASES.md`.
+- [ ] Applicable P1 scope is confirmed against `planning/PHASES.md`.
 - [ ] F-M01 STUDIO FOUNDATION acceptance for the applicable P1 scope is recorded.
 - [ ] F-M02 PROJECTS acceptance criteria are satisfied.
 - [ ] Project navigation and access behavior are verified.
@@ -330,7 +330,7 @@ Do not infer P1 completion from shell rendering or isolated project-screen imple
 
 ## 10. P2 BUILD & ARTIFACT
 
-**Canonical reference:** `docs/planning/PHASES.md`.
+**Canonical reference:** `planning/PHASES.md`.
 
 **Initial status:** NOT STARTED.
 
@@ -361,7 +361,7 @@ Track the build and Artifact capabilities assigned to P2, using the authoritativ
 
 ### 10.4 Exit-criteria checklist
 
-- [ ] Applicable P2 scope is confirmed against `docs/planning/PHASES.md`.
+- [ ] Applicable P2 scope is confirmed against `planning/PHASES.md`.
 - [ ] F-M03 BUILD & ARTIFACT acceptance criteria are satisfied.
 - [ ] B-M02 ARTIFACT acceptance criteria for P2 are satisfied.
 - [ ] Build request and lifecycle behavior are verified.
@@ -393,7 +393,7 @@ A successful build request alone does not establish phase acceptance.
 
 ## 11. P3 CONTROL PLANE
 
-**Canonical reference:** `docs/planning/PHASES.md`.
+**Canonical reference:** `planning/PHASES.md`.
 
 **Initial status:** NOT STARTED.
 
@@ -426,7 +426,7 @@ Track the Control Plane capabilities assigned to P3 and the relevant cross-domai
 
 ### 11.4 Exit-criteria checklist
 
-- [ ] Applicable P3 scope is confirmed against `docs/planning/PHASES.md`.
+- [ ] Applicable P3 scope is confirmed against `planning/PHASES.md`.
 - [ ] B-M01 CONTROL PLANE acceptance criteria are satisfied.
 - [ ] B-M02 ARTIFACT acceptance criteria for P3 are satisfied.
 - [ ] B-M03 PLATFORM acceptance criteria are satisfied.
@@ -460,7 +460,7 @@ Phase acceptance requires evidence for all applicable P3 scope, not merely the c
 
 ## 12. P4 BOOKING & COMMERCIAL
 
-**Canonical reference:** `docs/planning/PHASES.md`.
+**Canonical reference:** `planning/PHASES.md`.
 
 **Initial status:** NOT STARTED.
 
@@ -491,7 +491,7 @@ Track the booking and commercial capabilities assigned to P4, including applicab
 
 ### 12.4 Exit-criteria checklist
 
-- [ ] Applicable P4 scope is confirmed against `docs/planning/PHASES.md`.
+- [ ] Applicable P4 scope is confirmed against `planning/PHASES.md`.
 - [ ] F-M04 BOOKING acceptance criteria are satisfied.
 - [ ] B-M04 BOOKING acceptance criteria are satisfied.
 - [ ] DB-M03 BOOKING DATA acceptance criteria are satisfied.
@@ -525,7 +525,7 @@ A resource appearing available in the UI does not establish a confirmed reservat
 
 ## 13. P5 EXECUTION
 
-**Canonical reference:** `docs/planning/PHASES.md`.
+**Canonical reference:** `planning/PHASES.md`.
 
 **Initial status:** NOT STARTED.
 
@@ -556,7 +556,7 @@ Track the execution capabilities assigned to P5, including eligible submission, 
 
 ### 13.4 Exit-criteria checklist
 
-- [ ] Applicable P5 scope is confirmed against `docs/planning/PHASES.md`.
+- [ ] Applicable P5 scope is confirmed against `planning/PHASES.md`.
 - [ ] F-M05 EXECUTION acceptance criteria are satisfied.
 - [ ] B-M05 EXECUTION acceptance criteria are satisfied.
 - [ ] DB-M04 EXECUTION DATA acceptance criteria for P5 are satisfied.
@@ -591,7 +591,7 @@ An accepted submission is not equivalent to a successful Run or a successful Res
 
 ## 14. P6 LAB & ROBOT
 
-**Canonical reference:** `docs/planning/PHASES.md`.
+**Canonical reference:** `planning/PHASES.md`.
 
 **Initial status:** NOT STARTED.
 
@@ -625,7 +625,7 @@ The table identifies milestones whose canonical phase mapping includes P6. It do
 
 ### 14.4 Exit-criteria checklist
 
-- [ ] Applicable P6 scope is confirmed against `docs/planning/PHASES.md`.
+- [ ] Applicable P6 scope is confirmed against `planning/PHASES.md`.
 - [ ] Required lab and robot interfaces are identified in the authoritative dossiers.
 - [ ] Relevant backend and data contracts are verified.
 - [ ] Hardware or robot capability assumptions are documented.
@@ -658,7 +658,7 @@ Software validation does not automatically establish suitability for physical de
 
 ## 15. P7 LIVE & RESULTS
 
-**Canonical reference:** `docs/planning/PHASES.md`.
+**Canonical reference:** `planning/PHASES.md`.
 
 **Initial status:** NOT STARTED.
 
@@ -690,7 +690,7 @@ Track the Live and Results capabilities assigned to P7, including live-session b
 
 ### 15.4 Exit-criteria checklist
 
-- [ ] Applicable P7 scope is confirmed against `docs/planning/PHASES.md`.
+- [ ] Applicable P7 scope is confirmed against `planning/PHASES.md`.
 - [ ] F-M06 LIVE acceptance criteria are satisfied.
 - [ ] F-M07 RESULTS acceptance criteria are satisfied.
 - [ ] B-M06 RESULTS acceptance criteria for P7 are satisfied.
@@ -726,7 +726,7 @@ The presence of live data or a Result record alone does not establish complete p
 
 ## 16. P8 PRODUCTION
 
-**Canonical reference:** `docs/planning/PHASES.md`.
+**Canonical reference:** `planning/PHASES.md`.
 
 **Initial status:** NOT STARTED.
 
@@ -757,7 +757,7 @@ Database, frontend, and other domain acceptance evidence may be required by the 
 
 ### 16.4 Exit-criteria checklist
 
-- [ ] Applicable P8 scope is confirmed against `docs/planning/PHASES.md`.
+- [ ] Applicable P8 scope is confirmed against `planning/PHASES.md`.
 - [ ] B-M07 PRODUCTION acceptance criteria are satisfied.
 - [ ] C-M04 PRODUCTION acceptance criteria are satisfied.
 - [ ] Production deployment and rollback procedures are documented and tested.
@@ -889,7 +889,7 @@ Perform a formal review when a phase is approaching acceptance, when a material 
 
 ### Step 1: Verify scope
 
-Read `docs/planning/PHASES.md` and the relevant milestone dossiers.
+Read `planning/PHASES.md` and the relevant milestone dossiers.
 
 ### Step 2: Reconcile milestone status
 
@@ -949,7 +949,7 @@ The review record must describe the actual state at the time of review and must 
 
 A phase can be closed only after:
 
-- applicable scope is reconciled with `docs/planning/PHASES.md`
+- applicable scope is reconciled with `planning/PHASES.md`
 - applicable milestone dossiers are satisfied
 - required milestone acceptance decisions are recorded
 - exit criteria are satisfied or formally dispositioned
@@ -996,7 +996,7 @@ Do not report only a single overall percentage. The summary must preserve the di
 
 ## 24. Initial Tracker Maintenance Checklist
 
-- [ ] Phase names and boundaries match `docs/planning/PHASES.md`.
+- [ ] Phase names and boundaries match `planning/PHASES.md`.
 - [ ] P0 FOUNDATION through P8 PRODUCTION are present.
 - [ ] All applicable frontend milestones are listed.
 - [ ] All applicable backend milestones are listed.
@@ -1018,7 +1018,7 @@ Do not report only a single overall percentage. The summary must preserve the di
 
 This tracker may be updated to reflect verified progress, ownership, target dates, forecast dates, blockers, risks, acceptance evidence, and review decisions.
 
-Changes to canonical phase definitions must be made only in `docs/planning/PHASES.md` through the approved governance process.
+Changes to canonical phase definitions must be made only in `planning/PHASES.md` through the approved governance process.
 
 Changes to milestone scope must be made in the relevant authoritative dossier under `docs/**/milestones/`.
 
@@ -1065,7 +1065,7 @@ Baseline readiness does not mean that any phase has been accepted or completed.
 - Added exit-criteria checklists for all nine phases.
 - Added phase-specific risk prompts and evidence requirements.
 - Mapped the applicable frontend, backend, database, and cloud milestones using the frozen identifiers and names.
-- Established `docs/planning/PHASES.md` as the sole canonical phase definition.
+- Established `planning/PHASES.md` as the sole canonical phase definition.
 - Preserved the authoritative role of milestone dossiers under `docs/**/milestones/`.
 - Added dependency, blocker, risk, review, and closure procedures.
 - Established evidence-based progress reporting and phase acceptance requirements.

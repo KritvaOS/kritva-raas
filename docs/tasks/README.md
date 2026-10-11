@@ -9,7 +9,7 @@ Each implementation task gets its own folder `docs/tasks/<TASK-ID>/` **when the 
 | Part | Values |
 |---|---|
 | DOMAIN | FE (frontend), BE (backend), DB (database), CL (cloud), SEC (security), UI, DOC |
-| PHASE | 0-8, per [planning/PHASES.md](../planning/PHASES.md) |
+| PHASE | 0-8, per [planning/PHASES.md](../../planning/PHASES.md) |
 | NNN | zero-padded sequence within domain and phase |
 
 Examples: `KR-FE-1-001`, `KR-BE-3-014`, `KR-DB-4-003`.

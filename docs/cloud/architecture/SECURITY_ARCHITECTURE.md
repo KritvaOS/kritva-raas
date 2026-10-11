@@ -74,7 +74,7 @@ Cloud IAM policies MAY restrict which workload can reach a resource. They MUST N
 | Event contract | `docs/protocol/EVENT_CONTRACT.md` |
 | Artifact manifest and artifact semantics | `docs/protocol/ARTIFACT_MANIFEST.md` |
 | PostgreSQL implementation, database roles, and database-level access controls | `docs/database/architecture/DATABASE_ARCHITECTURE.md` |
-| Phase definitions | `docs/planning/PHASES.md` |
+| Phase definitions | `planning/PHASES.md` |
 | Cloud milestone scope and acceptance | `docs/cloud/milestones/` |
 | Cross-discipline milestone scope | The applicable authoritative dossiers under `docs/**/milestones/` |
 
@@ -1014,7 +1014,7 @@ Security acceptance evidence SHOULD include:
 
 ## 20. Phase and Milestone Traceability
 
-Canonical phase definitions are owned by `docs/planning/PHASES.md`. Cloud milestone scope and acceptance are owned by the authoritative dossiers under `docs/cloud/milestones/`.
+Canonical phase definitions are owned by `planning/PHASES.md`. Cloud milestone scope and acceptance are owned by the authoritative dossiers under `docs/cloud/milestones/`.
 
 The following table maps cloud security implementation emphasis to the frozen cloud milestones. It does not redefine milestone scope.
 
@@ -1132,7 +1132,7 @@ Expired exceptions MUST be resolved, renewed through approval, or removed.
 - [ ] Cloud topology links to `docs/architecture/CLOUD_ARCHITECTURE.md`.
 - [ ] Cloud resource implementation follows `docs/cloud/architecture/CLOUD_ARCHITECTURE.md`.
 - [ ] Database-specific controls link to `docs/database/architecture/DATABASE_ARCHITECTURE.md`.
-- [ ] Phase definitions link to `docs/planning/PHASES.md`.
+- [ ] Phase definitions link to `planning/PHASES.md`.
 - [ ] Cloud milestone acceptance follows the authoritative milestone dossiers.
 - [ ] Security exceptions are approved, owned, and time-bounded.
 - [ ] No duplicate application authentication or authorization design has been introduced.

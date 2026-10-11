@@ -71,7 +71,7 @@ The following documents own adjacent concerns:
 | Artifact contract and manifest format | `docs/protocol/ARTIFACT_MANIFEST.md` |
 | Database schema and migration ownership | `docs/database/architecture/` and the applicable database milestone dossiers |
 | Frontend architecture and implementation | `docs/frontend/` |
-| Phase definitions | `docs/planning/PHASES.md` |
+| Phase definitions | `planning/PHASES.md` |
 | Cloud milestone scope and acceptance | `docs/cloud/milestones/` |
 | Cross-discipline milestone scope | The applicable authoritative dossiers under `docs/**/milestones/` |
 | Product security requirements | The applicable system security and security requirements documents |
@@ -241,7 +241,7 @@ The cloud implementation uses three durable environments:
 
 The shared cloud foundation is established under C-M01 FOUNDATION.
 
-The canonical phase definitions are maintained in `docs/planning/PHASES.md`. This document does not redefine phase scope.
+The canonical phase definitions are maintained in `planning/PHASES.md`. This document does not redefine phase scope.
 
 ### 5.2 Development
 
@@ -1391,7 +1391,7 @@ Manual failover procedures MUST specify prerequisites, authorization, validation
 
 ## 24. Phase and Milestone Traceability
 
-The canonical phase definitions are owned by `docs/planning/PHASES.md`. The following table maps cloud implementation work to the frozen cloud milestones; it does not redefine phase or milestone scope.
+The canonical phase definitions are owned by `planning/PHASES.md`. The following table maps cloud implementation work to the frozen cloud milestones; it does not redefine phase or milestone scope.
 
 | Phase | Cloud milestone | Implementation emphasis |
 |---|---|---|
@@ -1500,7 +1500,7 @@ This implementation document MUST then record the corresponding concrete resourc
 - [ ] Backend implementation links to `docs/backend/architecture/BACKEND_ARCHITECTURE.md`.
 - [ ] API implementation links to `docs/backend/architecture/API_IMPLEMENTATION.md`.
 - [ ] Protocol contracts remain authoritative for wire behavior.
-- [ ] Phase definitions link to `docs/planning/PHASES.md`.
+- [ ] Phase definitions link to `planning/PHASES.md`.
 - [ ] Cloud milestone acceptance follows the authoritative milestone dossiers.
 - [ ] No duplicate system-level ownership or contract definitions have been introduced.
 

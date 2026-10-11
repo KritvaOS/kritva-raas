@@ -67,8 +67,8 @@ This document MUST NOT duplicate those instructions. It SHOULD link to the globa
 | Frontend architecture and implementation | Applicable architecture documents under `docs/frontend/` |
 | Frontend architecture decisions | `docs/frontend/planning/DECISIONS.md` |
 | Frontend milestone scope and acceptance | Authoritative dossiers under `docs/frontend/milestones/` |
-| Product/system-level decisions | `docs/planning/DECISIONS.md` |
-| Canonical phase definitions | `docs/planning/PHASES.md` |
+| Product/system-level decisions | `planning/DECISIONS.md` |
+| Canonical phase definitions | `planning/PHASES.md` |
 | Backend implementation and local services | Applicable documents under `docs/backend/` |
 | Backend API implementation | `docs/backend/architecture/API_IMPLEMENTATION.md` |
 | API wire contract | `docs/protocol/API_CONTRACT.md` |
@@ -1059,7 +1059,7 @@ The setup sequence is a local development workflow, not a replacement for milest
 
 ### 15.1 Phase Authority
 
-`docs/planning/PHASES.md` is the canonical source for phase definitions.
+`planning/PHASES.md` is the canonical source for phase definitions.
 
 This setup guide MUST NOT redefine phase meaning or use phase references to expand milestone scope.
 

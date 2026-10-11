@@ -52,8 +52,8 @@ This document does not replace system architecture, backend implementation archi
 
 | Concern | Authoritative owner | P5 relationship |
 |---|---|---|
-| Canonical phase definitions | `docs/planning/PHASES.md` | Uses the frozen phase model |
-| System-level decisions | `docs/planning/DECISIONS.md` | Consumes approved system decisions |
+| Canonical phase definitions | `planning/PHASES.md` | Uses the frozen phase model |
+| System-level decisions | `planning/DECISIONS.md` | Consumes approved system decisions |
 | System architecture | `docs/architecture/` | Follows system-wide ownership boundaries |
 | Backend implementation architecture | `docs/backend/architecture/BACKEND_ARCHITECTURE.md` | Implements execution services within the approved architecture |
 | API wire contract | `docs/protocol/API_CONTRACT.md` | Uses the approved request, response, and error contract |

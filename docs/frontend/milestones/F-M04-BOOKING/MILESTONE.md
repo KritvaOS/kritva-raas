@@ -7,7 +7,7 @@
 **Primary Phase:** P4 BOOKING & COMMERCIAL  
 **Primary Surface:** RaaS Studio + Control Plane  
 **Technology:** Tauri + Rust + React + TypeScript + Backend API  
-**Priority:** PRI-1 (primary product path per Priority Matrix; see `docs/planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
+**Priority:** PRI-1 (primary product path per Priority Matrix; see `planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
 **Status:** PLANNED  
 **Primary Outcome:** A production-grade platform discovery, resource availability,
 booking, credit quote, wallet visibility, booking management, and billing
@@ -335,7 +335,7 @@ F-M04 depends on:
 | `docs/security/AUTHENTICATION.md` | Authentication |
 | `docs/security/AUTHORIZATION.md` | Authorization |
 | `docs/security/TENANT_ISOLATION.md` | Tenant isolation |
-| `docs/planning/INTEGRATION_PLAN.md` | Cross-system integration |
+| `planning/INTEGRATION_PLAN.md` | Cross-system integration |
 | `docs/ui/UI_ACCEPTANCE_CRITERIA.md` | UI acceptance |
 | `docs/ui/UI_REVIEW_CHECKLIST.md` | UI review |
 

@@ -62,7 +62,7 @@ The following documents remain authoritative for their respective responsibiliti
 | HTTP API behavior and response semantics | Applicable API contract |
 | Resource identity and persistence | Authoritative database contracts |
 | Authentication and authorization policy | Applicable security contract |
-| Canonical phase definitions | `docs/planning/PHASES.md` |
+| Canonical phase definitions | `planning/PHASES.md` |
 
 The WebSocket channel MUST expose only information and operations authorized by the relevant API, domain, and security contracts.
 
@@ -994,7 +994,7 @@ These items MUST be marked complete only when the corresponding authoritative do
 
 ## 49. Phase and Milestone Traceability
 
-Canonical phase definitions are maintained in `docs/planning/PHASES.md`. This contract MUST NOT redefine those phases.
+Canonical phase definitions are maintained in `planning/PHASES.md`. This contract MUST NOT redefine those phases.
 
 The following frozen milestone references may be relevant to implementation and validation:
 

@@ -7,7 +7,7 @@
 **Primary Phase:** P0 FOUNDATION  
 **Primary Surface:** RaaS Studio  
 **Technology:** Tauri + Rust + React + TypeScript  
-**Priority:** PRI-1 (primary product path per Priority Matrix; see `docs/planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
+**Priority:** PRI-1 (primary product path per Priority Matrix; see `planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
 **Status:** PLANNED  
 **Target:** Production-grade Studio foundation  
 **Primary Outcome:** A secure, navigable, authenticated Studio shell that establishes the
@@ -269,7 +269,7 @@ Primary references:
 | `docs/security/AUTHENTICATION.md` | Authentication/session rules |
 | `docs/security/AUTHORIZATION.md` | Authorization rules |
 | `docs/security/SOURCE_CODE_PRIVACY.md` | Source privacy boundary |
-| `docs/planning/INTEGRATION_PLAN.md` | Integration architecture |
+| `planning/INTEGRATION_PLAN.md` | Integration architecture |
 | `docs/development/DEVELOPMENT_SETUP.md` | Development environment |
 | `docs/development/DEVELOPMENT_WORKFLOW.md` | Engineering workflow |
 

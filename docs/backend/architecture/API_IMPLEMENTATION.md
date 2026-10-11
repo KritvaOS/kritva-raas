@@ -10,7 +10,7 @@
 **WebSocket contract:** `docs/protocol/WEBSOCKET_CONTRACT.md`  
 **Lab protocol:** `docs/protocol/LAB_PROTOCOL.md`  
 **Artifact manifest:** `docs/protocol/ARTIFACT_MANIFEST.md`  
-**Canonical phase definitions:** `docs/planning/PHASES.md`
+**Canonical phase definitions:** `planning/PHASES.md`
 
 ---
 
@@ -1257,7 +1257,7 @@ Changes to controllers, DTOs, authorization, error mapping, or gateway behavior 
 
 ## 60. Phase and milestone traceability
 
-Canonical phase definitions are maintained in `docs/planning/PHASES.md`.
+Canonical phase definitions are maintained in `planning/PHASES.md`.
 
 Existing milestone dossiers under `docs/**/milestones/` remain authoritative for milestone scope.
 

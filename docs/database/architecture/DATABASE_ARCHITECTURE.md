@@ -69,7 +69,7 @@ If a proposed PostgreSQL implementation conflicts with the system-level database
 | Event structure and delivery semantics | `docs/protocol/EVENT_CONTRACT.md` |
 | Artifact structure and manifest semantics | `docs/protocol/ARTIFACT_MANIFEST.md` |
 | Cloud resource provisioning and database service configuration | `docs/cloud/architecture/CLOUD_ARCHITECTURE.md` |
-| Phase definitions | `docs/planning/PHASES.md` |
+| Phase definitions | `planning/PHASES.md` |
 | Database milestone scope and acceptance | `docs/database/milestones/` |
 | Cross-discipline milestone scope | The applicable authoritative dossiers under `docs/**/milestones/` |
 | Product requirements and business rules | The applicable product and system requirements documents |
@@ -1098,7 +1098,7 @@ Emergency repair operations MUST be recorded and reconciled into migration or op
 
 ## 19. Phase and Milestone Traceability
 
-The canonical phase definitions are owned by `docs/planning/PHASES.md`. Database milestone scope and acceptance are defined by the authoritative dossiers under `docs/database/milestones/`.
+The canonical phase definitions are owned by `planning/PHASES.md`. Database milestone scope and acceptance are defined by the authoritative dossiers under `docs/database/milestones/`.
 
 The following table identifies the database implementation emphasis for each canonical database milestone without redefining its scope.
 
@@ -1203,7 +1203,7 @@ A change MUST NOT be considered complete if the implementation has changed but t
 - [ ] Backend implementation follows `docs/backend/architecture/BACKEND_ARCHITECTURE.md`.
 - [ ] API and event contracts remain owned by their protocol documents.
 - [ ] Cloud-managed resource configuration follows `docs/cloud/architecture/CLOUD_ARCHITECTURE.md`.
-- [ ] Phase definitions link to `docs/planning/PHASES.md`.
+- [ ] Phase definitions link to `planning/PHASES.md`.
 - [ ] Database milestone acceptance follows the authoritative milestone dossiers.
 - [ ] No duplicate system-level data ownership decisions have been introduced.
 

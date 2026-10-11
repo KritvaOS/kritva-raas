@@ -16,7 +16,7 @@ The dashboard must not imply that implementation, integration, testing, or produ
 
 | Concern | Authoritative reference |
 |---|---|
-| Canonical phase definitions | `docs/planning/PHASES.md` |
+| Canonical phase definitions | `planning/PHASES.md` |
 | Frontend milestone scope | `docs/frontend/milestones/` |
 | Backend milestone scope | `docs/backend/milestones/` |
 | Database milestone scope | `docs/database/milestones/` |
@@ -30,15 +30,15 @@ The dashboard must not imply that implementation, integration, testing, or produ
 | Database task backlog | `docs/database/planning/DATABASE_TASKS.md` |
 | Cloud roadmap | `docs/cloud/planning/CLOUD_ROADMAP.md` |
 | Project risks | `docs/tracking/RISK_REGISTER.md` |
-| Project decisions | `docs/planning/DECISIONS.md` |
-| Product plan | `docs/planning/` |
+| Project decisions | `planning/DECISIONS.md` |
+| Product plan | `planning/` |
 | Acceptance evidence | Relevant milestone dossier and test reports |
 
 A reference to a directory does not establish that every expected file exists. Missing documents must be tracked explicitly.
 
 ### 2.1 Source-of-truth rules
 
-1. `docs/planning/PHASES.md` is the sole authority for phase definitions.
+1. `planning/PHASES.md` is the sole authority for phase definitions.
 2. Milestone dossiers under `docs/**/milestones/` are authoritative for milestone scope and milestone-specific acceptance criteria.
 3. Task backlogs are authoritative for task-level assignment and execution status.
 4. This dashboard consolidates status and does not redefine phase or milestone scope.
@@ -110,7 +110,7 @@ This summary is a starting baseline, not a claim that the underlying engineering
 
 ## 6. Canonical Phase Status
 
-Phase definitions are maintained only in `docs/planning/PHASES.md`. The following table records status and milestone coverage without redefining phase scope.
+Phase definitions are maintained only in `planning/PHASES.md`. The following table records status and milestone coverage without redefining phase scope.
 
 | Phase | Canonical name | Initial status | Status evidence |
 |---|---|---|---|
@@ -461,7 +461,7 @@ Update the affected milestone row and its evidence references. Preserve the froz
 
 ### Step 4: Update phase status
 
-Reassess the phase using `docs/planning/PHASES.md` and the applicable milestone dossiers. Do not redefine the phase or change its canonical boundaries.
+Reassess the phase using `planning/PHASES.md` and the applicable milestone dossiers. Do not redefine the phase or change its canonical boundaries.
 
 ### Step 5: Update risks and blockers
 
@@ -553,7 +553,7 @@ Any discrepancy must be corrected against the frozen canonical model. Do not int
 
 Changes to this dashboard may update status, owners, evidence, blockers, risks, and target dates. They must not independently change canonical phase or milestone definitions.
 
-Changes to phase definitions must be made in `docs/planning/PHASES.md` through the project governance process.
+Changes to phase definitions must be made in `planning/PHASES.md` through the project governance process.
 
 Changes to milestone scope must be made in the relevant authoritative dossier under `docs/**/milestones/`. This dashboard must then be reconciled with the approved change.
 
@@ -577,7 +577,7 @@ Each material change should identify:
 
 ## 23. Dashboard Maintenance Checklist
 
-- [ ] Canonical phase names and identifiers match `docs/planning/PHASES.md`.
+- [ ] Canonical phase names and identifiers match `planning/PHASES.md`.
 - [ ] All frozen frontend milestones are listed.
 - [ ] All frozen backend milestones are listed.
 - [ ] All frozen database milestones are listed.
@@ -623,7 +623,7 @@ Baseline acceptance does not mean that any product milestone, phase, or producti
 - Established initial `NOT STARTED` statuses, subject to verified P0 FOUNDATION documentation work.
 - Defined status vocabulary and evidence-driven status transitions.
 - Added cross-domain dependency, blocker, risk, and acceptance tracking rules.
-- Established `docs/planning/PHASES.md` as the canonical phase definition.
+- Established `planning/PHASES.md` as the canonical phase definition.
 - Preserved the authoritative role of milestone dossiers under `docs/**/milestones/`.
 - Added dashboard update, validation, and governance procedures.
 

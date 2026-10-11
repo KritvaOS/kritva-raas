@@ -8,7 +8,7 @@ It establishes the sequencing, dependencies, integration points, risks, prioriti
 
 The canonical phase definitions, phase names, phase numbers, and phase boundaries are maintained in:
 
-    docs/planning/PHASES.md
+    planning/PHASES.md
 
 This document references that file and does not independently redefine the phase model.
 
@@ -38,10 +38,10 @@ This roadmap covers:
 
 | Document | Authority |
 |---|---|
-| `docs/planning/PHASES.md` | Canonical phase definition |
-| `docs/planning/IMPLEMENTATION_ROADMAP.md` | Program implementation sequencing |
-| `docs/planning/DEPENDENCY_MAP.md` | Cross-domain dependency relationships |
-| `docs/planning/RELEASE_ROADMAP.md` | Release sequencing and qualification |
+| `planning/PHASES.md` | Canonical phase definition |
+| `planning/IMPLEMENTATION_ROADMAP.md` | Program implementation sequencing |
+| `planning/DEPENDENCY_MAP.md` | Cross-domain dependency relationships |
+| `planning/RELEASE_ROADMAP.md` | Release sequencing and qualification |
 | `docs/frontend/milestones/` | Authoritative frontend milestone scope |
 | `docs/frontend/architecture/` | Frontend architecture |
 | `docs/frontend/development/` | Frontend development practices |
@@ -70,7 +70,7 @@ The following milestone identifiers and names are canonical.
 | F-M06 | LIVE | P7 |
 | F-M07 | RESULTS | P7 |
 
-The phase mapping references `docs/planning/PHASES.md`.
+The phase mapping references `planning/PHASES.md`.
 
 Milestone scope must be taken from the corresponding dossier under `docs/frontend/milestones/`.
 
@@ -183,7 +183,7 @@ F-M06 LIVE and F-M07 RESULTS require execution and Lab integration, plus the app
 
 P0-P1.
 
-The canonical phase definitions are maintained in `docs/planning/PHASES.md`.
+The canonical phase definitions are maintained in `planning/PHASES.md`.
 
 ### 7.2 Objective
 
@@ -288,7 +288,7 @@ Relevant protocol references include:
 
 P1.
 
-The canonical phase definitions are maintained in `docs/planning/PHASES.md`.
+The canonical phase definitions are maintained in `planning/PHASES.md`.
 
 ### 8.2 Objective
 
@@ -397,7 +397,7 @@ The frontend must not independently invent project fields or authorization seman
 
 P2.
 
-The canonical phase definitions are maintained in `docs/planning/PHASES.md`.
+The canonical phase definitions are maintained in `planning/PHASES.md`.
 
 ### 9.2 Objective
 
@@ -529,7 +529,7 @@ The manifest contract must be maintained under `docs/protocol/ARTIFACT_MANIFEST.
 
 P4.
 
-The canonical phase definitions are maintained in `docs/planning/PHASES.md`.
+The canonical phase definitions are maintained in `planning/PHASES.md`.
 
 ### 10.2 Objective
 
@@ -665,7 +665,7 @@ The server remains authoritative for booking and credit decisions.
 
 P5.
 
-The canonical phase definitions are maintained in `docs/planning/PHASES.md`.
+The canonical phase definitions are maintained in `planning/PHASES.md`.
 
 ### 11.2 Objective
 
@@ -791,7 +791,7 @@ Required contracts include:
 
 P7.
 
-The canonical phase definitions are maintained in `docs/planning/PHASES.md`.
+The canonical phase definitions are maintained in `planning/PHASES.md`.
 
 ### 12.2 Objective
 
@@ -906,7 +906,7 @@ A video failure must not automatically be represented as execution failure.
 
 P7.
 
-The canonical phase definitions are maintained in `docs/planning/PHASES.md`.
+The canonical phase definitions are maintained in `planning/PHASES.md`.
 
 ### 13.2 Objective
 
@@ -1438,11 +1438,11 @@ This roadmap should be updated when:
 
 Progress belongs in `docs/tracking/`.
 
-Phase definitions belong in `docs/planning/PHASES.md`.
+Phase definitions belong in `planning/PHASES.md`.
 
-Program sequencing belongs in `docs/planning/IMPLEMENTATION_ROADMAP.md`.
+Program sequencing belongs in `planning/IMPLEMENTATION_ROADMAP.md`.
 
-Cross-domain dependency relationships belong in `docs/planning/DEPENDENCY_MAP.md`.
+Cross-domain dependency relationships belong in `planning/DEPENDENCY_MAP.md`.
 
 Detailed frontend milestone scope belongs in `docs/frontend/milestones/`.
 
@@ -1462,7 +1462,7 @@ A change that affects another domain must identify:
 - schedule impact
 - testing impact
 
-A phase change requires formal approval and an update to `docs/planning/PHASES.md`.
+A phase change requires formal approval and an update to `planning/PHASES.md`.
 
 A milestone scope change must be recorded in the authoritative milestone dossier.
 
@@ -1486,12 +1486,12 @@ A milestone scope change must be recorded in the authoritative milestone dossier
 - [ ] Safety state is represented conservatively.
 - [ ] Risks and mitigations are documented.
 - [ ] Milestone dossiers remain authoritative for scope.
-- [ ] Phase definitions are delegated to `docs/planning/PHASES.md`.
+- [ ] Phase definitions are delegated to `planning/PHASES.md`.
 - [ ] No retired phase or milestone names remain.
 
 ## 36. Final Frontend Invariants
 
-1. `docs/planning/PHASES.md` is the canonical phase definition.
+1. `planning/PHASES.md` is the canonical phase definition.
 2. The frozen frontend milestone IDs and names must remain stable.
 3. Frontend milestone dossiers are authoritative for frontend scope.
 4. Backend contracts are authoritative for remote business operations.
@@ -1516,7 +1516,7 @@ A milestone scope change must be recorded in the authoritative milestone dossier
 
 ### Current Baseline
 
-- Aligned the frontend roadmap with `docs/planning/PHASES.md`.
+- Aligned the frontend roadmap with `planning/PHASES.md`.
 - Established the frozen F-M01 through F-M07 milestone mapping.
 - Aligned backend dependencies with canonical milestone identifiers.
 - Aligned database dependencies with canonical milestone identifiers.

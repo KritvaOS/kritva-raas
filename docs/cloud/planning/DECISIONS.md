@@ -12,7 +12,7 @@ This document records architecture decisions specific to the cloud and infrastru
 
 It captures the context, alternatives, rationale, consequences, and validation expectations behind cloud implementation choices. Its purpose is to preserve decision history, make infrastructure trade-offs reviewable, and maintain consistent cloud implementation across environments.
 
-This register MUST contain only cloud-specific decisions. Product-wide and cross-domain architecture decisions MUST be recorded in `docs/planning/DECISIONS.md` and referenced here when they constrain cloud implementation.
+This register MUST contain only cloud-specific decisions. Product-wide and cross-domain architecture decisions MUST be recorded in `planning/DECISIONS.md` and referenced here when they constrain cloud implementation.
 
 The register MUST remain aligned with the authoritative cloud architecture documents, infrastructure security requirements, protocol contracts, and milestone dossiers.
 
@@ -48,7 +48,7 @@ Each decision MUST be limited to cloud or infrastructure implementation. A decis
 
 ### 2.2 Product-Wide Decision Ownership
 
-`docs/planning/DECISIONS.md` owns product/system-level architecture decisions and the index to domain decision registers.
+`planning/DECISIONS.md` owns product/system-level architecture decisions and the index to domain decision registers.
 
 This cloud register MUST NOT independently define or override:
 
@@ -64,7 +64,7 @@ This cloud register MUST NOT independently define or override:
 - Product-wide deployment and release policy.
 - System-level compatibility requirements.
 
-If a cloud proposal changes a product/system-level constraint, the proposal MUST be reviewed through `docs/planning/DECISIONS.md`.
+If a cloud proposal changes a product/system-level constraint, the proposal MUST be reviewed through `planning/DECISIONS.md`.
 
 Cloud implementation decisions MAY explain how an approved system requirement is realized by infrastructure, but MUST NOT create a competing definition of that requirement.
 
@@ -72,8 +72,8 @@ Cloud implementation decisions MAY explain how an approved system requirement is
 
 | Concern | Authoritative document |
 |---|---|
-| Product/system-level decisions | `docs/planning/DECISIONS.md` |
-| Canonical phase definitions | `docs/planning/PHASES.md` |
+| Product/system-level decisions | `planning/DECISIONS.md` |
+| Canonical phase definitions | `planning/PHASES.md` |
 | Product/system cloud topology and responsibilities | `docs/architecture/CLOUD_ARCHITECTURE.md` |
 | Cloud implementation architecture | `docs/cloud/architecture/CLOUD_ARCHITECTURE.md` |
 | Cloud-specific architecture decisions | `docs/cloud/planning/DECISIONS.md` |
@@ -248,7 +248,7 @@ Examples:
 
 An ID MUST NOT be reused after rejection, withdrawal, or supersession.
 
-Product/system decision IDs MUST follow the convention defined in `docs/planning/DECISIONS.md`.
+Product/system decision IDs MUST follow the convention defined in `planning/DECISIONS.md`.
 
 ### 4.3 Status Definitions
 
@@ -334,7 +334,7 @@ When a decision is accepted, the index MUST link to its complete record and show
 
 When a decision is superseded, the index MUST identify its successor.
 
-When a decision depends on a product/system decision, the full record SHOULD link to the relevant entry in `docs/planning/DECISIONS.md`.
+When a decision depends on a product/system decision, the full record SHOULD link to the relevant entry in `planning/DECISIONS.md`.
 
 The index MUST NOT duplicate product-wide decision content.
 
@@ -353,7 +353,7 @@ Without explicit ownership, an implementation preference can be mistaken for a p
 
 Cloud-specific architecture decisions MUST be recorded in this register.
 
-Product/system-level decisions MUST be recorded in `docs/planning/DECISIONS.md`.
+Product/system-level decisions MUST be recorded in `planning/DECISIONS.md`.
 
 Product/system cloud topology MUST be documented in `docs/architecture/CLOUD_ARCHITECTURE.md`.
 
@@ -822,7 +822,7 @@ The cloud owner responsible for the affected infrastructure MUST review the prop
 
 Security, backend, database, and other domain owners SHOULD participate when the decision affects their contracts, implementation responsibilities, or recovery assumptions.
 
-A proposal that changes product-wide behavior MUST be escalated to `docs/planning/DECISIONS.md`.
+A proposal that changes product-wide behavior MUST be escalated to `planning/DECISIONS.md`.
 
 ### 16.3 Acceptance
 
@@ -860,7 +860,7 @@ Implementation completion does not prevent a future decision from superseding th
 
 ### 17.1 Phase Authority
 
-`docs/planning/PHASES.md` is the canonical source for phase definitions.
+`planning/PHASES.md` is the canonical source for phase definitions.
 
 This register MUST NOT redefine phase meaning or use phase references to expand milestone scope.
 
@@ -1023,7 +1023,7 @@ A temporary deviation MUST NOT silently become the permanent infrastructure desi
 ### 20.1 Ownership
 
 - [ ] Cloud-specific decisions are recorded here.
-- [ ] Product/system decisions link to `docs/planning/DECISIONS.md`.
+- [ ] Product/system decisions link to `planning/DECISIONS.md`.
 - [ ] Product/system cloud topology remains in `docs/architecture/CLOUD_ARCHITECTURE.md`.
 - [ ] Cloud implementation architecture remains in `docs/cloud/architecture/CLOUD_ARCHITECTURE.md`.
 - [ ] Cloud infrastructure security remains in `docs/cloud/architecture/SECURITY_ARCHITECTURE.md`.
@@ -1056,7 +1056,7 @@ A temporary deviation MUST NOT silently become the permanent infrastructure desi
 
 ### 20.4 Phase and Milestone Traceability
 
-- [ ] Phase references use the canonical model in `docs/planning/PHASES.md`.
+- [ ] Phase references use the canonical model in `planning/PHASES.md`.
 - [ ] Cloud milestone identifiers and names use the frozen canonical model.
 - [ ] Milestone scope is obtained from authoritative cloud milestone dossiers.
 - [ ] Cross-domain impacts link to relevant domain dossiers.
@@ -1067,7 +1067,7 @@ A temporary deviation MUST NOT silently become the permanent infrastructure desi
 The cloud decision register is ready for ongoing use when:
 
 1. Its cloud-only ownership boundary is explicit.
-2. Product/system decisions are referenced through `docs/planning/DECISIONS.md`.
+2. Product/system decisions are referenced through `planning/DECISIONS.md`.
 3. Cloud decisions have stable IDs, statuses, owners, and review triggers.
 4. Current cloud implementation architecture remains documented in the appropriate architecture documents.
 5. Cloud infrastructure security remains documented in its designated security architecture.
@@ -1077,4 +1077,4 @@ The cloud decision register is ready for ongoing use when:
 9. Phase and milestone references use the frozen canonical model.
 10. Decisions can be verified without turning this register into an infrastructure task tracker or implementation manual.
 
-This document owns cloud-specific architecture decisions only. Product-wide decisions remain owned by `docs/planning/DECISIONS.md`, and all other domain decisions remain in their respective authoritative registers, architecture documents, contracts, and milestone dossiers. All changes MUST preserve this ownership boundary.
+This document owns cloud-specific architecture decisions only. Product-wide decisions remain owned by `planning/DECISIONS.md`, and all other domain decisions remain in their respective authoritative registers, architecture documents, contracts, and milestone dossiers. All changes MUST preserve this ownership boundary.

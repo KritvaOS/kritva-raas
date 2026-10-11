@@ -74,8 +74,8 @@ Backend-specific implementation evidence MAY supplement the global review proces
 | Backend API implementation | `docs/backend/architecture/API_IMPLEMENTATION.md` |
 | Backend architecture decisions | `docs/backend/planning/DECISIONS.md` |
 | System backend responsibilities and ownership | `docs/architecture/BACKEND_ARCHITECTURE.md` |
-| Product and system decisions | `docs/planning/DECISIONS.md` |
-| Canonical phase definitions | `docs/planning/PHASES.md` |
+| Product and system decisions | `planning/DECISIONS.md` |
+| Canonical phase definitions | `planning/PHASES.md` |
 | API wire contract | `docs/protocol/API_CONTRACT.md` |
 | Event wire contract | `docs/protocol/EVENT_CONTRACT.md` |
 | Artifact contract and manifest | `docs/protocol/ARTIFACT_MANIFEST.md` |
@@ -238,7 +238,7 @@ If the proposed behavior conflicts with an existing contract, stop the affected 
 
 The contract owner MUST approve the authoritative change.
 
-Cross-domain architectural consequences SHOULD be reviewed through `docs/planning/DECISIONS.md` when appropriate.
+Cross-domain architectural consequences SHOULD be reviewed through `planning/DECISIONS.md` when appropriate.
 
 ### 4.7 Implement Against the Approved Contract
 
@@ -890,7 +890,7 @@ Do not resolve contract drift by silently changing one implementation.
 
 ### 13.1 Phase Authority
 
-`docs/planning/PHASES.md` is the canonical source for phase definitions.
+`planning/PHASES.md` is the canonical source for phase definitions.
 
 This document defines backend workflow practices only. It MUST NOT redefine phase scope or create additional product milestones.
 

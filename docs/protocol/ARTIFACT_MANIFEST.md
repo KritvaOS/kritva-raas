@@ -45,7 +45,7 @@ Related protocol specifications under `docs/protocol/` MUST be treated as author
 | API request and response behavior | The applicable API contract |
 | Database persistence and constraints | The authoritative database schema and contract |
 | Cryptographic trust policy | The applicable security contract and deployment configuration |
-| Phase definitions | `docs/planning/PHASES.md` |
+| Phase definitions | `planning/PHASES.md` |
 | Milestone scope and acceptance | Authoritative dossiers under `docs/**/milestones/` |
 
 If another protocol document specifies a conflicting manifest field or validation rule, implementation MUST stop treating the conflict as an implementation choice. The conflict MUST be resolved through the owning contract and architecture review process.
@@ -1167,7 +1167,7 @@ A contract revision MUST include a compatibility assessment covering producers, 
 
 ## 38. Phase and Milestone Traceability
 
-Phase definitions are maintained only in `docs/planning/PHASES.md`.
+Phase definitions are maintained only in `planning/PHASES.md`.
 
 The manifest contract supports artifact handling across the relevant product and engineering work. It does not redefine phase scope or milestone acceptance.
 

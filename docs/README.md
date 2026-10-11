@@ -32,7 +32,7 @@ Kritva RaaS documentation follows these principles.
 7. Milestone dossiers define the accepted scope and exit criteria for a delivery milestone.
 8. Task directories contain the actionable work required to deliver the agreed scope.
 9. Tracking documents summarize status and link to authoritative evidence.
-10. Phase definitions are maintained only in `docs/planning/PHASES.md`.
+10. Phase definitions are maintained only in `planning/PHASES.md`.
 11. Existing milestone dossiers under `docs/**/milestones/` are authoritative for milestone scope.
 12. Decision records remain authoritative for the decisions they document.
 13. Status claims must be supported by evidence.
@@ -51,7 +51,7 @@ The hierarchy expresses documentation authority and traceability. It does not im
 
 Defines the product problem, goals, intended users, requirements, priorities, roadmap, delivery phases, and approved planning assumptions.
 
-Primary location: `docs/planning/`
+Primary location: `planning/`
 
 ### 3.2 System architecture
 
@@ -111,7 +111,7 @@ The following map describes the intended documentation responsibilities. It is n
 | Location | Purpose |
 |---|---|
 | `docs/README.md` | Documentation entry point and governance guide |
-| `docs/planning/` | Product planning, canonical phases, and project-wide decisions |
+| `planning/` | Product planning, canonical phases, and project-wide decisions |
 | `docs/architecture/` | System architecture and cross-domain design |
 | `docs/contracts/` | Shared normative contracts, where maintained centrally |
 | `docs/protocol/` | Protocol specifications, where maintained separately |
@@ -134,7 +134,7 @@ Do not move or rename existing authoritative documents solely to make the direct
 
 The canonical phase definition is:
 
-`docs/planning/PHASES.md`
+`planning/PHASES.md`
 
 That file is the sole authority for phase definitions and boundaries. Other documents may reference the frozen identifiers and names, but must not establish alternative phase definitions.
 
@@ -153,7 +153,7 @@ That file is the sole authority for phase definitions and boundaries. Other docu
 ### 5.1 Phase reference rules
 
 - Use the phase ID and name exactly as shown.
-- Link to `docs/planning/PHASES.md` when a phase definition or boundary needs clarification.
+- Link to `planning/PHASES.md` when a phase definition or boundary needs clarification.
 - Do not define alternative phase names in domain documentation.
 - Do not infer phase boundaries from a milestone title.
 - Update the canonical phase definition only through the approved planning change process.
@@ -347,8 +347,8 @@ Every document must have a clear ownership rule.
 | Document type | Canonical authority |
 |---|---|
 | Product intent and requirements | Product/planning documents |
-| Phase definitions | `docs/planning/PHASES.md` |
-| Project-wide decisions | `docs/planning/DECISIONS.md` |
+| Phase definitions | `planning/PHASES.md` |
+| Project-wide decisions | `planning/DECISIONS.md` |
 | System architecture | Authoritative system architecture document |
 | Domain architecture | Architecture documents owned by the relevant domain |
 | API or protocol behavior | Normative contract or protocol specification |
@@ -397,9 +397,9 @@ Primary planning documents include:
 
 | File or directory | Purpose |
 |---|---|
-| `docs/planning/PHASES.md` | Sole canonical phase definition |
-| `docs/planning/DECISIONS.md` | Project-wide decision records |
-| `docs/planning/` | Product planning, roadmap, requirements, and planning artifacts |
+| `planning/PHASES.md` | Sole canonical phase definition |
+| `planning/DECISIONS.md` | Project-wide decision records |
+| `planning/` | Product planning, roadmap, requirements, and planning artifacts |
 | `docs/**/milestones/` | Authoritative milestone scope and acceptance dossiers |
 | `docs/tasks/<TASK-ID>/` | Task-specific execution documentation |
 
@@ -468,7 +468,7 @@ Update tracking documents to reflect delivery impact without copying the full co
 | Acceptance criteria | Observable conditions that must be satisfied for a task or milestone to be accepted |
 | Authoritative document | The designated source of truth for a particular subject |
 | Blocker | An unresolved issue that prevents required work from proceeding |
-| Canonical phase | A phase identifier and name defined by `docs/planning/PHASES.md` |
+| Canonical phase | A phase identifier and name defined by `planning/PHASES.md` |
 | Consumer | A task, component, domain, or milestone that requires a dependency's output |
 | Contract | A normative specification of behavior or compatibility requirements |
 | Dependency | A prerequisite, output, decision, resource, or approval required by another item of work |
@@ -478,7 +478,7 @@ Update tracking documents to reflect delivery impact without copying the full co
 | Milestone | A bounded delivery unit identified by a canonical milestone ID |
 | Milestone dossier | The authoritative set of documents defining milestone scope, tasks, and acceptance |
 | Normative | Required behavior that implementations must conform to |
-| Phase | A canonical project delivery phase defined in `docs/planning/PHASES.md` |
+| Phase | A canonical project delivery phase defined in `planning/PHASES.md` |
 | Provider | A task, component, domain, or external party supplying a required dependency |
 | Reconciliation | Comparing documentation against authoritative records and resolving inconsistencies |
 | Requirement | A product or engineering need that must be satisfied |
@@ -531,7 +531,7 @@ Before accepting a documentation change, verify:
 - [ ] The owning domain or project authority is identifiable.
 - [ ] The document follows the canonical hierarchy.
 - [ ] The canonical phase definition is referenced rather than duplicated.
-- [ ] Phase IDs and names match `docs/planning/PHASES.md`.
+- [ ] Phase IDs and names match `planning/PHASES.md`.
 - [ ] Milestone IDs and names match the frozen model.
 - [ ] Milestone scope agrees with the authoritative dossier.
 - [ ] Normative contracts are clearly distinguished from explanatory material.
@@ -550,7 +550,7 @@ Use relative Markdown links for documents within the repository where practical.
 
 Examples:
 
-- `[Canonical phases](planning/PHASES.md)`
+- `[Canonical phases](../planning/PHASES.md)`
 - `[Project status](tracking/STATUS.md)`
 - `[Milestone status](tracking/MILESTONE_STATUS.md)`
 - `[Dependency tracking](tracking/DEPENDENCY_TRACKING.md)`
@@ -570,7 +570,7 @@ Changes to documentation follow the authority of the subject being changed.
 
 | Change | Required authority |
 |---|---|
-| Phase definitions or boundaries | `docs/planning/PHASES.md` owner and approved project governance |
+| Phase definitions or boundaries | `planning/PHASES.md` owner and approved project governance |
 | Milestone scope | Owning milestone dossier and its approved review process |
 | Product requirements | Product/planning owner |
 | System architecture | System architecture owner and relevant reviewers |
@@ -609,7 +609,7 @@ Do not report a reconciliation as complete until the relevant files and referenc
 
 Use this checklist when applying the frozen model to an existing repository.
 
-- [ ] Confirm `docs/planning/PHASES.md` contains the canonical phase definitions.
+- [ ] Confirm `planning/PHASES.md` contains the canonical phase definitions.
 - [ ] Confirm project-wide planning and decision documents link to the canonical phase file.
 - [ ] Inventory all milestone dossiers under `docs/**/milestones/`.
 - [ ] Verify that milestone identifiers and names match the frozen model.
@@ -629,7 +629,7 @@ Use this checklist when applying the frozen model to an existing repository.
 This guide is ready for use when:
 
 - the canonical documentation hierarchy is clear
-- the phase reference points to `docs/planning/PHASES.md`
+- the phase reference points to `planning/PHASES.md`
 - the frozen phase and milestone tables are consistent
 - milestone dossier authority is explicit
 - the standard milestone folder contents are documented
@@ -649,7 +649,7 @@ Completion of this guide does not establish that every indexed document exists o
 
 - Established `docs/README.md` as the documentation entry point.
 - Documented the canonical documentation hierarchy.
-- Established `docs/planning/PHASES.md` as the sole authority for phase definitions.
+- Established `planning/PHASES.md` as the sole authority for phase definitions.
 - Added the frozen phase reference table.
 - Added canonical frontend, backend, database, and cloud milestone tables.
 - Confirmed milestone dossiers under `docs/**/milestones/` as authoritative for scope.

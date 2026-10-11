@@ -9,7 +9,7 @@
 **Primary Surface:** RaaS Control Plane / Backend  
 **Technology:** TypeScript/Node.js, PostgreSQL, REST API v1, WebSocket, provider-neutral infrastructure  
 **Architecture:** Production-oriented Modular Monolith  
-**Priority:** PRI-1 (primary product path per Priority Matrix; see `docs/planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
+**Priority:** PRI-1 (primary product path per Priority Matrix; see `planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
 **Status:** PLANNED  
 **Primary Outcome:** Establish the authoritative platform, capability, lab, robot and resource model, provide compatibility evaluation services, and establish reusable WebSocket infrastructure for later live execution, telemetry, status and event delivery.
 

@@ -19,9 +19,9 @@
 
 """Single definition of where the planning documents live.
 
-The planning documents are being moved from docs/planning/ to a root planning/
-directory (docs/planning/PLANNING_MIGRATION_PLAN.md). Until and after the move,
-every checker asks this module for the location instead of hard-coding a path.
+The planning documents were moved from docs/planning/ to a root planning/
+directory (planning/PLANNING_MIGRATION_PLAN.md, step 3). The checkers still accept
+the legacy location, so the move is easy to revert, and every checker asks this module for the location instead of hard-coding a path.
 
 The planning root is the directory that holds the backend/ planning directory.
 Exactly one of the two locations may hold it. If both do, the repository is in
@@ -48,7 +48,7 @@ def planning_rel(root):
     if at_root and in_docs:
         raise PlanningRootError(
             f"both {CURRENT}/{MARKER}/ and {LEGACY}/{MARKER}/ exist; "
-            "keep one planning root (see docs/planning/PLANNING_MIGRATION_PLAN.md)")
+            "keep one planning root (see planning/PLANNING_MIGRATION_PLAN.md)")
     return CURRENT if at_root else LEGACY
 
 

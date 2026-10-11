@@ -12,7 +12,7 @@
 | Priority | PRI-1 (the capability is part of the primary product path; using it is optional for each user) |
 | Owning phases | P1 STUDIO, P2 BUILD & ARTIFACT, P3 CONTROL PLANE |
 | Owning milestones | F-M01 STUDIO FOUNDATION, F-M02 PROJECTS, F-M03 BUILD & ARTIFACT, B-M01 CONTROL PLANE, B-M03 PLATFORM, DB-M02 CORE DATA |
-| Decision authority | `docs/planning/DECISIONS.md` (SYS-ADR-007) |
+| Decision authority | `planning/DECISIONS.md` (SYS-ADR-007) |
 
 ## Ownership and Boundaries
 

@@ -25,8 +25,8 @@ Other documentation owns the following concerns:
 
 | Concern | Authoritative owner |
 |---|---|
-| Canonical phase definitions and cross-phase sequencing | `docs/planning/PHASES.md` |
-| Cross-project decisions and system-level architecture | `docs/planning/DECISIONS.md` and applicable documents under `docs/architecture/` |
+| Canonical phase definitions and cross-phase sequencing | `planning/PHASES.md` |
+| Cross-project decisions and system-level architecture | `planning/DECISIONS.md` and applicable documents under `docs/architecture/` |
 | Domain-specific milestone scope and acceptance | Authoritative dossiers under `docs/**/milestones/` |
 | Frontend implementation architecture | Applicable documents under `docs/frontend/architecture/` |
 | Backend implementation architecture | `docs/backend/architecture/BACKEND_ARCHITECTURE.md` |
@@ -515,7 +515,7 @@ The foundation SHOULD avoid locking in detailed product behavior that has not ye
 
 ## 3.3 Canonical Phase Definitions
 
-`docs/planning/PHASES.md` is the authoritative source for canonical phase definitions.
+`planning/PHASES.md` is the authoritative source for canonical phase definitions.
 
 P0 FOUNDATION MUST align its scope with the frozen phase model.
 
@@ -523,7 +523,7 @@ The foundation MUST NOT create alternate phase names or independently redefine c
 
 ## 3.4 Global Architecture and Decisions
 
-The applicable documents under `docs/architecture/` and `docs/planning/DECISIONS.md` provide the system-level context required to organize the repository and shared interfaces.
+The applicable documents under `docs/architecture/` and `planning/DECISIONS.md` provide the system-level context required to organize the repository and shared interfaces.
 
 P0 MUST identify unresolved decisions that materially block foundational implementation.
 

@@ -9,7 +9,7 @@
 **Primary Surface:** RaaS Control Plane / Backend  
 **Technology:** TypeScript/Node.js, PostgreSQL, REST API v1, WebSocket events, provider-neutral payment and billing adapters  
 **Architecture:** Production-oriented Modular Monolith  
-**Priority:** PRI-0 (critical invariant per Priority Matrix; see `docs/planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
+**Priority:** PRI-0 (critical invariant per Priority Matrix; see `planning/IMPLEMENTATION_ROADMAP.md` Section 5)  
 **Status:** PLANNED  
 **Primary Outcome:** Establish authoritative resource availability, booking, reservation, platform-specific credit, wallet, ledger, billing and payment foundations required to reserve robotic resources and safely authorize paid execution.
 

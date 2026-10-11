@@ -81,7 +81,7 @@ This document MUST follow the global release process and MUST NOT create indepen
 | Cloud architecture and deployment topology | `docs/cloud/architecture/CLOUD_ARCHITECTURE.md` |
 | Cloud infrastructure security | `docs/cloud/architecture/SECURITY_ARCHITECTURE.md` |
 | Application security and trust boundaries | `docs/architecture/SECURITY_ARCHITECTURE.md` and applicable documents under `docs/security/` |
-| Canonical phase definitions | `docs/planning/PHASES.md` |
+| Canonical phase definitions | `planning/PHASES.md` |
 | Backend milestone scope and acceptance | Authoritative dossiers under `docs/backend/milestones/` |
 | Database milestone scope and acceptance | Authoritative dossiers under `docs/database/milestones/` |
 | Cloud milestone scope and acceptance | Authoritative dossiers under `docs/cloud/milestones/` |
@@ -1028,7 +1028,7 @@ Do not independently declare global release closure when the global process requ
 
 ### 13.1 Canonical Phase Authority
 
-`docs/planning/PHASES.md` is the authoritative source for phase definitions.
+`planning/PHASES.md` is the authoritative source for phase definitions.
 
 This document describes backend release procedures and MUST NOT redefine phase scope.
 

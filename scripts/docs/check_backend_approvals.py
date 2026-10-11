@@ -159,7 +159,7 @@ def check_decision_record(rec, rel, errors):
 
 def check(root=ROOT):
     try:
-        backend_rel = planning_rel(root) + "/backend"      # docs/planning today, planning/ after the move
+        backend_rel = planning_rel(root) + "/backend"      # planning/ (legacy: docs/planning/)
     except PlanningRootError as exc:
         return [str(exc)], 0
     backend = root / backend_rel

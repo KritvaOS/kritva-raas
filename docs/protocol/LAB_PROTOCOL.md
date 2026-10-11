@@ -75,7 +75,7 @@ The following contracts remain authoritative for their own concerns:
 | Data persistence and retention | Authoritative database contracts |
 | Authentication and authorization policy | Applicable security contract |
 | Physical safety behavior | Applicable safety contract and hardware safety design |
-| Canonical phase definitions | `docs/planning/PHASES.md` |
+| Canonical phase definitions | `planning/PHASES.md` |
 
 If a conflict exists between this document and another authoritative contract, implementations MUST NOT silently choose one interpretation. The conflict MUST be resolved by the relevant contract owners before affected behavior is treated as conformant.
 
@@ -1113,7 +1113,7 @@ No successful heartbeat, valid signature, successful deployment, or accepted com
 
 ## 45. Phase and Milestone Traceability
 
-The canonical phase definitions are maintained in `docs/planning/PHASES.md`. This protocol MUST NOT redefine those phases.
+The canonical phase definitions are maintained in `planning/PHASES.md`. This protocol MUST NOT redefine those phases.
 
 The following frozen milestone references may be relevant to implementation and validation:
 

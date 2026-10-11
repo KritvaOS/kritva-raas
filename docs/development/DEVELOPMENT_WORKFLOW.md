@@ -207,7 +207,7 @@ Example:
          +--> tests/e2e
          +--> docs/database
          +--> docs/frontend
-         +--> docs/planning
+         +--> planning
          +--> tracking
 
 # 8. Work Item Hierarchy
@@ -583,7 +583,7 @@ approved contract.
 
 A task must reference relevant decisions in:
 
-    docs/planning/DECISIONS.md
+    planning/DECISIONS.md
 
 Examples:
 
@@ -854,7 +854,7 @@ Potential documentation areas:
     docs/cloud/
     docs/database/
     docs/security/
-    docs/planning/
+    planning/
     docs/development/
     docs/ui/
 
@@ -1452,7 +1452,7 @@ changelog.
 
 When a decision changes, update:
 
-    docs/planning/DECISIONS.md
+    planning/DECISIONS.md
 
 The change should include:
 
@@ -1755,7 +1755,7 @@ When a task contributes to a release:
 
 Release workflow is governed by:
 
-    docs/planning/RELEASE_ROADMAP.md
+    planning/RELEASE_ROADMAP.md
 
 # 90. Communication Before Merge
 

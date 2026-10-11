@@ -83,8 +83,8 @@ Backend-specific recommendations in this file MUST remain consistent with any st
 | Backend API implementation | `docs/backend/architecture/API_IMPLEMENTATION.md` |
 | Backend architecture decisions | `docs/backend/planning/DECISIONS.md` |
 | System backend responsibilities | `docs/architecture/BACKEND_ARCHITECTURE.md` |
-| Product and system decisions | `docs/planning/DECISIONS.md` |
-| Canonical phase definitions | `docs/planning/PHASES.md` |
+| Product and system decisions | `planning/DECISIONS.md` |
+| Canonical phase definitions | `planning/PHASES.md` |
 | API wire contract | `docs/protocol/API_CONTRACT.md` |
 | Event wire contract | `docs/protocol/EVENT_CONTRACT.md` |
 | Artifact contract and manifest | `docs/protocol/ARTIFACT_MANIFEST.md` |
@@ -1069,7 +1069,7 @@ Whether the missing evidence blocks a milestone or release is determined by the 
 
 ### 17.1 Phase Authority
 
-`docs/planning/PHASES.md` is the canonical source for phase definitions.
+`planning/PHASES.md` is the canonical source for phase definitions.
 
 This document defines backend testing practices only and MUST NOT redefine phase scope.
 

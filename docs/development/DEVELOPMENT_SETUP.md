@@ -110,7 +110,7 @@ It does not define product architecture.
 
 Architecture decisions are recorded in:
 
-    docs/planning/DECISIONS.md
+    planning/DECISIONS.md
 
 ## 3. Goals
 
@@ -2348,7 +2348,7 @@ Architecture-changing work should reference the applicable ADR.
 # 120. Architecture Change Rule
 
 If implementation requires changing one of the product-wide decisions in
-`docs/planning/DECISIONS.md`, the developer must not silently implement the
+`planning/DECISIONS.md`, the developer must not silently implement the
 change.
 
 The change requires:

@@ -27,7 +27,7 @@ The initial task baseline must reflect the actual task backlogs. A task must not
 
 | Concern | Authoritative reference |
 |---|---|
-| Canonical phase definitions | `docs/planning/PHASES.md` |
+| Canonical phase definitions | `planning/PHASES.md` |
 | Master project status | `docs/tracking/STATUS.md` |
 | Phase status | `docs/tracking/PHASE_STATUS.md` |
 | Milestone status | `docs/tracking/MILESTONE_STATUS.md` |
@@ -44,13 +44,13 @@ The initial task baseline must reflect the actual task backlogs. A task must not
 | Cloud task backlog | `docs/cloud/planning/CLOUD_TASKS.md` |
 | Cloud roadmap | `docs/cloud/planning/CLOUD_ROADMAP.md` |
 | Risk register | `docs/tracking/RISK_REGISTER.md` |
-| Project decisions | `docs/planning/DECISIONS.md` |
+| Project decisions | `planning/DECISIONS.md` |
 
 If a referenced backlog or document does not exist, record it as a documentation gap. Do not fabricate task details or claim that a backlog has been reconciled when it has not been inspected.
 
 ## 3. Source-of-Truth Rules
 
-1. `docs/planning/PHASES.md` is the sole canonical definition of phase names and boundaries.
+1. `planning/PHASES.md` is the sole canonical definition of phase names and boundaries.
 2. Existing milestone dossiers under `docs/**/milestones/` are authoritative for milestone scope.
 3. Domain task backlogs are authoritative for detailed task definitions, planned effort, and domain-specific acceptance conditions.
 4. This tracker consolidates task status and traceability.
@@ -79,7 +79,7 @@ Use these exact phase identifiers and names in task records.
 | P7 | LIVE & RESULTS |
 | P8 | PRODUCTION |
 
-This table is an index to `docs/planning/PHASES.md`, not an independent phase definition.
+This table is an index to `planning/PHASES.md`, not an independent phase definition.
 
 Do not create alternative phase names, renumber phases, or infer phase boundaries from task identifiers.
 
@@ -724,7 +724,7 @@ Do not change multiple tasks to `COMPLETE` based on a broad verbal update withou
 
 Changes to task status, owners, dates, dependencies, effort, and evidence may be made through routine tracking.
 
-Changes to phase definitions must be made only in `docs/planning/PHASES.md`.
+Changes to phase definitions must be made only in `planning/PHASES.md`.
 
 Changes to milestone scope must be made in the relevant authoritative dossier under `docs/**/milestones/`.
 
@@ -747,7 +747,7 @@ Never reuse a task ID. If a task is cancelled or superseded, preserve its record
 
 - [ ] Task IDs follow `KR-<DOMAIN>-<PHASE>-<NNN>`.
 - [ ] Domain codes use FE, BE, DB, and CL.
-- [ ] Phase IDs match `docs/planning/PHASES.md`.
+- [ ] Phase IDs match `planning/PHASES.md`.
 - [ ] Milestone identifiers and names match the frozen model.
 - [ ] Existing milestone dossiers remain authoritative.
 - [ ] Source backlog tasks are reconciled before placeholders are treated as implementation tasks.
@@ -783,7 +783,7 @@ Baseline acceptance confirms that the tracking process is established. It does n
 ### Initial Frozen-Model Baseline
 
 - Initialized task tracking across frontend, backend, database, and cloud domains.
-- Established `docs/planning/PHASES.md` as the canonical phase definition.
+- Established `planning/PHASES.md` as the canonical phase definition.
 - Added the frozen milestone inventory for all four domains.
 - Defined the `KR-<DOMAIN>-<PHASE>-<NNN>` task identifier convention.
 - Defined task status, acceptance state, priority, and effort rules.

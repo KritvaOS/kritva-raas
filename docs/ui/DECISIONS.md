@@ -1,6 +1,6 @@
 # UI Decision Register
 
-This register holds UI/UX-specific decisions (ADRs). Frontend implementation decisions are in [../frontend/planning/DECISIONS.md](../frontend/planning/DECISIONS.md); product-wide decisions are in [../planning/DECISIONS.md](../planning/DECISIONS.md); the index is [../tracking/DECISION_LOG.md](../tracking/DECISION_LOG.md).
+This register holds UI/UX-specific decisions (ADRs). Frontend implementation decisions are in [../frontend/planning/DECISIONS.md](../frontend/planning/DECISIONS.md); product-wide decisions are in [../planning/DECISIONS.md](../../planning/DECISIONS.md); the index is [../tracking/DECISION_LOG.md](../tracking/DECISION_LOG.md).
 
 ## Status
 
