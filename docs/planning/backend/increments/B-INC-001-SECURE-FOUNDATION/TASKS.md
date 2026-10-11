@@ -54,7 +54,7 @@ A task must not be marked Accepted solely because files or code exist. Required 
 - **Linked AC:** B-INC-001-AC-01, B-INC-001-AC-02.
 - **Linked tests:** BTS-001, BTS-036.
 - **Linked security gates:** SEC-GATE-003, SEC-GATE-004, SEC-GATE-013.
-- **Status:** In Review. The scaffold under `apps/backend` is implemented (PB-026), the pin moved to the repository root after the BTS-036 review (PB-027), and the plan Section 6 evidence and the review record with the disposition of each finding are in [`evidence/KR-BE-1-001-evidence.md`](evidence/KR-BE-1-001-evidence.md) (PB-028). The reviewer has not re-reviewed the fixes. Linked gates are not closed. Not Accepted: the Backend Technical Lead has not recorded acceptance.
+- **Status:** Accepted on 2026-10-11 by the Backend Technical Lead (`BACKEND_CHANGELOG.md` PB-029). The scaffold (PB-026), the pin move after the BTS-036 review (PB-027) and the evidence and review record with the disposition of each finding ([`evidence/KR-BE-1-001-evidence.md`](evidence/KR-BE-1-001-evidence.md), PB-028) were considered. The reviewer did not re-review the fixes; the Backend Technical Lead accepted without that re-review. The acceptance does not close any gate and does not close `B-INC-001-AC-01` or `B-INC-001-AC-02`, which other tasks also contribute to. The Backend Technical Lead is also the repository owner who directed the work, so the acceptance is not independent of it.
 
 ### KR-BE-1-002 — Define backend module boundaries
 
