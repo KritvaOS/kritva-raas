@@ -61,13 +61,14 @@ Minimal, with no dependency that a later task has not decided. No HTTP framework
 |---|---|
 | `package.json` | `type: module`, `engines.node` for the approved release, the three scripts below. Direct dependencies pinned exactly |
 | `package-lock.json` | The single source of resolved versions. Reviewed as part of the change |
+| `.node-version` | The canonical exact Node.js pin of the approved pin method (`KR-BINC-001-001` Section 5.1): one line, `24.21.0`. Added by this task in `apps/backend`; the CI consistency check is `KR-BINC-001-017` |
 | `.npmrc` | `save-exact=true` and `engine-strict=true`. No registry token |
 | `tsconfig.json` | The strict options approved in `KR-BINC-001-001`, with an explicit `rootDir` (required by TypeScript 6). It includes both `src` and `tests` |
 | `src/main.ts` | The explicit entry point. It is intentionally inert: it composes nothing and opens no port. The README says so and does not describe a running service |
 | `src/runtime-info.ts` | One small pure function, so the baseline test has real behavior to check |
 | `tests/runtime-info.test.ts` | Baseline test using the built-in `node:test` runner, so no test-runner choice is made here |
 | `README.md` | Install, build, typecheck and test commands, the entry-point semantics and the pinned versions |
-| `.gitignore` | Only if question 3 is answered that way |
+| `.gitignore` | Narrow, as answered in question 3: `node_modules`, `dist`, `coverage` |
 
 Every `.ts` file carries the source header (the header check scans tracked files). JSON files and the lockfile are exempt. The only development dependencies are `typescript` and `@types/node`, at the versions recorded as approved in the toolchain records. This plan does not select a version because an earlier record proposed it.
 

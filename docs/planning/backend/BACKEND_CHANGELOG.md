@@ -763,6 +763,27 @@ Reason: after the approvals in PB-024, the repository owner answered the three o
 | Task status | `KR-BE-1-001` moves to Ready in `TASKS.md`. It is not started and not accepted. Linked tests are NOT RUN and no security gate is closed |
 | Not changed | No decision, no approval, no gate. The framework (003) and migration tool (004) stay undecided |
 
+## 3Y. PB-026 — KR-BE-1-001 Application Structure Scaffold
+
+| Field | Value |
+|---|---|
+| Change ID | PB-026 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Follows | PB-025 |
+
+Reason: implementation of `KR-BE-1-001`, the first application code, using the approved decisions `KR-BINC-001-001` and `KR-BINC-001-002` and the owner answers recorded in PB-025.
+
+| Item | Disposition |
+|---|---|
+| Added | `apps/backend`: `package.json`, `package-lock.json` (generated with the pinned toolchain by the delivery script), `.npmrc`, `.node-version`, `.gitignore`, `tsconfig.json`, `src/main.ts` (inert), `src/runtime-info.ts`, `tests/runtime-info.test.ts`, `README.md` |
+| Versions | Node.js 24.21.0, bundled npm 11.19.0, TypeScript 6.0.3, `@types/node` 24.19.2, all exact. No other dependency, no framework, no configuration module, no database access, no listening port, no secrets code |
+| Task status | In Progress. Not Accepted. The plan Section 6 evidence (clean-checkout transcript with the pinned toolchain, lockfile mismatch test, entry point statement, BTS-036 review) is not recorded yet; linked tests and gates are NOT RUN as task evidence |
+| Gates | No gate closed. Contribution and open items per the plan Section 6.1 |
+| Plan change | The plan scaffold table now lists `.node-version` and the narrow `.gitignore` as decided |
+| Not changed | `DEVELOPMENT_SETUP.md` (aligned by `KR-BINC-001-016`), CI, `Makefile` targets `build`, `test`, `lint`, `format`, `format-check` (still fail on purpose; wiring is a toolchain task) |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

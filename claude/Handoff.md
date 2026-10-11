@@ -1,6 +1,6 @@
 # Kritva RaaS — Session Handoff
 
-Updated: 11-10-2026 (PR #5 to PR #18 recorded; official Node.js evidence merged; key authentication in PR K; owner direction in PR L; approvals of 001 and 002 merged as #21; KR-BE-1-001 Ready in PR N). For any Claude session (any model) continuing work on KritvaOS/kritva-raas.
+Updated: 11-10-2026 (PR #5 to PR #18 recorded; official Node.js evidence merged; key authentication in PR K; owner direction in PR L; approvals of 001 and 002 merged as #21; KR-BE-1-001 Ready merged as #22; scaffold in PR O). For any Claude session (any model) continuing work on KritvaOS/kritva-raas.
 
 ## 1. Repositories
 
@@ -54,7 +54,7 @@ CI: `source-header-check` and `docs-check` (the `docs-check` job also runs the a
 
 ## 4. Key documents
 
-- `docs/planning/backend/` — program plan, task register, dependency map, security gate (SEC-GATE-001 to 013), test strategy (BTS-001 to 037), acceptance criteria (BAC-001 to 039), risk register, resource plan, `BACKEND_CHANGELOG.md` (PB-001 to PB-021 on `d5fcb39`; PB-022 and PB-023 merged (#19, #20); PB-024 merged (#21); PB-025 in PR N).
+- `docs/planning/backend/` — program plan, task register, dependency map, security gate (SEC-GATE-001 to 013), test strategy (BTS-001 to 037), acceptance criteria (BAC-001 to 039), risk register, resource plan, `BACKEND_CHANGELOG.md` (PB-001 to PB-021 on `d5fcb39`; PB-022 and PB-023 merged (#19, #20); PB-024 merged (#21); PB-025 merged (#22); PB-026 in PR O).
 - `docs/planning/backend/increments/B-INC-001` to `B-INC-004` — 8 files each. B-INC-001 has 21 criteria and 29 tasks.
 - `docs/planning/backend/decisions/` — approval workflow and packages: README, `approvals/APPROVAL-<DECISION-ID>-<slug>.md`. The decision record in its increment `decisions/` directory is the only source of truth for the final disposition.
 - `docs/development/SOURCE_HEADER_STANDARD.md`, `docs/security/SECRETS_MANAGEMENT.md`, `docs/security/KEY_MANAGEMENT.md`, `Makefile`.
@@ -79,7 +79,7 @@ Done and accepted: KR-BINC-001-018 (PR #2) and KR-BINC-001-019 (PR #4). Audit fi
 - **Recommendations (not approvals):** Node.js 24 LTS pinned exactly (Node 26 after it enters LTS on 2026-10-28); TypeScript 6.0.3 baseline with 7.0.2 as an upgrade candidate; npm with `package-lock.json` and `npm ci`. The runtime record must still state the pin mechanism, the exact Node.js and npm releases and the checksum source.
 - **Batch B order** (readiness Section 4): approvals of 001, 002 and 005; KR-BE-1-001; KR-BE-1-002; KR-BINC-001-003 and 004; the 008 comparative scanner evaluation in parallel. KR-BE-1-001 stays blocked until 001 and 002 are approved.
 - **KR-BINC-001-008 is held**: only a detect-secrets 1.5.0 trial exists (missing file argument and plain `scan` fail open). gitleaks and trufflehog need a machine with network access.
-- **Next steps (start only when Dinesh asks):** merge PR N; implement KR-BE-1-001 (apps/backend, own package-lock.json, narrow .gitignore, Node 24.21.0, npm 11.19.0, TypeScript 6.0.3; the lockfile must be generated with the pinned toolchain on Dinesh's machine because the sandbox has Node 22); send the real review requests to the Security Owner and Cloud/Infrastructure Owner for KR-BINC-001-005 (then move the package to Requested only when the requests are actually sent); owners decide 001, 002, 005 and the history finding; then KR-BE-1-001. Optional ruleset hardening; remaining B-INC-001 tasks, then B-INC-002 to 004.
+- **Next steps (start only when Dinesh asks):** merge PR O (KR-BE-1-001 scaffold, task In Progress; its run.sh generates the lockfile with the checksum-verified Node 24.21.0 and posts the clean-checkout transcript as a PR comment); then record that evidence and the BTS-036 review in a docs PR (the sandbox has Node 22, so the lockfile is never generated there); send the real review requests to the Security Owner and Cloud/Infrastructure Owner for KR-BINC-001-005 (then move the package to Requested only when the requests are actually sent); owners decide 005 and the history finding; then KR-BE-1-002 and the framework and migration decisions (003, 004). Optional ruleset hardening; remaining B-INC-001 tasks, then B-INC-002 to 004.
 - **Open owner decisions:** the `Claude-Session` trailer (PB-011); approvals of 001, 002 and 005; the Git-history exposure disposition; the three plan questions.
 - Web search is disabled for the organization. Version facts were read through the built-in browser and the npm registry (reachable from the sandbox; nodejs.org is blocked from it).
 
