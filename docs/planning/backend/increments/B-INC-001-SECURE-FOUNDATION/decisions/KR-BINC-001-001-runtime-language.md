@@ -102,6 +102,25 @@ The recommendation is not final until the following is demonstrated and recorded
 
 If a tool does not support the proposed Node.js version, the approver chooses a different Node.js version or tool before approval, and the reason is recorded here.
 
+### Compatibility evidence recorded 2026-10-11
+
+This is a partial result from an executed check in a disposable sandbox. It does not complete Section 6 and does not approve the decision.
+
+| Check | Result |
+|---|---|
+| Node.js release used | 24.21.0 |
+| How it was obtained | The `node@24.21.0` package from the npm registry. It was not downloaded from nodejs.org, so the official checksums were not verified |
+| How it would be pinned | Not decided. Candidates are an exact `engines.node` value in `package.json`, a `.node-version` file read by local tooling and CI, and `engine-strict` in `.npmrc`. The choice belongs to KR-BINC-001-016 and KR-BINC-001-017 |
+| TypeScript 6.0.3, strict sample | Compiled and ran under Node.js 24.21.0 with exit status 0. Options used: `strict`, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`, `noImplicitOverride`, `verbatimModuleSyntax`, `skipLibCheck: false`, `module` and `moduleResolution` NodeNext, target ES2023, with `@types/node` 24.19.2 |
+| TypeScript 6.0 migration finding | The first compile failed with TS5011 until `rootDir` was set explicitly. Any TypeScript 6 project configuration must set `rootDir` |
+| TypeScript 7.0.2, same sample and options | `tsc --noEmit` exited with status 0. No deprecated or removed option was reported for this option set. The result covers only this sample and these options |
+| eslint 10.12.0 with typescript-eslint 8.71.1 (recommended rules) | Ran on the sample under TypeScript 6.0.3 with exit status 0 |
+| vitest 5.0.3 | One trivial test ran and passed |
+| pg 8.23.1 | Installed and imported under Node.js 24.21.0. No database connection was attempted |
+| npm | 10.9.4 was used. The npm bundled with Node.js 24.21.0 was not used. Package manager support is therefore not demonstrated (KR-BINC-001-002 stays open) |
+
+Not demonstrated by this check: the HTTP framework (not decided), the migration tool, TypeScript 7.0.2 together with typescript-eslint (its declared range excludes 7.0.x), the pinned Node.js release from the official distribution with verified checksums, Node.js 26, and any CI run.
+
 ## 7. Consequences and Dependencies
 
 - KR-BINC-001-002 (package manager) depends on this decision.

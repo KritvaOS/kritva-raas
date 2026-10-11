@@ -51,7 +51,7 @@ Proposed until approved:
 
 ## 7. Required Evidence and Review Questions
 
-Compatibility evidence gathered on 2026-10-10 from npm registry metadata. It shows what each package declares. No tool was installed or executed, so it is not proof that a tool works.
+Compatibility evidence gathered on 2026-10-10 from npm registry metadata. The table shows what each package declares. It is not proof that a tool works; the executed check follows the table.
 
 | Package | Version seen | Declared Node.js range | Declared TypeScript range | Admits Node.js 24 | Admits TypeScript 6.0.3 | Admits TypeScript 7.0.2 |
 |---|---|---|---|---|---|---|
@@ -74,18 +74,20 @@ Findings:
 1. Every declared Node.js range that was found admits Node.js 24. Fastify declares none.
 2. The one declared TypeScript limit found is typescript-eslint, whose range includes 6.0.3 and excludes 7.0.x. This supports keeping 6.0.3 as the baseline until a later release declares support for 7.0.
 
-Not yet demonstrated (the approver should decide whether approval waits for these):
+Executed check, recorded 2026-10-11 in Section 6 of the decision record (sandbox, partial):
 
-1. A strict-mode TypeScript 6.0.3 sample that compiles under the pinned Node.js 24 patch.
-2. The exact Node.js 24 patch to pin and how it is pinned for local development and CI.
-3. The same sample under TypeScript 7.0.2, with every deprecated or removed option listed.
-4. Actual installation and execution of the chosen test runner, linter and driver on that Node.js and TypeScript.
+1. Done: a strict-mode TypeScript 6.0.3 sample compiled and ran under Node.js 24.21.0. TypeScript 6 requires an explicit `rootDir`.
+2. Partly done: Node.js 24.21.0 was the release used, taken from the npm registry. The pin method is not decided, and the release has not been verified against the official nodejs.org checksums.
+3. Done for one sample: TypeScript 7.0.2 compiled it with no deprecated or removed option reported.
+4. Partly done: eslint 10.12.0 with typescript-eslint 8.71.1, vitest 5.0.3 and pg 8.23.1 ran under Node.js 24.21.0. The HTTP framework and migration tool are not decided. npm 10.9.4 was used, not the npm bundled with Node.js 24.21.0.
+
+Approval waits for the Section 6 evidence of the decision record. The Backend Technical Lead should not approve until the pinned Node.js release, its pin method and its official checksum verification are recorded, and the package manager support is recorded under KR-BINC-001-002. The check above does not replace that evidence.
 
 Review questions:
 
 1. Is Node.js 24 acceptable now, or should the record switch to Node.js 26 after 2026-10-28?
 2. Is TypeScript 6.0.3 the right baseline given the evidence above?
-3. Is approval conditional on items 1 and 2 above, or must all four be recorded first?
+3. Which remaining Section 6 items must be recorded before approval, beyond those listed above?
 
 ## 8. Dependencies and Downstream Impact
 
