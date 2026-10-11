@@ -98,6 +98,6 @@ Recommended order: the runtime decision first, then the package-manager decision
 
 ## 8. Change Control and Validation
 
-`scripts/docs/check_backend_approvals.py` validates the package file names, Document Control fields, section list, status vocabulary, canonical link, task existence, the authority sentence, the absence of a package-level disposition, the decision-record vocabulary, and this list. `make check` and the `docs-check` workflow run it, with its unit tests under `tests/backend_approvals/`.
+`scripts/docs/check_backend_approvals.py` validates the package file names, Document Control fields, section list, status vocabulary, canonical link, task existence, the authority sentence, the absence of a package-level disposition, the decision-record vocabulary and consistency (an Approved record must have an Approval Record row for every required approver listed in its Task Record, each Approved with a date and evidence, so a Pending, Rejected, Returned for revision or missing required approver fails), and this list. `make check` and the `docs-check` workflow run it, with its unit tests under `tests/backend_approvals/`.
 
 A passing run shows that the structure is consistent. It does not show that an owner approved a decision, that a linked test ran, or that a security gate closed.

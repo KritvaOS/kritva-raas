@@ -87,6 +87,21 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-11 — Approval checker consistency hardened
+
+- **State:** IMPLEMENTED (validation tooling; no task status change)
+- **Tasks:** None (validation tooling for the approval workflow)
+- **Increment ACs:** Not applicable
+- **Program acceptance:** Not applicable
+- **Tests:** Not applicable (the checker has its own unit tests; no task test is advanced)
+- **Security gates:** Not applicable (no gate is closed)
+- **Findings/risks:** External audit finding 1 (an Approved record could carry a Rejected, Returned or missing required approver) addressed; see `../../BACKEND_CHANGELOG.md` PB-013
+- **Files changed:** `scripts/docs/check_backend_approvals.py`, `tests/backend_approvals/test_check_backend_approvals.py`, `scripts/docs/README.md`, `../../decisions/README.md`, `../../BACKEND_CHANGELOG.md`
+- **Commit:** Pending until this change is merged
+- **Evidence:** `make check` results recorded in the commit message
+- **Reviewer role:** Repository owner
+- **Decision and follow-up:** See PB-013. The runtime compatibility evidence and the credential-shaped example fix follow as separate changes
+
 ### 2026-10-10 — Backend decision-approval packages and checker added
 
 - **State:** IMPLEMENTED (documentation and validation tooling; no task status change)

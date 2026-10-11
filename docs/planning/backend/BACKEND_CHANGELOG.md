@@ -498,6 +498,28 @@ Reason: three B-INC-001 decision records wait for owner approval, and later incr
 
 No task status changes in this entry. `KR-BINC-001-001`, `KR-BINC-001-002` and `KR-BINC-001-005` stay In Review, their records stay Proposed, and `KR-BINC-001-008` stays on hold. No decision is approved by creating a package, merging this change or a passing check. The `Claude-Session` trailer decision from PB-011 is still open.
 
+## 3L. PB-013 — Approval Checker Consistency Hardening
+
+| Field | Value |
+|---|---|
+| Change ID | PB-013 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Follows | PR #8 (merge `19e1ae4`) |
+
+Reason: the external audit of `main` at `19e1ae4` found that `check_backend_approvals.py` rejected an Approved decision record only when an approver row was Pending. A record could pass with a Rejected or Returned for revision row, or with a required approver missing, so the secret-handling decision (Security Owner approval plus Cloud/Infrastructure Owner review) could look approved without meeting its own rule.
+
+| Item | Disposition |
+|---|---|
+| Required approvers | Read from the decision record Task Record. Roles are compared ignoring case and a trailing "(review)" or "review" qualifier |
+| Approved record | Needs a row for every required approver, every row Approved, and a date and evidence on every row. Missing, Pending, Rejected, Returned for revision, an empty table and undeterminable required approvers all fail |
+| Proposed and other dispositions | Unchanged: only the row vocabulary is checked, so a record can show partial progress |
+| Tests | 10 new negative and positive cases. Eight of them fail against the previous checker, which shows they cover the gap |
+| Scope | `scripts/docs/check_backend_approvals.py`, its tests, and the two README sentences that describe it. The checker still never changes a decision or task status |
+
+No task status changes. `KR-BINC-001-001`, `KR-BINC-001-002` and `KR-BINC-001-005` stay In Review and their records stay Proposed. A passing check is not an approval.
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

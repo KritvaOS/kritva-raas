@@ -31,8 +31,11 @@ For every package, verify that:
 5. A task-backed package names a task that exists in the increment TASKS.md, in
    the increment that holds the linked decision record.
 6. The package does not carry a final disposition of its own.
-7. The linked decision record uses the disposition vocabulary, and a record
-   marked Approved has no Pending approval row.
+7. The linked decision record uses the disposition vocabulary. A record marked
+   Approved must have an Approval Record row for every required approver
+   (from its Task Record), every row must be Approved, and every row must
+   record a date and evidence. Pending, Rejected, Returned for revision and
+   missing required approvers all fail.
 8. decisions/README.md lists every package.
 
 The checker validates structure and consistency only. It never infers or changes
@@ -92,23 +95,64 @@ def section(text, name):
     return m.group(1) if m else ""
 
 
+def table_rows(text, name):
+    """Return the data rows (list of cell lists) of the tables in a named section."""
+    rows = []
+    for line in section(text, name).splitlines():
+        if not line.startswith("|"):
+            continue
+        cells = [c.strip() for c in line.strip().strip("|").split("|")]
+        if cells and cells[0] and not set(cells[0]) <= {"-", " ", ":"}:
+            rows.append(cells)
+    return rows
+
+
+def normalize_role(role):
+    """Compare roles ignoring case and a trailing review qualifier, e.g. 'X (review)' or 'X review'."""
+    role = re.sub(r"\s*\(review\)\s*$", "", role.strip(), flags=re.I)
+    role = re.sub(r"\s+review\s*$", "", role, flags=re.I)
+    return role.strip().lower()
+
+
+def required_roles(text):
+    for cells in table_rows(text, "Task Record") + [[k, v] for k, v in control_table(text).items()]:
+        if len(cells) >= 2 and cells[0] == "Required approvers":
+            return [normalize_role(r) for r in cells[1].split(";") if r.strip()]
+    return []
+
+
+def blank(value):
+    return value.strip() in ("", "—", "-", "n/a", "N/A", "Pending", "TBD")
+
+
 def check_decision_record(rec, rel, errors):
     text = rec.read_text()
     status = control_table(text).get("Status", "")
     if status not in DISPOSITIONS:
         errors.append(f"{rel}: decision record Status '{status}' is not a decision disposition {sorted(DISPOSITIONS)}")
-    approval = section(text, "Approval Record")
-    rows = []
-    for line in approval.splitlines():
-        cells = [c.strip() for c in line.strip().strip("|").split("|")]
-        if len(cells) >= 2 and line.startswith("|") and cells[0] not in ("Approver role", "") \
-                and not set(cells[0]) <= {"-", " "}:
-            rows.append(cells[1])
-    for value in rows:
-        if value not in ROW_DECISIONS:
-            errors.append(f"{rel}: Approval Record decision '{value}' is not one of {sorted(ROW_DECISIONS)}")
-    if status == "Approved" and (not rows or "Pending" in rows):
-        errors.append(f"{rel}: decision record is Approved but its Approval Record has a Pending or missing row")
+    rows = [r for r in table_rows(text, "Approval Record") if r[0] != "Approver role" and len(r) >= 2]
+    for r in rows:
+        if r[1] not in ROW_DECISIONS:
+            errors.append(f"{rel}: Approval Record decision '{r[1]}' is not one of {sorted(ROW_DECISIONS)}")
+    if status != "Approved":
+        return
+    # An Approved record must show every required approver, each Approved, with a date and evidence.
+    by_role = {}
+    for r in rows:
+        by_role.setdefault(normalize_role(r[0]), []).append(r)
+    required = required_roles(text)
+    if not required:
+        errors.append(f"{rel}: decision record is Approved but its required approvers cannot be determined")
+    for role in required:
+        if role not in by_role:
+            errors.append(f"{rel}: decision record is Approved but required approver '{role}' has no Approval Record row")
+    if not rows:
+        errors.append(f"{rel}: decision record is Approved but its Approval Record has no rows")
+    for r in rows:
+        if r[1] != "Approved":
+            errors.append(f"{rel}: decision record is Approved but '{r[0]}' is recorded as {r[1]}")
+        elif len(r) < 4 or blank(r[2]) or blank(r[3]):
+            errors.append(f"{rel}: Approved row for '{r[0]}' must record a date and evidence")
 
 
 def check(root=ROOT):
