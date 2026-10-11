@@ -1239,6 +1239,25 @@ Reason: the follow-up AI audit of PR #42 (`main` at `4ab6402`) found four new is
 | Not changed | Other protocol documents with their own codes; dependencies; CI; task statuses |
 | Independence | Written by Claude; the audit is AI inspection; no independent human review |
 
+## 3AT. PB-047 — Planning Alignment Gap Report and Migration Contract
+
+| Field | Value |
+|---|---|
+| Change ID | PB-047 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Follows | PB-046 |
+
+Reason: the owner asked that the planning folder be aligned with `kritva-core` and `kritvaos-community`, with the planning documents moved to a root `planning/` directory.
+
+| Item | Disposition |
+|---|---|
+| Added | `PLANNING_ALIGNMENT_GAP_REPORT.md`, `PLANNING_AUTHORITY_MATRIX.md` and `PLANNING_MIGRATION_PLAN.md` under `docs/planning/` |
+| Scope | Conventions and shape; RaaS-specific controls kept; overlaps in `docs/tracking/`, `docs/tasks/` and `docs/milestones/` to be consolidated in later pull requests |
+| Not changed | Any path, task status, decision, identifier, commit trailer, checker, dependency or CI file |
+| Review | Drafted by Claude; reviewed by ChatGPT as AI inspection; the owner chose the scope and the move. No independent human review |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:
