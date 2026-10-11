@@ -94,7 +94,7 @@ The following are demonstrated by later tasks, not by this record:
 
 ## 7. Consequences and Dependencies
 
-- KR-BE-1-001 stays blocked until this record and KR-BINC-001-001 are approved.
+- KR-BE-1-001 was blocked until this record and KR-BINC-001-001 were approved. Both were approved on 2026-10-11.
 - The `build`, `test`, `lint`, `format` and `format-check` Make targets are wired to npm scripts by KR-BE-1-001 and the toolchain tasks, and they keep failing until then.
 - If the owner chooses pnpm, Section 5 is rewritten with the equivalent commands (`pnpm install --frozen-lockfile`, a committed `pnpm-lock.yaml`, a pinned pnpm version) before approval.
 - Setup documentation (KR-BINC-001-016) uses the approved commands only.

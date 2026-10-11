@@ -25,7 +25,7 @@
 
 This plan prepares `KR-BE-1-001` so that implementation can start without further design work once its dependencies are approved. It is a plan, not an implementation. No application code, package metadata or lockfile exists, no task status changes, and nothing here approves a decision. It is not a task definition: the task record in `TASKS.md` remains authoritative for scope, Definition of Done and linked items.
 
-`KR-BINC-001-001` (runtime and language) and `KR-BINC-001-002` (package manager and lockfile) were approved by the Backend Technical Lead on 2026-10-11 (PB-024). `KR-BE-1-001` is not started: it still waits for the owner answers marked open in Section 3. The scaffold uses the approved versions only: Node.js 24.21.0, npm 11.19.0 and TypeScript 6.0.3.
+`KR-BINC-001-001` (runtime and language) and `KR-BINC-001-002` (package manager and lockfile) were approved by the Backend Technical Lead on 2026-10-11 (PB-024). `KR-BE-1-001` is Ready to start (all prerequisites are recorded) and is not started. The scaffold uses the approved versions only: Node.js 24.21.0, npm 11.19.0 and TypeScript 6.0.3.
 
 ## 2. Task Record Summary
 
@@ -43,7 +43,7 @@ This plan prepares `KR-BE-1-001` so that implementation can start without furthe
 
 Three inconsistencies in existing documents affect this task. Each needs an owner answer. The recommendations are not decisions.
 
-Answered on 2026-10-11: question 1 (`apps/backend`, by the repository owner). Question 2: the package manager is npm, as approved in `KR-BINC-001-002`; the owner has not yet confirmed the layout recommendation (a self-contained package, no root workspace, no turbo), so that part stays open. Question 3 is open.
+Answered by the repository owner on 2026-10-11: question 1 (`apps/backend`); question 2 (a self-contained `apps/backend` package with its own `package-lock.json`, npm as approved in `KR-BINC-001-002`, no root workspace and no turbo until a second package exists); question 3 (a narrow `apps/backend/.gitignore`). `KR-BE-1-001` is Ready to start. The owner answers are directions, recorded here; they do not change `DEVELOPMENT_SETUP.md`, which `KR-BINC-001-016` aligns.
 
 | # | Question | Evidence | Recommendation |
 |---|---|---|---|
@@ -87,7 +87,7 @@ Test sources are compiled first and the emitted JavaScript is executed. Direct e
 
 ## 5. Order of Work
 
-1. Resolve the remaining prerequisites: the layout part of question 2 and question 3. The approvals of `KR-BINC-001-001` and `KR-BINC-001-002` and the answer to question 1 are recorded (2026-10-11).
+1. Prerequisites: all recorded on 2026-10-11 (the approvals of `KR-BINC-001-001` and `KR-BINC-001-002` and the answers to questions 1 to 3).
 2. Freeze the contract: the approved Node.js and npm releases and pin mechanism, the compatible `typescript` and `@types/node` versions, the strict compiler options and the command contract in 4.1.
 3. Implement only the agreed scaffold, with the agreed ignore strategy. Installing dependencies uses the npm bundled with the pinned Node.js release. Review the lockfile.
 4. Collect evidence (Section 6), run `make check` at the repository root and inspect the final diff for credentials.

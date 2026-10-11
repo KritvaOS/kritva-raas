@@ -743,6 +743,26 @@ Reason: the repository owner, acting as Backend Technical Lead, approved the run
 | Task statuses | Both tasks stay In Review. An Approved decision does not make a task Accepted. Linked tests are NOT RUN and no security gate is closed |
 | `KR-BE-1-001` | Not started. Question 1 of its plan is answered (`apps/backend`). The layout part of question 2 and question 3 are open |
 
+## 3X. PB-025 — KR-BE-1-001 Prerequisites Recorded and Task Ready
+
+| Field | Value |
+|---|---|
+| Change ID | PB-025 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Follows | PB-024 |
+
+Reason: after the approvals in PB-024, the repository owner answered the three open questions of the `KR-BE-1-001` plan.
+
+| Item | Disposition |
+|---|---|
+| Question 1 | Directory is `apps/backend` |
+| Question 2 | A self-contained `apps/backend` package with its own `package-lock.json`, npm as approved in `KR-BINC-001-002`, no root workspace and no turbo until a second package exists. `DEVELOPMENT_SETUP.md` is not changed here; `KR-BINC-001-016` aligns it |
+| Question 3 | A narrow `apps/backend/.gitignore` (`node_modules`, `dist`, `coverage`). It does not complete `KR-BINC-001-006`, and it is reconciled with that task before that task is accepted |
+| Task status | `KR-BE-1-001` moves to Ready in `TASKS.md`. It is not started and not accepted. Linked tests are NOT RUN and no security gate is closed |
+| Not changed | No decision, no approval, no gate. The framework (003) and migration tool (004) stay undecided |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

@@ -223,7 +223,7 @@ None of the four declares a TypeScript peer range, so no conflict with TypeScrip
 ## 7. Consequences and Dependencies
 
 - KR-BINC-001-002 (package manager) depends on this decision.
-- KR-BE-1-001 (application structure) stays blocked until this record and KR-BINC-001-002 are approved.
+- KR-BE-1-001 (application structure) was blocked until this record and KR-BINC-001-002 were approved. Both were approved on 2026-10-11.
 - KR-BINC-001-003 (HTTP framework) must support the selected versions.
 - CI and setup documentation (KR-BINC-001-016 and 017) record the exact versions once approved.
 - The Node.js support dates are an input that changes over time. The version policy should be reviewed before the end-of-life date of the selected line.

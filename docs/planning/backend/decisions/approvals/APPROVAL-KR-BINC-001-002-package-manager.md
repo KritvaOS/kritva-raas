@@ -70,7 +70,7 @@ Review questions:
 ## 8. Dependencies and Downstream Impact
 
 - Depends on KR-BINC-001-001 being approved first.
-- KR-BE-1-001 stays blocked until this decision and KR-BINC-001-001 are approved.
+- KR-BE-1-001 was blocked until this decision and KR-BINC-001-001 were approved. Both were approved on 2026-10-11.
 - The `build`, `test`, `lint`, `format` and `format-check` Make targets are wired to npm scripts later and keep failing until then.
 - If pnpm is chosen, Section 5 of the decision record is rewritten before approval.
 - Setup documentation (KR-BINC-001-016) uses the approved commands only.
