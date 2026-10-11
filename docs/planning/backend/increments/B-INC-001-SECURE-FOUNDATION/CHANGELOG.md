@@ -87,6 +87,18 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-11 — Canonical REST API v1 error envelope decided
+
+- **State:** DECISION APPROVED (documents reconciled; no implementation)
+- **Tasks:** None (decision input for KR-BE-1-007, which stays Proposed)
+- **Increment ACs:** B-INC-001-AC-08 (not satisfied)
+- **Program acceptance:** Not applicable
+- **Tests:** BTS-007 (NOT RUN against the final contract)
+- **Security gates:** SEC-GATE-009 (not closed; the gate mapping is flagged for the owner)
+- **Findings/risks:** The envelope needs a request ID, which the transport does not have yet (`KR-BE-1-005`). Success-response wrapping is undecided. Three registry additions are proposed, not approved. The AI design inspection that recommended the option is not an independent review
+- **Files changed:** `decisions/KR-BE-1-007-error-envelope.md` (new), `docs/protocol/API_CONTRACT.md`, `TASKS.md`, `CHANGELOG.md`, `../../BACKEND_CHANGELOG.md`, `claude/Handoff.md`
+- **Commit:** Pending until this change is merged
+
 ### 2026-10-11 — KR-BE-1-006 API v1 routing
 
 - **State:** IN REVIEW (implementation delivered; not accepted)
