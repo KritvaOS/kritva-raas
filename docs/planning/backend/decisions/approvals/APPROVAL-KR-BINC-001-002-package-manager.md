@@ -6,7 +6,7 @@
 |---|---|
 | Document | Approval Package for KR-BINC-001-002 Package Manager and Lockfile Policy |
 | Path | `docs/planning/backend/decisions/approvals/APPROVAL-KR-BINC-001-002-package-manager.md` |
-| Status | Draft |
+| Status | Closed |
 | Owner role | Backend Technical Lead |
 | Decision ID | KR-BINC-001-002 |
 | Task ID | KR-BINC-001-002 |
@@ -17,7 +17,7 @@ Status here is the package workflow status (Draft, Requested, Closed, Withdrawn)
 
 ## 2. Purpose and Requested Disposition
 
-This package asks the Backend Technical Lead to review the package manager and lockfile recommendation and record one of: Approved, Rejected, or Returned for revision. The review follows the runtime decision (KR-BINC-001-001), and an approval must reference the approved runtime. Nothing here is approved yet.
+This package asks the Backend Technical Lead to review the package manager and lockfile recommendation and record one of: Approved, Rejected, or Returned for revision. The review follows the runtime decision (KR-BINC-001-001), and an approval must reference the approved runtime. This package is Closed. The outcome is recorded in the decision record, which is the only source of the disposition.
 
 ## 3. Canonical Decision Record
 
@@ -33,7 +33,7 @@ Does not cover: the runtime versions, any application dependency choice, or the 
 
 ## 5. Recommendation Summary
 
-Proposed until approved: npm, using the version bundled with the approved Node.js release.
+Recommendation (approved by the Backend Technical Lead on 2026-10-11, see the decision record): npm, using the version bundled with the approved Node.js release.
 
 1. One package manager only, and a different manager's lockfile is rejected.
 2. A committed `package-lock.json` is the single source of resolved versions.
@@ -79,9 +79,9 @@ Review questions:
 
 | Role | Review requested | Evidence |
 |---|---|---|
-| Backend Technical Lead | Not yet requested | This package and the decision record |
+| Backend Technical Lead | 2026-10-11 | This package and the decision record. The requester and the reviewer are the same person (Dinesh Annayya, acting as Backend Technical Lead). The outcome is recorded in the decision record, Approval Record, and not here |
 
-The review request date is recorded here when the package moves to Requested. The disposition is not recorded here.
+The review round ended on 2026-10-11 and the package is Closed. The disposition is recorded in the decision record only: [KR-BINC-001-002 decision record, Approval Record](../../increments/B-INC-001-SECURE-FOUNDATION/decisions/KR-BINC-001-002-package-manager-lockfile.md).
 
 ## 10. Approval Instructions
 

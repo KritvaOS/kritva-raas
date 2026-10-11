@@ -87,6 +87,21 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-11 — Runtime and package manager decisions approved
+
+- **State:** IMPLEMENTED (documentation; decisions approved; no task accepted)
+- **Tasks:** None (approval of decision records for KR-BINC-001-001 and KR-BINC-001-002, which stay In Review)
+- **Increment ACs:** Not applicable
+- **Program acceptance:** Not applicable
+- **Tests:** Not applicable (the linked tests are NOT RUN)
+- **Security gates:** Not applicable (no gate is closed)
+- **Findings/risks:** The approver is also the repository owner who directed the recommendation; see `../../BACKEND_CHANGELOG.md` PB-024
+- **Files changed:** both decision records, both approval packages, `TASKS.md`, `plans/KR-BE-1-001-application-structure-plan.md`, `decisions/IMPLEMENTATION_READINESS.md`, `CHANGELOG.md`, `../../BACKEND_CHANGELOG.md`, `claude/Handoff.md`
+- **Commit:** Pending until this change is merged
+- **Evidence:** `make check` results recorded in the commit message
+- **Reviewer role:** Repository owner
+- **Decision and follow-up:** See PB-024
+
 ### 2026-10-11 — Owner direction on pin method, framework candidate and migration tool shortlist
 
 - **State:** PLANNED (documentation; no task status change)

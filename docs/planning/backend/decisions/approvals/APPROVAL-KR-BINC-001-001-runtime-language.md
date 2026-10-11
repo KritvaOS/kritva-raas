@@ -6,7 +6,7 @@
 |---|---|
 | Document | Approval Package for KR-BINC-001-001 Runtime and Language Versions |
 | Path | `docs/planning/backend/decisions/approvals/APPROVAL-KR-BINC-001-001-runtime-language.md` |
-| Status | Draft |
+| Status | Closed |
 | Owner role | Backend Technical Lead |
 | Decision ID | KR-BINC-001-001 |
 | Task ID | KR-BINC-001-001 |
@@ -17,7 +17,7 @@ Status here is the package workflow status (Draft, Requested, Closed, Withdrawn)
 
 ## 2. Purpose and Requested Disposition
 
-This package asks the Backend Technical Lead to review the runtime and language recommendation and record one of: Approved, Rejected, or Returned for revision. An approval must name the exact versions and the compatibility evidence it accepts. Nothing here is approved yet.
+This package asks the Backend Technical Lead to review the runtime and language recommendation and record one of: Approved, Rejected, or Returned for revision. An approval must name the exact versions and the compatibility evidence it accepts. This package is Closed. The outcome is recorded in the decision record, which is the only source of the disposition.
 
 ## 3. Canonical Decision Record
 
@@ -33,7 +33,7 @@ Does not cover: the package manager (KR-BINC-001-002), the HTTP framework (KR-BI
 
 ## 5. Recommendation Summary
 
-Proposed until approved:
+Recommendation (approved by the Backend Technical Lead on 2026-10-11, see the decision record):
 
 1. Node.js 24 LTS (Krypton), pinned to an exact patch version in the repository and in CI.
 2. TypeScript 6.0.3 as the initial baseline, pinned exactly. TypeScript 7.0.2 is an upgrade candidate that needs its own decision record after a compatibility check.
@@ -105,9 +105,9 @@ Review questions:
 
 | Role | Review requested | Evidence |
 |---|---|---|
-| Backend Technical Lead | Not yet requested | This package and the decision record |
+| Backend Technical Lead | 2026-10-11 | This package and the decision record. The requester and the reviewer are the same person (Dinesh Annayya, acting as Backend Technical Lead). The outcome is recorded in the decision record, Approval Record, and not here |
 
-The review request date is recorded here when the package moves to Requested. The disposition is not recorded here.
+The review round ended on 2026-10-11 and the package is Closed. The disposition is recorded in the decision record only: [KR-BINC-001-001 decision record, Approval Record](../../increments/B-INC-001-SECURE-FOUNDATION/decisions/KR-BINC-001-001-runtime-language.md).
 
 ## 10. Approval Instructions
 
