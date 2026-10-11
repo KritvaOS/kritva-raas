@@ -11,7 +11,7 @@
 | Decision ID | KR-BINC-001-001 |
 | Task ID | KR-BINC-001-001 |
 | Increment | B-INC-001 |
-| Revision | 3 (2026-10-11) |
+| Revision | 4 (2026-10-11) |
 
 Status here is the package workflow status (Draft, Requested, Closed, Withdrawn). The decision disposition is recorded in the decision record.
 
@@ -79,18 +79,18 @@ Findings:
 Executed check, recorded 2026-10-11 in Section 6 of the decision record (sandbox, partial):
 
 1. Done: a strict-mode TypeScript 6.0.3 sample compiled and ran under Node.js 24.21.0. TypeScript 6 requires an explicit `rootDir`.
-2. Partly done: Node.js 24.21.0 was first used from the npm registry in a sandbox. It was then downloaded from nodejs.org and its SHA-256 matched the official manifest (decision record Section 6.2). The signature on the manifest was **not verified**: the signing key was not in the keyring and was not compared with the release-keys list. A pin method is proposed in Section 5.1 of the decision record and is not decided.
+2. Partly done: Node.js 24.21.0 was first used from the npm registry in a sandbox. It was then downloaded from nodejs.org and its SHA-256 matched the official manifest (decision record Section 6.2). The first run did not verify the manifest signature (key not in the keyring). A second run (Section 6.3) fetched the key by the full fingerprint copied from the `nodejs/node` README, confirmed that it equals the signing key, and verified both the detached and the clearsigned signature (valid, exit status 0). The key is not certified by a trusted signature in a web of trust, and its source and the README are both Node.js project channels. A pin method is proposed in Section 5.1 of the decision record and is not decided.
 3. Information only: TypeScript 7.0.2 compiled the sample with no deprecated or removed option reported. TypeScript 7.0.2 is deferred and is not a condition of this approval.
 4. Partly done: eslint 10.12.0 with typescript-eslint 8.71.1, vitest 5.0.3 and pg 8.23.1 ran under Node.js 24.21.0. The HTTP framework and migration tool are not decided. The first run used npm 10.9.4. A second run on the official distribution used the bundled npm 11.19.0 with install scripts disabled: `npm install`, a clean `npm ci`, typecheck, build, tests, eslint, vitest and the pg import all exited 0, and a mismatched lockfile made `npm ci` fail (Section 6.2). Linux x64 only, disposable project.
 
-Approval waits for the Section 6 evidence of the decision record. The official checksum verification and the bundled npm check are now recorded. The Backend Technical Lead should decide how to treat the unverified signature (authenticate the key, or accept the checksum alone and say so), the pin method and the framework and migration tool shortlist before approving, and the package manager support is recorded under KR-BINC-001-002. The check above does not replace that evidence.
+Approval waits for the Section 6 evidence of the decision record. The official checksum verification and the bundled npm check are now recorded. The repository owner required the signing key to be authenticated, and that is now recorded. The Backend Technical Lead should decide whether the recorded authentication is sufficient, the pin method and the framework and migration tool shortlist before approving, and the package manager support is recorded under KR-BINC-001-002. The check above does not replace that evidence.
 
 Review questions:
 
 1. Is Node.js 24 acceptable now, or should the record switch to Node.js 26 after 2026-10-28?
 2. Do you confirm TypeScript 6.0.3 as the baseline with 7.0.2 deferred to a later decision record?
 3. Do you approve, change or reject the proposed pin method in Section 5.1 of the decision record, and which remaining Section 6 items must be recorded before approval?
-4. The official checksum matched but the manifest signature was not verified (Section 6.2). Is the checksum alone acceptable for this decision, or must the signing key be authenticated against the official release-keys list first?
+4. The checksum matched and the manifest signature is valid for the key fingerprint published in the `nodejs/node` README (Section 6.3). The key has no web-of-trust certification. Is this level of authentication sufficient, and how should later releases signed by other releasers be handled?
 
 ## 8. Dependencies and Downstream Impact
 

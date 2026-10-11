@@ -167,7 +167,7 @@ Executed by the repository owner on a Linux x86_64 laptop with a reviewed script
 | Source | `https://nodejs.org/dist/v24.21.0/node-v24.21.0-linux-x64.tar.gz`, manifest `https://nodejs.org/dist/v24.21.0/SHASUMS256.txt`, signature `https://nodejs.org/dist/v24.21.0/SHASUMS256.txt.sig` |
 | Checksum | Manifest entry and computed SHA-256 are identical: `6e1db87ef58b8819e5d5402eff1536491b18edd8eb7bee5ef7897876e88dc5ff` |
 | Command and result | `grep '  node-v24.21.0-linux-x64.tar.gz$' SHASUMS256.txt \| sha256sum -c -` printed `node-v24.21.0-linux-x64.tar.gz: OK`, exit status 0 |
-| Signature | **Not verified.** `gpg --verify` on `SHASUMS256.txt.sig` reported a signature made 2026-09-09 with EDDSA key `5BE8A3F6C8A5C01D106C0AD820B1A390B168D356` and "Can't check signature: No public key" (exit status 2). The key was not in the local keyring and was not compared with the official release-keys list, so no authenticity claim is made. The checksum therefore proves only that the archive matches the manifest downloaded from the same site |
+| Signature | **Not verified.** `gpg --verify` on `SHASUMS256.txt.sig` reported a signature made 2026-09-09 with EDDSA key `5BE8A3F6C8A5C01D106C0AD820B1A390B168D356` and "Can't check signature: No public key" (exit status 2). The key was not in the local keyring and was not compared with the official release-keys list, so no authenticity claim is made. The checksum therefore proves only that the archive matches the manifest downloaded from the same site. Superseded for the signature question by Section 6.3 |
 | Runtime | `node --version` v24.21.0 and `npm --version` 11.19.0 (the npm bundled with this release), both run from the extracted archive |
 | Toolchain, with install scripts disabled (`--ignore-scripts`) | `npm install` of typescript 6.0.3, @types/node 24.19.2, eslint 10.12.0, typescript-eslint 8.71.1, vitest 5.0.3, pg 8.23.1 and @types/pg 8.23.1 added 143 packages. A second `npm ci` from a clean directory added the same 143 packages. `tsc --noEmit`, `tsc` build, `node --test` on the compiled test file, eslint and vitest 5.0.3 (one test) all exited 0. `pg` 8.23.1 imported with no database connection. Resolved versions matched the pins |
 | Lockfile mismatch | With `package.json` changed to typescript 6.0.2 and the lockfile unchanged, `npm ci` exited 1 and reported that `package.json` and the lockfile are not in sync (lock file's typescript@6.0.3 does not satisfy typescript@6.0.2) |
@@ -175,7 +175,27 @@ Executed by the repository owner on a Linux x86_64 laptop with a reviewed script
 
 Effect on earlier rows: the "How it was obtained" and "npm" rows of the 2026-10-11 compatibility evidence describe the earlier sandbox run. This check supersedes them for the Node.js release and the bundled npm. It does not supersede the TypeScript 7.0.2 information row.
 
-Still open before the Backend Technical Lead can decide: authenticating the signing key (or recording that it is accepted without it), the pin decision (Section 5.1), the HTTP framework and migration tool shortlist, and the `KR-BINC-001-002` acceptance of the bundled npm.
+Still open before the Backend Technical Lead can decide (updated by Section 6.3, which records the key authentication): the pin decision (Section 5.1), the HTTP framework and migration tool shortlist, and the `KR-BINC-001-002` acceptance of the bundled npm.
+
+### 6.3 Signing key authentication recorded 2026-10-11
+
+The repository owner decided that the signing key must be authenticated. A second reviewed script (`verify-node-signature.sh`, throwaway, not in the repository) was run on the same laptop (GnuPG 2.2.27, 2026-10-11T08:00:07Z). The owner copied the expected fingerprint from the "Release keys" section of the `nodejs/node` README and passed it to the script. The script used a temporary keyring, so the owner's own keyring was untouched. The output was pasted to the Claude session and is summarized here.
+
+| Field | Result |
+|---|---|
+| Expected fingerprint | `5BE8A3F6C8A5C01D106C0AD820B1A390B168D356`, copied by the owner from the `nodejs/node` README (listed there for Antoine du Hamel as a primary release key). Claude read the same README entry through a page-reading tool but could not confirm it independently |
+| Key source | `hkps://keys.openpgp.org`, requested by the full fingerprint. One public key imported: "Antoine du Hamel", primary fingerprint equal to the expected value, one signing subkey `0A178CD0FE03CB4F8780980A039F94E89826F891` |
+| Fingerprint match | PASS: the imported primary key equals the expected fingerprint |
+| Detached signature `SHASUMS256.txt.sig` | `gpg` exit status 0. GOODSIG and VALIDSIG, signer primary key `5BE8A3F6C8A5C01D106C0AD820B1A390B168D356`, signature made 2026-09-09 03:19:15 IST |
+| Clearsigned `SHASUMS256.txt.asc` | `gpg` exit status 0. GOODSIG and VALIDSIG from the same primary key |
+| Manifest entry covered | `6e1db87ef58b8819e5d5402eff1536491b18edd8eb7bee5ef7897876e88dc5ff  node-v24.21.0-linux-x64.tar.gz`, identical to the checksum in Section 6.2 |
+| gpg warning | "This key is not certified with a trusted signature" (trust level unknown). No web-of-trust path to the key was built |
+
+What this shows: the checksum manifest from nodejs.org is validly signed by a key whose fingerprint equals the one the Node.js project publishes in its README, and the archive matches that manifest. What it does not show: independent certification of the key. The README and the keyserver are both channels of the Node.js project (the keyserver is where the README tells readers to fetch keys). The release key was checked for release v24.21.0 only. A later release signed by another releaser needs its own check.
+
+This supersedes the signature row of Section 6.2 (not verified). The Section 6.2 text stays as the record of the first run.
+
+Still open before the Backend Technical Lead can decide: the pin decision (Section 5.1), the HTTP framework and migration tool shortlist, and the `KR-BINC-001-002` acceptance of the bundled npm.
 
 ## 7. Consequences and Dependencies
 
