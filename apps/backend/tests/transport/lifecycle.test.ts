@@ -51,7 +51,7 @@ test("the server starts on an OS-assigned port, answers a request and stops", as
   assert.ok(server.port > 0);
   const res = await get(server.port, "/api/v1/none");
   assert.equal(res.status, 404);
-  assert.equal(JSON.parse(res.body).error.code, "RESOURCE_NOT_FOUND");
+  assert.equal(JSON.parse(res.body).code, "RESOURCE_NOT_FOUND");
   await server.stop();
   await assert.rejects(get(server.port, "/api/v1/none"));
 });

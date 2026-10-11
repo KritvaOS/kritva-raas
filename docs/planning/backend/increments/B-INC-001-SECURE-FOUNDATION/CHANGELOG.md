@@ -87,6 +87,18 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-11 — KR-BE-1-007 response envelope and error contract
+
+- **State:** IN REVIEW (implementation delivered; not accepted)
+- **Tasks:** KR-BE-1-007 (In Review)
+- **Increment ACs:** B-INC-001-AC-08 (partly evidenced; not satisfied), B-INC-001-AC-09 (not satisfied)
+- **Program acceptance:** Not applicable
+- **Tests:** BTS-007 (10 envelope tests added, suite 77; component tests only; sandbox run on Node.js 22 is feasibility only; Node.js 24.21.0 run posted by the delivery script), BTS-032 (not satisfied)
+- **Security gates:** SEC-GATE-009 (not closed; logging redaction is not touched)
+- **Findings/risks:** The body shape of every error changes from the nested object to the envelope; no caller outside the tests used it. `RESPONSES.md` Section 39 places `field_errors` inside `details` while `ERROR_CODES.md` Section 8 and `API_CONTRACT.md` Section 18 place it in `error`; the implementation follows the latter and the documents still disagree. No success code is defined until an endpoint exists. No independent review
+- **Files changed:** `apps/backend/src/transport/response-contract.ts` (new), `error-contract.ts`, `request-context.ts`, `http-server.ts`, `tests/transport/response-contract.test.ts` (new), `http-server.test.ts`, `api-v1.test.ts`, `lifecycle.test.ts`, `request-context.test.ts`, `README.md`, `TASKS.md`, `CHANGELOG.md`, `../../BACKEND_CHANGELOG.md`, `claude/Handoff.md`
+- **Commit:** Pending until this change is merged
+
 ### 2026-10-11 — REST API v1 response contract decided
 
 - **State:** DECISION APPROVED (documents reconciled; no implementation)

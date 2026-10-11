@@ -1165,6 +1165,30 @@ Reason: `KR-BE-1-007` needed the success-wrapping, request-ID, registry and gate
 | Independence | Approver is also the owner who directed the work; no independent human reviewer. Details beyond the chosen option are Claude's recommendation and take effect on merge |
 | Not changed | `apps/backend`, dependencies, CI, task statuses |
 
+## 3AQ. PB-044 — Response Envelope and Error Contract (KR-BE-1-007)
+
+| Field | Value |
+|---|---|
+| Change ID | PB-044 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Backend Engineer; Backend Technical Lead accountable |
+| Follows | PB-043 |
+
+Reason: `KR-BE-1-007` implements the response contract decided in PB-041 and PB-043.
+
+| Item | Disposition |
+|---|---|
+| Envelope | `src/transport/response-contract.ts` defines `ResponseEnvelope`, `PROTOCOL_VERSION` "1.0", whole-second UTC timestamps and `successBody(spec, data, requestId)`. `request_id` is always a string |
+| Errors | `error-contract.ts` builds the full envelope with `data` null and `error { details, retryable, field_errors }`. Status and code per error: 400 `INVALID_REQUEST` (field codes `MISSING_REQUIRED_FIELD`, `FIELD_INVALID`), 404 `NOT_FOUND`/`RESOURCE_NOT_FOUND`, 405 `INVALID_REQUEST`/`METHOD_NOT_ALLOWED` with `Allow`, 413 `REJECTED`/`PAYLOAD_TOO_LARGE`, 415 `INVALID_REQUEST`/`UNSUPPORTED_CONTENT_TYPE`, 500 `FAILED`/`INTERNAL_ERROR` (retryable). Registry messages are used |
+| Success | Handlers return `successBody` and choose the HTTP status; `204` has no body. No success code is defined until an endpoint exists |
+| Request ID | `requestIdOf(request)` returns the context ID, with a fresh ID as a safety net so the envelope never carries null |
+| Tests | 10 new tests (every error kind, field errors without echoed values, no leak of exception text, success, 202, 204, client IDs never in the body, timestamp, classification); existing tests moved to the envelope; suite 77. Node.js 24.21.0 transcript posted as a PR comment. These are component tests; BTS-032 is not satisfied |
+| Open | `RESPONSES.md` Section 39 versus `ERROR_CODES.md` Section 8 on where `field_errors` lives (the code follows `ERROR_CODES.md` and `API_CONTRACT.md`); success codes per endpoint; correlation (`KR-BE-1-008`); `BACKEND_ARCHITECTURE.md` and `API_ARCHITECTURE.md` not checked |
+| Independence | Written by Claude; no independent review |
+| Task status | In Review. Not Accepted |
+| Not changed | Dependencies, lockfile, CI, protocol documents |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

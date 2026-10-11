@@ -73,12 +73,12 @@ test("an error body repeats the same request ID as the header", async () => {
   const a = app();
   for (const url of ["/api/v1/nothing", "/api/v1/probe/boom", "/api/v1/probe/"]) {
     const res = await a.inject({ method: "GET", url });
-    assert.equal(res.json().error.request_id, res.headers["x-request-id"], url);
+    assert.equal(res.json().request_id, res.headers["x-request-id"], url);
   }
   const post = await a.inject({ method: "POST", url: "/api/v1/probe/validated", headers: { "content-type": "application/json" }, payload: {} });
-  assert.equal(post.json().error.request_id, post.headers["x-request-id"]);
+  assert.equal(post.json().request_id, post.headers["x-request-id"]);
   const method = await a.inject({ method: "PUT", url: "/api/v1/probe" });
-  assert.equal(method.json().error.request_id, method.headers["x-request-id"]);
+  assert.equal(method.json().request_id, method.headers["x-request-id"]);
   await a.close();
 });
 

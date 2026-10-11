@@ -60,7 +60,7 @@ test("other API versions and the bare prefix are not served", async () => {
   for (const url of ["/api/v2/widgets", "/api/v0/widgets", "/api", "/api/", "/api/v1", "/api/v1/", "/v1/widgets"]) {
     const res = await a.inject({ method: "GET", url });
     assert.equal(res.statusCode, 404, url);
-    assert.equal(res.json().error.code, "RESOURCE_NOT_FOUND", url);
+    assert.equal(res.json().code, "RESOURCE_NOT_FOUND", url);
   }
   await a.close();
 });
@@ -78,7 +78,7 @@ test("a known path with an unsupported method returns 405 with Allow, including 
   for (const method of ["POST", "PUT", "PATCH", "DELETE", "OPTIONS"] as const) {
     const res = await a.inject({ method, url: "/api/v1/widgets/abc" });
     assert.equal(res.statusCode, 405, method);
-    assert.equal(res.json().error.code, "METHOD_NOT_ALLOWED", method);
+    assert.equal(res.json().code, "METHOD_NOT_ALLOWED", method);
     assert.equal(res.headers["allow"], "GET, HEAD", method);
   }
   await a.close();
