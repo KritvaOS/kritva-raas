@@ -87,6 +87,21 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-11 — KR-BE-1-002 module boundaries decision record
+
+- **State:** PROPOSED (decision record written; review pending)
+- **Tasks:** KR-BE-1-002 (In Progress)
+- **Increment ACs:** B-INC-001-AC-02, B-INC-001-AC-03 (not satisfied)
+- **Program acceptance:** Not applicable
+- **Tests:** BTS-001, BTS-004 (NOT RUN)
+- **Security gates:** SEC-GATE-003 (not closed)
+- **Findings/risks:** The tier table had Identity and Organizations in one tier while Organizations depends on Identity; fixed by splitting them (ten tiers). Foreign-key policy is with the Database Technical Lead
+- **Files changed:** `decisions/KR-BE-1-002-module-boundaries.md` (new), `plans/KR-BE-1-002-module-boundaries-plan.md`, `TASKS.md`, `CHANGELOG.md`, `../../BACKEND_CHANGELOG.md`, `claude/Handoff.md`
+- **Commit:** Pending until this change is merged
+- **Evidence:** The decision record and the owner answers in its Section 3
+- **Reviewer role:** Architecture Owner (author); independent reviewer to be named
+- **Decision and follow-up:** See PB-031. Next: the independent review, then the Architecture Owner records the decision
+
 ### 2026-10-11 — KR-BE-1-002 module boundaries plan
 
 - **State:** PLANNED (no decision, no code)

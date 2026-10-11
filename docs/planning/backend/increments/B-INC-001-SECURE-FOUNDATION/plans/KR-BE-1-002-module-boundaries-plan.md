@@ -73,14 +73,15 @@ Candidate rule: modules are placed in tiers. A module may depend only on the con
 | Tier | Modules | May depend on (contracts only) |
 |---|---|---|
 | 1 Cross-cutting | Audit, Events | Nothing in the domain. Entities are referred to by opaque identifier |
-| 2 Identity and tenancy | Identity, Organizations | Tier 1 |
-| 3 Catalog | Projects, Platforms, Artifacts | Tiers 1 and 2 |
-| 4 Capacity and money | Credits, Resource Allocation | Tiers 1 to 3 |
-| 5 Reservation | Booking | Tiers 1 to 4 |
-| 6 Execution request | Jobs | Tiers 1 to 5 |
-| 7 Execution | Scheduler, Runs | Tiers 1 to 6 |
-| 8 Outputs | Results | Tiers 1 to 7 |
-| 9 Lab edge | Lab | Tiers 1 to 8 |
+| 2 Identity | Identity | Tier 1 |
+| 3 Tenancy | Organizations | Tiers 1 and 2 |
+| 4 Catalog | Projects, Platforms, Artifacts | Tiers 1 to 3 |
+| 5 Capacity and money | Credits, Resource Allocation | Tiers 1 to 4 |
+| 6 Reservation | Booking | Tiers 1 to 5 |
+| 7 Execution request | Jobs | Tiers 1 to 6 |
+| 8 Execution | Scheduler, Runs | Tiers 1 to 7 |
+| 9 Outputs | Results | Tiers 1 to 8 |
+| 10 Lab edge | Lab | Tiers 1 to 9 |
 
 The ordering follows the responsibilities in the architecture: a job references an artifact and a booking, a booking spends credits and holds resources, a run records an execution of a job, and the Lab module is the boundary to physical labs and feeds the modules below it. The tiers are a candidate. The architecture review may reorder them.
 
@@ -99,7 +100,7 @@ The ordering follows the responsibilities in the architecture: a job references 
 | Pressure point | Candidate resolution |
 |---|---|
 | Credit plans in Platforms and Credits | Credits owns plans and balances. Platforms refers to a plan by identifier. If the architecture wants Platforms to own the association, Credits depends on Platforms and the tier order changes |
-| Resource inventory in Lab and Resource Allocation | Resource Allocation owns resource records and locks. Lab reports inventory through its contract (Lab depends on Resource Allocation, as in tier 9 over tier 4) |
+| Resource inventory in Lab and Resource Allocation | Resource Allocation owns resource records and locks. Lab reports inventory through its contract (Lab depends on Resource Allocation, as in tier 10 over tier 5) |
 | Job state authority | Jobs is the only writer of job state. Scheduler, Runs and workers call Jobs operations. This matches PostgreSQL authority in Section 59 |
 | Scheduler dispatch to a lab | Scheduler decides and emits a dispatch intent through Events. Lab consumes it and commands the agent. The Scheduler never touches hardware (Section 23). This makes a higher tier subscribe to a lower-tier event |
 | Runs and Results | Runs depends on Jobs. Results depends on Runs. Lab writes through both contracts |
@@ -107,7 +108,7 @@ The ordering follows the responsibilities in the architecture: a job references 
 
 ## 5. Questions for the Architecture Owner
 
-The recommendations are not decisions.
+The recommendations are not decisions. The Architecture Owner answered all nine on 2026-10-11 (recorded in `decisions/KR-BE-1-002-module-boundaries.md` Section 3): every recommendation accepted; credit plans owned by Credits; event types declared by their publisher. Putting Identity below Organizations made the tiers ten, not nine.
 
 | # | Question | Recommendation |
 |---|---|---|
