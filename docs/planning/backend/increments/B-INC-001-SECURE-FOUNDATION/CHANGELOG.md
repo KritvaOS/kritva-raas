@@ -87,6 +87,21 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-11 — KR-BINC-001-003 HTTP framework decision record
+
+- **State:** PROPOSED (recommendation written; owner approval pending)
+- **Tasks:** KR-BINC-001-003 (In Review)
+- **Increment ACs:** B-INC-001-AC-03, B-INC-001-AC-06 (not satisfied)
+- **Program acceptance:** Not applicable
+- **Tests:** BTS-004, BTS-007, BTS-032 (NOT RUN; a sandbox route check under Node.js 22 is feasibility only)
+- **Security gates:** Not applicable
+- **Findings/risks:** Fastify declares no `engines`, so pinned-runtime compatibility is shown in `KR-BE-1-004`. The route body type is a cast, not derived from the schema
+- **Files changed:** `decisions/KR-BINC-001-003-http-framework.md` (new), `TASKS.md`, `CHANGELOG.md`, `../../BACKEND_CHANGELOG.md`, `claude/Handoff.md`
+- **Commit:** Pending until this change is merged
+- **Evidence:** The decision record Section 3
+- **Reviewer role:** Backend Technical Lead
+- **Decision and follow-up:** See PB-034. Next: the owner approves or returns it
+
 ### 2026-10-11 — KR-BE-1-002 decision approved
 
 - **State:** DECISION APPROVED (task In Review, not accepted)
