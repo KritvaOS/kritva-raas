@@ -584,6 +584,25 @@ Reason: an independent review of the `KR-BINC-001-005` approval package found it
 
 No task status changes. `KR-BINC-001-005` stays In Review. No security gate is closed.
 
+## 3P. PB-017 — KR-BE-1-001 Implementation Plan
+
+| Field | Value |
+|---|---|
+| Change ID | PB-017 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Follows | PB-016 |
+
+Reason: `KR-BE-1-001` is the first application task and stays Blocked until `KR-BINC-001-001` and `KR-BINC-001-002` are approved. A plan lets implementation start without further design once they are.
+
+| Item | Disposition |
+|---|---|
+| New document | `increments/B-INC-001-SECURE-FOUNDATION/plans/KR-BE-1-001-application-structure-plan.md` |
+| Open questions | The application directory (`apps/backend` or `apps/control-plane`), the self-contained npm package against the pnpm and turbo layout in the setup document, and the ordering of ignore rules against `KR-BINC-001-006`. Each needs an owner answer |
+| Review | An independent review returned the plan for a small revision, which is applied: explicit compiled-test command contract (a sandbox trial showed a directory argument to `node --test` fails), runtime pin mechanism taken from the approved record, a disposable lockfile mismatch test, and per-gate contribution against what stays open |
+| Not changed | No scaffold, package metadata or lockfile exists. `KR-BE-1-001` stays Blocked. No decision approved, no task status changed, no gate closed |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

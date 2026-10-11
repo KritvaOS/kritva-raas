@@ -87,6 +87,21 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-11 — KR-BE-1-001 implementation plan added
+
+- **State:** PLANNED (documentation; no task status change)
+- **Tasks:** None (plan for KR-BE-1-001, which stays Blocked)
+- **Increment ACs:** Not applicable
+- **Program acceptance:** Not applicable
+- **Tests:** Not applicable
+- **Security gates:** Not applicable (no gate is closed)
+- **Findings/risks:** Three owner questions are open; see `../../BACKEND_CHANGELOG.md` PB-017
+- **Files changed:** `plans/KR-BE-1-001-application-structure-plan.md`, `../../BACKEND_CHANGELOG.md`, `CHANGELOG.md`
+- **Commit:** Pending until this change is merged
+- **Evidence:** `make check` results recorded in the commit message
+- **Reviewer role:** Repository owner
+- **Decision and follow-up:** See PB-017
+
 ### 2026-10-11 — Secret-handling pre-approval corrections
 
 - **State:** IMPLEMENTED (documentation; no task status change)
