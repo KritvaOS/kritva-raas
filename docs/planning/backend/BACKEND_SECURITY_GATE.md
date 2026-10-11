@@ -131,7 +131,7 @@ This scan checks the merged state after pull requests #9 to #14. It uses the sam
 | Method and categories | As in 4.2.1. The credential-URL pattern requires a user name and password that are not wrapped in angle brackets, so it does not match the placeholder forms below |
 | Tracked files | No match in any category |
 | Placeholder forms | `DEVELOPMENT_SETUP.md` (Section 19 example) and the example form in 4.2 of this document are intentionally URL-shaped, nonfunctional placeholders with `<db-user>` and `<db-password>` markers. They are not the earlier value. "No match" means no populated credential under these patterns. It does not mean that no URL-shaped template exists |
-| Git history | 40 of the 49 commits reachable from `f7483db` contain a credential-shaped URL under the same pattern. The literal was introduced in `941781f` and is absent from the tracked files from PR #11 onward. It stays in history |
+| Git history | 40 of the 49 commits reachable from `f7483db` contain a credential-shaped URL under the same pattern. The literal was introduced in `941781f` and is absent from the tracked files from PR #11 onward. It stays in history. The count is per commit and per pattern match. It is not a count of distinct credentials or of independent exposure events |
 | Refs covered | The history reachable from `f7483db` in the clone used. No tags were seen. Forks, pull request refs, other branches that were not fetched, other clones and external copies were not examined |
 
 This does not establish that history, other refs or external copies are clean, and the exposure assessment remains pending with the Security Owner. Nothing here closes SEC-GATE-001, SEC-GATE-005, SEC-GATE-006 or any other gate.

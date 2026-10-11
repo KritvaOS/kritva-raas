@@ -87,6 +87,21 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-11 — Approval package pointers corrected after the second re-audit
+
+- **State:** IMPLEMENTED (documentation; no task status change)
+- **Tasks:** None (corrections after the second external re-audit, `main` at `8f1964d`)
+- **Increment ACs:** Not applicable
+- **Program acceptance:** Not applicable
+- **Tests:** Not applicable
+- **Security gates:** Not applicable (no gate is closed)
+- **Findings/risks:** The 005 package and record pointed to the superseded rescan in `BACKEND_SECURITY_GATE.md` 4.2.1 and said no scan result existed to review; see `../../BACKEND_CHANGELOG.md` PB-019. The Git-history exposure assessment remains pending with the Security Owner
+- **Files changed:** `decisions/KR-BINC-001-005-secret-handling-configuration.md`, `../../decisions/approvals/APPROVAL-KR-BINC-001-005-secret-handling.md`, `../../BACKEND_SECURITY_GATE.md`, `CHANGELOG.md`, `../../BACKEND_CHANGELOG.md`, `claude/Handoff.md`
+- **Commit:** Pending until this change is merged
+- **Evidence:** `make check` results recorded in the commit message
+- **Reviewer role:** Repository owner
+- **Decision and follow-up:** See PB-019. The review requests to the two owners follow after this merges
+
 ### 2026-10-11 — Audit follow-up corrections
 
 - **State:** IMPLEMENTED (documentation; no task status change)
@@ -97,7 +112,7 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 - **Security gates:** Not applicable (no gate is closed)
 - **Findings/risks:** Re-audit findings N-01 to N-04 addressed; the Git-history exposure assessment remains pending with the Security Owner; see `../../BACKEND_CHANGELOG.md` PB-018
 - **Files changed:** `../../BACKEND_SECURITY_GATE.md`, `decisions/KR-BINC-001-005-secret-handling-configuration.md`, `CHANGELOG.md`, `../../BACKEND_CHANGELOG.md`, `claude/Handoff.md`
-- **Commit:** Pending until this change is merged
+- **Commit:** `930e3ed`, merged in PR #15 (merge `8f1964d`)
 - **Evidence:** `make check` results recorded in the commit message
 - **Reviewer role:** Repository owner
 - **Decision and follow-up:** See PB-018. The review requests to the two owners follow after this merges

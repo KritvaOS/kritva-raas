@@ -623,6 +623,26 @@ Reason: an external re-audit of `main` at `f7483db` closed the earlier findings 
 | N-04 | The secret-handling record states that backend workloads use controlled cryptographic interfaces for high-value key operations and that the Cloud/Infrastructure Owner confirms the boundary |
 | Not changed | No approval, no status change, no gate closed. The Git-history exposure assessment, the open `KR-BINC-001-001` evidence and `KR-BINC-001-008` (on hold) are unchanged |
 
+## 3R. PB-019 — Approval Package Pointers After the Second Re-Audit
+
+| Field | Value |
+|---|---|
+| Change ID | PB-019 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Follows | PB-018 |
+
+Reason: a second external re-audit of `main` at `8f1964d` closed N-01, N-03 and N-04, and found that the `KR-BINC-001-005` approval package and record still pointed to the superseded rescan in `BACKEND_SECURITY_GATE.md` 4.2.1 and that the package said there was no scan result to review.
+
+| Item | Disposition |
+|---|---|
+| Approval package (revision 3) | Points to 4.2.2, and the evidence statement now says no automated enforcement is demonstrated, the linked tests have not run, and the manual rescan is evidence of its stated scope only |
+| Decision record | The exposure outline points to 4.2.2 |
+| Gate record 4.2.2 | States that the history count is per commit and per pattern match, not a count of distinct credentials or exposure events |
+| Changelog and handoff | The PB-018 entry cites its real commit and merge; `claude/Handoff.md` is refreshed to `8f1964d` |
+| Not changed | No approval, no status change, no gate closed. The package stays Draft until the review requests are actually sent |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

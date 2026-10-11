@@ -130,7 +130,7 @@ The following are requirements for later tasks, listed here so those tasks have 
 4. The flow is detect, classify, revoke or rotate, investigate, remove, rescan, audit (`SECRETS_MANAGEMENT.md` Section 65).
 5. The response owner records, by sanitized reference and without the value: whether the value was real, valid or reused; its credential type, owner, environment and scope; the likely exposure window and whether it was used outside local development; whether revocation or rotation is required and, if not, why; whether history needs rewriting or other remediation under an approved procedure; and a final rescan and closure decision that names the refs, history and limitations covered (`SECRETS_MANAGEMENT.md` Section 113, `BACKEND_SECURITY_GATE.md` Sections 5.4, 6 and 7.2).
 6. Responsibilities and the closure criteria are completed in KR-BINC-001-012. Evidence records cite the finding by sanitized reference only.
-7. Approving this policy does not dispose of any finding already on record. The credential-shaped example that remains in Git history is recorded in `BACKEND_SECURITY_GATE.md` Section 4.2.1, and its exposure assessment is pending with the Security Owner.
+7. Approving this policy does not dispose of any finding already on record. The credential-shaped example that remains in Git history is recorded in `BACKEND_SECURITY_GATE.md` Section 4.2.2 (which supersedes the earlier scan in 4.2.1), and its exposure assessment is pending with the Security Owner.
 
 ## 10. Options Considered
 
