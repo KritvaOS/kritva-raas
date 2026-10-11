@@ -722,6 +722,27 @@ Reason: the repository owner chose a direction on the three open items of `KR-BI
 | Approval package | `KR-BINC-001-001` revision 5 |
 | Not changed | No approval, no status change, no gate closed, no task accepted. `KR-BINC-001-003` and `KR-BINC-001-004` are not started |
 
+## 3W. PB-024 — Approval of KR-BINC-001-001 and KR-BINC-001-002
+
+| Field | Value |
+|---|---|
+| Change ID | PB-024 |
+| Date | 2026-10-11 |
+| Status | Approved (decision records) |
+| Owner role | Backend Technical Lead |
+| Follows | PB-023 |
+
+Reason: the repository owner, acting as Backend Technical Lead, approved the runtime and package manager decisions after the evidence in PB-021 to PB-023.
+
+| Item | Disposition |
+|---|---|
+| `KR-BINC-001-001` | Approved 2026-10-11. Node.js 24 LTS pinned exactly to 24.21.0 from the official distribution, TypeScript 6.0.3, bundled npm 11.19.0, pin proposal A. Not approved: the digest-pinned container image, Node.js 26, the framework, the migration tool, any application code |
+| `KR-BINC-001-002` | Approved 2026-10-11. npm with the policy of Section 5 of the record |
+| Independence | The approver is also the repository owner who directed the recommendation. No independent review took part, and the records say so |
+| Approval packages | Both Closed, with the outcome in the decision records only |
+| Task statuses | Both tasks stay In Review. An Approved decision does not make a task Accepted. Linked tests are NOT RUN and no security gate is closed |
+| `KR-BE-1-001` | Not started. Question 1 of its plan is answered (`apps/backend`). The layout part of question 2 and question 3 are open |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

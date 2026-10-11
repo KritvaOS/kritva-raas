@@ -25,7 +25,7 @@
 
 This plan prepares `KR-BE-1-001` so that implementation can start without further design work once its dependencies are approved. It is a plan, not an implementation. No application code, package metadata or lockfile exists, no task status changes, and nothing here approves a decision. It is not a task definition: the task record in `TASKS.md` remains authoritative for scope, Definition of Done and linked items.
 
-`KR-BE-1-001` stays Blocked until `KR-BINC-001-001` (runtime and language) and `KR-BINC-001-002` (package manager and lockfile) are approved by the Backend Technical Lead. The scaffold must not be created against Proposed versions.
+`KR-BINC-001-001` (runtime and language) and `KR-BINC-001-002` (package manager and lockfile) were approved by the Backend Technical Lead on 2026-10-11 (PB-024). `KR-BE-1-001` is not started: it still waits for the owner answers marked open in Section 3. The scaffold uses the approved versions only: Node.js 24.21.0, npm 11.19.0 and TypeScript 6.0.3.
 
 ## 2. Task Record Summary
 
@@ -42,6 +42,8 @@ This plan prepares `KR-BE-1-001` so that implementation can start without furthe
 ## 3. Questions to Settle Before Implementation
 
 Three inconsistencies in existing documents affect this task. Each needs an owner answer. The recommendations are not decisions.
+
+Answered on 2026-10-11: question 1 (`apps/backend`, by the repository owner). Question 2: the package manager is npm, as approved in `KR-BINC-001-002`; the owner has not yet confirmed the layout recommendation (a self-contained package, no root workspace, no turbo), so that part stays open. Question 3 is open.
 
 | # | Question | Evidence | Recommendation |
 |---|---|---|---|
@@ -85,13 +87,13 @@ Test sources are compiled first and the emitted JavaScript is executed. Direct e
 
 ## 5. Order of Work
 
-1. Resolve the prerequisites: the approvals of `KR-BINC-001-001` and `KR-BINC-001-002` and the answers to questions 1 to 3. Do not implement against Proposed versions.
+1. Resolve the remaining prerequisites: the layout part of question 2 and question 3. The approvals of `KR-BINC-001-001` and `KR-BINC-001-002` and the answer to question 1 are recorded (2026-10-11).
 2. Freeze the contract: the approved Node.js and npm releases and pin mechanism, the compatible `typescript` and `@types/node` versions, the strict compiler options and the command contract in 4.1.
 3. Implement only the agreed scaffold, with the agreed ignore strategy. Installing dependencies uses the npm bundled with the pinned Node.js release. Review the lockfile.
 4. Collect evidence (Section 6), run `make check` at the repository root and inspect the final diff for credentials.
 5. Request acceptance only when the evidence is complete. The Backend Technical Lead records acceptance. Task status and gate status are updated separately, each by its own criteria.
 
-If the owner chooses a different manager in `KR-BINC-001-002`, Sections 4 and 5 are rewritten first.
+The owner approved npm in `KR-BINC-001-002`, so Sections 4 and 5 stand.
 
 ## 6. Evidence Needed Before the Task Can Be Accepted
 

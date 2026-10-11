@@ -6,7 +6,7 @@
 |---|---|
 | Document | KR-BINC-001-002 Package Manager and Lockfile Policy Decision Record |
 | Path | `docs/planning/backend/increments/B-INC-001-SECURE-FOUNDATION/decisions/KR-BINC-001-002-package-manager-lockfile.md` |
-| Status | Proposed |
+| Status | Approved |
 | Owner role | Backend Technical Lead |
 | Related milestones | B-M01 CONTROL PLANE |
 
@@ -31,15 +31,15 @@
 | Acceptance | B-INC-001-AC-01, B-INC-001-AC-02 |
 | Tests | BTS-001, BTS-036 |
 | Security gates | SEC-GATE-003, SEC-GATE-004, SEC-GATE-013 |
-| Decision status | Proposed — not approved |
+| Decision status | Approved on 2026-10-11 by the Backend Technical Lead, within the scope in Section 8. The task stays In Review |
 
-This is a recommendation. It depends on the runtime decision, which is itself Proposed. Nothing here is approved, and the linked tests and gates are NOT RUN. The reproducible-install claim is verified later by KR-BE-1-001 and KR-BINC-001-017.
+This decision is approved within the scope recorded in Section 8. It depends on the runtime decision `KR-BINC-001-001`, which is approved. The linked tests and gates are NOT RUN. The reproducible-install claim is verified later by KR-BE-1-001 and KR-BINC-001-017.
 
 ## 2. Context and Constraints
 
 - The plan prefers reproducible installs, a committed lockfile and CI consistency (`BACKEND_IMPLEMENTATION_PLAN.md` Section 6.3).
 - A clean checkout must install from the lockfile without undocumented manual steps (`B-INC-001-AC-02`).
-- The runtime recommendation is Node.js 24 LTS (KR-BINC-001-001, Proposed).
+- The runtime recommendation is Node.js 24 LTS (KR-BINC-001-001, approved 2026-10-11).
 - The repository's existing tooling is Python and Make. The root `Makefile` reserves `build`, `test`, `lint` and `format` until this decision and KR-BINC-001-001 to 004 are made.
 - Supply-chain exposure through dependency install scripts and unpinned versions bears on the secret-protection posture (KR-BINC-001-005).
 
@@ -103,6 +103,20 @@ The following are demonstrated by later tasks, not by this record:
 
 | Approver role | Decision | Date | Evidence |
 |---|---|---|---|
-| Backend Technical Lead | Pending | — | — |
+| Backend Technical Lead | Approved | 2026-10-11 | Dinesh Annayya, acting as Backend Technical Lead, approved the scope below in session on 2026-10-11, after approving `KR-BINC-001-001`. Reviewed: this record (Sections 3, 5 and 6) and approval package revision 3 |
 
-Approval is recorded only after KR-BINC-001-001 is approved. The task stays Proposed until then.
+### 8.1 Approved scope
+
+npm, using the version bundled with the approved Node.js release (24.21.0 bundles npm 11.19.0), with the eight policy points of Section 5: one package manager, a committed `package-lock.json`, `npm ci` in CI and clean-checkout verification, exact pins with `save-exact`, `engines` and `engine-strict` matching the approved Node.js version, install scripts disabled by default with a documented allowlist, dependency updates as reviewed changes, and no registry credential in the repository. pnpm is not adopted.
+
+Evidence accepted: the executed check of Section 3 (disposable project, Linux x64, bundled npm 11.19.0, install scripts disabled, a mismatched lockfile rejected by `npm ci`).
+
+### 8.2 Not approved by this record
+
+- The clean-checkout install in the real repository and the CI lockfile check. They are demonstrated later by `KR-BE-1-001` and `KR-BINC-001-017` (Section 6).
+- The scanning of dependency updates in CI (`KR-BINC-001-008` and `KR-BINC-001-010` define it; `KR-BINC-001-008` is on hold).
+- Any application code, lockfile or `.npmrc`.
+
+### 8.3 Independence of this approval
+
+The approver is also the repository owner who directed the recommendation, and no independent reviewer took part. `KR-BINC-001-002` stays In Review. An Approved decision does not make the task Accepted.

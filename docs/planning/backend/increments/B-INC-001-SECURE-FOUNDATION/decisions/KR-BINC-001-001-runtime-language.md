@@ -6,7 +6,7 @@
 |---|---|
 | Document | KR-BINC-001-001 Runtime and Language Versions Decision Record |
 | Path | `docs/planning/backend/increments/B-INC-001-SECURE-FOUNDATION/decisions/KR-BINC-001-001-runtime-language.md` |
-| Status | Proposed |
+| Status | Approved |
 | Owner role | Backend Technical Lead |
 | Related milestones | B-M01 CONTROL PLANE |
 
@@ -29,9 +29,9 @@
 | Acceptance | B-INC-001-AC-01 |
 | Tests | BTS-001, BTS-036 |
 | Security gates | SEC-GATE-004, SEC-GATE-013 |
-| Decision status | Proposed — not approved |
+| Decision status | Approved on 2026-10-11 by the Backend Technical Lead, within the scope in Section 9. The task stays In Review |
 
-This is a recommendation. It is not an approval, and no dependent task may rely on it until the Backend Technical Lead records approval in Section 9. The linked tests and gates are NOT RUN: the decision produces no executable code.
+This decision is approved within the scope recorded in Section 9. Dependent tasks may rely on that scope only. The linked tests and gates are NOT RUN.
 
 ## 2. Context and Constraints
 
@@ -88,11 +88,11 @@ TypeScript:
 2. **TypeScript 6.0.3** as the initial baseline, pinned to an exact version. **TypeScript 7.0.2** is an upgrade candidate, adopted by a new decision record only after the compatibility check in Section 6 passes for it. The baseline is 6.0.3 and not 7.0.x because no evidence yet shows that the framework, test runner, linter and build tools support 7.0.
 3. **Version policy:** one supported Node.js major at a time, recorded in a single place and mirrored by the package metadata `engines` field, a version file for local use and CI. Exact pins give reproducibility, not a frozen patch level: patch and security updates are taken deliberately as reviewed changes that touch the lockfile and are verified by CI, and the pinned Node.js patch is reviewed at least when a security release is published. A new Node.js major is adopted by a new decision record, not silently.
 
-4. **TypeScript scope (2026-10-11).** The repository owner agreed in session to keep TypeScript 6.0.3 as the baseline and to defer TypeScript 7.0.2 to a later decision record. This approval therefore covers 6.0.3 only. It is an owner direction relayed in session and not the Backend Technical Lead's recorded approval, which is still pending in Section 9.
+4. **TypeScript scope (2026-10-11).** The repository owner agreed in session to keep TypeScript 6.0.3 as the baseline and to defer TypeScript 7.0.2 to a later decision record. This approval therefore covers 6.0.3 only. It was an owner direction relayed in session. The Backend Technical Lead recorded approval of it on 2026-10-11 (Section 9).
 
-### 5.1 Proposed pin method (recommendation, not decided)
+### 5.1 Pin method (proposal A, approved 2026-10-11, Section 9)
 
-This is a proposal for the Backend Technical Lead to approve, change or reject before approving this record. It is not decided. The mechanisms below serve different purposes, and none substitutes for another.
+The Backend Technical Lead approved this method on 2026-10-11 (Section 9). The text below is kept as proposed. Putting it in place belongs to later tasks. The mechanisms below serve different purposes, and none substitutes for another.
 
 | Element | Role |
 |---|---|
@@ -112,11 +112,11 @@ Decision point for the owner: if the owner prefers the longer window, adopting N
 
 ### 5.2 Owner direction on 2026-10-11
 
-The repository owner gave these directions in session. They are the owner's choices for the Backend Technical Lead to review. They are not the Backend Technical Lead's approval.
+The repository owner gave these directions in session on 2026-10-11. The Backend Technical Lead then approved the pin method and the rest of the runtime scope in Section 9. The framework and the migration tool were not approved by this record.
 
 | Topic | Direction | Status |
 |---|---|---|
-| Pin method | Proposal A (Section 5.1) is the recommendation to take to the Backend Technical Lead. A container image pinned by digest for deployment is to be added later | Proposal A is not approved. The container image is a later addition and is not decided. It would have to reconcile with the runtime-source rule in Section 5.1, because the official Docker image is not the `nodejs.org` archive. It belongs to deployment work, not to `KR-BINC-001-016` or `KR-BINC-001-017` as written |
+| Pin method | Proposal A (Section 5.1) is the recommendation to take to the Backend Technical Lead. A container image pinned by digest for deployment is to be added later | Proposal A was approved by the Backend Technical Lead on 2026-10-11 (Section 9). The container image is a later addition and is not decided. It would have to reconcile with the runtime-source rule in Section 5.1, because the official Docker image is not the `nodejs.org` archive. It belongs to deployment work, not to `KR-BINC-001-016` or `KR-BINC-001-017` as written |
 | HTTP framework | Fastify is the owner's preferred candidate | Not a decision. `KR-BINC-001-003` still evaluates the options and needs its own approved decision record. The other candidates are not ruled out by this record |
 | Migration tool shortlist | node-pg-migrate, graphile-migrate and dbmate | Shortlist only. `KR-BINC-001-004` still decides, with Database Technical Lead review and `SEC-GATE-011` |
 
@@ -237,6 +237,23 @@ None of the four declares a TypeScript peer range, so no conflict with TypeScrip
 
 | Approver role | Decision | Date | Evidence |
 |---|---|---|---|
-| Backend Technical Lead | Pending | — | — |
+| Backend Technical Lead | Approved | 2026-10-11 | Dinesh Annayya, acting as Backend Technical Lead, approved the scope below in session on 2026-10-11. Reviewed: this record (Sections 5, 5.1, 5.2, 6.2, 6.3 and 6.4) and approval package revision 5 |
 
-Approval evidence must record the approver role, the date and the chosen versions. The task stays Proposed until then.
+### 9.1 Approved scope
+
+- **Node.js:** The 24 LTS line (Krypton), pinned to exactly 24.21.0, obtained only from the official distribution (`nodejs.org`). The release was verified: SHA-256 matched the manifest (Section 6.2) and the manifest signature verified against the key fingerprint the Node.js project publishes (Section 6.3)
+- **TypeScript:** 6.0.3, pinned exactly, with an explicit `rootDir`. TypeScript 7.0.2 is deferred to a later decision record
+- **npm:** The version bundled with Node.js 24.21.0, which is 11.19.0 (`KR-BINC-001-002`)
+- **Pin method:** Proposal A (Section 5.1): `.node-version` holds the exact release, `engines.node` matches it, `engine-strict=true`, a CI consistency check required of `KR-BINC-001-017`. A patch or security update is a reviewed change. A new Node.js major needs a new decision record
+- **Evidence accepted:** Sections 6.2, 6.3 and 6.4, with the limits stated there: a disposable project on Linux x64, install scripts disabled, key authenticated only against the Node.js project's own channels, shortlisted tools checked by registry metadata only
+
+### 9.2 Not approved by this record
+
+- A digest-pinned container image for deployment (a later addition; it must reconcile with the runtime-source rule in Section 5.1).
+- Node.js 26. A move to it needs a new decision record.
+- The HTTP framework (`KR-BINC-001-003`; Fastify is only the owner's preferred candidate) and the migration tool (`KR-BINC-001-004`; shortlist only).
+- Local setup and CI changes that put the pin in place (`KR-BINC-001-016` and `KR-BINC-001-017`) and any application code.
+
+### 9.3 Independence of this approval
+
+The approver is also the repository owner who directed the recommendation, and no independent reviewer took part. This record states that so a later reviewer does not read it as an independent review. The task `KR-BINC-001-001` stays In Review. An Approved decision does not make the task Accepted.

@@ -27,7 +27,7 @@ This record states whether application implementation for B-INC-001 SECURE FOUND
 
 **Blocked for stack-dependent implementation.**
 
-`KR-BE-1-001` (Create Control Plane application structure) and every other application-code task stay blocked until `KR-BINC-001-001` (runtime and language) and `KR-BINC-001-002` (package manager and lockfile policy) are approved by the Backend Technical Lead. A decision record committed with status Proposed is a recommendation, not an approval.
+`KR-BINC-001-001` (runtime and language) and `KR-BINC-001-002` (package manager and lockfile policy) were approved by the Backend Technical Lead on 2026-10-11 (PB-024). `KR-BE-1-001` (Create Control Plane application structure) is not started: it waits for the owner answers listed in its plan (Section 3), and every other application-code task waits for it. The framework and the migration tool are still undecided (`KR-BINC-001-003` and `KR-BINC-001-004`). A decision record with status Proposed remains a recommendation, not an approval.
 
 Work that needs no technology choice may proceed: the secret-handling policy (`KR-BINC-001-005`) and the decision records themselves.
 
@@ -69,7 +69,7 @@ Batch B follows the task dependencies in `../TASKS.md`. It does not wait for eve
 
 | Step | Work | Depends on | Notes |
 |---|---|---|---|
-| 1 | Approvals: `KR-BINC-001-001`, `KR-BINC-001-002` (Backend Technical Lead, with the compatibility check in the runtime record Section 6); `KR-BINC-001-005` (Security Owner, Cloud/Infrastructure Owner review) | Batch A records | `KR-BE-1-001` stays blocked until 001 and 002 are approved |
+| 1 | Approvals: `KR-BINC-001-001`, `KR-BINC-001-002` (Backend Technical Lead, with the compatibility check in the runtime record Section 6); `KR-BINC-001-005` (Security Owner, Cloud/Infrastructure Owner review) | Batch A records | 001 and 002 approved on 2026-10-11; `KR-BE-1-001` waits for the open plan answers |
 | 2 | `KR-BE-1-001` Create Control Plane application structure | Step 1 approvals of 001 and 002 | Minimal reproducible scaffold; clean-checkout evidence retained before any criterion is claimed |
 | 3 | `KR-BE-1-002` Define backend module boundaries | `KR-BE-1-001`; architecture review input | Architecture Owner review; unlocks the module-boundary dependency of 003 |
 | 4 | `KR-BINC-001-003` Decide HTTP framework | `KR-BINC-001-001`; `KR-BE-1-002` | Decision record only; a representative route proves the boundaries. Full transport and routing come in `KR-BE-1-004` and `KR-BE-1-006` |
