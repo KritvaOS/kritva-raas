@@ -662,6 +662,26 @@ Reason: the audit work left two items open for `KR-BINC-001-001`: the pin method
 | Evidence fields | Section 6.1 lists the fields a verification of the official distribution must record, including the signature check or an explicit statement that none was done |
 | Not changed | No approval, no status change, no gate closed. The official checksum verification and the bundled npm check are still outstanding, so the decision is not ready to approve |
 
+## 3T. PB-021 — Official Node.js Distribution and Bundled npm Evidence
+
+| Field | Value |
+|---|---|
+| Change ID | PB-021 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Follows | PB-020 |
+
+Reason: the runtime and package manager records still lacked the official checksum verification and the bundled npm check.
+
+| Item | Disposition |
+|---|---|
+| Evidence | Recorded in `KR-BINC-001-001` Section 6.2 and in the `KR-BINC-001-002` record Section 3: Node.js 24.21.0 downloaded from nodejs.org with a matching SHA-256, bundled npm 11.19.0, install scripts disabled, `npm install` and a clean `npm ci`, typecheck, build, `node --test`, eslint, vitest 5.0.3, the pg 8.23.1 import, and a mismatched lockfile rejected by `npm ci` |
+| Signature | Not verified. The manifest signature key `5BE8A3F6C8A5C01D106C0AD820B1A390B168D356` was not in the keyring and was not compared with the official release-keys list. No authenticity claim is made |
+| Scope | Disposable sample project, Linux x64, executed by the repository owner with a throwaway script that is not in the repository. TypeScript 7.0.2 deferred and not tested |
+| Approval packages | `KR-BINC-001-001` revision 3 and `KR-BINC-001-002` revision 2 |
+| Not changed | No approval, no status change, no gate closed, no task accepted. The pin decision, the key authentication decision and the framework and migration tool shortlist remain open |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

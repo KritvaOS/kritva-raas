@@ -157,6 +157,26 @@ Recorded per verification, with the commands and outputs, and never as a conclus
 
 A disposable `npm ci` run with the bundled npm is decision evidence of compatibility. The acceptance of reproducible install in the real repository stays with `KR-BE-1-001` and `KR-BINC-001-017`.
 
+### 6.2 Official distribution check recorded 2026-10-11
+
+Executed by the repository owner on a Linux x86_64 laptop with a reviewed script (`verify-node-toolchain.sh`, a throwaway script that is not part of the repository). The run used a temporary directory outside the repository, an isolated npm cache, an empty npm user configuration and only the extracted Node.js binaries on `PATH`. Run time 2026-10-11T07:45:36Z. The script output was pasted to the Claude session and is summarized here; the full output is not stored in the repository. This completes part of Section 6 and does not approve the decision.
+
+| Field | Result |
+|---|---|
+| Release identity | Node.js v24.21.0, linux-x64, archive `node-v24.21.0-linux-x64.tar.gz` |
+| Source | `https://nodejs.org/dist/v24.21.0/node-v24.21.0-linux-x64.tar.gz`, manifest `https://nodejs.org/dist/v24.21.0/SHASUMS256.txt`, signature `https://nodejs.org/dist/v24.21.0/SHASUMS256.txt.sig` |
+| Checksum | Manifest entry and computed SHA-256 are identical: `6e1db87ef58b8819e5d5402eff1536491b18edd8eb7bee5ef7897876e88dc5ff` |
+| Command and result | `grep '  node-v24.21.0-linux-x64.tar.gz$' SHASUMS256.txt \| sha256sum -c -` printed `node-v24.21.0-linux-x64.tar.gz: OK`, exit status 0 |
+| Signature | **Not verified.** `gpg --verify` on `SHASUMS256.txt.sig` reported a signature made 2026-09-09 with EDDSA key `5BE8A3F6C8A5C01D106C0AD820B1A390B168D356` and "Can't check signature: No public key" (exit status 2). The key was not in the local keyring and was not compared with the official release-keys list, so no authenticity claim is made. The checksum therefore proves only that the archive matches the manifest downloaded from the same site |
+| Runtime | `node --version` v24.21.0 and `npm --version` 11.19.0 (the npm bundled with this release), both run from the extracted archive |
+| Toolchain, with install scripts disabled (`--ignore-scripts`) | `npm install` of typescript 6.0.3, @types/node 24.19.2, eslint 10.12.0, typescript-eslint 8.71.1, vitest 5.0.3, pg 8.23.1 and @types/pg 8.23.1 added 143 packages. A second `npm ci` from a clean directory added the same 143 packages. `tsc --noEmit`, `tsc` build, `node --test` on the compiled test file, eslint and vitest 5.0.3 (one test) all exited 0. `pg` 8.23.1 imported with no database connection. Resolved versions matched the pins |
+| Lockfile mismatch | With `package.json` changed to typescript 6.0.2 and the lockfile unchanged, `npm ci` exited 1 and reported that `package.json` and the lockfile are not in sync (lock file's typescript@6.0.3 does not satisfy typescript@6.0.2) |
+| Limitations | Linux x64 only. A disposable sample project, not the real repository. No database connection. HTTP framework and migration tool not selected. TypeScript 7.0.2 not tested in this run (deferred). No CI run. Install scripts were disabled, so no package that needs one was exercised |
+
+Effect on earlier rows: the "How it was obtained" and "npm" rows of the 2026-10-11 compatibility evidence describe the earlier sandbox run. This check supersedes them for the Node.js release and the bundled npm. It does not supersede the TypeScript 7.0.2 information row.
+
+Still open before the Backend Technical Lead can decide: authenticating the signing key (or recording that it is accepted without it), the pin decision (Section 5.1), the HTTP framework and migration tool shortlist, and the `KR-BINC-001-002` acceptance of the bundled npm.
+
 ## 7. Consequences and Dependencies
 
 - KR-BINC-001-002 (package manager) depends on this decision.

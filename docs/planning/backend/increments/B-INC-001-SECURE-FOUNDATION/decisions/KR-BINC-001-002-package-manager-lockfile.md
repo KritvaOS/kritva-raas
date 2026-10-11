@@ -52,7 +52,9 @@ This is a recommendation. It depends on the runtime decision, which is itself Pr
 | npm bundled with Node.js 26.11.1 | 11.20.0 |
 | pnpm, registry `latest` | 12.11.2, published 2026-10-09; package engines `node >=18` |
 
-The evidence shows versions and Node.js engine ranges only. It does not show lockfile behavior, which is verified by the implementing task.
+The table above shows versions and Node.js engine ranges only.
+
+Executed check, 2026-10-11 (disposable sample project, Linux x86_64, Node.js v24.21.0 from nodejs.org with its checksum matched; see Section 6.2 of the KR-BINC-001-001 record, which also states that the release signature was not verified): the npm bundled with that release reports 11.19.0. With install scripts disabled, `npm install` created a lockfile for seven exact-pinned packages (143 packages in total), and `npm ci` from a clean directory installed the same 143 packages. A deliberately mismatched `package.json` (typescript 6.0.2 against a lockfile with 6.0.3) made `npm ci` exit 1 with an "in sync" error. This demonstrates the behavior in a disposable project with the bundled npm only. It does not replace the clean-checkout and CI evidence in Section 6.
 
 ## 4. Options Considered
 
@@ -87,7 +89,7 @@ Rationale: npm adds no bootstrap step and matches the clean-checkout criterion m
 The following are demonstrated by later tasks, not by this record:
 
 1. A clean checkout installs with `npm ci` and runs the baseline build and tests (`B-INC-001-AC-02`, KR-BE-1-001 and KR-BINC-001-017).
-2. A deliberately mismatched lockfile fails the install in CI.
+2. A deliberately mismatched lockfile fails the install in CI. (Demonstrated locally with the bundled npm 11.19.0 in a disposable project on 2026-10-11, see Section 3. The CI check remains for a later task.)
 3. The CI workflow for the application checks, added by a later task, calls the Make targets that this decision unblocks, and `make check` keeps its current scope until then.
 
 ## 7. Consequences and Dependencies
