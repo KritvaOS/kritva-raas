@@ -869,6 +869,27 @@ Reason: prepare `KR-BE-1-002` now that `KR-BE-1-001` is Accepted.
 | Gates and tests | BTS-001, BTS-004 and SEC-GATE-003 are NOT RUN |
 | Changed | `TASKS.md` status line, increment `CHANGELOG.md`, this entry, `claude/Handoff.md` |
 
+## 3AD. PB-031 — KR-BE-1-002 Module Boundaries Decision Record
+
+| Field | Value |
+|---|---|
+| Change ID | PB-031 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Architecture Owner |
+| Follows | PB-030 |
+
+Reason: the Architecture Owner (the repository owner) answered the nine plan questions, so the decision record can be written.
+
+| Item | Disposition |
+|---|---|
+| Added | `decisions/KR-BE-1-002-module-boundaries.md`: the fifteen modules in ten tiers, allowed dependencies per module, a shared kernel limit, nine prohibited couplings, dispositions of eight pressure points, a nine-item review checklist and an approval record (Pending) |
+| Owner answers | All plan recommendations accepted; Credits owns credit plans; event types are declared by their publisher. Foreign keys across modules are referred to the Database Technical Lead |
+| Plan change | Identity is placed below Organizations, which makes ten tiers. The plan table and Section 5 note are updated |
+| Task status | In Progress. The decision is Proposed. The independent BTS-004 review is not done. Not Accepted |
+| Gates and tests | BTS-001, BTS-004 and SEC-GATE-003 are NOT RUN. No enforcement is claimed |
+| Changed | `TASKS.md` status line, the plan, increment `CHANGELOG.md`, this entry, `claude/Handoff.md` |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:
