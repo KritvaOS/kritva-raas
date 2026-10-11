@@ -1,6 +1,6 @@
 # Kritva RaaS — Session Handoff
 
-Updated: 11-10-2026 (PR #5 to PR #11 recorded; run.sh delivery flow; secret-policy review and KR-BE-1-001 plan prepared). For any Claude session (any model) continuing work on KritvaOS/kritva-raas.
+Updated: 11-10-2026 (PR #5 to PR #14 recorded; external re-audit of `main` at `f7483db`; audit follow-up corrections in PR G). For any Claude session (any model) continuing work on KritvaOS/kritva-raas.
 
 ## 1. Repositories
 
@@ -9,7 +9,7 @@ Updated: 11-10-2026 (PR #5 to PR #11 recorded; run.sh delivery flow; secret-poli
 | Repo | `KritvaOS/kritva-raas` (proprietary; SPDX `LicenseRef-KritvaOS-Proprietary`) |
 | Local folder on Dinesh's machine | `/home/dinesha/workarea/kritvaOS/kritva-raas` |
 | Reference repo | `KritvaOS/kritva-core` (Apache-2.0; source of the header standard and Makefile style) |
-| `main` at last check | `aa7aeb2` — Merge PR #11 (credential example and rescan). Check `git ls-remote` for newer merges |
+| `main` at last check | `f7483db` — Merge PR #14 (handoff refresh). PR G (audit follow-up) comes after it; check `git ls-remote origin HEAD` for the current head |
 
 ## 2. How we work
 
@@ -54,7 +54,7 @@ CI: `source-header-check` and `docs-check` (the `docs-check` job also runs the a
 
 ## 4. Key documents
 
-- `docs/planning/backend/` — program plan, task register, dependency map, security gate (SEC-GATE-001 to 013), test strategy (BTS-001 to 037), acceptance criteria (BAC-001 to 039), risk register, resource plan, `BACKEND_CHANGELOG.md` (PB-001 to PB-015 on main).
+- `docs/planning/backend/` — program plan, task register, dependency map, security gate (SEC-GATE-001 to 013), test strategy (BTS-001 to 037), acceptance criteria (BAC-001 to 039), risk register, resource plan, `BACKEND_CHANGELOG.md` (PB-001 to PB-017 on `f7483db`; PB-018 in PR G).
 - `docs/planning/backend/increments/B-INC-001` to `B-INC-004` — 8 files each. B-INC-001 has 21 criteria and 29 tasks.
 - `docs/planning/backend/decisions/` — approval workflow and packages: README, `approvals/APPROVAL-<DECISION-ID>-<slug>.md`. The decision record in its increment `decisions/` directory is the only source of truth for the final disposition.
 - `docs/development/SOURCE_HEADER_STANDARD.md`, `docs/security/SECRETS_MANAGEMENT.md`, `docs/security/KEY_MANAGEMENT.md`, `Makefile`.
@@ -70,14 +70,13 @@ Done and accepted: KR-BINC-001-018 (PR #2) and KR-BINC-001-019 (PR #4). Audit fi
   - **PR #9** (PB-013): checker hardening: an Approved record must have every required approver Approved, not just no Pending row.
   - **PR #10** (PB-014): runtime compatibility evidence recorded (executed in a sandbox, partial) and the runtime approval package now says approval waits for the Section 6 evidence. Findings: Node.js 24.21.0 came from the npm registry package, not nodejs.org, so no official checksum was verified; npm 10.9.4 was used, not the bundled npm 11; TypeScript 6 needs an explicit `rootDir` (TS5011); TypeScript 7.0.2 compiled the sample with no deprecated option reported; typescript-eslint 8.71.1 declares support only for TypeScript below 6.1.
   - **PR #11** (PB-015): the credential-shaped URL removed from `BACKEND_SECURITY_GATE.md`; sanitized rescan in section 4.2.1. The literal remains in Git history (36 of 37 commits on `origin/main`, introduced in `941781f`). Exposure assessment is pending with the Security Owner.
-- **Prepared on 11-10-2026, delivered to the device, merge state to be checked:**
-  - **PR D** `claude-patches-pr-d` (PB-016): corrections to the secret-handling record and approval package after an independent ChatGPT review (stale SEC-GATE-001 wording in the gate record section 9, the open history finding surfaced in the package, S4 and test-credential wording, URL and nested-error and telemetry redaction, drop-on-failure, exposure assessment fields). The package stays Draft until the requests are actually sent.
-  - **PR E** `claude-patches-pr-e` (PB-017): the KR-BE-1-001 implementation plan (`plans/KR-BE-1-001-application-structure-plan.md`). Stacked on D. ChatGPT returned it for a small revision, which is applied.
+- **Merged on 11-10-2026:** **PR #12** (PB-016, `b74eda2`): corrections to the secret-handling record and approval package after an independent ChatGPT review (gate record section 9, the open history finding surfaced, S4 and test-credential wording, URL, nested-error and telemetry redaction, drop-on-failure, exposure assessment fields). **PR #13** (PB-017, `f8a875e`): the KR-BE-1-001 implementation plan (`plans/KR-BE-1-001-application-structure-plan.md`), revised after a ChatGPT review. **PR #14** (`f7483db`): this handoff.
+- **External re-audit of `main` at `f7483db` (ChatGPT, 11-10-2026):** closed: finding 1 (checker), the 005 corrections, the plan revisions. Partly closed: finding 2 (wording fixed; runtime evidence still partial, which blocks approving 001 and so KR-BE-1-001) and finding 4 (value removed from current files; Git-history exposure pending with the Security Owner). New: N-01 rescan evidence needed an exact revision and an explicit placeholder note; N-02 this handoff was stale; N-03 six changelog entries said "Pending"; N-04 S4 runtime boundary wording. **PR G** (PB-018) addresses N-01 to N-04: gate record section 4.2.2 (rescan of `f7483db`: no match in tracked files; 40 of 49 commits in history contain a credential-shaped URL under the pattern), real SHAs in the changelog, the S4 sentence, and this file.
 - **Open owner questions for the plan:** application directory (`apps/backend` in the setup and branching docs, `apps/control-plane` in the header standard example); the setup document shows a root pnpm and turbo layout while 002 recommends npm; ignore rules (`KR-BINC-001-006` first, or a narrow `apps/backend/.gitignore`). Command contract learned in a sandbox: compile tests with tsc, then `node --test` on the explicit compiled file path (a directory argument failed).
 - **Recommendations (not approvals):** Node.js 24 LTS pinned exactly (Node 26 after it enters LTS on 2026-10-28); TypeScript 6.0.3 baseline with 7.0.2 as an upgrade candidate; npm with `package-lock.json` and `npm ci`. The runtime record must still state the pin mechanism, the exact Node.js and npm releases and the checksum source.
 - **Batch B order** (readiness Section 4): approvals of 001, 002 and 005; KR-BE-1-001; KR-BE-1-002; KR-BINC-001-003 and 004; the 008 comparative scanner evaluation in parallel. KR-BE-1-001 stays blocked until 001 and 002 are approved.
 - **KR-BINC-001-008 is held**: only a detect-secrets 1.5.0 trial exists (missing file argument and plain `scan` fail open). gitleaks and trufflehog need a machine with network access.
-- **Next steps (start only when Dinesh asks):** merge D and E; send the real review requests to the Security Owner and Cloud/Infrastructure Owner for KR-BINC-001-005 (then move the package to Requested); owners decide 001, 002, 005 and the history finding; then KR-BE-1-001. Optional ruleset hardening; remaining B-INC-001 tasks, then B-INC-002 to 004.
+- **Next steps (start only when Dinesh asks):** merge PR G; send the real review requests to the Security Owner and Cloud/Infrastructure Owner for KR-BINC-001-005 (then move the package to Requested only when the requests are actually sent); owners decide 001, 002, 005 and the history finding; then KR-BE-1-001. Optional ruleset hardening; remaining B-INC-001 tasks, then B-INC-002 to 004.
 - **Open owner decisions:** the `Claude-Session` trailer (PB-011); approvals of 001, 002 and 005; the Git-history exposure disposition; the three plan questions.
 - Web search is disabled for the organization. Version facts were read through the built-in browser and the npm registry (reachable from the sandbox; nodejs.org is blocked from it).
 
@@ -89,6 +88,7 @@ Done and accepted: KR-BINC-001-018 (PR #2) and KR-BINC-001-019 (PR #4). Audit fi
 - Keep "docs checks passed", "decision reviewed", "decision approved", "task accepted" and "gate closed" as separate states. Task evidence can contribute to a gate without closing it.
 - Try a command contract before writing it into a plan: `node --test <directory>` failed in the sandbox, and a `sed` edit of a one-line JSON file silently changed nothing. Edit JSON with a JSON library.
 - A shell block that deletes the patch folder can destroy the only copy when `git am` fails; run.sh deletes nothing and cleanup is a separate last step by the user.
+- A new changelog entry always says "Pending until this change is merged"; fill the real SHA in the next correction cycle (the re-audit flagged stale Pending fields).
 - Stacked PRs: each later changelog entry sits next to the earlier one, so apply and verify the whole chain on a fresh clone of the real base; check the base SHA (`git ls-remote origin HEAD`) because a local mirror can be stale.
 - GitHub shows a billing warning banner on the repository (payment method); it can stop Actions runs. Owner to fix.
 - Dinesh's `git pull` can revert local edits Claude made on the device; re-check files before relying on them.

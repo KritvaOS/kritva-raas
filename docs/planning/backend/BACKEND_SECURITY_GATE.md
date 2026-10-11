@@ -112,7 +112,7 @@ This is a manual, pattern-based rescan. It is not a scanner run, and it does not
 | Item | Result |
 |---|---|
 | Method | `git grep` with Perl-compatible patterns over tracked files, run in a fresh clone in a sandbox |
-| Revision scanned | The branch carrying this change, based on `main` at `19e1ae4` plus the changes of the preceding approval pull requests |
+| Revision scanned | The branch carrying PR #11, based on `main` at `19e1ae4` plus the changes of the preceding approval pull requests. A later scan of `main` is recorded in 4.2.2 |
 | Categories | Credential-bearing URLs; private key headers; cloud access key identifiers (AKIA form); GitHub, Slack and JWT-shaped tokens; quoted password, secret, key or token assignments of 8 or more characters |
 | Working tree before this change | One match: the credential-shaped URL in this document (section 4.2). `DEVELOPMENT_SETUP.md` already used a placeholder form |
 | Working tree after this change | No match in any category |
@@ -120,6 +120,21 @@ This is a manual, pattern-based rescan. It is not a scanner run, and it does not
 | Refs covered | `origin/main` and the one remote branch visible to the clone. No tags exist. Forks, pull request refs, other clones and external copies were not examined |
 
 The Security Owner is asked to assess the exposure of the earlier value in Git history. The supplied information calls it a local-development example, which this scan does not confirm or refute. Whether it was ever used outside a local environment, and whether history needs rewriting or the value needs rotation, is the Security Owner's decision. Nothing here closes SEC-GATE-005 or any other gate.
+
+### 4.2.2 Rescan of `main` at `f7483db`, recorded 2026-10-11
+
+This scan checks the merged state after pull requests #9 to #14. It uses the same method and categories as 4.2.1, and it is also manual, pattern-based and not a scanner run. The scan that was run on the branch of PR #12 before its merge is superseded by this one and is not relied on. Matched values are not reproduced.
+
+| Item | Result |
+|---|---|
+| Revision scanned | `f7483db` (merge of PR #14), tracked files |
+| Method and categories | As in 4.2.1. The credential-URL pattern requires a user name and password that are not wrapped in angle brackets, so it does not match the placeholder forms below |
+| Tracked files | No match in any category |
+| Placeholder forms | `DEVELOPMENT_SETUP.md` (Section 19 example) and the example form in 4.2 of this document are intentionally URL-shaped, nonfunctional placeholders with `<db-user>` and `<db-password>` markers. They are not the earlier value. "No match" means no populated credential under these patterns. It does not mean that no URL-shaped template exists |
+| Git history | 40 of the 49 commits reachable from `f7483db` contain a credential-shaped URL under the same pattern. The literal was introduced in `941781f` and is absent from the tracked files from PR #11 onward. It stays in history |
+| Refs covered | The history reachable from `f7483db` in the clone used. No tags were seen. Forks, pull request refs, other branches that were not fetched, other clones and external copies were not examined |
+
+This does not establish that history, other refs or external copies are clean, and the exposure assessment remains pending with the Security Owner. Nothing here closes SEC-GATE-001, SEC-GATE-005, SEC-GATE-006 or any other gate.
 
 ### 4.3 Baseline interpretation
 

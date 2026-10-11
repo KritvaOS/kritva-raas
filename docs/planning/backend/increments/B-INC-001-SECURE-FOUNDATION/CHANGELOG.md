@@ -87,6 +87,21 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-11 — Audit follow-up corrections
+
+- **State:** IMPLEMENTED (documentation; no task status change)
+- **Tasks:** None (corrections after the external re-audit of `main` at `f7483db`)
+- **Increment ACs:** Not applicable
+- **Program acceptance:** Not applicable
+- **Tests:** Not applicable
+- **Security gates:** Not applicable (no gate is closed)
+- **Findings/risks:** Re-audit findings N-01 to N-04 addressed; the Git-history exposure assessment remains pending with the Security Owner; see `../../BACKEND_CHANGELOG.md` PB-018
+- **Files changed:** `../../BACKEND_SECURITY_GATE.md`, `decisions/KR-BINC-001-005-secret-handling-configuration.md`, `CHANGELOG.md`, `../../BACKEND_CHANGELOG.md`, `claude/Handoff.md`
+- **Commit:** Pending until this change is merged
+- **Evidence:** `make check` results recorded in the commit message
+- **Reviewer role:** Repository owner
+- **Decision and follow-up:** See PB-018. The review requests to the two owners follow after this merges
+
 ### 2026-10-11 — KR-BE-1-001 implementation plan added
 
 - **State:** PLANNED (documentation; no task status change)
@@ -97,7 +112,7 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 - **Security gates:** Not applicable (no gate is closed)
 - **Findings/risks:** Three owner questions are open; see `../../BACKEND_CHANGELOG.md` PB-017
 - **Files changed:** `plans/KR-BE-1-001-application-structure-plan.md`, `../../BACKEND_CHANGELOG.md`, `CHANGELOG.md`
-- **Commit:** Pending until this change is merged
+- **Commit:** `cfbd051`, merged in PR #13 (merge `f8a875e`)
 - **Evidence:** `make check` results recorded in the commit message
 - **Reviewer role:** Repository owner
 - **Decision and follow-up:** See PB-017
@@ -112,7 +127,7 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 - **Security gates:** Not applicable (no gate is closed)
 - **Findings/risks:** Independent review findings SH-01 to SH-06 addressed; the Git-history exposure assessment remains pending with the Security Owner; see `../../BACKEND_CHANGELOG.md` PB-016
 - **Files changed:** `decisions/KR-BINC-001-005-secret-handling-configuration.md`, `../../decisions/approvals/APPROVAL-KR-BINC-001-005-secret-handling.md`, `../../BACKEND_SECURITY_GATE.md`, `../../BACKEND_CHANGELOG.md`, `CHANGELOG.md`
-- **Commit:** Pending until this change is merged
+- **Commit:** `8ce6d01`, merged in PR #12 (merge `b74eda2`)
 - **Evidence:** `make check` results recorded in the commit message
 - **Reviewer role:** Repository owner
 - **Decision and follow-up:** See PB-016. The review requests to the two owners follow after this merges
@@ -127,7 +142,7 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 - **Security gates:** Not applicable (no gate is closed)
 - **Findings/risks:** External audit finding 4 addressed. The literal remains in Git history; the Security Owner is asked to assess exposure; see `../../BACKEND_CHANGELOG.md` PB-015
 - **Files changed:** `../../BACKEND_SECURITY_GATE.md`, `../../BACKEND_CHANGELOG.md`, `CHANGELOG.md`
-- **Commit:** Pending until this change is merged
+- **Commit:** `93ffb58`, merged in PR #11 (merge `aa7aeb2`)
 - **Evidence:** `make check` results recorded in the commit message; sanitized rescan in the security gate record section 4.2.1
 - **Reviewer role:** Repository owner
 - **Decision and follow-up:** See PB-015
@@ -142,7 +157,7 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 - **Security gates:** Not applicable (no gate is closed)
 - **Findings/risks:** External audit finding 2 addressed; approval now waits for the Section 6 evidence. Open: pin method, checksum verification, package manager support; see `../../BACKEND_CHANGELOG.md` PB-014
 - **Files changed:** `decisions/KR-BINC-001-001-runtime-language.md`, `../../decisions/approvals/APPROVAL-KR-BINC-001-001-runtime-language.md`, `../../BACKEND_CHANGELOG.md`, `CHANGELOG.md`
-- **Commit:** Pending until this change is merged
+- **Commit:** `45eb1f7`, merged in PR #10 (merge `268b7b1`)
 - **Evidence:** `make check` results recorded in the commit message
 - **Reviewer role:** Repository owner
 - **Decision and follow-up:** See PB-014
@@ -157,7 +172,7 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 - **Security gates:** Not applicable (no gate is closed)
 - **Findings/risks:** External audit finding 1 (an Approved record could carry a Rejected, Returned or missing required approver) addressed; see `../../BACKEND_CHANGELOG.md` PB-013
 - **Files changed:** `scripts/docs/check_backend_approvals.py`, `tests/backend_approvals/test_check_backend_approvals.py`, `scripts/docs/README.md`, `../../decisions/README.md`, `../../BACKEND_CHANGELOG.md`
-- **Commit:** Pending until this change is merged
+- **Commit:** `cfee362`, merged in PR #9 (merge `c534804`)
 - **Evidence:** `make check` results recorded in the commit message
 - **Reviewer role:** Repository owner
 - **Decision and follow-up:** See PB-013. The runtime compatibility evidence and the credential-shaped example fix follow as separate changes
@@ -172,7 +187,7 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 - **Security gates:** Not applicable (no gate is closed)
 - **Findings/risks:** Not assessed beyond the compatibility metadata in the runtime approval package
 - **Files changed:** `../../decisions/` (README and three approval packages), `scripts/docs/check_backend_approvals.py`, `tests/backend_approvals/`, `Makefile`, `.github/workflows/docs-check.yml`, `decisions/IMPLEMENTATION_READINESS.md`, the three decision records (link only), `../../BACKEND_CHANGELOG.md` PB-012
-- **Commit:** Pending until this change is merged
+- **Commit:** `63d9da9`, `7a9d21a` and `7a97fd2`, merged in PR #7 (merge `13c5a91`)
 - **Evidence:** `make check` results recorded in the commit messages
 - **Reviewer role:** Repository owner
 - **Decision and follow-up:** See PB-012. `KR-BINC-001-001`, `KR-BINC-001-002` and `KR-BINC-001-005` stay In Review and their records stay Proposed. The packages are Draft until sent to the approvers
