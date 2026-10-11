@@ -682,6 +682,25 @@ Reason: the runtime and package manager records still lacked the official checks
 | Approval packages | `KR-BINC-001-001` revision 3 and `KR-BINC-001-002` revision 2 |
 | Not changed | No approval, no status change, no gate closed, no task accepted. The pin decision, the key authentication decision and the framework and migration tool shortlist remain open |
 
+## 3U. PB-022 — Node.js Release Signing Key Authentication
+
+| Field | Value |
+|---|---|
+| Change ID | PB-022 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Follows | PB-021 |
+
+Reason: the repository owner required the Node.js release signing key to be authenticated after PB-021 recorded the signature as not verified.
+
+| Item | Disposition |
+|---|---|
+| Evidence | `KR-BINC-001-001` Section 6.3: key `5BE8A3F6C8A5C01D106C0AD820B1A390B168D356` fetched by its full fingerprint from `keys.openpgp.org` into a temporary keyring, fingerprint equal to the value the owner copied from the `nodejs/node` README, and both `SHASUMS256.txt.sig` and `SHASUMS256.txt.asc` verified with `gpg` (exit status 0) for release v24.21.0. The signed manifest entry equals the checksum in Section 6.2 |
+| Limits | No web-of-trust certification (gpg reports the key as not certified). The README and keyserver are both Node.js project channels. v24.21.0 only. The script is a throwaway and is not in the repository |
+| Approval packages | `KR-BINC-001-001` revision 4 and `KR-BINC-001-002` revision 3 |
+| Not changed | No approval, no status change, no gate closed, no task accepted. The pin decision and the framework and migration tool shortlist remain open |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

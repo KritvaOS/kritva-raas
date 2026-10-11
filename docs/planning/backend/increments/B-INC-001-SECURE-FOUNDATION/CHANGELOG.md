@@ -87,6 +87,21 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-11 — Node.js release signing key authenticated
+
+- **State:** PLANNED (documentation; no task status change)
+- **Tasks:** None (evidence recorded for KR-BINC-001-001 and KR-BINC-001-002, which stay In Review)
+- **Increment ACs:** Not applicable
+- **Program acceptance:** Not applicable
+- **Tests:** Not applicable (decision evidence, not task tests)
+- **Security gates:** Not applicable (no gate is closed)
+- **Findings/risks:** The key has no web-of-trust certification; see `../../BACKEND_CHANGELOG.md` PB-022
+- **Files changed:** `decisions/KR-BINC-001-001-runtime-language.md`, `decisions/KR-BINC-001-002-package-manager-lockfile.md`, `../../decisions/approvals/APPROVAL-KR-BINC-001-001-runtime-language.md`, `../../decisions/approvals/APPROVAL-KR-BINC-001-002-package-manager.md`, `CHANGELOG.md`, `../../BACKEND_CHANGELOG.md`, `claude/Handoff.md`
+- **Commit:** Pending until this change is merged
+- **Evidence:** `make check` results recorded in the commit message
+- **Reviewer role:** Repository owner
+- **Decision and follow-up:** See PB-022
+
 ### 2026-10-11 — Official Node.js distribution and bundled npm evidence
 
 - **State:** PLANNED (documentation; no task status change)
