@@ -87,6 +87,18 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-11 — KR-BE-1-005 request context (request ID only)
+
+- **State:** IN REVIEW (partial implementation delivered; not accepted)
+- **Tasks:** KR-BE-1-005 (In Review, request ID only)
+- **Increment ACs:** B-INC-001-AC-07 (request ID evidenced; correlation, principal and tenant not done; not satisfied)
+- **Program acceptance:** Not applicable
+- **Tests:** BTS-005 (partly), BTS-006 (not satisfied); 14 tests added, suite 67; sandbox run on Node.js 22 is feasibility only; Node.js 24.21.0 run posted by the delivery script
+- **Security gates:** SEC-GATE-009 (not closed)
+- **Findings/risks:** The ID is server-generated and a client `X-Request-ID` is ignored; whether a trusted gateway may supply one later is a separate decision. The error body is still the provisional nested shape until `KR-BE-1-007`. Success-response wrapping stays undecided. No independent review
+- **Files changed:** `apps/backend/src/shared/request-context.ts` (new), `src/transport/request-context.ts` (new), `error-contract.ts`, `http-server.ts`, `tests/shared/request-context.test.ts` (new), `tests/transport/request-context.test.ts` (new), `tests/transport/http-server.test.ts`, `README.md`, `TASKS.md`, `CHANGELOG.md`, `../../BACKEND_CHANGELOG.md`, `claude/Handoff.md`
+- **Commit:** Pending until this change is merged
+
 ### 2026-10-11 — Canonical REST API v1 error envelope decided
 
 - **State:** DECISION APPROVED (documents reconciled; no implementation)
