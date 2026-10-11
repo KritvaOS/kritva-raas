@@ -87,6 +87,21 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-11 — Credential-shaped example removed and rescan recorded
+
+- **State:** IMPLEMENTED (documentation; no task status change)
+- **Tasks:** None (security record correction)
+- **Increment ACs:** Not applicable
+- **Program acceptance:** Not applicable
+- **Tests:** Not applicable
+- **Security gates:** Not applicable (no gate is closed)
+- **Findings/risks:** External audit finding 4 addressed. The literal remains in Git history; the Security Owner is asked to assess exposure; see `../../BACKEND_CHANGELOG.md` PB-015
+- **Files changed:** `../../BACKEND_SECURITY_GATE.md`, `../../BACKEND_CHANGELOG.md`, `CHANGELOG.md`
+- **Commit:** Pending until this change is merged
+- **Evidence:** `make check` results recorded in the commit message; sanitized rescan in the security gate record section 4.2.1
+- **Reviewer role:** Repository owner
+- **Decision and follow-up:** See PB-015
+
 ### 2026-10-11 — Runtime compatibility evidence recorded
 
 - **State:** IMPLEMENTED (documentation; no task status change)

@@ -95,17 +95,31 @@ The reported finding is in the local-development setup documentation:
 
 `docs/development/DEVELOPMENT_SETUP.md`
 
-The reported value is:
+The reported value was a database URL of the form `DATABASE_URL=postgresql://<db-user>:<db-password>@127.0.0.1:5432/<db-name>` with a literal username and password filled in. The literal value is not repeated here so that this document does not itself contain a credential-shaped string.
 
-`DATABASE_URL=postgresql://kritva:kritva@127.0.0.1:5432/kritva_raas`
-
-The string contains a username and password in a database URL. The supplied information identifies it as a local-development example credential. It does not establish that the credential is used by a deployed system, is valid outside the local environment, or has been exposed to an external party.
+The string contained a username and password in a database URL. The supplied information identifies it as a local-development example credential. It does not establish that the credential is used by a deployed system, is valid outside the local environment, or has been exposed to an external party.
 
 The required action is to replace the credential-bearing example with an unmistakable, nonfunctional placeholder, inspect the resulting diff, and rescan the working tree and relevant Git history.
 
 The replacement must not embed a real password or encourage users to reuse a committed password. Documentation must explain how a developer supplies their own local credential without committing it.
 
 If investigation establishes that the value was a real or reused credential, the Security Owner must assess exposure and require revocation or rotation as appropriate. Changing the current file alone does not remove the earlier value from Git history.
+
+### 4.2.1 Rescan recorded 2026-10-11
+
+This is a manual, pattern-based rescan. It is not a scanner run, and it does not replace the scanner decision (`KR-BINC-001-008`). Matched values are deliberately not reproduced here.
+
+| Item | Result |
+|---|---|
+| Method | `git grep` with Perl-compatible patterns over tracked files, run in a fresh clone in a sandbox |
+| Revision scanned | The branch carrying this change, based on `main` at `19e1ae4` plus the changes of the preceding approval pull requests |
+| Categories | Credential-bearing URLs; private key headers; cloud access key identifiers (AKIA form); GitHub, Slack and JWT-shaped tokens; quoted password, secret, key or token assignments of 8 or more characters |
+| Working tree before this change | One match: the credential-shaped URL in this document (section 4.2). `DEVELOPMENT_SETUP.md` already used a placeholder form |
+| Working tree after this change | No match in any category |
+| Git history | The literal was introduced in `941781f` (2026-10-10, "Implementation plan") in `docs/development/DEVELOPMENT_SETUP.md` and changed in `ba50564`. 36 of the 37 commits reachable from `origin/main` contain a credential-shaped URL. The literal stays in history |
+| Refs covered | `origin/main` and the one remote branch visible to the clone. No tags exist. Forks, pull request refs, other clones and external copies were not examined |
+
+The Security Owner is asked to assess the exposure of the earlier value in Git history. The supplied information calls it a local-development example, which this scan does not confirm or refute. Whether it was ever used outside a local environment, and whether history needs rewriting or the value needs rotation, is the Security Owner's decision. Nothing here closes SEC-GATE-005 or any other gate.
 
 ### 4.3 Baseline interpretation
 

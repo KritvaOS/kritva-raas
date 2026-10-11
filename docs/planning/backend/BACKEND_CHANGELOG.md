@@ -542,6 +542,27 @@ Reason: the external audit found that the runtime approval package let the appro
 
 No task status changes and no decision is approved. `KR-BINC-001-001` stays In Review and its record stays Proposed.
 
+## 3N. PB-015 — Credential-Shaped Example Removed from Security Gate Record
+
+| Field | Value |
+|---|---|
+| Change ID | PB-015 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Follows | PB-014 |
+
+Reason: the external audit found that `BACKEND_SECURITY_GATE.md` quoted the credential-shaped database URL that the same document asks to be replaced elsewhere.
+
+| Item | Disposition |
+|---|---|
+| Example | The literal URL is replaced by a placeholder form and a note that the value is not repeated |
+| Rescan | A manual pattern-based rescan of tracked files found no remaining match. Results are recorded without values in section 4.2.1 of the security gate record |
+| History | The literal remains in Git history (36 of 37 commits on `origin/main`). The Security Owner is asked to assess exposure and decide on any rotation or history action |
+| Scope | `BACKEND_SECURITY_GATE.md`, this changelog and the increment changelog |
+
+No gate is closed and no task status changes. The scan does not replace the scanner decision `KR-BINC-001-008`, which stays on hold.
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:
