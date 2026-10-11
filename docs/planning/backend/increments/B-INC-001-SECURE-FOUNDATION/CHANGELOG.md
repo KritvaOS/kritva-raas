@@ -87,6 +87,18 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-11 — KR-BE-1-003 configuration boundary (non-secret settings)
+
+- **State:** IN REVIEW (partial implementation; not accepted)
+- **Tasks:** KR-BE-1-003 (In Review)
+- **Increment ACs:** B-INC-001-AC-04 (non-secret settings evidenced; not satisfied), B-INC-001-AC-05 (not satisfied)
+- **Program acceptance:** Not applicable
+- **Tests:** BTS-002 (13 config tests and 5 startup tests written; sandbox run on Node.js 22 is feasibility only), BTS-003 and BTS-010 (NOT RUN)
+- **Security gates:** SEC-GATE-003, SEC-GATE-008 (not closed)
+- **Findings/risks:** Started before `KR-BINC-001-005` is approved and before `KR-BINC-001-007`; only non-secret settings are implemented. Unknown `KRITVA_` names are rejected. `.env.example` holds placeholders and defaults only. Package list reviewed in the delivery transcript
+- **Files changed:** `apps/backend/src/config/config.ts`, `src/run.ts`, `src/main.ts`, `tests/config/config.test.ts`, `tests/run.test.ts`, `.env.example`, `README.md`, `TASKS.md`, `CHANGELOG.md`, `../../BACKEND_CHANGELOG.md`, `claude/Handoff.md`
+- **Commit:** Pending until this change is merged
+
 ### 2026-10-11 — KR-BINC-001-005 approval package requested
 
 - **State:** REQUESTED (package workflow status; decision still Proposed)

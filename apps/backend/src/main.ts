@@ -3,23 +3,29 @@
 // SPDX-License-Identifier: LicenseRef-KritvaOS-Proprietary
 //
 // File        : apps/backend/src/main.ts
-// Description : Inert entry point of the Control Plane backend that composes nothing and opens no port
+// Description : Entry point of the Control Plane backend that starts the service from the process environment
 //
 // Component   : Control Plane
 // Module      : Application Structure Baseline
 // Layer       : Service
 //
-// Requirements: KR-BE-1-001
-// API         : No callable API; the entry point performs no action yet
+// Requirements: KR-BE-1-001, KR-BE-1-003, KR-BE-1-004
+// API         : Process entry point; reads KRITVA_* settings and opens the HTTP port
 //
 // Author      : KritvaOS
 // Created     : 11-10-2026
 //==============================================================================
 
-// Intentionally inert. KR-BE-1-001 creates the application structure only.
-// Configuration, transport, persistence and logging belong to later tasks.
-export function main(): void {
-  // No behavior yet.
-}
+import { start } from "./run.js";
 
-main();
+void start(
+  process.env,
+  process,
+  {
+    info: (line) => process.stdout.write(`${line}\n`),
+    error: (line) => process.stderr.write(`${line}\n`),
+  },
+  (code) => {
+    process.exitCode = code;
+  },
+);
