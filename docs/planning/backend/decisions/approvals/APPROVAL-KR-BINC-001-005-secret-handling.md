@@ -6,12 +6,12 @@
 |---|---|
 | Document | Approval Package for KR-BINC-001-005 Secret-Handling and Configuration Boundary |
 | Path | `docs/planning/backend/decisions/approvals/APPROVAL-KR-BINC-001-005-secret-handling.md` |
-| Status | Draft |
+| Status | Requested |
 | Owner role | Security Owner |
 | Decision ID | KR-BINC-001-005 |
 | Task ID | KR-BINC-001-005 |
 | Increment | B-INC-001 |
-| Revision | 3 (2026-10-11) |
+| Revision | 3 (2026-10-11); status moved to Requested on 2026-10-11, no content change |
 
 Status here is the package workflow status (Draft, Requested, Closed, Withdrawn). The decision disposition is recorded in the decision record.
 
@@ -79,10 +79,10 @@ Review questions for the Cloud/Infrastructure Owner:
 
 | Role | Review requested | Evidence |
 |---|---|---|
-| Security Owner | Not yet requested | This package and the decision record |
-| Cloud/Infrastructure Owner (review) | Not yet requested | This package and the decision record |
+| Security Owner | Requested 2026-10-11 by email from the Backend Technical Lead; no disposition recorded | This package and the decision record |
+| Cloud/Infrastructure Owner (review) | Requested 2026-10-11 by email from the Backend Technical Lead; no disposition recorded | This package and the decision record |
 
-The review request dates are recorded here when the package moves to Requested. The dispositions are not recorded here.
+The review request dates are recorded here. The dispositions are not recorded here. A request to the Database Technical Lead on the separate migration decision (KR-BINC-001-004) was sent the same day and is not part of this package.
 
 ## 10. Approval Instructions
 

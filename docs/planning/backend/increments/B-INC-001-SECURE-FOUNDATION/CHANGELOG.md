@@ -87,6 +87,18 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-11 — KR-BINC-001-005 approval package requested
+
+- **State:** REQUESTED (package workflow status; decision still Proposed)
+- **Tasks:** KR-BINC-001-005 (In Review)
+- **Increment ACs:** B-INC-001-AC-04, B-INC-001-AC-12, B-INC-001-AC-14 (not satisfied)
+- **Program acceptance:** Not applicable
+- **Tests:** BTS-002, BTS-003, BTS-009, BTS-010 (NOT RUN)
+- **Security gates:** SEC-GATE-002, SEC-GATE-008, SEC-GATE-009 (not closed)
+- **Findings/risks:** The Backend Technical Lead states the review requests were emailed to the Security Owner and the Cloud/Infrastructure Owner on 2026-10-11; the emails are not in the repository and no reply is recorded. The Git-history finding stays with the Security Owner
+- **Files changed:** `decisions/approvals/APPROVAL-KR-BINC-001-005-secret-handling.md`, `decisions/README.md`, `CHANGELOG.md`, `../../BACKEND_CHANGELOG.md`, `claude/Handoff.md`
+- **Commit:** Pending until this change is merged
+
 ### 2026-10-11 — KR-BE-1-004 HTTP transport implemented
 
 - **State:** IN REVIEW (implementation delivered; not accepted)
