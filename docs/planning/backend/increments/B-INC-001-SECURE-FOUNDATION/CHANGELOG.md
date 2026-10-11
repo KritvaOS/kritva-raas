@@ -87,6 +87,18 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-10-11 — Follow-up audit fixes: router errors and RESPONSES.md examples
+
+- **State:** IN REVIEW (fixes delivered; tasks not accepted)
+- **Tasks:** KR-BE-1-007 (In Review)
+- **Increment ACs:** B-INC-001-AC-08, B-INC-001-AC-09 (not satisfied)
+- **Program acceptance:** Not applicable
+- **Tests:** BTS-007 (component; suite 82, 1 added), BTS-032 (not satisfied); sandbox run on Node.js 22 is feasibility only; Node.js 24.21.0 run posted by the delivery script
+- **Security gates:** SEC-GATE-009 (not closed)
+- **Findings/risks:** The follow-up AI audit of PR #42 (main `4ab6402`) closed F-02, F-06 and F-08, found F-01, F-03, F-04, F-05 and F-07 partly closed, and raised N-01 to N-04. N-01 to N-03 are fixed here; N-04 is documented. Other protocol documents (`COMMANDS.md`, `EVENT_CONTRACT.md`, `LAB_PROTOCOL.md`) use their own codes such as `IDEMPOTENCY_CONFLICT` and were not changed. The audit is not an independent human review
+- **Files changed:** `apps/backend/src/transport/http-server.ts`, `tests/transport/response-contract.test.ts`, `README.md`, `docs/protocol/RESPONSES.md`, `TASKS.md`, `CHANGELOG.md`, `../../BACKEND_CHANGELOG.md`, `claude/Handoff.md`
+- **Commit:** Pending until this change is merged
+
 ### 2026-10-11 — External audit fixes for the response contract
 
 - **State:** IN REVIEW (fixes delivered; tasks not accepted)

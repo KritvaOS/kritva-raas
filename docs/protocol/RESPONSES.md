@@ -854,7 +854,7 @@ Example:
 
     {
         "status": "FORBIDDEN",
-        "code": "PROJECT_ACCESS_DENIED",
+        "code": "AUTHZ_RESOURCE_DENIED",
         "message": "You do not have access to this project",
         "data": null,
         "error": {
@@ -874,9 +874,8 @@ Example:
             "platform_id": "humanoid-a"
         },
         "error": {
-            "details": {
-                "retryable": true
-            }
+            "details": {},
+            "retryable": true
         }
     }
 
@@ -930,9 +929,8 @@ Example:
             "last_seen": "2026-10-08T00:00:00Z"
         },
         "error": {
-            "details": {
-                "retryable": true
-            }
+            "details": {},
+            "retryable": true
         }
     }
 
@@ -1046,11 +1044,19 @@ Example:
 
     {
         "status": "INVALID_REQUEST",
-        "code": "INVALID_CURSOR",
-        "message": "The supplied pagination cursor is invalid",
+        "code": "INVALID_REQUEST",
+        "message": "The request is invalid. Check the provided information and try again.",
         "data": null,
         "error": {
-            "details": {}
+            "details": {},
+            "retryable": false,
+            "field_errors": [
+                {
+                    "field": "cursor",
+                    "code": "FIELD_INVALID",
+                    "message": "The supplied pagination cursor is invalid"
+                }
+            ]
         }
     }
 
@@ -1275,7 +1281,7 @@ Example:
 
     {
         "status": "CONFLICT",
-        "code": "IDEMPOTENCY_CONFLICT",
+        "code": "IDEMPOTENCY_KEY_REUSED",
         "message": "Idempotency key was previously used with different request data",
         "data": null,
         "error": {
@@ -1635,18 +1641,12 @@ Example:
 
     {
         "status": "TIMEOUT",
-        "code": "OPERATION_TIMEOUT",
+        "code": "UPSTREAM_TIMEOUT",
         "message": "Operation exceeded the configured timeout",
         "data": {
             "operation_id": "op-001"
         },
         "error": {
-            "causes": [
-                {
-                    "code": "TIMEOUT",
-                    "message": "Operation timed out"
-                }
-            ],
             "details": {
                 "reconciliation_required": true
             }
