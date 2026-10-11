@@ -11,7 +11,7 @@
 | Decision ID | KR-BINC-001-005 |
 | Task ID | KR-BINC-001-005 |
 | Increment | B-INC-001 |
-| Revision | 2 (2026-10-11) |
+| Revision | 3 (2026-10-11) |
 
 Status here is the package workflow status (Draft, Requested, Closed, Withdrawn). The decision disposition is recorded in the decision record.
 
@@ -51,18 +51,18 @@ Proposed until approved:
 
 ## 7. Required Evidence and Review Questions
 
-Evidence: the decision record and the security documents it cites (secrets management, key management and the backend security gate). The policy is documentation. No enforcement exists yet, so there is no test or scan result to review.
+Evidence: the decision record and the security documents it cites (secrets management, key management and the backend security gate). The policy is documentation. No automated enforcement has been demonstrated and the linked implementation tests have not run. The manual, pattern-based repository rescan is recorded in `BACKEND_SECURITY_GATE.md` Section 4.2.2. It is evidence of its stated scan scope only: it is not automated scanner evidence, it does not resolve the Git-history exposure finding and it closes no security gate.
 
-Known open finding. `BACKEND_SECURITY_GATE.md` Section 4.2.1 records that a credential-shaped example was removed from the working tree and that a sanitized rescan of tracked files found no remaining match. The earlier value remains in Git history. Its exposure assessment is pending with the Security Owner. Approving this policy does not decide whether the value was real or reused, does not require or exclude rotation or history remediation, and does not close any security gate. The Security Owner records the finding's disposition separately from the policy disposition.
+Known open finding. `BACKEND_SECURITY_GATE.md` Section 4.2.2 (which supersedes the earlier scan in 4.2.1) records that a credential-shaped example was removed from the working tree and that a sanitized rescan of tracked files found no populated credential match. The earlier value remains in Git history. Its exposure assessment is pending with the Security Owner. Approving this policy does not decide whether the value was real or reused, does not require or exclude rotation or history remediation, and does not close any security gate. The Security Owner records the finding's disposition separately from the policy disposition.
 
-Revision 2 incorporates the corrections from an independent review of revision 1: the stale status in `BACKEND_SECURITY_GATE.md` Section 9, test-credential and S4 wording, explicit URL, nested-error, telemetry and redaction-failure rules, the assessment fields of the exposure outline, and the meaning of separate credentials.
+Revision 3 points to the current rescan record in Section 4.2.2 and corrects the evidence statement above. Revision 2 incorporated the corrections from an independent review of revision 1: the stale status in `BACKEND_SECURITY_GATE.md` Section 9, test-credential and S4 wording, explicit URL, nested-error, telemetry and redaction-failure rules, the assessment fields of the exposure outline, and the meaning of separate credentials.
 
 Review questions for the Security Owner:
 
 1. Do the secret classes, permitted sources and prohibited content match the program secret-handling documents?
 2. Is the redaction rule set (central utility, field allowlist, sensitive headers) sufficient for the backend?
 3. Does the exposure escalation outline match the incident process, given that the response tasks complete it later?
-4. What is your disposition of the history finding recorded in `BACKEND_SECURITY_GATE.md` Section 4.2.1, recorded separately from the policy decision?
+4. What is your disposition of the history finding recorded in `BACKEND_SECURITY_GATE.md` Section 4.2.2, recorded separately from the policy decision?
 
 Review questions for the Cloud/Infrastructure Owner:
 
