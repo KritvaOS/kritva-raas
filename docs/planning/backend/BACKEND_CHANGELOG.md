@@ -1004,6 +1004,26 @@ Reason: `KR-BE-1-004` implements the initial HTTP server and lifecycle with the 
 | Task status | In Review. Not Accepted |
 | Not changed | CI, other tasks' status, the framework decision |
 
+## 3AJ. PB-037 — KR-BINC-001-005 Approval Package Requested
+
+| Field | Value |
+|---|---|
+| Change ID | PB-037 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Follows | PB-036 |
+
+Reason: the Backend Technical Lead reported that the review requests for `KR-BINC-001-005` were emailed to the Security Owner and the Cloud/Infrastructure Owner.
+
+| Item | Disposition |
+|---|---|
+| Package | `APPROVAL-KR-BINC-001-005-secret-handling.md` moves from Draft to Requested; request date 2026-10-11 recorded in Section 9; the decisions README row follows |
+| Evidence | The owner's statement in session. The emails are not in the repository |
+| Not recorded | Any disposition. The decision record stays Proposed and the task In Review. The history finding is still pending with the Security Owner |
+| Related, outside this package | The Database Technical Lead request on `KR-BINC-001-004` was sent the same day |
+| Not changed | `apps/backend`, dependencies, CI, the decision record |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

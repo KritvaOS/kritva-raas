@@ -92,7 +92,7 @@ Required sections, in order:
 |---|---|---|---|
 | [APPROVAL-KR-BINC-001-001-runtime-language.md](approvals/APPROVAL-KR-BINC-001-001-runtime-language.md) | [KR-BINC-001-001](../increments/B-INC-001-SECURE-FOUNDATION/decisions/KR-BINC-001-001-runtime-language.md) | Backend Technical Lead | Draft |
 | [APPROVAL-KR-BINC-001-002-package-manager.md](approvals/APPROVAL-KR-BINC-001-002-package-manager.md) | [KR-BINC-001-002](../increments/B-INC-001-SECURE-FOUNDATION/decisions/KR-BINC-001-002-package-manager-lockfile.md) | Backend Technical Lead | Draft |
-| [APPROVAL-KR-BINC-001-005-secret-handling.md](approvals/APPROVAL-KR-BINC-001-005-secret-handling.md) | [KR-BINC-001-005](../increments/B-INC-001-SECURE-FOUNDATION/decisions/KR-BINC-001-005-secret-handling-configuration.md) | Security Owner; Cloud/Infrastructure Owner review | Draft |
+| [APPROVAL-KR-BINC-001-005-secret-handling.md](approvals/APPROVAL-KR-BINC-001-005-secret-handling.md) | [KR-BINC-001-005](../increments/B-INC-001-SECURE-FOUNDATION/decisions/KR-BINC-001-005-secret-handling-configuration.md) | Security Owner; Cloud/Infrastructure Owner review | Requested |
 
 Recommended order: the runtime decision first, then the package-manager decision, which depends on it. The secret-handling review does not depend on either.
 
