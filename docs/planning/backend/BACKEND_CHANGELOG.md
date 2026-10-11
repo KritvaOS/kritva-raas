@@ -934,6 +934,28 @@ Reason: the independent re-review (ChatGPT, 2026-10-11, on `main` `734edfa`) fou
 | Independence | The approver is also the owner who directed the answers; the independent element is the AI review |
 | Not changed | Code, dependencies, CI, `BACKEND_ARCHITECTURE.md`, the foreign-key policy (Database Technical Lead) |
 
+## 3AG. PB-034 — KR-BINC-001-003 HTTP Framework Decision Record
+
+| Field | Value |
+|---|---|
+| Change ID | PB-034 |
+| Date | 2026-10-11 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Follows | PB-033 |
+
+Reason: `KR-BINC-001-003` depends on the approved runtime and module-boundary decisions, so the options can be evaluated.
+
+| Item | Disposition |
+|---|---|
+| Added | `decisions/KR-BINC-001-003-http-framework.md`: Fastify, Express and NestJS compared on typed handlers, validation, testability, module-boundary fit, maintenance and reversal cost; registry and disposable-lockfile facts; a sandbox compile-and-route check under the unchanged `tsconfig` |
+| Recommendation | Fastify 5.12.5 exact, with constraints on boundary, plugins, validation and error contract, typed bodies, logging, lifecycle and tests, and the pin. Not approved |
+| Evidence limits | The sandbox ran Node.js 22.22.0, not the pinned 24.21.0. Fastify declares no `engines`. Compatibility on the pinned runtime is shown in `KR-BE-1-004` |
+| Rejected as recommendation | NestJS (second module system, decorator flags the scaffold does not set, largest surface); Express (no validation or test helper, separate community types) |
+| Task status | In Review. Approval pending. Not Accepted |
+| Changed | The decision record, `TASKS.md` status line, increment `CHANGELOG.md`, this entry, `claude/Handoff.md` |
+| Not changed | `apps/backend`, dependencies, lockfile, CI |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:
