@@ -31,6 +31,7 @@ This matrix names, for each kind of planning record, the one document that is au
 | Phase definitions (P0 to P8) | [PHASES.md](PHASES.md) | Same file, under `planning/` after the move | `docs/milestones/PHASE-*`, `PHASE_STATUS.md`: navigation and status only |
 | Milestone scope and acceptance | The milestone dossier (`docs/backend/milestones/B-Mxx-*/`, other domains' equivalents) | Same | `MILESTONE_STATUS.md` shows status only |
 | Increment scope, tasks, acceptance criteria, test plan, review checklist, commit contract | `planning/backend/increments/B-INC-00x-*/` | Same files | `BACKEND_TASK_REGISTER.md` is the register of identifiers and mappings; `TASK_STATUS.md` shows status |
+| Status vocabulary | [PLANNING_STATUS_VOCABULARY.md](PLANNING_STATUS_VOCABULARY.md) for the mapping; the vocabulary of each entity is defined where that vocabulary is listed there | Same | Registers show values in their own written form |
 | Task status | Increment `TASKS.md` | Same | `BACKEND_TASK_REGISTER.md`, `TASK_STATUS.md`, `STATUS.md`: views |
 | Task acceptance criteria | Increment `ACCEPTANCE_CRITERIA.md` (B-INC-nnn-AC-nn) | Same | `docs/tasks/<ID>/ACCEPTANCE_CRITERIA.md` only for a task activated outside an increment |
 | Test and evidence mapping | Increment `TEST_PLAN.md` (BTS-nnn) and `evidence/` | Same | Pull request comments are transcripts, not the record |

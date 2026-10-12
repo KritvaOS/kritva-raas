@@ -1322,6 +1322,26 @@ Reason: step 4 of `PLANNING_MIGRATION_PLAN.md`. `kritva-core` and `kritvaos-comm
 | Unchanged | Task, decision, acceptance and gate statuses and identifiers; frozen phase names; checkers; commit trailers; dependencies; CI |
 | Review | Written by Claude. No independent human review |
 
+## 3AX. PB-051 — Status Vocabulary and Legacy Mapping (Migration Step 5)
+
+| Field | Value |
+|---|---|
+| Change ID | PB-051 |
+| Date | 2026-10-12 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Follows | PB-050 |
+
+Reason: step 5 of `PLANNING_MIGRATION_PLAN.md`. The repository and the two sibling repositories use several status lists, and some words mean different things in different lists.
+
+| Item | Disposition |
+|---|---|
+| Added | `PLANNING_STATUS_VOCABULARY.md`: the vocabulary of each entity (task, decision, milestone and phase, dependency, risk, issue, change, document) with its source, and a mapping of the backend register, the tasks lifecycle, `kritva-core` and `kritvaos-community` values. Eight rules, including that Approved (decision) is not ACCEPTED (task), and that FROZEN, RELEASED and CLOSED are not synonyms for ACCEPTED |
+| Changed | A pointer paragraph in `BACKEND_TASK_REGISTER.md` Section 3 and in `docs/tasks/README.md`; a row in the authority matrix; the migration plan (Section 4 now points to the vocabulary document and records how it differs from the first draft; progress line); `CURRENT_PLAN.md` and the README hierarchy |
+| Open owner decisions | OD-1 (CHANGES REQUESTED and COMPLETE for backend tasks), OD-2 (written form of Proposed), OD-3 (comparison rule for the step 6 check). Recommendations are stated and are not in force until the owner decides |
+| Unchanged | Every task, decision, milestone, risk and issue status and its spelling; identifiers; checkers; commit trailers and commit-message sections; dependencies; CI |
+| Review | Written by Claude. No independent human review |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

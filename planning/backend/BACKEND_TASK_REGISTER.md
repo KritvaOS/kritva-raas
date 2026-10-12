@@ -46,6 +46,8 @@ Use the following status values consistently:
 
 Do not infer task status from the existence of a branch, commit, pull request, or passing subset of tests.
 
+[PLANNING_STATUS_VOCABULARY.md](../PLANNING_STATUS_VOCABULARY.md) maps these values to the program task vocabulary in `docs/tracking/TASK_STATUS.md` (for example Proposed is read as NOT STARTED). The values and their spelling here are unchanged.
+
 ## 4. Implementation Increment Mapping
 
 | Increment | Proposed name | Primary task scope | Current planning status |
