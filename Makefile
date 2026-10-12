@@ -75,7 +75,7 @@ header-check: ## Validate KritvaOS source headers (strict, tracked files)
 # Same commands as .github/workflows/docs-check.yml.
 #------------------------------------------------------------------------------
 
-.PHONY: docs-check traceability-check approvals-test approvals-check planning-root-test
+.PHONY: docs-check traceability-check approvals-test approvals-check planning-root-test status-test status-report
 
 docs-check: ## Validate documentation structure, phases and milestones
 	@echo "[docs-check] Validating documentation..."
@@ -93,6 +93,14 @@ planning-root-test: ## Run the planning root locator and checker location tests
 	@echo "[planning-root-test] Running planning root tests..."
 	$(PYTHON) -m unittest discover -s $(TEST_DIR)/planning_root -v
 
+status-test: ## Run the status consistency report unit tests
+	@echo "[status-test] Running status consistency tests..."
+	$(PYTHON) -m unittest discover -s $(TEST_DIR)/status_consistency -v
+
+status-report: ## Report task status differences between records and views (read-only; exits 0)
+	@echo "[status-report] Reporting status consistency (report only)..."
+	$(PYTHON) $(SCRIPT_DIR)/docs/check_status_consistency.py
+
 approvals-check: ## Validate backend decision-approval packages
 	@echo "[approvals] Validating backend decision-approval packages..."
 	$(PYTHON) $(SCRIPT_DIR)/docs/check_backend_approvals.py
@@ -108,7 +116,7 @@ approvals-check: ## Validate backend decision-approval packages
 
 .PHONY: check
 
-check: header-test header-check docs-check traceability-check approvals-test approvals-check planning-root-test ## Run all repository checks required by CI
+check: header-test header-check docs-check traceability-check approvals-test approvals-check planning-root-test status-test ## Run all repository checks required by CI
 	@echo ""
 	@echo "[check] All repository checks passed."
 

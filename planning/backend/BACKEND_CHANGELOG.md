@@ -1342,6 +1342,28 @@ Reason: step 5 of `PLANNING_MIGRATION_PLAN.md`. The repository and the two sibli
 | Unchanged | Every task, decision, milestone, risk and issue status and its spelling; identifiers; checkers; commit trailers and commit-message sections; dependencies; CI |
 | Review | Written by Claude. No independent human review |
 
+## 3AY. PB-052 — Status Consistency Report (Migration Step 6)
+
+| Field | Value |
+|---|---|
+| Change ID | PB-052 |
+| Date | 2026-10-12 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Follows | PB-051 |
+
+Reason: step 6 of `PLANNING_MIGRATION_PLAN.md` and the owner's decisions OD-1 to OD-3 (reviewed by ChatGPT as AI inspection).
+
+| Item | Disposition |
+|---|---|
+| Added | `scripts/docs/check_status_consistency.py`, a read-only report. It reads the increment `TASKS.md` records and the milestone Task Register views, normalizes spelling, maps meaning with an explicit table, and reports MISMATCH, UNKNOWN, DUPLICATE, LEGACY, SPANS and MISSING separately. A checked box is consistent only with ACCEPTED or COMPLETE, and ACCEPTED is never inferred. It exits 0 unless `--strict` is given |
+| Tests | 23 unit tests in `tests/status_consistency/`: every mapping, unknown and legacy values, case and separator spelling, missing records, mismatches, spanning tasks, duplicates, non-promotion of ACCEPTED, and that no file is changed. `make status-test` is part of `make check`; `make status-report` is not |
+| Decisions recorded | `PLANNING_STATUS_VOCABULARY.md` Section 8 records OD-1 (CHANGES REQUESTED yes, COMPLETE no, with an exit rule), OD-2 (Proposed stays as written; Proposed reads as NOT STARTED only in a progress view with its authorization note; Rejected reads as CANCELLED only where planned work was stopped) and OD-3 (spelling then mapping, report first) |
+| First findings | One MISMATCH: `docs/backend/milestones/B-M01-CONTROL-PLANE/TASKS.md` shows KR-BE-1-001 unchecked, and the increment records it Accepted. Two tasks (KR-BE-1-044 and KR-BE-1-045) are listed by two increments and are reported as spanning. 19 tasks are not listed in a milestone Task Register. Nothing is edited |
+| Tooling | `make status-test`, `make status-report`, and two steps in the `docs-check` workflow (the tests, and the report in report mode) |
+| Unchanged | Every status and its spelling; identifiers; the other checkers; commit trailers; dependencies. Strict mode is not enabled |
+| Review | Written by Claude. No independent human review |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:
