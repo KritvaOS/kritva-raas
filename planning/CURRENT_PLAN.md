@@ -25,12 +25,13 @@ This is the ordered list of the next work. It is a view. It holds no task status
 
 ## 3. Order of Work
 
-1. **Planning alignment.** Steps 1 to 4 of the migration plan are done. Step 5 is the status vocabulary and legacy mapping ([PLANNING_STATUS_VOCABULARY.md](PLANNING_STATUS_VOCABULARY.md), with three open owner decisions). Steps 6 to 9 follow in the order of the migration plan: a status consistency check, consolidation of `docs/tracking/`, phase and task folders, and increment relocation if still wanted. Each step is its own pull request.
+1. **Planning alignment.** Steps 1 to 5 of the migration plan are done ([PLANNING_STATUS_VOCABULARY.md](PLANNING_STATUS_VOCABULARY.md), with the owner decisions OD-1 to OD-3 recorded). Step 6 is the report-only status consistency check (`make status-report`). Steps 7 to 9 follow in the order of the migration plan: consolidation of `docs/tracking/`, phase and task folders, and increment relocation if still wanted. Each step is its own pull request.
 2. **Open owner items for B-INC-001.** These do not depend on the planning alignment and can be done in any order:
    - evidence for `B-INC-001-AC-05` and the Security Owner's disposition of the historical credential-shaped finding;
    - owner review records for KR-BE-1-003 to KR-BE-1-007 (these are owner reviews, not independent reviews);
    - the decision on request correlation for KR-BE-1-008;
    - answers from the Security Owner, the Cloud/Infrastructure Owner and the Database lead for the decisions assigned to them (KR-BINC-001-004 and KR-BINC-001-005);
+   - the milestone Task Register for B-M01 shows KR-BE-1-001 unchecked while the increment records it Accepted; the status report lists it, and the owner decides whether to update the view;
    - the owner's decision on the links to `SEC-GATE-009` and on success codes per endpoint.
 3. **Backend tasks after the transport foundation.** KR-BE-1-008 (correlation), KR-BE-1-009 (health and readiness) and KR-BE-1-041 (structured logging), in the order their dependencies allow.
 4. **Integration evidence.** `BTS-032` needs an integration test beyond the current component tests. `SEC-GATE-009` (logging redaction) stays open until its evidence exists.

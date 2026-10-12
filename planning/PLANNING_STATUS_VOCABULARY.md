@@ -19,7 +19,7 @@ It defines nothing new where the repository already has a vocabulary. It changes
 ## 2. Rules
 
 1. Each entity type has one vocabulary. A value from another entity type is not used for it (a decision is not ACCEPTED in the task sense, a task is not Approved).
-2. Values are compared ignoring case and treating a space, an underscore and a hyphen as the same. In Review, IN REVIEW and IN_REVIEW are one value.
+2. Spelling and meaning are separate steps. First, values are compared ignoring case and treating a space, an underscore and a hyphen as the same (In Review, IN REVIEW and IN_REVIEW are one value). Second, an explicit mapping by entity type gives the meaning. There is no fuzzy matching. A value that is not in the mapping is reported as unknown, never turned into a convenient one. A displayed or normalized value never replaces the source status.
 3. A status is changed only when evidence supports it. A merged pull request, a branch or a passing subset of tests is not evidence of acceptance.
 4. Acceptance is its own state. Task status and acceptance state are tracked separately where the tracking records do so.
 5. FROZEN, RELEASED and CLOSED describe a gate, a release or a formal closure. They are not synonyms for ACCEPTED.
@@ -49,9 +49,9 @@ Legacy values and how to read them:
 
 | Where | Value | Read as | Note |
 |---|---|---|---|
-| [BACKEND_TASK_REGISTER.md](backend/BACKEND_TASK_REGISTER.md) Section 3 and the increment `TASKS.md` files | Proposed | NOT STARTED | Until the task meets the READY test. The register says Proposed also means "not approved for execution" |
+| [BACKEND_TASK_REGISTER.md](backend/BACKEND_TASK_REGISTER.md) Section 3 and the increment `TASKS.md` files | Proposed | NOT STARTED | In a progress view only, and with the note "not approved for execution" kept. NOT STARTED says nothing about authorization. Ready reads as READY, so the two stay distinct |
 | same | Ready, In Progress, Blocked, In Review, Accepted, Deferred | READY, IN PROGRESS, BLOCKED, IN REVIEW, ACCEPTED, DEFERRED | Same meaning, different case |
-| same | Rejected | CANCELLED | Keep the recorded rationale. Rejected here means the proposed task or implementation was rejected |
+| same | Rejected | Not converted | Rejected can mean a proposal was declined or planned work was stopped. It reads as CANCELLED only where the recorded disposition shows that planned work was stopped (OD-2). Otherwise it stays Rejected and is reported for the owner to reconcile |
 | [docs/tasks/README.md](../docs/tasks/README.md) | BACKLOG | NOT STARTED | |
 | same | READY, BLOCKED, ACCEPTED | READY, BLOCKED, ACCEPTED | |
 | same | IN_PROGRESS, REVIEW | IN PROGRESS, IN REVIEW | |
@@ -62,7 +62,7 @@ Legacy values and how to read them:
 | kritvaos-community `TASKS.md` | PLANNED | NOT STARTED | |
 | same | Done | Not converted | Check the evidence first. It can mean implemented, reviewed or accepted |
 
-The backend register has no CHANGES REQUESTED or COMPLETE. Open question OD-1 (Section 8) asks whether backend tasks adopt them.
+The backend register has no CHANGES REQUESTED or COMPLETE. Per OD-1 (Section 8) backend tasks use CHANGES REQUESTED and do not use COMPLETE. The review loop is IN REVIEW, then CHANGES REQUESTED, then IN PROGRESS, then IN REVIEW. A task returns to IN REVIEW only when the requested corrections are done and the evidence is resubmitted. A new commit or a merged pull request does not move it. Task status and acceptance state stay separate: a task can be IN REVIEW while acceptance is PENDING, and a rejected review is never recorded as acceptance.
 
 Current values stay as written: for example the backend tasks that read In Review are IN REVIEW, and KR-BE-1-001, which reads Accepted, is ACCEPTED by the owner's record and is not an independent acceptance.
 
@@ -143,12 +143,14 @@ The `Status` field in a Document Control table describes the document, not the w
 
 A Proposed document does not become authority because the pull request that carries it is merged.
 
-## 8. Open Owner Decisions
+## 8. Owner Decisions
 
-| ID | Question | Recommendation |
+Decided by the Backend Technical Lead on 2026-10-12, after the recommendations were reviewed by ChatGPT (AI inspection, not independent human review). The review added the refinements shown.
+
+| ID | Question | Decision |
 |---|---|---|
-| OD-1 | Do backend tasks adopt CHANGES REQUESTED and COMPLETE from the tracking list? | Adopt CHANGES REQUESTED. Do not use COMPLETE for a backend task until a closure step is defined. A task ends at ACCEPTED |
-| OD-2 | Does Proposed in the backend register become NOT STARTED in written form? | No. Keep the written forms. The mapping above is enough, and rewriting the register and four increment dossiers adds risk and no meaning |
-| OD-3 | Does the status consistency check (step 6) accept the register's written forms as well as the tracking forms? | Yes. It compares by the rule in Section 2 |
+| OD-1 | Do backend tasks adopt CHANGES REQUESTED and COMPLETE from the tracking list? | Adopt CHANGES REQUESTED, with the exit rule in Section 3. Do not use COMPLETE for a backend task. A task ends at ACCEPTED and closure belongs to the milestone |
+| OD-2 | Does Proposed in the backend register become NOT STARTED in written form? | No. The written forms stay. Proposed reads as NOT STARTED only in a progress view and keeps its authorization note. Rejected reads as CANCELLED only where the recorded disposition shows that planned work was stopped |
+| OD-3 | How does the status consistency check compare written forms? | Normalize spelling, then apply an explicit mapping by entity type. Never infer ACCEPTED. Report mismatches, unknown values, duplicates and missing records separately. Start report-only. Move to strict mode only after the owner has reviewed the findings and the canonical record of each type is clear |
 
-These are not decided by this document. Until the owner decides, the recommendations are not in force.
+The report is `scripts/docs/check_status_consistency.py` (`make status-report`). It is read-only and runs in report mode. Strict mode (`--strict`) exists and is not enabled in CI.
