@@ -41,6 +41,8 @@ This matrix names, for each kind of planning record, the one document that is au
 | Dependencies | `DEPENDENCY_MAP.md` and `BACKEND_DEPENDENCY_MAP.md` | Same | `DEPENDENCY_TRACKING.md` shows status only |
 | Risks | `RISK_REGISTER.md` (program) and `BACKEND_RISK_REGISTER.md` (backend) | Same | Increment risk tables link to the register |
 | Issues | `ISSUE_LOG.md` | Same | None |
+| Next work and current plan | Not a record: [CURRENT_PLAN.md](CURRENT_PLAN.md) is a view that holds no status | Same | Links to the records that hold the status |
+| Roles, reading order and agent rules | [README.md](README.md), [AGENT_RULES.md](AGENT_RULES.md), [REVIEW_CHECKLIST.md](REVIEW_CHECKLIST.md) | Same | They point to the owners of each rule and add no requirement |
 | Roadmap and release plan | `IMPLEMENTATION_ROADMAP.md`, `RELEASE_ROADMAP.md` | Same | `PHASES.md` defines phases only |
 | Resources and integration | `RESOURCE_PLAN.md`, `INTEGRATION_PLAN.md` and the backend plan | Same | None |
 | Task backlog identifiers | Domain task files such as `docs/backend/planning/BACKEND_TASKS.md` | Same | `docs/tasks/README.md` documents the ID format |
