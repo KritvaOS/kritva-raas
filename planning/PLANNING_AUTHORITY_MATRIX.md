@@ -65,4 +65,6 @@ A phase is not a milestone. `PHASES.md` defines the frozen phase model and its r
 | `docs/milestones/PHASE-*` | Phase milestone files | Keep only content that exists nowhere else; otherwise a link to `PHASES.md` and the official dossiers |
 | `docs/tasks/` | README and template | See the Migration Plan |
 
+The file-by-file proposal is in [TRACKING_CONSOLIDATION_DISPOSITION.md](TRACKING_CONSOLIDATION_DISPOSITION.md).
+
 This section is a candidate list. No disposition is final until the Migration Plan step for it is reviewed.
