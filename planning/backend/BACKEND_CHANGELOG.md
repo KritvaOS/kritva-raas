@@ -1364,6 +1364,25 @@ Reason: step 6 of `PLANNING_MIGRATION_PLAN.md` and the owner's decisions OD-1 to
 | Unchanged | Every status and its spelling; identifiers; the other checkers; commit trailers; dependencies. Strict mode is not enabled |
 | Review | Written by Claude. No independent human review |
 
+## 3AZ. PB-053 — Tracking Consolidation Disposition (Migration Step 7a)
+
+| Field | Value |
+|---|---|
+| Change ID | PB-053 |
+| Date | 2026-10-12 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Follows | PB-052 |
+
+Reason: step 7 of `PLANNING_MIGRATION_PLAN.md`, consolidating `docs/tracking/`, starts with a file-by-file disposition before any tracking file is changed.
+
+| Item | Disposition |
+|---|---|
+| Added | `planning/TRACKING_CONSOLIDATION_DISPOSITION.md`: findings, a disposition and risk for each of the ten tracking files, the planned pull requests 7b to 7f, and owner decisions OD-TD-1 to OD-TD-3 |
+| Updated | The migration plan progress line and step 7 row, and the authority matrix section 5 (link to the disposition) |
+| Unchanged | Every tracking file, every status and spelling, identifiers, checkers and inbound links. No file is moved or deleted |
+| Review | Written by Claude. No independent human review. The dispositions are proposals until the owner decides OD-TD-1 to OD-TD-3 |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

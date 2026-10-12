@@ -37,7 +37,7 @@ This plan sets the order of the pull requests that align the Kritva RaaS plannin
 | 8 | Consolidate phase milestone folders and task folders | Reduce `docs/milestones/PHASE-*` to navigation where they hold no unique content; resolve `docs/tasks/` (Section 5) | Phase and milestone identifiers and acceptance requirements unchanged |
 | 9 | Increment relocation, if wanted | Only if step 3 left the increments under `planning/backend/` in a shape that still differs from the other repositories | Traceability and approvals checks pass before and after |
 
-**Progress:** step 1 merged (PR #44, PB-047), step 2 merged (PR #45, PB-048), steps 3 and 4 merged (PR #46 PB-049, PR #47 PB-050), step 5 merged (PR #48, PB-051), step 6 is PB-052. Steps 7 to 9 are not started.
+**Progress:** step 1 merged (PR #44, PB-047), step 2 merged (PR #45, PB-048), steps 3 and 4 merged (PR #46 PB-049, PR #47 PB-050), step 5 merged (PR #48, PB-051), step 6 merged (PR #49, PB-052), step 7a is PB-053 ([TRACKING_CONSOLIDATION_DISPOSITION.md](TRACKING_CONSOLIDATION_DISPOSITION.md)). Steps 7b to 9 are not started.
 
 Steps 2 and 3 are first because the later changes are then made once, in the final location.
 
