@@ -8,7 +8,7 @@
 | Path | `planning/CURRENT_PLAN.md` |
 | Status | Proposed |
 | Owner role | Backend Technical Lead |
-| Last updated | 2026-10-11 |
+| Last updated | 2026-10-12 |
 | Related documents | [README.md](README.md); [PLANNING_MIGRATION_PLAN.md](PLANNING_MIGRATION_PLAN.md); [backend/increments/B-INC-001-SECURE-FOUNDATION/TASKS.md](backend/increments/B-INC-001-SECURE-FOUNDATION/TASKS.md) |
 
 ## 1. Purpose
@@ -25,7 +25,7 @@ This is the ordered list of the next work. It is a view. It holds no task status
 
 ## 3. Order of Work
 
-1. **Planning alignment.** Steps 1 to 3 of the migration plan are done. Step 4 is this README, this plan, the review checklist and the agent rules. Steps 5 to 9 follow in the order of the migration plan: status vocabulary, a status consistency check, consolidation of `docs/tracking/`, phase and task folders, and increment relocation if still wanted. Each step is its own pull request.
+1. **Planning alignment.** Steps 1 to 4 of the migration plan are done. Step 5 is the status vocabulary and legacy mapping ([PLANNING_STATUS_VOCABULARY.md](PLANNING_STATUS_VOCABULARY.md), with three open owner decisions). Steps 6 to 9 follow in the order of the migration plan: a status consistency check, consolidation of `docs/tracking/`, phase and task folders, and increment relocation if still wanted. Each step is its own pull request.
 2. **Open owner items for B-INC-001.** These do not depend on the planning alignment and can be done in any order:
    - evidence for `B-INC-001-AC-05` and the Security Owner's disposition of the historical credential-shaped finding;
    - owner review records for KR-BE-1-003 to KR-BE-1-007 (these are owner reviews, not independent reviews);

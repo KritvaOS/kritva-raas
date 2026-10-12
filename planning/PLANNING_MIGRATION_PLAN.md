@@ -31,39 +31,19 @@ This plan sets the order of the pull requests that align the Kritva RaaS plannin
 | 2 | Checker path configuration | `check_docs.py`, `check_backend_traceability.py`, `check_backend_approvals.py` and their tests read the planning root from one setting and accept both `docs/planning` and `planning`. No document moves | `make check` unchanged; new tests cover both locations |
 | 3 | Move planning to the root | Move `docs/planning/` to `planning/` with `git mv`; rewrite links and `docs/planning/...` references with a script; leave a short stub README at the old location that points to `planning/`; update `Makefile`, workflows, README files and the handoff. Official milestone dossiers, architecture and protocol stay under `docs/` | `make check` passes before and after; the script's rewrite list is reviewed; the link count to moved files is zero outside the stub |
 | 4 | Root entry documents | A README at the root of `planning/` (roles, reading order, authority), `CURRENT_PLAN.md`, `REVIEW_CHECKLIST.md`, `AGENT_RULES.md`, in the style of the other two repositories, drawn from existing rules | The files add no new requirement; each links to its source |
-| 5 | Status vocabulary and legacy mapping | Define one vocabulary per entity (Section 4) and map every legacy value; update the backend task register and tasks lifecycle text to it. No task status changes | Every legacy value has a mapping or an explicit "not converted" note |
+| 5 | Status vocabulary and legacy mapping | Define one vocabulary per entity (Section 4) and map every legacy value; update the backend task register and tasks lifecycle text to it. No task status changes | Every legacy value has a mapping or an explicit "not converted" note. Done in the vocabulary document |
 | 6 | Status consistency check | A checker fails when a task or milestone status in a view differs from its canonical record | The checker passes on the repository; a unit test shows a deliberate mismatch failing |
 | 7 | Consolidate tracking | Replace restated status in `docs/tracking/` with links to canonical records or generated views, one file per pull request, using the dispositions in the Authority Matrix | Checker from step 6 passes; no register with unique entries is removed |
 | 8 | Consolidate phase milestone folders and task folders | Reduce `docs/milestones/PHASE-*` to navigation where they hold no unique content; resolve `docs/tasks/` (Section 5) | Phase and milestone identifiers and acceptance requirements unchanged |
 | 9 | Increment relocation, if wanted | Only if step 3 left the increments under `planning/backend/` in a shape that still differs from the other repositories | Traceability and approvals checks pass before and after |
 
-**Progress:** step 1 merged (PR #44, PB-047), step 2 merged (PR #45, PB-048), step 3 merged (PR #46, PB-049), step 4 is PB-050. Steps 5 to 9 are not started.
+**Progress:** step 1 merged (PR #44, PB-047), step 2 merged (PR #45, PB-048), steps 3 and 4 merged (PR #46 PB-049, PR #47 PB-050), step 5 is PB-051. Steps 6 to 9 are not started.
 
 Steps 2 and 3 are first because the later changes are then made once, in the final location.
 
-## 4. Proposed Status Vocabulary (for step 5)
+## 4. Status Vocabulary (step 5)
 
-The repository already defines a task and a milestone vocabulary in `docs/tracking/`. The plan builds on it.
-
-| Entity | Statuses | Rules |
-|---|---|---|
-| Task | NOT STARTED, READY, IN PROGRESS, BLOCKED, IN REVIEW, CHANGES REQUESTED, ACCEPTED, DEFERRED, CANCELLED | READY needs scope, owner, dependencies and acceptance criteria. ACCEPTED needs the acceptance criteria met and a recorded review decision. COMPLETE is replaced by ACCEPTED plus closure actions in the milestone |
-| Decision | PROPOSED, UNDER REVIEW, ACCEPTED, REJECTED, SUPERSEDED, WITHDRAWN, RETIRED | A decision is Approved through its approval package. Decision ACCEPTED is not task ACCEPTED |
-| Milestone | NOT STARTED, IN PROGRESS, BLOCKED, IN REVIEW, ACCEPTED, COMPLETE, DEFERRED | Acceptance state is kept separately, as today |
-| Gate or release | FROZEN, RELEASED, CLOSED | Used only for the gates and releases to which they apply. They are not synonyms for ACCEPTED |
-
-Legacy mapping:
-
-| Legacy value | Mapped value | Note |
-|---|---|---|
-| Backend register: Proposed | NOT STARTED | Only after the owner confirms that no work has started. Increment dossiers marked Proposed describe a proposed plan and do not mean work is unstarted |
-| Backend register: Ready, In Progress, Blocked, In Review, Accepted, Deferred | Same value in capitals | Direct |
-| Backend register: Rejected | CANCELLED | With the recorded rationale kept |
-| Tasks lifecycle: BACKLOG | NOT STARTED | |
-| Tasks lifecycle: IN_PROGRESS, REVIEW | IN PROGRESS, IN REVIEW | |
-| kritva-core: NOT DEFINED, PLANNED, REVIEW | NOT STARTED, NOT STARTED, IN REVIEW | Applies only if the vocabulary is shared with those repositories. It is not changed here |
-| kritvaos-community: Done | Not converted | Reviewed against evidence first |
-| COMPLETE (tasks) | Not converted | Check what was completed |
+Step 5 is [PLANNING_STATUS_VOCABULARY.md](PLANNING_STATUS_VOCABULARY.md). It adopts the vocabularies the repository already defines in `docs/tracking/` for tasks, milestones and phases, and maps the backend register, the tasks lifecycle and the two sibling repositories to them. It differs from the list first drafted in this plan in three ways: it keeps COMPLETE and CHANGES REQUESTED from the tracking task list (open owner decision OD-1 asks whether backend tasks use them), it keeps the decision lists as they are with a mapping between them, and it rewrites no written form of any status.
 
 Task statuses in the repository today are not changed by the mapping. For example KR-BE-1-003 to KR-BE-1-007 stay In Review.
 

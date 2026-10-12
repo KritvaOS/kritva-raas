@@ -47,6 +47,7 @@ planning/
 ├── PLANNING_ALIGNMENT_GAP_REPORT.md
 ├── PLANNING_AUTHORITY_MATRIX.md  one canonical record per record type
 ├── PLANNING_MIGRATION_PLAN.md    steps that align this directory with the other repositories
+├── PLANNING_STATUS_VOCABULARY.md status lists per entity and the legacy mapping
 └── backend/                      backend program plan, register, gates, decisions, increments
     ├── BACKEND_*.md
     ├── decisions/                decision-approval workflow and packages

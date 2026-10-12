@@ -28,4 +28,6 @@ Copy `_TEMPLATE/` to start a task.
 
     BACKLOG -> READY -> IN_PROGRESS -> REVIEW -> ACCEPTED   (or BLOCKED / CANCELLED)
 
+[../../planning/PLANNING_STATUS_VOCABULARY.md](../../planning/PLANNING_STATUS_VOCABULARY.md) maps these lifecycle values to the program task vocabulary (BACKLOG is read as NOT STARTED, REVIEW as IN REVIEW). The values here are unchanged.
+
 Status is tracked in [tracking/TASK_STATUS.md](../tracking/TASK_STATUS.md). A task is ACCEPTED only after its acceptance criteria are met with evidence and the review in its milestone's REVIEW_CHECKLIST.md passes.
