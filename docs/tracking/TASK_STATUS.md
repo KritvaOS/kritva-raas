@@ -340,19 +340,9 @@ Backend task details remain governed by `docs/backend/planning/BACKEND_TASKS.md`
 
 ### 13.1 Backend seed inventory
 
-The rows below are initial tracking placeholders. Reconcile them against the actual backend backlog before treating them as approved implementation tasks.
+The seed rows that were here were placeholders ("Reconcile ... tasks", all NOT STARTED and NOT ASSESSED), not task records. Every seed ID is also listed in [docs/backend/planning/BACKEND_TASKS.md](../backend/planning/BACKEND_TASKS.md), which holds the authoritative task records with the authoritative milestone dossiers. Task IDs are not reused or renumbered.
 
-| Task ID | Phase | Milestone | Task title | Initial status | Acceptance |
-|---|---|---|---|---|---|
-| KR-BE-P3-001 | P3 CONTROL PLANE | B-M01 CONTROL PLANE | Reconcile Control Plane tasks | NOT STARTED | NOT ASSESSED |
-| KR-BE-P2-001 | P2 BUILD & ARTIFACT | B-M02 ARTIFACT | Reconcile Artifact tasks | NOT STARTED | NOT ASSESSED |
-| KR-BE-P3-002 | P3 CONTROL PLANE | B-M03 PLATFORM | Reconcile platform tasks | NOT STARTED | NOT ASSESSED |
-| KR-BE-P4-001 | P4 BOOKING & COMMERCIAL | B-M04 BOOKING | Reconcile booking tasks | NOT STARTED | NOT ASSESSED |
-| KR-BE-P5-001 | P5 EXECUTION | B-M05 EXECUTION | Reconcile execution tasks | NOT STARTED | NOT ASSESSED |
-| KR-BE-P6-001 | P6 LAB & ROBOT | B-M06 RESULTS | Reconcile Results tasks | NOT STARTED | NOT ASSESSED |
-| KR-BE-P8-001 | P8 PRODUCTION | B-M07 PRODUCTION | Reconcile production tasks | NOT STARTED | NOT ASSESSED |
-
-**Important:** Check these seed IDs against the actual backend backlog. Preserve authoritative IDs and titles where they already exist.
+Current backend task status is recorded in the increment task records under `planning/backend/increments/`, one `TASKS.md` per increment, and is compared with its milestone views by `make status-report`. See [PLANNING_AUTHORITY_MATRIX.md](../../planning/PLANNING_AUTHORITY_MATRIX.md).
 
 ### 13.2 Backend acceptance evidence
 
@@ -383,16 +373,7 @@ Database task details remain governed by `docs/database/planning/DATABASE_TASKS.
 
 ### 14.1 Database seed inventory
 
-The rows below are initial tracking placeholders. Reconcile them against the actual database backlog before treating them as approved implementation tasks.
-
-| Task ID | Phase | Milestone | Task title | Initial status | Acceptance |
-|---|---|---|---|---|---|
-| KR-DB-P0-001 | P0 FOUNDATION | DB-M01 FOUNDATION | Reconcile database foundation tasks | NOT STARTED | NOT ASSESSED |
-| KR-DB-P3-001 | P3 CONTROL PLANE | DB-M02 CORE DATA | Reconcile core data tasks | NOT STARTED | NOT ASSESSED |
-| KR-DB-P4-001 | P4 BOOKING & COMMERCIAL | DB-M03 BOOKING DATA | Reconcile booking data tasks | NOT STARTED | NOT ASSESSED |
-| KR-DB-P5-001 | P5 EXECUTION | DB-M04 EXECUTION DATA | Reconcile execution data tasks | NOT STARTED | NOT ASSESSED |
-
-**Important:** Check these seed IDs against the actual database backlog. Preserve authoritative IDs and titles where they already exist.
+The seed rows that were here were placeholders ("Reconcile ... tasks", all NOT STARTED and NOT ASSESSED), not task records. Every seed ID is also listed in [docs/database/planning/DATABASE_TASKS.md](../database/planning/DATABASE_TASKS.md), which holds the authoritative task records with the authoritative milestone dossiers. Task IDs are not reused or renumbered.
 
 ### 14.2 Database acceptance evidence
 
