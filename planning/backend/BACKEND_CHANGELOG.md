@@ -1383,6 +1383,26 @@ Reason: step 7 of `PLANNING_MIGRATION_PLAN.md`, consolidating `docs/tracking/`, 
 | Unchanged | Every tracking file, every status and spelling, identifiers, checkers and inbound links. No file is moved or deleted |
 | Review | Written by Claude. No independent human review. The dispositions are proposals until the owner decides OD-TD-1 to OD-TD-3 |
 
+## 3BA. PB-054 — Task Status Seed Rows Replaced by Links (Migration Step 7b)
+
+| Field | Value |
+|---|---|
+| Change ID | PB-054 |
+| Date | 2026-10-12 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Follows | PB-053 |
+
+Reason: step 7b of `PLANNING_MIGRATION_PLAN.md`, using the disposition in `TRACKING_CONSOLIDATION_DISPOSITION.md`.
+
+| Item | Disposition |
+|---|---|
+| Changed | `docs/tracking/TASK_STATUS.md` Sections 13.1 (backend) and 14.1 (database): the placeholder seed rows (all NOT STARTED, NOT ASSESSED, titled "Reconcile ... tasks") are replaced by a link to the domain backlog. Every removed ID was checked to be listed in that backlog. Section 13.1 also names the increment `TASKS.md` records and `make status-report` |
+| Kept | Sections 12.1 (frontend) and 15.1 (cloud). Five seed IDs exist only there (KR-FE-P7-002, KR-CL-P0-001, KR-CL-P1-001, KR-CL-P4-001, KR-CL-P8-001), so removing the tables would lose entries. Sections 4, 5, 7, 8 and 21 and all rules are also unchanged |
+| Open | Section 21 still says source reconciliation is Pending for every domain. It is not changed here; the owner decides when it is updated |
+| Unchanged | Every real task status and identifier, other tracking files, checkers, links |
+| Review | Written by Claude. No independent human review |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:
