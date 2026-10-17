@@ -1,0 +1,1170 @@
+{
+  "schema_version": "2.0",
+  "workstream_id": "RAAS",
+  "repo": "KritvaOS/kritva-raas",
+  "source": {
+    "branch": "main",
+    "commit": "eb8942164132b52412cdf296eacef535b558357b",
+    "tag": null
+  },
+  "tasks": [
+    {
+      "task_id": "KR-BE-1-001",
+      "execution": "COMPLETE",
+      "git_sync": "SYNCED",
+      "readiness": "IMPLEMENTABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-001-SECURE-FOUNDATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: accepted",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-002",
+      "execution": "IN_PROGRESS",
+      "git_sync": "SYNCED",
+      "readiness": "IMPLEMENTABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-001-SECURE-FOUNDATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: in review",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-003",
+      "execution": "IN_PROGRESS",
+      "git_sync": "SYNCED",
+      "readiness": "IMPLEMENTABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-001-SECURE-FOUNDATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: in review",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-004",
+      "execution": "IN_PROGRESS",
+      "git_sync": "SYNCED",
+      "readiness": "IMPLEMENTABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-001-SECURE-FOUNDATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: in review",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-005",
+      "execution": "IN_PROGRESS",
+      "git_sync": "SYNCED",
+      "readiness": "IMPLEMENTABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-001-SECURE-FOUNDATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: in review",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-006",
+      "execution": "IN_PROGRESS",
+      "git_sync": "SYNCED",
+      "readiness": "IMPLEMENTABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-001-SECURE-FOUNDATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: in review",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-007",
+      "execution": "IN_PROGRESS",
+      "git_sync": "SYNCED",
+      "readiness": "IMPLEMENTABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-001-SECURE-FOUNDATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: in review",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-008",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-001-SECURE-FOUNDATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-009",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-001-SECURE-FOUNDATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-010",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-002-IDENTITY-ORGANIZATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-011",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-002-IDENTITY-ORGANIZATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-012",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-002-IDENTITY-ORGANIZATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-013",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-002-IDENTITY-ORGANIZATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-014",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-002-IDENTITY-ORGANIZATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-015",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-002-IDENTITY-ORGANIZATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-016",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-002-IDENTITY-ORGANIZATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-017",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-002-IDENTITY-ORGANIZATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-018",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-002-IDENTITY-ORGANIZATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-019",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-002-IDENTITY-ORGANIZATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-020",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-002-IDENTITY-ORGANIZATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-021",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-002-IDENTITY-ORGANIZATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-022",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-003-PROJECTS-PLATFORM-CATALOG/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-023",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-003-PROJECTS-PLATFORM-CATALOG/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-024",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-003-PROJECTS-PLATFORM-CATALOG/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-025",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-003-PROJECTS-PLATFORM-CATALOG/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-026",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-003-PROJECTS-PLATFORM-CATALOG/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-027",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-003-PROJECTS-PLATFORM-CATALOG/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-028",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-003-PROJECTS-PLATFORM-CATALOG/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-029",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-003-PROJECTS-PLATFORM-CATALOG/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-030",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-003-PROJECTS-PLATFORM-CATALOG/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-031",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-003-PROJECTS-PLATFORM-CATALOG/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-032",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-004-AUDIT-TRANSACTIONS-IDEMPOTENCY/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-033",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-004-AUDIT-TRANSACTIONS-IDEMPOTENCY/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-034",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-004-AUDIT-TRANSACTIONS-IDEMPOTENCY/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-035",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-004-AUDIT-TRANSACTIONS-IDEMPOTENCY/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-036",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-004-AUDIT-TRANSACTIONS-IDEMPOTENCY/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-037",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-004-AUDIT-TRANSACTIONS-IDEMPOTENCY/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-038",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-004-AUDIT-TRANSACTIONS-IDEMPOTENCY/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-039",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-004-AUDIT-TRANSACTIONS-IDEMPOTENCY/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-040",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-004-AUDIT-TRANSACTIONS-IDEMPOTENCY/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-041",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-001-SECURE-FOUNDATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-043",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-003-PROJECTS-PLATFORM-CATALOG/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-044",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-002-IDENTITY-ORGANIZATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        },
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-003-PROJECTS-PLATFORM-CATALOG/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-045",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-002-IDENTITY-ORGANIZATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        },
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-003-PROJECTS-PLATFORM-CATALOG/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-046",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-004-AUDIT-TRANSACTIONS-IDEMPOTENCY/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-047",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-004-AUDIT-TRANSACTIONS-IDEMPOTENCY/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-048",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-004-AUDIT-TRANSACTIONS-IDEMPOTENCY/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BE-1-049",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-004-AUDIT-TRANSACTIONS-IDEMPOTENCY/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BINC-001-001",
+      "execution": "IN_PROGRESS",
+      "git_sync": "SYNCED",
+      "readiness": "IMPLEMENTABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-001-SECURE-FOUNDATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: in review",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BINC-001-002",
+      "execution": "IN_PROGRESS",
+      "git_sync": "SYNCED",
+      "readiness": "IMPLEMENTABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-001-SECURE-FOUNDATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: in review",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BINC-001-003",
+      "execution": "IN_PROGRESS",
+      "git_sync": "SYNCED",
+      "readiness": "IMPLEMENTABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-001-SECURE-FOUNDATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: in review",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BINC-001-004",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-001-SECURE-FOUNDATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BINC-001-005",
+      "execution": "IN_PROGRESS",
+      "git_sync": "SYNCED",
+      "readiness": "IMPLEMENTABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-001-SECURE-FOUNDATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: in review",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BINC-001-006",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-001-SECURE-FOUNDATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BINC-001-007",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-001-SECURE-FOUNDATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BINC-001-008",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-001-SECURE-FOUNDATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BINC-001-009",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-001-SECURE-FOUNDATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BINC-001-010",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-001-SECURE-FOUNDATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BINC-001-011",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-001-SECURE-FOUNDATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BINC-001-012",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-001-SECURE-FOUNDATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BINC-001-013",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-001-SECURE-FOUNDATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BINC-001-014",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-001-SECURE-FOUNDATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BINC-001-015",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-001-SECURE-FOUNDATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BINC-001-016",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-001-SECURE-FOUNDATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BINC-001-017",
+      "execution": "NOT_STARTED",
+      "git_sync": "SYNCED",
+      "readiness": "PLANNABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-001-SECURE-FOUNDATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: no status recorded",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BINC-001-018",
+      "execution": "COMPLETE",
+      "git_sync": "SYNCED",
+      "readiness": "IMPLEMENTABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-001-SECURE-FOUNDATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: accepted",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "task_id": "KR-BINC-001-019",
+      "execution": "COMPLETE",
+      "git_sync": "SYNCED",
+      "readiness": "IMPLEMENTABLE",
+      "evidence": [
+        {
+          "type": "software",
+          "uri": "planning/backend/increments/B-INC-001-SECURE-FOUNDATION/TASKS.md",
+          "description": "Record reference only (not completion proof); planning status: accepted",
+          "commit": null,
+          "ci_run": null,
+          "report_sha256": null,
+          "result": null
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-10-17T09:00:00Z"
+}
