@@ -1,0 +1,60 @@
+#==============================================================================
+# Copyright (c) 2026 KritvaOS
+# SPDX-License-Identifier: LicenseRef-KritvaOS-Proprietary
+#
+# File        : status-report.yml
+# Description : CI check that status/status.json matches the RaaS planning records and schema 2.0
+#
+# Component   : Infrastructure
+# Module      : Program Status Reporting
+# Layer       : Development Infrastructure
+#
+# Requirements: N/A — kritva-program decisions D-009, D-011, D-012, D-026, D-030
+# API         : GitHub Actions workflow
+#
+# Author      : KritvaOS
+# Created     : 17-10-2026
+#==============================================================================
+
+name: status-report
+
+concurrency:
+  group: status-report-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  status-report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install schema validator
+        run: python3 -m pip install jsonschema==4.26.0
+      - name: Generator regression tests
+        run: python3 -m unittest discover -s tests/status_report -v
+      - name: Status facts match planning records
+        run: python3 scripts/status/gen_status.py --check-facts
+      - name: Vendored schema matches recorded hash
+        run: cd status && sha256sum -c status.schema.json.sha256
+      - name: Validate status.json against schema 2.0 (vendored copy)
+        run: |
+          python3 - <<'PY'
+          import json
+          import jsonschema
+          schema = json.load(open("status/status.schema.json"))
+          report = json.load(open("status/status.json"))
+          jsonschema.Draft202012Validator(schema).validate(report)
+          assert report["schema_version"] == "2.0", "unsupported schema_version"
+          assert report["workstream_id"] == "RAAS" and report["repo"] == "KritvaOS/kritva-raas"
+          print("status.json valid; tasks:", len(report["tasks"]))
+          PY

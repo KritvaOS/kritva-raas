@@ -75,7 +75,7 @@ header-check: ## Validate KritvaOS source headers (strict, tracked files)
 # Same commands as .github/workflows/docs-check.yml.
 #------------------------------------------------------------------------------
 
-.PHONY: docs-check traceability-check approvals-test approvals-check planning-root-test status-test status-report
+.PHONY: docs-check traceability-check approvals-test approvals-check planning-root-test status-test status-report status-gen-test status-gen-check
 
 docs-check: ## Validate documentation structure, phases and milestones
 	@echo "[docs-check] Validating documentation..."
@@ -100,6 +100,14 @@ status-test: ## Run the status consistency report unit tests
 status-report: ## Report task status differences between records and views (read-only; exits 0)
 	@echo "[status-report] Reporting status consistency (report only)..."
 	$(PYTHON) $(SCRIPT_DIR)/docs/check_status_consistency.py
+
+status-gen-test: ## Run the program status report generator tests (schema 2.0)
+	@echo "[status-gen-test] Running status report generator tests..."
+	$(PYTHON) -m unittest discover -s $(TEST_DIR)/status_report -v
+
+status-gen-check: ## Check status/status.json against the planning records (facts only)
+	@echo "[status-gen-check] Checking status/status.json..."
+	$(PYTHON) $(SCRIPT_DIR)/status/gen_status.py --check-facts
 
 approvals-check: ## Validate backend decision-approval packages
 	@echo "[approvals] Validating backend decision-approval packages..."
