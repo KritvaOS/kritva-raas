@@ -1,0 +1,4 @@
+# Reviewed 2026-10-17 (Security Owner follow-up, D-032): example idempotency keys in protocol docs, not credentials.
+# Fingerprint format: <commit>:<file>:<rule>:<line>
+941781fb77e8a8addba421bf0be4cc9d249edddc:docs/protocol/IDEMPOTENCY.md:generic-api-key:260
+941781fb77e8a8addba421bf0be4cc9d249edddc:docs/protocol/EVENT_CONTRACT.md:generic-api-key:2085
