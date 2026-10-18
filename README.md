@@ -1,25 +1,84 @@
 # kritva-raas
 
-Kritva Robotic as a Service (RaaS). This repository holds the consolidated plan and architecture for the RaaS frontend, backend, database and cloud domains, the backend application code, and the planning, security and governance records that control how the work is done.
+> Kritva Robotic as a Service (RaaS): the consolidated plan and architecture for the RaaS frontend, backend, database and cloud domains, the backend application code, and the planning, security and governance records that control how the work is done. This is a private repository.
 
-This README describes structure and method. It deliberately holds no task status, dates, people or version numbers, because those change and live in canonical records. Where a fact can go stale, this file points to the record that owns it.
+| Property | Value |
+|---|---|
+| Project | KritvaOS |
+| Repository | `KritvaOS/kritva-raas` |
+| Repository Type | Service |
+| Visibility Class | PRIVATE (future private; D-037, D-039 in kritva-program) |
+| GitHub Setting | PUBLIC (verified 2026-10-18; temporary, D-028 in kritva-program: owner action returns it to private) |
+| Lifecycle Status | ACTIVE |
+| Repository Owner | Backend Technical Lead (role; see section 15) |
+| Security Owner | Security Owner role ([SECURITY.md](SECURITY.md), [planning/backend/BACKEND_SECURITY_GATE.md](planning/backend/BACKEND_SECURITY_GATE.md)) |
+| Architecture | [docs/architecture/BACKEND_ARCHITECTURE.md](docs/architecture/BACKEND_ARCHITECTURE.md) and [docs/architecture/SYSTEM_ARCHITECTURE.md](docs/architecture/SYSTEM_ARCHITECTURE.md) |
+| Milestones | [planning/PHASES.md](planning/PHASES.md) and [planning/backend/increments/](planning/backend/increments/) |
+| Tasks | [planning/backend/BACKEND_TASK_REGISTER.md](planning/backend/BACKEND_TASK_REGISTER.md) |
+| Acceptance Criteria | [planning/backend/BACKEND_ACCEPTANCE_CRITERIA.md](planning/backend/BACKEND_ACCEPTANCE_CRITERIA.md) |
+| Status Reporting | [status/README.md](status/README.md) and `status/status.json` (generated) |
+| License | [LICENSE](LICENSE) (proprietary, all rights reserved) |
 
-## 1. Where to start
+This README follows the Kritva README standard (`v2/planning/standards/README_STANDARD.md` in [kritva-program](https://github.com/KritvaOS/kritva-program)). It describes structure and method. It deliberately holds no task status, dates, people or version numbers, because those change and live in canonical records. Where a fact can go stale, this file points to the record that owns it. The two GitHub-setting facts in the table above are the exception: they are operational facts with a verification date, owned by the program's visibility decisions.
 
-Read in this order:
+## 1. Purpose and Scope
 
-1. [`planning/README.md`](planning/README.md): how planning is organised and which file owns which kind of fact.
-2. [`planning/CURRENT_PLAN.md`](planning/CURRENT_PLAN.md): the ordered next work and the active increment.
-3. [`planning/PLANNING_AUTHORITY_MATRIX.md`](planning/PLANNING_AUTHORITY_MATRIX.md): the one canonical record for each kind of record.
-4. [`planning/PLANNING_STATUS_VOCABULARY.md`](planning/PLANNING_STATUS_VOCABULARY.md): what each status word means.
-5. [`AGENTS.md`](AGENTS.md) and [`planning/AGENT_RULES.md`](planning/AGENT_RULES.md): working rules for anyone, human or agent, who changes the repository.
-6. [`apps/backend/README.md`](apps/backend/README.md): how the running backend is built and operated.
-7. [`docs/README.md`](docs/README.md): the documentation index.
-8. [`docs/REPOSITORY_STRUCTURE.md`](docs/REPOSITORY_STRUCTURE.md): proposed repository structure and ownership map, pending human review. The authority matrix remains authoritative.
+RaaS lets a user build locally, book remotely and run on real robots. This repository owns the plan and architecture of the RaaS product domains (frontend, backend, database, cloud), the backend application code, and the planning, security and governance records for that work.
 
-## 2. Folder structure
+This is a software-only repository. Frontend, database and cloud have plans and architecture here; only the backend has application code today (`apps/backend`). There is no firmware, hardware, mechanical or electronic design, build or test flow here. The lab and robot side of the product appears only as an external boundary described by the protocol and architecture documents. Program-level records live elsewhere (see `AGENTS.md`).
 
-    kritva-raas/
+It does not own program-level decisions, the program baseline, approvals or program credit. Those live in kritva-program (section 10).
+
+## 2. Position in the KritvaOS Ecosystem
+
+RaaS is the service layer of KritvaOS. In the program's repository plan it sits after kritva-core and kritva-skill and reports status to kritva-program. It is a planning-only workstream there: not a baseline source, with no program credit. The roster, order and required checks are owned by `v2/planning/repo-pipeline.json` in kritva-program, not by this README.
+
+## 3. Architecture
+
+The authoritative backend architecture documents are `docs/architecture/BACKEND_ARCHITECTURE.md`, `API_ARCHITECTURE.md` and `SECURITY_ARCHITECTURE.md`, and the wire contracts under `docs/protocol/`. This section summarises the rules every change must respect.
+
+**Layers, from the outside in**
+
+| Layer | Location | Rule |
+|---|---|---|
+| Transport | `apps/backend/src/transport` | The only code that imports the web framework. Builds the server, mounts route groups, owns the response and error contracts, and the request-context hook |
+| Domain modules | added per task | Each exposes one route group with one path root (lower-case, hyphen-separated; roots may not overlap). A module maps its own domain errors to registry error codes before they reach the transport |
+| Shared infrastructure | `apps/backend/src/shared` | Imports no module and no framework. Holds request-scoped context carried through `AsyncLocalStorage` |
+| Configuration | `apps/backend/src/config` | The only place settings are read. Invalid configuration fails before the server listens, and failure messages name the setting, never its value |
+| Persistence | per the database decision records | PostgreSQL. Tests of database behaviour must use the real database, not only mocks |
+
+**API conventions (REST API v1)**
+
+- Everything is served under `/api/v1`; any other prefix is 404.
+- Every response with a body, success or error, uses one envelope defined in `docs/protocol/RESPONSES.md`. Error codes come from `docs/protocol/ERROR_CODES.md`.
+- The server generates a request ID per request and returns it in a response header and in the body. Client-supplied IDs are ignored.
+- Error bodies never carry internal messages, stack traces or submitted values.
+- Matching is exact: no trailing slash, no case folding. A known path with the wrong method is 405; an unknown path is 404.
+
+**Cross-cutting rules**
+
+- Secrets, keys and credentials are governed by `docs/security/SECRETS_MANAGEMENT.md`, `docs/security/KEY_MANAGEMENT.md` and `planning/backend/BACKEND_SECURITY_GATE.md`. Do not build secrets handling that those records have not approved.
+- Technology choices are decisions. A choice is not a project standard until its decision record is approved (`planning/backend/decisions/`).
+- Tenant isolation, authorization and audit behaviour are defined in `docs/security/`; features touching them need negative tests.
+
+## 4. Documents to Read First
+
+Read in this order. A label names a role, not an approval; where a document states its own status, it is shown.
+
+| # | Document | Label, status | What it answers |
+|---|---|---|---|
+| 1 | [`planning/README.md`](planning/README.md) | REFERENCE | How planning is organised and which file owns which kind of fact |
+| 2 | [`planning/CURRENT_PLAN.md`](planning/CURRENT_PLAN.md) | AUTHORITATIVE | The ordered next work and the active increment |
+| 3 | [`planning/PLANNING_AUTHORITY_MATRIX.md`](planning/PLANNING_AUTHORITY_MATRIX.md) | AUTHORITATIVE; its ownership section is PROPOSED, pending owner acceptance | The one canonical record for each kind of record |
+| 4 | [`planning/PLANNING_STATUS_VOCABULARY.md`](planning/PLANNING_STATUS_VOCABULARY.md) | AUTHORITATIVE | What each status word means |
+| 5 | [`AGENTS.md`](AGENTS.md) and [`planning/AGENT_RULES.md`](planning/AGENT_RULES.md) | AUTHORITATIVE | Working rules for anyone, human or agent, who changes the repository |
+| 6 | [`apps/backend/README.md`](apps/backend/README.md) | REFERENCE | How the running backend is built and operated |
+| 7 | [`docs/README.md`](docs/README.md) | REFERENCE | The documentation index |
+| 8 | [`docs/REPOSITORY_STRUCTURE.md`](docs/REPOSITORY_STRUCTURE.md) | REFERENCE, PROPOSED, pending human review | Proposed repository structure and ownership map; the authority matrix remains authoritative |
+
+## 5. Repository Structure and File Responsibilities
+
+kritva-raas/
     ├── apps/
     │   └── backend/                 the control-plane backend (Node.js, TypeScript)
     │       ├── src/
@@ -59,39 +118,56 @@ Read in this order:
 
 Rule of thumb: `docs/` says what the backend is and must do; `planning/` says what is being done about it and in what order.
 
-Scope: this is a software-only repository. Frontend, database and cloud have plans and architecture here; only the backend has application code today (`apps/backend`). There is no firmware, hardware, mechanical or electronic design, build or test flow here. The lab and robot side of the product appears only as an external boundary described by the protocol and architecture documents. Program-level records live elsewhere (see `AGENTS.md`).
+| Path | Responsibility | Label | Edit by hand? |
+|---|---|---|---|
+| [`apps/backend/`](apps/backend/) | Control-plane backend source and tests | INPUT | yes, per task |
+| [`planning/`](planning/) | Plans, phases, task registers, increment dossiers, decision records | MIXED: AUTHORITATIVE per document (see the authority matrix) | per document |
+| [`docs/`](docs/) | Stable requirements, contracts and architecture | MIXED: AUTHORITATIVE and REFERENCE per document | per document |
+| [`status/status.json`](status/status.json) | Program status report | GENERATED by `scripts/status/gen_status.py` | no: regenerate |
+| [`status/status.schema.json`](status/status.schema.json) | Vendored status schema, checked by SHA-256 | SNAPSHOT of the program schema | no: refresh from kritva-program |
+| [`scripts/`](scripts/) | Checkers, status generator, commit checks | INPUT | yes, with tests |
+| [`tests/`](tests/) | Unit tests for the checkers | EVIDENCE | extend with changes |
+| [`.github/`](.github/) | CODEOWNERS and CI workflows | AUTHORITATIVE | owner review |
+| [`Makefile`](Makefile) | The local commands (`make help`) | INPUT | yes |
+| [`SECURITY.md`](SECURITY.md), [`AGENTS.md`](AGENTS.md), [`LICENSE`](LICENSE) | Security policy, agent rules, license | AUTHORITATIVE | owner decision |
+
+Rule of thumb: `docs/` says what the backend is and must do; `planning/` says what is being done about it and in what order.
 
 Who owns each folder and file group is defined in [`planning/PLANNING_AUTHORITY_MATRIX.md`](planning/PLANNING_AUTHORITY_MATRIX.md) (the ownership section is proposed and pending owner acceptance).
 
-## 3. Architecture definition
+## 6. Toolchain and Development Workflow
 
-The authoritative backend architecture documents are `docs/architecture/BACKEND_ARCHITECTURE.md`, `API_ARCHITECTURE.md` and `SECURITY_ARCHITECTURE.md`, and the wire contracts under `docs/protocol/`. This section summarises the rules every change must respect.
+| Tool | Purpose | Version | Check |
+|---|---|---|---|
+| Node.js | Backend build and tests | pinned in [`.node-version`](.node-version) | `node --version` |
+| npm | Backend dependencies (`npm ci --ignore-scripts`) | with Node | `npm --version` |
+| Python 3 | Repository checkers and the status generator | 3 | `python3 --version` |
+| GNU make | Local commands | any | `make help` |
+| gitleaks | Secret scan (CI) | CI-managed | the `secret-scan` workflow |
 
-**Layers, from the outside in**
-
-| Layer | Location | Rule |
+| Command | Effect | Preview |
 |---|---|---|
-| Transport | `apps/backend/src/transport` | The only code that imports the web framework. Builds the server, mounts route groups, owns the response and error contracts, and the request-context hook |
-| Domain modules | added per task | Each exposes one route group with one path root (lower-case, hyphen-separated; roots may not overlap). A module maps its own domain errors to registry error codes before they reach the transport |
-| Shared infrastructure | `apps/backend/src/shared` | Imports no module and no framework. Holds request-scoped context carried through `AsyncLocalStorage` |
-| Configuration | `apps/backend/src/config` | The only place settings are read. Invalid configuration fails before the server listens, and failure messages name the setting, never its value |
-| Persistence | per the database decision records | PostgreSQL. Tests of database behaviour must use the real database, not only mocks |
+| `make hooks-install` | modify: enables the Git hooks in this clone | none |
+| `make check` | check: all repository checks required by CI | n/a |
+| `make status-gen-check`, `make status-report` | check: read-only status comparisons | n/a |
+| `python3 scripts/status/gen_status.py` | generate: rewrites `status/status.json` | `--check` compares without writing |
+| `npm ci --ignore-scripts`, `npm run build` (in `apps/backend`) | generate: installs dependencies, writes `dist/` | n/a |
 
-**API conventions (REST API v1)**
+`make build`, `make test`, `make lint`, `make format` and `make format-check` at the repository root are placeholders that fail by design until an application toolchain is configured; use the `apps/backend` commands in section 11. The full workflow is in [`docs/development/DEVELOPMENT_WORKFLOW.md`](docs/development/DEVELOPMENT_WORKFLOW.md) and [`docs/development/DEVELOPMENT_SETUP.md`](docs/development/DEVELOPMENT_SETUP.md).
 
-- Everything is served under `/api/v1`; any other prefix is 404.
-- Every response with a body, success or error, uses one envelope defined in `docs/protocol/RESPONSES.md`. Error codes come from `docs/protocol/ERROR_CODES.md`.
-- The server generates a request ID per request and returns it in a response header and in the body. Client-supplied IDs are ignored.
-- Error bodies never carry internal messages, stack traces or submitted values.
-- Matching is exact: no trailing slash, no case folding. A known path with the wrong method is 405; an unknown path is 404.
+## 7. Dependencies and Interfaces
 
-**Cross-cutting rules**
+| Dependency | Direction | Kind | Contract | State |
+|---|---|---|---|---|
+| kritva-program | upstream | governance | status schema 2.0 ([`status/README.md`](status/README.md)) | ESTABLISHED for the schema and the generator; this repository is not registered as a program source, so nothing here is consumed or credited (see [`AGENTS.md`](AGENTS.md)) |
+| kritva-core | upstream | build or runtime (not yet specified here) | none in this repository | PROPOSED: ordered before RaaS in the program's repository plan |
+| kritva-skill | upstream | build or runtime (not yet specified here) | none in this repository | PROPOSED: ordered before RaaS in the program's repository plan |
+| PostgreSQL | upstream | runtime | the database decision records under `planning/backend/decisions/` | per those decision records |
+| Lab and robot side | downstream | external boundary | [`docs/protocol/`](docs/protocol/) and the architecture documents | PLANNED: appears only as a boundary today |
 
-- Secrets, keys and credentials are governed by `docs/security/SECRETS_MANAGEMENT.md`, `docs/security/KEY_MANAGEMENT.md` and `planning/backend/BACKEND_SECURITY_GATE.md`. Do not build secrets handling that those records have not approved.
-- Technology choices are decisions. A choice is not a project standard until its decision record is approved (`planning/backend/decisions/`).
-- Tenant isolation, authorization and audit behaviour are defined in `docs/security/`; features touching them need negative tests.
+Phase and milestone dependencies are in [`planning/DEPENDENCY_MAP.md`](planning/DEPENDENCY_MAP.md) and [`planning/backend/BACKEND_DEPENDENCY_MAP.md`](planning/backend/BACKEND_DEPENDENCY_MAP.md); integration sequencing is in [`planning/INTEGRATION_PLAN.md`](planning/INTEGRATION_PLAN.md). A PROPOSED dependency is not an integration that exists.
 
-## 4. Milestones and increments
+## 8. Milestones and Implementation Plan
 
 Work is organised in three levels, each with one owner document. The frozen phase model (P0 to P8) is defined only in `planning/PHASES.md` and is not repeated here.
 
@@ -105,15 +181,33 @@ Each increment dossier holds the same files: `MILESTONE.md`, `TASKS.md`, `ACCEPT
 
 Which increment is active, and what comes next, is in `planning/CURRENT_PLAN.md`. Do not start a later increment until the work and dependencies before it have been reviewed (`planning/backend/README.md`).
 
-## 5. Task list
+| Plan | Status and meaning of dates |
+|---|---|
+| [`planning/PHASES.md`](planning/PHASES.md) | The frozen phase model; names, not a schedule |
+| [`planning/IMPLEMENTATION_ROADMAP.md`](planning/IMPLEMENTATION_ROADMAP.md), [`planning/RELEASE_ROADMAP.md`](planning/RELEASE_ROADMAP.md) | Sequencing; read each file's own status line before treating a date as a commitment |
+
+## 9. Tasks and Acceptance Criteria
 
 - **Where tasks live.** The task list for an increment is its `TASKS.md`. That file owns each task's scope, linked acceptance criteria, tests and security gates, and its status. The program-level register is `planning/backend/BACKEND_TASK_REGISTER.md`.
-- **Task IDs.** `KR-BINC-001-nnn` for increment-level foundation tasks and `KR-BE-1-nnn` for backend feature tasks, so one ID is unique across the repository. - **Related IDs.** `B-INC-001-AC-nn` (acceptance criteria), `BTS-nnn` (test specifications), `SEC-GATE-nnn` (security gates), `PB-nnn` (planning changes in the changelog), `OD-n` and decision IDs (owner decisions).
+- **Task IDs.** `KR-BINC-001-nnn` for increment-level foundation tasks and `KR-BE-1-nnn` for backend feature tasks, so one ID is unique across the repository.
+- **Related IDs.** `B-INC-001-AC-nn` (acceptance criteria), `BTS-nnn` (test specifications), `SEC-GATE-nnn` (security gates), `PB-nnn` (planning changes in the changelog), `OD-n` and decision IDs (owner decisions).
 - **Reading status.** Use the status words defined in `planning/PLANNING_STATUS_VOCABULARY.md`. Keep these states separate: checks passed, decision reviewed, decision approved, task accepted, gate closed. A merged pull request or a green check is none of the last three.
 - **Program view.** `status/status.json` is generated by `scripts/status/gen_status.py`. Regenerate it; never edit it by hand. `make status-report` prints status differences between records and views.
 - **Picking up work.** Take the next item in `planning/CURRENT_PLAN.md`, open its task in the increment `TASKS.md`, and implement only what that task and its acceptance criteria say. If the scope is unclear, ask the Backend Technical Lead instead of widening it.
+- **Acceptance criteria.** Increment-level criteria are `ACCEPTANCE_CRITERIA.md` in each increment dossier; the backend register of criteria is [`planning/backend/BACKEND_ACCEPTANCE_CRITERIA.md`](planning/backend/BACKEND_ACCEPTANCE_CRITERIA.md). Work is not accepted because code, a commit, a merged pull request or a local test exists.
 
-## 6. Regression flow
+## 10. Status Reporting and Program Integration
+
+`status/status.json` (schema 2.0) is written by `scripts/status/gen_status.py` from the planning records, in the format the kritva-program consolidator reads. This repository is not registered as a program source today ([`AGENTS.md`](AGENTS.md)). How it is generated, its scope and how planning statuses map to reported execution are in [`status/README.md`](status/README.md).
+
+- **Execution** is what this repository reports: a task's reported state, derived from its planning record.
+- **Evidence** names the commit and the validation result behind a claim, with its scope.
+- **Acceptance** is recorded only in the canonical record by the Backend Technical Lead, never by the status report.
+- **Release readiness** is the result of the release gates in [`docs/development/RELEASE_PROCESS.md`](docs/development/RELEASE_PROCESS.md).
+
+This repository reports facts only. Its tasks are not in the approved kritva-program baseline, so the report earns no program credit and claims no program approval. A generated view is a derived snapshot that can lag its inputs.
+
+## 11. Build, Test, Regression and Validation
 
 Every change passes the same gates in this order. A failure at any gate stops the change.
 
@@ -144,7 +238,9 @@ Every change passes the same gates in this order. A failure at any gate stops th
 - Fixtures use synthetic data only, never real credentials or production data.
 - At increment acceptance, the full required suite runs and the evidence package in the increment `TEST_PLAN.md` is assembled.
 
-## 7. Git commit text and method
+## 12. Git Workflow and Review
+
+This repository's approved convention follows. It is richer than the Kritva commit standard in kritva-program, which this repository has not formally adopted yet (PD-019 in kritva-program); the `Tasks:` and `Task:` footer rules are compatible.
 
 **Method**
 
@@ -190,7 +286,11 @@ Omit the `[<TASK-ID>]` suffix on this form, and never attach a task ID to a comm
 
 **Merging.** `main` requires a pull request, the required checks and code-owner review. The author does not merge their own work without the required review.
 
-## 8. Security rules
+## 13. Safety and Security
+
+This is a software-only repository: it has no actuators and no hardware, so there are no physical safety gates here. The lab and robot side is an external boundary, and its safety is governed where it is built, not by tests in this repository.
+
+**Reporting a vulnerability:** follow [`SECURITY.md`](SECURITY.md). Never put details of an unfixed vulnerability in a public issue, pull request or commit message.
 
 - Never commit secrets, private keys, tokens, passwords, certificates with sensitive material, production data or personal data. Use obviously fake placeholders and mark them as fake.
 - Do not copy a credential-shaped value into a document, issue, chat or log, even when reporting it. Name the file and line instead.
@@ -199,7 +299,11 @@ Omit the `[<TASK-ID>]` suffix on this form, and never attach a task ID to a comm
 - A clean working tree and green tests do not prove history is free of earlier secrets.
 - Read `planning/backend/BACKEND_SECURITY_GATE.md` before changing logging, configuration or anything that touches credentials. A security gate is closed only by its owner, never by a merge.
 
-## 9. Roles
+## 14. Release and Versioning
+
+[`docs/development/RELEASE_PROCESS.md`](docs/development/RELEASE_PROCESS.md) defines the release process (qualification, release, staged deployment, rollback, post-release review) and [`planning/RELEASE_ROADMAP.md`](planning/RELEASE_ROADMAP.md) the release sequencing. A release is complete only when the criteria in that process are met, not when code is merged. Versions, tags and release notes follow that process; this README records no release state. Branching is in [`docs/development/BRANCHING_STRATEGY.md`](docs/development/BRANCHING_STRATEGY.md).
+
+## 15. Ownership and Escalation
 
 | Role | Responsibility |
 |---|---|
@@ -214,6 +318,17 @@ Omit the `[<TASK-ID>]` suffix on this form, and never attach a task ID to a comm
 
 When unsure which file is authoritative, check `planning/PLANNING_AUTHORITY_MATRIX.md`. When unsure about anything else, say what you do not know and ask the Backend Technical Lead; do not invent evidence, results or approvals.
 
-## 10. Keeping this README current
+## 16. Related Repositories and References
+
+| Repository | Relationship |
+|---|---|
+| [kritva-program](https://github.com/KritvaOS/kritva-program) | Program plan, baseline, decisions, status consolidation, README standard |
+| [kritva-core](https://github.com/KritvaOS/kritva-core), [kritva-skill](https://github.com/KritvaOS/kritva-skill) | Upstream in the program's repository plan (PROPOSED) |
+
+### Keeping this README current
 
 Update this file in the same pull request that changes the folder layout, the commands, the workflows or the commit contract. Do not add status, dates, version numbers, people or pull request numbers here; link to the record that owns them.
+
+## 17. License
+
+Proprietary and confidential. Copyright (c) 2026 Kritvaos. All rights reserved. See [LICENSE](LICENSE).

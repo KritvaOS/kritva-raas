@@ -18,6 +18,7 @@ These instructions apply to the `kritva-raas` repository (Kritva Robotic as a Se
 
     python3 scripts/docs/check_docs.py
     python3 scripts/docs/check_backend_traceability.py
+    make readme-check                                # when README.md changes (kritva-program README standard, D-055)
     python3 scripts/lint/check_source_headers.py --mode tracked --strict
     make status-gen-check
 
