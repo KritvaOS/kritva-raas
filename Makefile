@@ -75,11 +75,14 @@ header-check: ## Validate KritvaOS source headers (strict, tracked files)
 # Same commands as .github/workflows/docs-check.yml.
 #------------------------------------------------------------------------------
 
-.PHONY: docs-check traceability-check approvals-test approvals-check planning-root-test status-test status-report status-gen-test status-gen-check
+.PHONY: docs-check readme-check traceability-check approvals-test approvals-check planning-root-test status-test status-report status-gen-test status-gen-check
 
 docs-check: ## Validate documentation structure, phases and milestones
 	@echo "[docs-check] Validating documentation..."
 	$(PYTHON) $(SCRIPT_DIR)/docs/check_docs.py
+
+readme-check: ## Check README.md against the Kritva README standard (structure, metadata, local links)
+	$(PYTHON) $(SCRIPT_DIR)/docs/check_readme.py README.md
 
 traceability-check: ## Validate backend increment dossier traceability
 	@echo "[traceability] Validating backend increment traceability..."
