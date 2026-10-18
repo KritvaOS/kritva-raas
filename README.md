@@ -83,43 +83,45 @@ Read in this order. A label names a role, not an approval; where a document stat
 
 The tree is a navigation map of what is checked in now, not a statement that every domain has code. Only `apps/backend` holds application code; the frontend, database and cloud domains exist as plans and architecture under `docs/`. Paths described below as being consolidated are TRANSITIONAL; `docs/REPOSITORY_STRUCTURE.md` (PROPOSED) holds the proposed full path-to-owner map.
 
+```
 kritva-raas/
-    ├── apps/
-    │   └── backend/                 the control-plane backend (Node.js, TypeScript)
-    │       ├── src/
-    │       │   ├── main.ts, run.ts  entry point and process wiring
-    │       │   ├── config/          the only place settings are read and validated
-    │       │   ├── shared/          infrastructure with no module or framework imports (request context)
-    │       │   └── transport/       HTTP layer; the only code that imports the web framework
-    │       └── tests/               mirrors src/
-    ├── planning/                    what is being planned and executed
-    │   ├── README.md, CURRENT_PLAN.md, PHASES.md, DECISIONS.md, roadmaps, authority and status-vocabulary files
-    │   └── backend/
-    │       ├── BACKEND_*.md         plan, task register, acceptance criteria, test strategy, security gate, risks, changelog
-    │       ├── decisions/           decision records and approval packages
-    │       └── increments/B-INC-00x-*/   one execution dossier per increment
-    ├── docs/                        stable requirements, contracts and architecture
-    │   ├── architecture/            system-wide and per-domain architecture
-    │   ├── protocol/                API contract, envelopes, responses, error codes, events, idempotency
-    │   ├── security/                threat model, authorization, tenant isolation, secrets and key management
-    │   ├── ui/                      UI specification, design system, UI acceptance criteria
-    │   ├── backend/ database/ cloud/ frontend/   per-domain architecture, development, planning and milestone dossiers
-    │   ├── milestones/              program phase dossiers
-    │   ├── development/             setup, workflow, branching, code review, testing, source header standard
-    │   ├── tracking/                tracking rules and templates (being consolidated into planning/)
-    │   └── tasks/                   task package template for work outside an increment
-    ├── scripts/
-    │   ├── docs/                    documentation, traceability, approval and status checkers
-    │   ├── lint/                    source header checker
-    │   ├── security/                commit message checker
-    │   └── status/                  generator for status/status.json
-    ├── status/                      generated program status report (never edit by hand)
-    ├── tests/                       unit tests for the checkers above
-    ├── .github/                     CODEOWNERS and CI workflows
-    ├── .githooks/                   pre-commit and commit-msg hooks
-    ├── Makefile                     the local commands (run `make help`)
-    ├── .node-version                the pinned Node.js version
-    ├── AGENTS.md, SECURITY.md, LICENSE
+├── apps/
+│   └── backend/                 the control-plane backend (Node.js, TypeScript)
+│       ├── src/
+│       │   ├── main.ts, run.ts  entry point and process wiring
+│       │   ├── config/          the only place settings are read and validated
+│       │   ├── shared/          infrastructure with no module or framework imports (request context)
+│       │   └── transport/       HTTP layer; the only code that imports the web framework
+│       └── tests/               mirrors src/
+├── planning/                    what is being planned and executed
+│   ├── README.md, CURRENT_PLAN.md, PHASES.md, DECISIONS.md, roadmaps, authority and status-vocabulary files
+│   └── backend/
+│       ├── BACKEND_*.md         plan, task register, acceptance criteria, test strategy, security gate, risks, changelog
+│       ├── decisions/           decision records and approval packages
+│       └── increments/B-INC-00x-*/   one execution dossier per increment
+├── docs/                        stable requirements, contracts and architecture
+│   ├── architecture/            system-wide and per-domain architecture
+│   ├── protocol/                API contract, envelopes, responses, error codes, events, idempotency
+│   ├── security/                threat model, authorization, tenant isolation, secrets and key management
+│   ├── ui/                      UI specification, design system, UI acceptance criteria
+│   ├── backend/ database/ cloud/ frontend/   per-domain architecture, development, planning and milestone dossiers
+│   ├── milestones/              program phase dossiers
+│   ├── development/             setup, workflow, branching, code review, testing, source header standard
+│   ├── tracking/                tracking rules and templates (being consolidated into planning/)
+│   └── tasks/                   task package template for work outside an increment
+├── scripts/
+│   ├── docs/                    documentation, traceability, approval and status checkers
+│   ├── lint/                    source header checker
+│   ├── security/                commit message checker
+│   └── status/                  generator for status/status.json
+├── status/                      generated program status report (never edit by hand)
+├── tests/                       unit tests for the checkers above
+├── .github/                     CODEOWNERS and CI workflows
+├── .githooks/                   pre-commit and commit-msg hooks
+├── Makefile                     the local commands (run `make help`)
+├── .node-version                the pinned Node.js version
+└── AGENTS.md, SECURITY.md, LICENSE
+```
 
 Rule of thumb: `docs/` says what the backend is and must do; `planning/` says what is being done about it and in what order.
 
