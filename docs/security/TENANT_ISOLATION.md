@@ -1,5 +1,7 @@
 # Kritva RaaS Tenant Isolation
 
+> **Partly revised for SYS-ADR-008 (direct artifact transfer).** The object storage sections (31 to 35, 103 and 163), artifact isolation (91 and 92) and the artifact acceptance criterion are revised: execution artifacts are not stored in cloud object storage, so tenant isolation for artifacts applies to registered metadata, transfer grants and destination-side checks; see [DIRECT_ARTIFACT_TRANSFER.md](../architecture/DIRECT_ARTIFACT_TRANSFER.md). Object storage isolation applies to results, logs, video and telemetry. Grant claims, signing and key rotation (DT-OD-02), connectivity (DT-OD-01), any cloud retention (DT-OD-03) and capacity (DT-OD-04) are open and are not decided here. Remaining mentions of artifact storage in other sections are superseded where they refer to execution artifacts. SYS-ADR-008 is a direction pending owner confirmation, and nothing is implemented.
+
 ## 1. Purpose
 
 This document defines the production-grade tenant-isolation architecture for
@@ -559,8 +561,9 @@ The resource allocation boundary shall guarantee:
 
 # 31. Object Storage Isolation
 
-Large artifacts, results, logs, video, and telemetry may reside in object
-storage.
+Results, logs, video, and telemetry may reside in object storage. Execution
+artifacts do not (SYS-ADR-008); their bytes move directly between the workstation
+and the destination, and the Control Plane holds registered metadata only.
 
 Object storage shall enforce tenant isolation independently of PostgreSQL.
 
@@ -571,7 +574,6 @@ Conceptual:
          v
     Object Namespace
          |
-         +-- artifacts/
          +-- results/
          +-- video/
          +-- logs/
@@ -585,7 +587,7 @@ Preferred logical key:
 
 Example:
 
-    org-001/artifacts/artifact-123/package.krv
+    org-001/results/result-123/summary.json
 
 Tenant IDs shall not be the sole security control.
 
@@ -620,7 +622,7 @@ Bucket/container policies shall prevent:
 - anonymous access;
 - cross-tenant listing;
 - unrestricted application access;
-- public artifact downloads.
+- public result, log or media downloads.
 
 Application authorization remains required before generating object access.
 
@@ -904,7 +906,7 @@ Runtime network access shall be deny-by-default.
 Permitted destinations should be explicit:
 
 - Control Plane;
-- approved artifact service;
+- approved artifact service (metadata and grants only);
 - approved telemetry endpoint;
 - required robot controller;
 - explicitly authorized external endpoint.
@@ -1308,11 +1310,13 @@ without exposing:
 
 Artifact identifiers shall be non-guessable.
 
-Even if an attacker learns another artifact ID, access shall require:
+Even if an attacker learns another artifact ID, access to its metadata or a transfer grant shall require:
 
     organization authorization
        +
     artifact permission
+
+A transfer grant shall be bound to one organization, project, artifact identity and destination, so that a grant issued to Organization A cannot be used to place content at an Organization B destination, or to receive Organization B content. A destination shall reject a grant whose claims do not match. The grant claim set is open (DT-OD-02). Tenant isolation tests for the direct path are covered by DT-AT-01 to DT-AT-08, and cross-tenant grant use is a negative case to add when those tests are written.
 
 # 92. Artifact Execution Isolation
 
@@ -1482,7 +1486,7 @@ Tests shall verify:
 
 Tests shall verify:
 
-- Org A cannot download Org B object;
+- Org A cannot download Org B object (result, log or media);
 - Org A cannot list Org B objects;
 - signed URL cannot be generated without authorization;
 - expired signed URL fails;
@@ -2230,6 +2234,8 @@ The following require final implementation decisions:
 
 # 163. Acceptance Criteria: Object Storage
 
+These criteria apply to results, logs, video and telemetry. Execution artifacts are not held in cloud object storage.
+
 - [ ] Private tenant objects use tenant-scoped namespaces.
 - [ ] Object access requires authorization.
 - [ ] Public access is disabled for private objects.
@@ -2328,7 +2334,8 @@ The following require final implementation decisions:
 # 172. Acceptance Criteria: Data Domains
 
 - [ ] Projects are tenant isolated.
-- [ ] Artifacts are tenant isolated.
+- [ ] Artifact metadata and transfer grants are tenant isolated.
+- [ ] A transfer grant cannot be used for another organization, project, artifact or destination.
 - [ ] Bookings are tenant isolated.
 - [ ] Credits are tenant isolated.
 - [ ] Jobs are tenant isolated.

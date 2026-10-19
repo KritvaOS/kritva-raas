@@ -1,5 +1,7 @@
 # Kritva RaaS Source Code Privacy
 
+> **Partly revised for SYS-ADR-008 (direct artifact transfer).** The scope list, the data location table, what leaves the developer machine (Sections 13 and 14), the transfer contract, validation and inspection (Sections 49 to 51), artifact confidentiality and delivery (56 and 57), storage verification and namespace (72, 81 and 82), the disclosure text, the acceptance criteria, the invariants and the boundary diagram are revised; see [DIRECT_ARTIFACT_TRANSFER.md](../architecture/DIRECT_ARTIFACT_TRANSFER.md). The `.krv` artifact now moves directly from the workstation to the destination, and the Control Plane receives metadata only, so it cannot inspect artifact content and cloud object storage holds no execution artifacts. The word "upload" elsewhere in this document names the point where information leaves the developer machine (the upload boundary) and applies to the direct transfer and to metadata registration. Connectivity (DT-OD-01), grant claims and key handling (DT-OD-02), any cloud retention (DT-OD-03), capacity (DT-OD-04) and offline policy (DT-OD-05) are open and are not decided here. SYS-ADR-008 is a direction pending owner confirmation, and nothing is implemented.
+
 ## 1. Purpose
 
 This document defines the production-grade source-code privacy architecture and
@@ -61,9 +63,9 @@ This document applies to:
 - Artifact manifest generation.
 - Artifact validation.
 - Artifact signing.
-- Artifact upload.
+- Artifact metadata registration and direct artifact transfer.
 - Control Plane APIs.
-- Artifact object storage.
+- Destination artifact staging (Lab Agent or other destination).
 - Lab Agent.
 - Kritva Runtime.
 - Remote execution.
@@ -139,12 +141,12 @@ The source privacy architecture shall:
 
 The system shall distinguish three categories:
 
-| Category | Default Location | Cloud Upload |
+| Category | Default Location | Leaves the developer machine |
 |---|---|---|
 | Original source | Developer machine | No |
 | Local build workspace | Developer machine | No |
-| `.krv` execution artifact | Developer machine then object storage | Yes |
-| Artifact manifest | Developer machine then Control Plane | Yes |
+| `.krv` execution artifact | Developer machine then the destination, by direct transfer; not the Control Plane and not cloud object storage | Yes, to the destination only |
+| Artifact manifest | Developer machine then Control Plane (registered metadata) | Yes |
 | Artifact checksum | Developer machine then Control Plane | Yes |
 | Artifact signature | Developer machine then Control Plane | Yes |
 | Runtime configuration | Developer machine / cloud as required | Limited |
@@ -422,9 +424,11 @@ unless a future explicitly opt-in feature changes the product security model.
 
 # 13. What Is Uploaded
 
-The normal remote execution upload contains:
+The normal remote execution flow sends two things to two different places. The `.krv` artifact goes directly to the destination. The Control Plane receives the registered metadata below and never the artifact bytes.
 
-1. `.krv` artifact.
+The normal remote execution transfer and registration contain:
+
+1. `.krv` artifact (destination only, by direct transfer).
 2. Artifact identifier.
 3. Artifact manifest.
 4. Artifact checksum.
@@ -440,12 +444,12 @@ The normal remote execution upload contains:
 14. Application/version identifiers.
 15. Build/provenance metadata that does not contain source.
 
-The server may also receive:
+The Control Plane may also receive:
 
 - organization ID;
 - project ID;
 - user/service actor ID;
-- upload timestamp;
+- registration timestamp;
 - request ID;
 - artifact size;
 - artifact format/version.
@@ -1188,14 +1192,15 @@ The implementation shall make accidental source transmission difficult.
 
 # 49. Upload API Contract
 
-The upload API shall accept:
+The metadata registration API shall accept:
 
     artifact_id
     artifact_metadata
     manifest
     checksum
     signature
-    artifact_binary
+
+It shall not accept artifact bytes. The direct transfer to the destination carries the artifact binary under a short-lived transfer grant. The registration operation and transfer grant contract are not defined here (see DIRECT_ARTIFACT_TRANSFER.md and DT-OD-02).
 
 It shall not define an ordinary field such as:
 
@@ -1204,17 +1209,17 @@ It shall not define an ordinary field such as:
     source_files
     source_tree
 
-for normal execution uploads.
+for normal execution registration or transfer.
 
 Any future source-bearing API shall be treated as a new security boundary and
 shall require explicit security review.
 
 # 50. Upload Validation
 
-The server shall independently validate:
+The Control Plane shall independently validate the registered metadata:
 
-- artifact format;
-- artifact size;
+- declared artifact format;
+- declared artifact size;
 - manifest schema;
 - artifact ID;
 - checksum;
@@ -1225,12 +1230,15 @@ The server shall independently validate:
 - SDK compatibility;
 - capabilities.
 
-The server cannot prove the absence of all source content from arbitrary binaries,
-so local scanning remains mandatory.
+The destination shall validate the received content (checksum, signature, format, size, platform, capabilities) against the registered metadata, using staged, non-executable validation before READY. The destination result is reported to the Control Plane as an authenticated assertion.
+
+Neither the Control Plane nor the destination can prove the absence of all source content from arbitrary binaries, so local scanning remains mandatory.
 
 # 51. Server-Side Artifact Inspection
 
-The server may inspect artifacts for:
+Under SYS-ADR-008 the Control Plane does not hold artifact content and cannot perform server-side inspection of it. Inspection that remains possible is destination-side (for example by the Lab Agent) or metadata-only at the Control Plane. Any proposal for a cloud inspection service would require holding content and is covered by DT-OD-03.
+
+Destination-side inspection may cover:
 
 - package integrity;
 - malware;
@@ -1243,8 +1251,8 @@ The server may inspect artifacts for:
 Server-side inspection shall not be treated as a replacement for local source
 privacy scanning.
 
-If server inspection identifies likely source content, execution/upload policy shall
-be able to reject the artifact.
+If destination inspection identifies likely source content, destination policy shall
+be able to reject the artifact and report the rejection.
 
 # 52. Privacy Scan Evidence
 
@@ -1319,26 +1327,26 @@ Exceptions shall not allow:
 
 Artifact confidentiality is separate from source privacy.
 
-Because artifacts may contain valuable executable IP, artifact storage shall be
+Because artifacts may contain valuable executable IP, the direct transfer and the destination copy shall be
 protected using:
 
-- encryption at rest;
-- authenticated access;
-- tenant authorization;
-- scoped object-storage credentials;
-- short-lived download URLs.
+- encrypted transport between the workstation and the destination;
+- encryption at rest at the destination where the destination policy requires it;
+- authenticated transfer under a short-lived, scoped transfer grant;
+- tenant and destination binding of the grant.
+
+The cloud holds no execution artifact to encrypt. The transport authentication and key handling are open (DT-OD-02).
 
 # 57. Artifact Download
 
-Users may download artifacts only when authorized.
+The Control Plane does not serve artifact downloads. Retrieval of an artifact from a destination, where permitted, shall require authorization and a scoped grant. Results, logs and media are downloaded from object storage under Section 26 of SECURITY_REQUIREMENTS.md.
 
-Artifact downloads shall:
+Artifact retrieval, where permitted, shall:
 
 - authenticate the requester;
 - verify organization/project authorization;
 - be audited where required;
-- use protected transport;
-- use short-lived access URLs where applicable.
+- use protected transport.
 
 # 58. Remote Execution Does Not Require Source
 
@@ -1612,10 +1620,10 @@ Network verification shall be performed in a controlled test environment.
 
 # 72. Storage-Level Verification
 
-After an artifact upload, automated tests shall inspect:
+After artifact registration and transfer, automated tests shall inspect:
 
 - PostgreSQL records;
-- object-storage objects;
+- object-storage objects (which shall contain no execution artifact);
 - worker payloads;
 - audit records.
 
@@ -1742,21 +1750,21 @@ Any exception shall require:
 
 # 81. Object Storage Namespace
 
-Artifacts shall use tenant-scoped object keys.
+Object storage holds results, logs and media, which use tenant-scoped object keys. Execution artifacts have no object key because they are not stored in cloud object storage (SYS-ADR-008).
 
 Conceptual structure:
 
-    artifacts/
+    results/
       {organization_id}/
         {project_id}/
-          {artifact_id}/
-            artifact.krv
+          {run_id}/
+            result.json
 
 The exact storage key shall not expose unnecessary private metadata.
 
 # 82. Object Storage Access
 
-The client shall not receive permanent object-store credentials.
+The client shall not receive permanent object-store credentials. This applies to results, logs and media.
 
 Preferred flow:
 
@@ -1914,7 +1922,7 @@ The Studio should distinguish:
     SCANNING LOCALLY
     PACKAGING LOCALLY
     SIGNING LOCALLY
-    UPLOADING ARTIFACT
+    TRANSFERRING ARTIFACT TO DESTINATION
     REMOTE VALIDATION
     REMOTE EXECUTION
 
@@ -1974,12 +1982,7 @@ Example result:
 
 ## 93.4 Upload API
 
-    upload_artifact(
-        artifact,
-        manifest,
-        checksum,
-        signature
-    ) -> UploadResult
+Conceptual, not a defined API: registration sends manifest, checksum and signature to the Control Plane, and the direct transfer sends the artifact to the destination under a transfer grant. The operations are open (DT-OD-02).
 
 No source parameter shall exist in the normal contract.
 
@@ -2075,7 +2078,7 @@ The source privacy model has residual risks.
 | Secret in artifact | 3 | 5 | High |
 | Telemetry source leakage | 2 | 4 | Medium |
 | Crash dump leakage | 2 | 4 | Medium |
-| Object-storage artifact theft | 3 | 5 | High |
+| Artifact theft from a destination or in transit (formerly object-storage artifact theft) | 3 | 5 | High |
 | Local endpoint compromise | 3 | 5 | High |
 | Scanner bypass | 2 | 5 | High |
 
@@ -2260,9 +2263,9 @@ Required package tests include:
 
 Integration tests shall verify:
 
-- upload contains artifact only;
+- transfer contains artifact only, and registration contains metadata only;
 - database contains no source;
-- object storage contains only approved package;
+- object storage contains no source and no execution artifact;
 - queue payload contains no source;
 - audit records contain no source;
 - logs contain no source.
@@ -2295,7 +2298,7 @@ Expected:
     HTTPS
       |
       +---- API metadata
-      +---- Artifact upload
+      +---- Artifact registration (metadata only)
       +---- Authenticated control messages
 
 Not expected:
@@ -2473,12 +2476,12 @@ Architecture review shall verify:
 
 # 129. Acceptance Criteria: Security
 
-- [ ] Artifact upload requires authentication.
-- [ ] Artifact upload requires authorization.
-- [ ] Artifact access is tenant scoped.
+- [ ] Artifact registration and transfer grant issuance require authentication.
+- [ ] Artifact registration and transfer grant issuance require authorization.
+- [ ] Artifact metadata access is tenant scoped.
 - [ ] Object storage is private.
-- [ ] Artifact downloads are authorized.
-- [ ] Signed URLs are short-lived.
+- [ ] Result, log and media downloads are authorized.
+- [ ] Signed URLs (results and media) are short-lived.
 - [ ] Artifact integrity is verified.
 - [ ] Artifact compatibility is verified.
 - [ ] Revoked artifacts cannot execute.
@@ -2563,7 +2566,7 @@ The following invariants are mandatory:
 16. Runtime logs shall not automatically read source.
 17. Queue messages shall not contain source.
 18. PostgreSQL shall not store source.
-19. Object storage shall not store source.
+19. Object storage shall not store source, and shall not store execution artifacts.
 20. Administrators shall not have a normal cloud-side mechanism to retrieve
     customer source.
 21. Remote execution shall not require source.
@@ -2597,7 +2600,7 @@ The following invariants are mandatory:
     |                                               +--------+-------+ |
     +--------------------------------------------------------|---------+
                                                              |
-                                                             | .krv only
+                                                             | metadata only
                                                              v
     +-------------------------------------------------------------------+
     |                          RAAS CLOUD                               |
@@ -2605,7 +2608,7 @@ The following invariants are mandatory:
     |  API -> Authentication -> Authorization -> Validation             |
     |                              |                                    |
     |                              v                                    |
-    |                       Artifact Storage                             |
+    |                   Metadata + Transfer Grants                       |
     |                              |                                    |
     |                              v                                    |
     |                       Booking / Job                               |
@@ -2613,6 +2616,8 @@ The following invariants are mandatory:
     +------------------------------|------------------------------------+
                                    |
                                    | secure lab channel
+                                   | (control messages; the .krv arrives by
+                                   |  direct transfer from the workstation)
                                    v
     +-------------------------------------------------------------------+
     |                           LAB                                     |
@@ -2625,7 +2630,7 @@ The following invariants are mandatory:
 The definitive product guarantee is:
 
 > Kritva RaaS does not need the customer's source code to build, package, book,
-> upload, deploy, execute, monitor, or analyze a robotics application remotely.
+> transfer, deploy, execute, monitor, or analyze a robotics application remotely.
 > The normal product boundary is the signed `.krv` artifact. Customer source
 > remains on the developer machine, while artifact integrity, tenant isolation,
 > telemetry controls, diagnostics sanitization, and continuous verification
