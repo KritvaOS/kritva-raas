@@ -1,5 +1,34 @@
 # Kritva RaaS Development Setup
 
+> **Status: planned environment, not runnable today.** This document describes the full local environment the project is working toward. What exists in the repository today is the Control Plane backend and the repository checks. For what you can run now, use [`INTERN_QUICKSTART.md`](INTERN_QUICKSTART.md), the README (Section 6) and `apps/backend/README.md`. Where this document names pnpm, Corepack, Rust, Tauri, Docker, PostgreSQL, an object-storage emulator or a queue, those are planned: the backend uses npm with Node.js pinned in `.node-version` and `apps/backend/package.json`, and there is no pnpm workspace, `.nvmrc`, Docker setup or database code. The status table below labels each group of sections. A label is a reading aid, not an approval.
+
+| Sections | Label | Meaning |
+|---|---|---|
+| 1 to 5 (purpose, scope, goals, principles) | PLANNED | Describe the target environment |
+| 6, 6.1, 6.2 (repository layout, ownership) | PARTLY CURRENT | The real layout is in the README (Section 5) and `docs/REPOSITORY_STRUCTURE.md`; directories named here that do not exist yet are planned |
+| 7 to 12 (toolchain, hosts, Node.js, pnpm, Rust, Tauri) | PARTLY CURRENT | Git, Node.js, Python 3 and make apply now; Node.js is pinned in `.node-version` and npm is used, not pnpm. Rust, Tauri and pnpm are planned |
+| 13 to 15 (Docker, PostgreSQL, infrastructure philosophy) | PLANNED | No Docker or database code exists |
+| 16 to 21 (environment model, files, variables, validation) | PLANNED | Backend configuration today is in `apps/backend/README.md` (Configuration) |
+| 22 to 26 (bootstrap, clone, dependencies) | PARTLY CURRENT | Cloning and `npm ci --ignore-scripts` in `apps/backend` apply now; Rust and root-level pnpm steps are planned |
+| 27 to 31 (infrastructure, database init, migration, seed) | PLANNED | |
+| 32, 33 (backend startup) | PARTLY CURRENT | The backend can be built and started as in `apps/backend/README.md`; it has no database or queue dependency yet |
+| 34, 35 (Studio) | PLANNED | No Studio code exists |
+| 36, 37 (simulated lab, complete local system) | PLANNED | |
+| 38 (end-to-end flow) | PLANNED | |
+| 39 to 45 (workspace commands, monorepo, packages) | PLANNED | Real commands are the `make` targets and the backend npm scripts in the README |
+| 46 to 50 (database, object storage, queue, logging, observability) | PLANNED | Section 47 predates SYS-ADR-008 and describes artifacts under storage operations; execution artifacts are not stored in cloud storage |
+| 51 to 60 (tests, formatting, builds, full verification) | PARTLY CURRENT | `make check` and the backend `npm test` exist; there is no full end-to-end suite, and the repository-root `make build`, `make test`, `make lint` and `make format` targets are placeholders that fail by design (see the README) |
+| 61, 62 (Git workflow, pre-commit) | PARTLY CURRENT | The current Git workflow, commit format and pull request text are in the README (Section 12), `AGENTS.md` and `planning/AGENT_RULES.md`, which win if they differ |
+| 63 to 73 (database rules, local authentication, authorization, tenancy, credits, booking, job, result) | PLANNED | Section 68 (local artifact flow) is SUPERSEDED for the upload step by SYS-ADR-008 |
+| 74 to 89 (troubleshooting) | PLANNED | Section 87 (artifact upload troubleshooting) is SUPERSEDED for execution artifacts by SYS-ADR-008 |
+| 90 to 99 (security checklist, CI parity, containers, IDE, onboarding, health check) | PARTLY CURRENT | CI checks are listed in the README (Section 11); there are no development containers or `pnpm doctor` |
+| 100 to 109 (phase mapping and acceptance) | PLANNED | Phase labels follow an older phase model; the planning records own current phases |
+| 110 to 115, 117 to 121 (risks, performance, reproducibility, offline, dependency security, isolation, branches, pull requests, architecture changes, open questions) | PARTLY CURRENT | Read as intent; the README and planning records own current rules |
+| 116 (development artifact storage) | SUPERSEDED | The artifacts bucket is superseded for execution artifacts by SYS-ADR-008 |
+| 122 to 136 (acceptance criteria, invariants, final workflow) | PLANNED | Acceptance records are in the planning folders, not here |
+
+SYS-ADR-008 (direct artifact transfer, `docs/architecture/DIRECT_ARTIFACT_TRANSFER.md`) is a direction approved but not implemented. Sections 47, 68, 87 and 116 have not been rewritten for it; this table only marks them.
+
 ## 1. Purpose
 
 This document defines the production-grade developer setup for the Kritva RaaS

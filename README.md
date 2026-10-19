@@ -89,7 +89,7 @@ These are the contract from `API_ARCHITECTURE.md` and `docs/protocol/`. The tran
 
 ## 4. Documents to Read First
 
-Read in this order. A label names a role, not an approval; where a document states its own status, it is shown.
+New contributors and interns start with [`docs/development/INTERN_QUICKSTART.md`](docs/development/INTERN_QUICKSTART.md) (rows 12 and 13 below), then read in the order below. A label names a role, not an approval; where a document states its own status, it is shown.
 
 | # | Document | Label, status | What it answers |
 |---|---|---|---|
@@ -104,6 +104,8 @@ Read in this order. A label names a role, not an approval; where a document stat
 | 9 | [`docs/architecture/DIRECT_ARTIFACT_TRANSFER.md`](docs/architecture/DIRECT_ARTIFACT_TRANSFER.md) | PROPOSED (direction owner-approved, confirmation pending) | How the execution artifact reaches the destination system without passing through the cloud |
 | 10 | [`docs/ui/UI_SPECIFICATION.md`](docs/ui/UI_SPECIFICATION.md) | REFERENCE, PROPOSED sections | The Studio UI, including the three-panel workspace (11.1), cloud clock (14.1) and booking navigator (50.1) |
 | 11 | [`docs/architecture/`](docs/architecture/) (the four architecture documents, section 3) | AUTHORITATIVE for the design baseline; status declared in each file: Architecture Baseline | The target architecture. Not proof that it is implemented, and not an owner approval |
+| 12 | [`docs/development/INTERN_QUICKSTART.md`](docs/development/INTERN_QUICKSTART.md) | REFERENCE, PROPOSED (a reading guide; its commands are marked UNVERIFIED until run) | What exists today, how to set up the backend, which task to pick, and how to commit and open a pull request |
+| 13 | [`docs/development/DEVELOPMENT_SETUP.md`](docs/development/DEVELOPMENT_SETUP.md) | REFERENCE for the planned environment, not runnable today (its status table says which sections apply now) | The planned full local environment: Studio, database, object storage, queue and simulated lab |
 
 ## 5. Repository Structure and File Responsibilities
 
