@@ -1,5 +1,7 @@
 # Kritva RaaS Local Deployment
 
+> **Partly revised for SYS-ADR-008 (direct artifact transfer).** The local object store, the build and artifact flow, the quick start, troubleshooting and acceptance items now describe registration and direct transfer from the local Studio to the simulated Lab Agent, with the object store used for results, logs and media. See [DIRECT_ARTIFACT_TRANSFER.md](../../architecture/DIRECT_ARTIFACT_TRANSFER.md). The local connectivity model is open (DT-OD-01). References to application or release artifacts (software builds promoted between environments) are unchanged; this change concerns `.krv` execution artifacts only. Grant fields (DT-OD-02), connectivity (DT-OD-01), any cloud retention (DT-OD-03), capacity (DT-OD-04) and offline policy (DT-OD-05) are open. SYS-ADR-008 is a direction pending owner confirmation, and nothing is implemented.
+
 ## 1. Document Control
 
 | Item | Value |
@@ -250,7 +252,7 @@ Deployment separation does not imply separate domain services.
 | `scheduler` | Resource allocation | PostgreSQL | Required |
 | `reconciler` | Recovery/reconciliation | PostgreSQL | Required |
 | `postgres` | Structured state | Volume | Required |
-| `object-store` | Artifacts/results | Volume | Required |
+| `object-store` | Results, logs and media | Volume | Required |
 | `queue` | Async transport | Volume/config | Required |
 | `lab-agent` | Simulated lab | Optional state | Required |
 | `simulator` | Simulated robot/resource | Optional | Required |
@@ -553,7 +555,6 @@ An S3-compatible local object store is recommended.
 
 The service provides:
 
-- artifact storage;
 - result files;
 - logs;
 - optional video;
@@ -562,7 +563,6 @@ The service provides:
 Example configuration:
 
     OBJECT_STORAGE_ENDPOINT=http://object-store:9000
-    OBJECT_STORAGE_BUCKET_ARTIFACTS=raas-artifacts
     OBJECT_STORAGE_BUCKET_RESULTS=raas-results
     OBJECT_STORAGE_BUCKET_LOGS=raas-logs
     OBJECT_STORAGE_BUCKET_VIDEO=raas-video
@@ -1201,14 +1201,15 @@ The local Control Plane receives only the generated `.krv` artifact.
           v
     .krv Artifact
           |
-          v
-    Local RaaS API
+          +--> Local RaaS API (metadata and transfer grant)
           |
           v
-    Object Storage
+    Direct transfer
           |
           v
-    Simulated Lab Agent
+    Simulated Lab Agent (staged validation, READY)
+
+No object storage is involved in the artifact path.
 
 This preserves the fundamental:
 
@@ -1448,7 +1449,7 @@ Recommended workflow:
     6. Create/open project.
     7. Build locally.
     8. Package `.krv`.
-    9. Upload artifact.
+    9. Register and transfer the artifact.
     10. Create booking.
     11. Start Job.
     12. Observe Run.
@@ -1575,17 +1576,17 @@ If the Agent is offline:
 
 After recovery, verify reconciliation.
 
-## 80. Troubleshooting: Artifact Upload
+## 80. Troubleshooting: Artifact Transfer
 
 Check:
 
 - API authentication;
 - artifact metadata creation;
-- object storage availability;
-- upload authorization;
+- transfer grant issuance and expiry;
+- reachability of the destination (connectivity model open);
 - digest;
-- object existence;
-- validation worker;
+- destination staging result;
+- destination status report;
 - platform compatibility.
 
 The correct debugging sequence is:
@@ -2147,13 +2148,13 @@ overall architecture.
 ## Artifact
 
 - [ ] Local `.krv` artifact exists.
-- [ ] Artifact upload works.
-- [ ] Object storage receives artifact.
+- [ ] Artifact registration and direct transfer work.
+- [ ] No execution artifact is stored in object storage.
 - [ ] Digest is calculated.
 - [ ] Manifest is validated.
 - [ ] Platform compatibility is checked.
 - [ ] Artifact acceptance state is persisted.
-- [ ] Artifact download is authorized.
+- [ ] Transfer grant issuance is authorized.
 
 ## Booking
 

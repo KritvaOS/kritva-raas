@@ -1,5 +1,7 @@
 # Kritva RaaS Application Architecture
 
+> **Partly revised for SYS-ADR-008 (direct artifact transfer).** The artifact flow (Section 17), the Artifact module, the artifact-only boundary, data ownership, the phase deliverables and the object storage lines now describe metadata registration and direct transfer; see [DIRECT_ARTIFACT_TRANSFER.md](DIRECT_ARTIFACT_TRANSFER.md). Remaining mentions of artifact upload or artifact binaries in object storage are superseded where they refer to execution artifacts. Grant fields (DT-OD-02), connectivity (DT-OD-01), any cloud retention (DT-OD-03), capacity (DT-OD-04) and offline policy (DT-OD-05) are open. SYS-ADR-008 is a direction pending owner confirmation, and nothing is implemented.
+
 ## 1. Document Control
 
 | Item | Value |
@@ -14,7 +16,7 @@
 | Supporting Services | Workers, API, WebSocket, Storage, Queue, Observability |
 | API Baseline | REST `/api/v1/` |
 | Realtime Baseline | WebSocket |
-| Execution Principle | Build locally, upload artifact, execute remotely |
+| Execution Principle | Build locally, transfer artifact directly to the destination, execute remotely |
 | Deployment Principle | Independently deployable application units with stable contracts |
 
 ## 2. Purpose
@@ -519,28 +521,28 @@ operations.
 
 The Control Plane is not required for this local build operation.
 
-## 17. Artifact Upload Flow
+## 17. Artifact Transfer Flow
 
     Local .krv
         |
         v
     Studio
         |
-        | artifact.create
+        | artifact.create (metadata)
         v
     Control Plane
         |
-        | upload authorization
+        | transfer grant (short-lived, scoped)
         v
-    Object Storage
+    Studio --direct transfer--> Destination (Lab Agent)
         |
         v
-    Control Plane validation
+    Destination staged validation, atomic READY
         |
         v
-    Artifact ACCEPTED / REJECTED
+    Authenticated status report to the Control Plane (metadata)
 
-Large artifact payloads should bypass the application server where practical.
+Artifact bytes do not pass through the application server or cloud object storage. The connectivity model is open (DT-OD-01). READY is not authorization to execute.
 
 ## 18. Web Console Architecture
 
@@ -724,7 +726,7 @@ The Project module owns:
 - project archive;
 - project lifecycle.
 
-The project references artifacts but does not own artifact binary storage.
+The project references artifacts but does not own artifact bytes; the Control Plane holds none.
 
 ## 27. Platform Module
 
@@ -748,15 +750,15 @@ It is the authoritative source for supported platform definitions.
 The Artifact module owns:
 
 - artifact metadata;
-- upload authorization;
-- validation;
+- transfer grant issuance (open, DT-OD-02);
+- metadata validation and recording of destination reports;
 - compatibility;
 - artifact lifecycle;
 - checksum;
 - signature metadata;
 - retention metadata.
 
-Binary content is stored through the object-storage adapter.
+Artifact bytes are not stored through the object-storage adapter; they move directly to the destination (SYS-ADR-008).
 
 ## 29. Booking Module
 
@@ -1217,8 +1219,8 @@ require a separate security and source-code trust model.
 
 ## 51. Artifact-Only Boundary
 
-Once the artifact is uploaded, the Control Plane works with artifact metadata and
-binary content.
+Once the artifact is registered, the Control Plane works with artifact metadata and
+destination status reports. It never holds binary content.
 
 It does not require:
 
@@ -1713,7 +1715,7 @@ Business workflows remain in the consuming application.
 | Source code | User workstation |
 | Build state | Local Runtime |
 | Artifact metadata | Control Plane |
-| Artifact binary | Object Storage |
+| Artifact binary | Workstation and destination; not held by the Control Plane or cloud object storage |
 | Booking | Control Plane |
 | Credit ledger | Control Plane |
 | Job | Control Plane |
@@ -1974,12 +1976,12 @@ Capabilities:
 
 Control Plane supports:
 
-- artifact creation;
-- upload;
+- artifact registration;
+- transfer grant issuance (open, DT-OD-02);
 - metadata;
-- validation.
+- validation of metadata and recording of destination reports.
 
-Object storage becomes part of the execution path.
+Object storage serves results and media and is not part of the artifact path.
 
 ## 90. P3 CONTROL PLANE
 
@@ -2361,7 +2363,7 @@ Supporting services provide:
 
     Object Storage
        |
-       +--> artifacts and large result objects
+       +--> large result, log and media objects (not execution artifacts)
 
     Queue
        |
@@ -2449,4 +2451,4 @@ The architecture therefore maintains a clear separation between:
 This application architecture is the implementation-level expression of the Kritva RaaS
 system architecture and shall remain consistent with the product-wide principle:
 
-> Build locally. Book remotely. Upload the artifact. Run on real robots. Observe live. Analyze results. Run again.
+> Build locally. Book remotely. Transfer the artifact directly to the destination. Run on real robots. Observe live. Analyze results. Run again.

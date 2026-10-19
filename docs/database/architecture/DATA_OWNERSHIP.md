@@ -1,5 +1,7 @@
 # Kritva RaaS Data Ownership
 
+> **Partly revised for SYS-ADR-008 (direct artifact transfer).** Execution artifacts are no longer owned by cloud object storage; the destination holds the binary copy and the Control Plane holds metadata only. Binary authority, object storage ownership (Section 10), artifact ownership, privacy coverage, the acceptance lists and the invariants are revised; see [DIRECT_ARTIFACT_TRANSFER.md](../../architecture/DIRECT_ARTIFACT_TRANSFER.md). The ownership of any destination status or grant records is open. Grant fields (DT-OD-02), connectivity (DT-OD-01), any cloud retention (DT-OD-03), capacity (DT-OD-04) and offline policy (DT-OD-05) are open. SYS-ADR-008 is a direction pending owner confirmation, and nothing is implemented.
+
 ## 1. Document Control
 
 | Item | Value |
@@ -11,7 +13,7 @@
 | Ownership Model | Domain-owned relational data |
 | Tenancy Model | Organization-based logical multi-tenancy |
 | Data Authority | PostgreSQL for structured business state |
-| Binary Authority | Object Storage for large files |
+| Binary Authority | Object Storage for result, log and media files; the destination for execution artifacts |
 | Phase Coverage | Phase 0–Phase 8 |
 
 # 2. Purpose
@@ -196,7 +198,6 @@ PostgreSQL is not authoritative for:
 
 Object storage owns large binary payloads such as:
 
-- `.krv` artifacts;
 - result bundles;
 - logs;
 - video;
@@ -436,7 +437,7 @@ The system should retain only build metadata required for operation and audit.
 
 Artifact metadata is owned by the Artifact domain.
 
-Artifact binary content is stored in object storage.
+Artifact binary content is not stored in object storage or by the Control Plane; the destination holds it (SYS-ADR-008).
 
 Artifact domain controls:
 
@@ -1117,7 +1118,7 @@ The system must be able to identify:
 - where personal data exists;
 - which organization owns it;
 - which tables contain it;
-- which object storage objects contain it;
+- which object storage objects contain it (results, logs and media) and which destinations hold artifact copies;
 - which retention rules apply.
 
 # 76. User Export
@@ -1950,7 +1951,7 @@ Acceptance:
 - [ ] Build ownership is explicit.
 - [ ] Customer source remains local by default.
 - [ ] Artifact metadata is owned by Artifact domain.
-- [ ] Artifact binary ownership is represented in object storage.
+- [ ] Artifact binary ownership is the destination, and no cloud copy exists.
 - [ ] Artifact lifecycle is controlled by Artifact domain.
 
 ## Credits
@@ -2076,7 +2077,7 @@ Kritva RaaS must preserve these ownership invariants:
 8. Lab and Robot state is operationally owned by the Lab domain.
 9. Customer source code remains local by default.
 10. Artifact metadata is owned by Artifact.
-11. Artifact binary content is owned by object storage.
+11. Artifact binary content is held by the destination and not by the Control Plane or object storage.
 12. Credit and ledger state is exclusively owned by Credit.
 13. Booking state is owned by Booking.
 14. Job and Run state is owned by Execution.
@@ -2136,7 +2137,7 @@ The complete ownership model is:
     ARTIFACT
        |
        +-- Artifact
-       +-- Object Storage Payload
+       +-- Destination copy (not cloud storage)
 
     CREDIT
        |

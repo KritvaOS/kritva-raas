@@ -1,5 +1,7 @@
 # Kritva RaaS Backend Architecture
 
+> **Partly revised for SYS-ADR-008 (direct artifact transfer).** The Artifact module, object storage use, the object storage interface, sensitive operations, backpressure, the artifact data flow, the phase deliverables and the object storage checklist now describe metadata registration, transfer grant issuance and destination status reports instead of cloud artifact storage; see [DIRECT_ARTIFACT_TRANSFER.md](DIRECT_ARTIFACT_TRANSFER.md). The Control Plane holds metadata only. Remaining mentions of artifact upload or artifact binaries in object storage are superseded where they refer to execution artifacts. Grant fields (DT-OD-02), connectivity (DT-OD-01), any cloud retention (DT-OD-03), capacity (DT-OD-04) and offline policy (DT-OD-05) are open. SYS-ADR-008 is a direction pending owner confirmation, and nothing is implemented.
+
 ## 1. Document Control
 
 | Item | Value |
@@ -401,7 +403,7 @@ Responsibilities:
 
 - artifact registration;
 - metadata;
-- upload lifecycle;
+- transfer grant issuance and transfer lifecycle (metadata);
 - checksum;
 - signature metadata;
 - compatibility;
@@ -409,7 +411,7 @@ Responsibilities:
 - retention;
 - deletion policy.
 
-Artifact binary data is stored in object storage.
+Artifact binary data is not stored by the Control Plane or in cloud object storage. It moves directly from the workstation to the destination (SYS-ADR-008), and the destination reports status as an authenticated assertion with provenance.
 
 PostgreSQL stores authoritative metadata.
 
@@ -550,7 +552,7 @@ Examples:
 
 - login;
 - role changes;
-- artifact upload;
+- artifact registration and transfer grant issuance;
 - artifact deletion;
 - booking creation;
 - booking cancellation;
@@ -707,14 +709,13 @@ Object storage is not a substitute for relational business state.
 
 Object storage is used for:
 
-- `.krv` artifacts;
 - videos;
 - logs;
 - telemetry exports;
 - result files;
 - diagnostic bundles.
 
-The backend stores:
+Execution artifacts are not stored in object storage. The backend stores, for results, logs and media:
 
 - object key;
 - size;
@@ -736,7 +737,7 @@ Conceptually:
         generateUploadUrl()
         generateDownloadUrl()
 
-The application does not depend on a specific cloud provider.
+The upload and download URL operations apply to results, logs and media. The application does not depend on a specific cloud provider.
 
 ## 37. Queue Architecture
 
@@ -856,7 +857,7 @@ Examples:
 - booking creation;
 - job creation;
 - job start;
-- artifact upload registration;
+- artifact registration and grant issuance;
 - credit operations;
 - payment operations;
 - refunds.
@@ -950,7 +951,7 @@ The API is REST-oriented for request/response operations.
 
 WebSocket is used for realtime events.
 
-Large files use object-storage transfer paths where appropriate.
+Large result and media files use object-storage transfer paths where appropriate. Execution artifacts use the direct transfer path and not the API or cloud storage.
 
 ## 50. API Surface
 
@@ -1041,7 +1042,7 @@ Conceptual operations:
     agent.logs
     agent.result
 
-    artifact.fetch
+    artifact.fetch (superseded; replacement open)
     deployment.prepare
     deployment.start
     deployment.stop
@@ -1877,7 +1878,7 @@ The exact implementation may use:
 
 The backend must handle:
 
-- high artifact upload volume;
+- high artifact registration and grant issuance volume;
 - job bursts;
 - telemetry bursts;
 - result bursts.
@@ -2083,16 +2084,18 @@ If Control Plane becomes unavailable while a robot is running:
     PostgreSQL
       |
       v
-    Signed Upload Authorization
+    Transfer Grant (short-lived, scoped)
       |
       v
-    Object Storage
+    Direct transfer to destination (not through the backend)
       |
       v
-    Validation Worker
+    Destination staged validation, atomic READY
       |
       v
-    Artifact Accepted / Rejected
+    Authenticated status report, recorded as metadata
+
+The backend does not run a validation worker over artifact bytes. It validates registered metadata and records the destination report. READY is not authorization to execute.
 
 ## 109. Data Flow: Booking
 
@@ -2249,10 +2252,10 @@ The primary end-to-end scenario is:
     Register Artifact
       |
       v
-    Upload Artifact
+    Transfer Artifact Directly
       |
       v
-    Validate
+    Destination Validates
       |
       v
     Book Platform
@@ -2629,18 +2632,17 @@ Acceptance:
 Deliver:
 
 - artifact registration;
-- object storage;
-- upload authorization;
-- checksum;
-- signature validation;
-- compatibility validation;
+- object storage (results, logs and media);
+- transfer grant issuance (open, DT-OD-02);
+- checksum and signature metadata;
+- compatibility validation of metadata;
 - artifact lifecycle.
 
 Acceptance:
 
 - `.krv` can be registered;
-- binary can be uploaded;
-- validation succeeds/fails correctly;
+- binary can be transferred directly to a destination (connectivity open, DT-OD-01);
+- validation succeeds/fails correctly at the destination and the report is recorded;
 - incompatible artifacts are rejected.
 
 ## 143. P3 CONTROL PLANE Integration
@@ -2824,9 +2826,9 @@ Acceptance:
 ### Object Storage
 
 - [ ] Object storage is abstracted.
-- [ ] Artifacts use object storage.
+- [ ] Execution artifacts are not stored in object storage.
 - [ ] Results use object storage where appropriate.
-- [ ] Upload authorization is controlled.
+- [ ] Transfer grant issuance is controlled.
 - [ ] Download authorization is controlled.
 - [ ] Object checksums are recorded.
 - [ ] Public unauthenticated access is disabled.
@@ -3054,7 +3056,7 @@ Phase 8:
 3. Database remains authoritative.
 4. Queue remains transient.
 5. WebSocket remains non-authoritative.
-6. Large binaries remain in object storage.
+6. Large result binaries remain in object storage, and execution artifacts are not stored in cloud storage.
 7. Side effects are idempotent.
 8. Booking and credit operations are transactional.
 9. Job execution is durable and recoverable.
@@ -3076,7 +3078,7 @@ The resulting backend provides the foundation for the complete Kritva RaaS produ
     Package Artifact
           |
           v
-    Upload
+    Register and Transfer
           |
           v
     Book Platform
