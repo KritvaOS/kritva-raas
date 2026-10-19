@@ -527,6 +527,12 @@ Local execution preserves the source-privacy guarantee for Kritva itself. A prov
 - New risks are tracked (R-SEC-011 to R-SEC-014, R-TECH-012, R-DEP-002, R-COMM-006).
 - Provider CLI changes require adapter compatibility maintenance.
 
+#### Amendment: direct Anthropic API provider (2026-10-19)
+
+Status: owner direction approved in a working session on 2026-10-19 (conveyed by the owner's representative); owner confirmation pending in the pull request; the design below is a proposed extension, not reviewed, and nothing is implemented.
+
+The owner wants direct Anthropic API access as a separate provider alongside Claude Code and OpenAI Codex. It is specified as a proposed extension in `docs/architecture/CODING_AGENT_INTEGRATION.md` Section 5.10 and requirement CA-REQ-13. It runs only in the Local Runtime, sends nothing through the Control Plane, and uses the same consent, staging, apply and MCP rules. It needs a narrow exception to this decision's rule that Studio never stores provider credentials (a user-supplied key in the operating-system credential store), which is open decision F. Decisions F to H in the architecture document must be resolved before any API-provider implementation. Acceptance condition 3 (isolation tiers) does not apply to this provider kind.
+
 #### Review Triggers
 
 Review this decision if a provider changes its terms or CLI contract, if a new provider is proposed, if any cloud-side agent execution is proposed, or if usage telemetry is proposed.
