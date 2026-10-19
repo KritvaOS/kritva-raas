@@ -1,6 +1,6 @@
 # Kritva RaaS Threat Model
 
-> **Superseded artifact route (SYS-ADR-008).** The execution artifact is transferred directly from the user's workstation to the destination system. The cloud does not receive, store or relay it. Where this document describes artifact upload to, or fetch from, cloud object storage, that route is superseded by [DIRECT_ARTIFACT_TRANSFER.md](../architecture/DIRECT_ARTIFACT_TRANSFER.md). This document has not been revised to match yet; the affected sections are listed in Section 9 of that file. Results, logs and media are not affected.
+> **Partly revised for SYS-ADR-008 (direct artifact transfer).** Trust boundary TB-09, the artifact data flow (16), STRIDE for the direct path (25.1), attack scenarios AS-036 to AS-040 and the affected control, scenario and phase lines now cover the direct workstation-to-destination path; see [DIRECT_ARTIFACT_TRANSFER.md](../architecture/DIRECT_ARTIFACT_TRANSFER.md). Residual risk depends on the open connectivity model (DT-OD-01) and offline revocation policy (DT-OD-05). This is a documentation update, not a completed security review or acceptance. SYS-ADR-008 is a direction pending owner confirmation, and nothing is implemented.
 
 ## 1. Purpose
 
@@ -13,7 +13,7 @@ Kritva RaaS allows users to:
 - package applications as `.krv` execution artifacts;
 - select robotic platforms;
 - reserve robotic resources;
-- upload execution artifacts;
+- deliver execution artifacts directly to a reserved destination;
 - execute applications on virtual or physical robots;
 - observe video, telemetry, and logs;
 - retrieve results;
@@ -470,6 +470,8 @@ Controls:
 
 ## TB-04: Control Plane to Object Storage
 
+This boundary covers results, logs and media. Execution artifacts do not cross it (SYS-ADR-008); their path is TB-09.
+
 Threats include:
 
 - unauthorized file access;
@@ -482,7 +484,7 @@ Controls:
 - private storage;
 - scoped service identities;
 - checksums;
-- immutable artifact identity;
+- immutable record identity;
 - short-lived download URLs.
 
 ## TB-05: Control Plane to Lab
@@ -561,6 +563,38 @@ Controls:
 - restricted local MCP tool catalogue (SEC-187);
 - allowlisted CLI path and version check;
 - organization policy (SEC-188).
+
+## TB-09: Workstation to Destination (Direct Artifact Transfer)
+
+Under SYS-ADR-008 the execution artifact travels from the user's workstation directly to the destination Lab Agent, authorized by a Control Plane transfer grant. This adds a destination-side surface. Architecture: `docs/architecture/DIRECT_ARTIFACT_TRANSFER.md`. The connectivity model is open (DT-OD-01), so the threats below are stated for every candidate option and the exposure of each option is a decision input.
+
+Threats include:
+
+- an exposed or reachable Lab Agent transfer endpoint probed, scanned or attacked (for a reachable-endpoint option);
+- a spoofed destination or workstation, or a man-in-the-middle on the direct path;
+- theft, replay or reuse of a transfer grant, including a replayed new transfer versus a legitimate continuation;
+- a grant used for another destination, artifact or operation;
+- an oversized, malformed or hostile artifact that exhausts disk, memory or CPU, or exploits archive parsing (unsafe paths, links, decompression bombs);
+- partial or unvalidated data becoming executable;
+- stale authorization: a destination that is offline cannot learn of a cancellation;
+- abuse of a rendezvous or signaling service, or a relay that carries artifact bytes, which would also violate DT-REQ-01;
+- the grant leaking into logs, diagnostics, telemetry, URLs or command lines.
+
+Controls (requirements, not yet designed in detail):
+
+- mutual authentication of workstation and destination, independent of the grant signature;
+- short-lived grants bound to user, reservation, System ID, artifact digest, size and operation (claims open, DT-OD-02);
+- grant verification, size and resource limits before any allocation;
+- non-executable staging, staged validation, and atomic `READY` only after all checks;
+- bounded parsing and rejection of unsafe archive structures;
+- deletion or quarantine of partial data;
+- rate and connection limits and per-destination concurrency limits at the destination;
+- fail closed when authorization cannot be verified locally;
+- categorized failure with no cloud fallback;
+- audit records for grants, transfers and rejections;
+- an explicit offline revocation policy (DT-OD-05). Until it is decided, immediate revocation during a network partition is not claimed.
+
+Residual risk: a connected destination enforces cancellation; a disconnected one enforces only the signed expiry and reservation window. A physical execution already in progress is never stopped unsafely because of a reservation ending.
 
 # 14. System Context Diagram
 
@@ -645,44 +679,58 @@ Security properties:
 - source is not uploaded;
 - only packaged artifact leaves the device.
 
-# 16. Data Flow Diagram: Artifact Upload
+# 16. Data Flow Diagram: Artifact Registration and Direct Transfer
 
-    .krv Artifact
-        |
-        v
+Control path (metadata only):
+
+    Studio
+      |
+      v
     TLS
-        |
-        v
+      |
+      v
     API
-        |
-        v
+      |
+      v
     Authentication
-        |
-        v
-    Authorization
-        |
-        v
-    Manifest Validation
-        |
-        v
-    Checksum Validation
-        |
-        v
-    Signature Validation
-        |
-        v
-    Object Storage
-        |
-        v
+      |
+      v
+    Authorization (user, reservation, destination)
+      |
+      v
+    Metadata Registration (identity, declared digest, size, signer)
+      |
+      v
     Artifact Metadata DB
+      |
+      v
+    Transfer Grant
+
+Data path (no cloud involvement):
+
+    Workstation .krv
+        |
+        v   (grant presented; authenticated connection)
+    Lab Agent (destination)
+        |
+        v
+    Non-executable staging
+        |
+        v
+    Digest, Structure, Manifest, Signature, Compatibility
+        |
+        v
+    READY, then status (metadata) to the Control Plane
 
 Threats:
 
-- upload interception;
-- artifact substitution;
+- grant theft or replay;
+- artifact substitution on the path;
 - manifest manipulation;
-- unauthorized storage;
-- cross-tenant access.
+- exposed destination endpoint;
+- resource exhaustion at the destination;
+- cross-tenant delivery;
+- stale authorization while the destination is offline.
 
 # 17. Data Flow Diagram: Booking
 
@@ -848,7 +896,7 @@ The server shall never trust client-side authorization decisions.
 | D | Connection exhaustion | Outage | Connection budgets |
 | E | DB credential escalation | Full compromise | Scoped credentials |
 
-# 25. STRIDE: Object Storage
+# 25. STRIDE: Object Storage (results, logs and media)
 
 | Threat | Example | Impact | Mitigation |
 |---|---|---|---|
@@ -858,6 +906,17 @@ The server shall never trust client-side authorization decisions.
 | I | Public object | IP/result exposure | Private storage |
 | D | Storage abuse | Availability loss | Quotas |
 | E | Bucket policy escalation | Broad compromise | IaC + review |
+
+# 25.1 STRIDE: Direct Artifact Transfer Path
+
+| Threat | Example | Impact | Mitigation |
+|---|---|---|---|
+| S | Spoofed destination or workstation | Artifact or grant sent to or accepted from the wrong party | Mutual authentication independent of the grant |
+| T | Artifact modified on the path or in staging | Unsafe execution | Digest and signature verified at the destination, non-executable staging |
+| R | Transfer or rejection not recorded | Investigation gap | Grant, transfer and rejection audit records |
+| I | Grant or artifact exposed in logs, URLs or a relay | IP or authorization loss | Grant never logged or in URLs, no relay of bytes |
+| D | Oversized or hostile artifact, connection flood | Destination unavailable | Size limits before allocation, bounded parsing, rate and concurrency limits |
+| E | Grant for one destination used for another, or partial data run | Unauthorized deployment or execution | Destination and digest binding, atomic READY only after all checks |
 
 # 26. STRIDE: Cloud Infrastructure
 
@@ -986,8 +1045,7 @@ Automated cross-tenant E2E suite.
 
 ### Attack
 
-Attacker uploads a legitimate artifact and attempts to replace the binary while
-preserving metadata.
+Attacker registers a legitimate artifact and attempts to deliver a different binary to the destination, or to replace the staged binary, while preserving the registered metadata.
 
 ### Objective
 
@@ -996,9 +1054,9 @@ Execute attacker-controlled code on a robot.
 ### Mitigations
 
 - immutable artifact identity;
-- checksum;
+- checksum against the authorized digest at the destination;
 - digital signature;
-- immutable storage;
+- non-executable staging and atomic `READY`;
 - validation immediately before execution.
 
 ### Expected Result
@@ -1163,7 +1221,7 @@ Access customer data or influence robot execution.
 - network segmentation;
 - secret management;
 - tenant authorization;
-- artifact verification;
+- artifact verification at the destination (the cloud holds no artifact content);
 - Lab Agent local authorization;
 - physical safety controls.
 
@@ -1204,7 +1262,7 @@ Attacker obtains or guesses an object-storage URL.
 
 ### Objective
 
-Download artifacts or results.
+Download results or media. Execution artifacts are not stored in object storage.
 
 ### Mitigations
 
@@ -1281,7 +1339,7 @@ Attacker captures a previously valid operation and replays it.
 - credit reservation;
 - booking confirmation;
 - cancellation;
-- artifact deployment;
+- artifact transfer (a replayed new transfer is rejected; an authenticated continuation of the same transfer is allowed);
 - job start;
 - refund.
 
@@ -1359,7 +1417,7 @@ Attacker floods:
 
 - authentication endpoints;
 - APIs;
-- artifact uploads;
+- artifact registrations and the destination transfer endpoint;
 - booking requests;
 - job creation;
 - WebSockets.
@@ -1708,6 +1766,119 @@ Policy is enforced client-side and is not a boundary against a user who controls
 
 Consent and policy E2E tests (SEC-183, SEC-188).
 
+## AS-036: Probing the Destination Transfer Endpoint
+
+### Attack
+
+An attacker scans for and connects to the Lab Agent's transfer endpoint, or to a workstation listener, without a valid grant.
+
+### Objective
+
+Exploit the endpoint, enumerate labs, or cause a denial of service.
+
+### Mitigations
+
+- authentication before any data is accepted;
+- the smallest exposure the chosen connectivity model allows (DT-OD-01);
+- rate and connection limits;
+- no information in rejections beyond a categorized code.
+
+### Expected Result
+
+Unauthenticated connections are rejected without allocating resources.
+
+### Residual Risk
+
+Exposure depends on the connectivity option, which is open. Each option is assessed before one is chosen.
+
+## AS-037: Transfer Grant Theft and Replay
+
+### Attack
+
+An attacker obtains a grant (from a log, a process list, a proxy or a compromised workstation) and presents it to a destination, or replays a completed transfer.
+
+### Objective
+
+Place an artifact on a destination the attacker is not reserved for, or re-run a transfer.
+
+### Mitigations
+
+- short expiry and binding to user, reservation, System ID, digest, size and operation;
+- verification of the grant independently of the workstation;
+- rejection of a replayed new transfer, while an authenticated continuation of the same transfer is allowed;
+- the grant never in URLs, command lines, logs or telemetry.
+
+### Expected Result
+
+A grant for another destination, an expired grant, or a replay is rejected (DT-AT-02, DT-AT-07).
+
+### Residual Risk
+
+A stolen unexpired grant used by an authenticated party for the intended destination is bounded by the grant's scope and expiry.
+
+## AS-038: Hostile or Oversized Artifact at the Destination
+
+### Attack
+
+An authorized user delivers an artifact with a decompression bomb, path traversal or links, a lying size header, or content that exhausts disk or memory.
+
+### Objective
+
+Escape staging, overwrite host files, or take the destination out of service.
+
+### Mitigations
+
+- size and resource limits enforced before allocation;
+- bounded manifest and archive parsing, rejecting unsafe paths, links and malformed structures;
+- non-executable staging and atomic `READY` only after every check;
+- deletion or quarantine of partial or rejected data.
+
+### Expected Result
+
+The artifact is rejected and removed; the destination stays available (DT-AT-03, DT-AT-08).
+
+## AS-039: Stale Authorization While the Destination Is Offline
+
+### Attack
+
+A reservation is cancelled or expires while the destination is disconnected, and a transfer or action continues under a grant that is still locally valid.
+
+### Objective
+
+Use a destination after the booking ended.
+
+### Mitigations
+
+- signed grant expiry and reservation window enforced locally;
+- new authorization requests fail closed while disconnected;
+- reconciliation on reconnection;
+- an explicit policy for the stale-authorization interval (DT-OD-05).
+
+### Residual Risk
+
+Revocation is not immediate during a network partition until DT-OD-05 is decided. A running physical execution is never stopped unsafely because a reservation ended.
+
+## AS-040: Relay, Rendezvous or Man-in-the-Middle on the Direct Path
+
+### Attack
+
+A rendezvous or signaling service, a relay, or a network attacker positions itself between workstation and destination.
+
+### Objective
+
+Read, alter or withhold the artifact, or silently reintroduce a cloud copy.
+
+### Mitigations
+
+- mutual authentication of the endpoints, independent of any rendezvous service;
+- digest and signature verified at the destination;
+- a rendezvous service carries connection metadata only; a relay carrying artifact bytes violates DT-REQ-01 and DT-REQ-05;
+- categorized failure when no direct path exists, with no silent relay.
+
+### Expected Result
+
+Tampered content is rejected, and no path carries the bytes through the cloud (DT-AT-01, DT-AT-03, DT-AT-05).
+
 # 63. Security Control Matrix
 
 | Threat Area | Primary Control | Secondary Control |
@@ -1716,7 +1887,7 @@ Consent and policy E2E tests (SEC-183, SEC-188).
 | Authorization | RBAC/policy | Repository enforcement |
 | Tenant isolation | Organization scope | DB constraints/RLS |
 | Source privacy | Local build | Log sanitization |
-| Artifact integrity | Signature/checksum | Immutable storage |
+| Artifact integrity | Signature/checksum at the destination | Non-executable staging, atomic READY |
 | Robot safety | Local safety | Lab Agent policy |
 | Financial integrity | Ledger | Transactions/idempotency |
 | Booking integrity | DB exclusion | Application locking |
@@ -1888,7 +2059,7 @@ Focus:
 - cross-tenant access;
 - project isolation;
 - secret exposure;
-- storage exposure;
+- storage exposure (results and media);
 - database compromise.
 
 Required evidence:
@@ -1896,6 +2067,7 @@ Required evidence:
 - cross-tenant E2E suite;
 - repository authorization review;
 - storage access review;
+- evidence that no artifact bytes reach the Control Plane or cloud storage (DT-AT-01);
 - secret scanning.
 
 # 72. Phase 3 Threat Activities
@@ -1955,6 +2127,7 @@ Focus:
 
 - rogue Lab Agent;
 - compromised Lab Agent;
+- direct transfer endpoint exposure, grant replay and hostile artifacts (AS-036 to AS-040);
 - robot command manipulation;
 - network isolation;
 - safety communication failure;
