@@ -201,6 +201,7 @@ No cross-domain decision should be inferred solely from the existence of this in
 | SYS-ADR-005 | Cross-domain compatibility and change coordination | Proposed | Frontend, backend, cloud, database | This document, Section 9 |
 | SYS-ADR-006 | System-wide operational evidence and acceptance traceability | Proposed | All domains | This document, Sections 8 and 10 |
 | SYS-ADR-007 | Coding-agent integration boundary (Claude Code, OpenAI Codex) | Proposed | Frontend, Local Runtime, backend, database, security | `docs/architecture/CODING_AGENT_INTEGRATION.md`; this document, Section 5.7 |
+| SYS-ADR-008 | Direct artifact transfer: control plane and artifact data plane separation | Direction approved (owner confirmation pending) | Frontend, Local Runtime, backend, cloud, database, security, Lab Agent | `docs/architecture/DIRECT_ARTIFACT_TRANSFER.md`; this document, Section 5.8 |
 
 These entries are proposed register placeholders, not evidence that the underlying decisions have been accepted. Each entry MUST be reviewed and either completed, rejected, or removed from the active index.
 
@@ -217,6 +218,7 @@ Every system-level decision in the index MUST carry an accountable owner, a requ
 | SYS-ADR-005 | System Architecture Owner, with Integration Owner | Accept, reject, or supersede | P2 BUILD & ARTIFACT exit (artifact manifest and protocol compatibility) | None recorded | `docs/protocol/COMPATIBILITY.md`; `docs/protocol/VERSIONING.md` | Proposed — not approved |
 | SYS-ADR-006 | QA Owner, with Release Owner | Accept, reject, or supersede | P0 FOUNDATION exit | None recorded | `docs/tracking/STATUS.md`; this document, Sections 8 and 10 | Proposed — not approved |
 | SYS-ADR-007 | System Architecture Owner, with Security Owner | Accept, reject, or supersede | Before F-M02 PROJECTS coding-agent implementation starts (P1 STUDIO) | None recorded | `docs/architecture/CODING_AGENT_INTEGRATION.md` | Proposed — not approved |
+| SYS-ADR-008 | System Architecture Owner, with Security Owner and Cloud Owner | Confirm the approved direction, then accept, reject, or supersede the detailed design | Before P2 BUILD & ARTIFACT artifact-transfer implementation starts | Owner direction conveyed in a working session on 2026-10-19; owner confirmation pending in the pull request | `docs/architecture/DIRECT_ARTIFACT_TRANSFER.md` | Direction approved, not implemented; detailed design not reviewed |
 
 Baseline rule: the cross-domain architecture baseline MUST NOT be described as accepted, and the implementation plan MUST NOT be approved as a frozen implementation baseline, while any SYS-ADR entry whose gate has been reached remains Proposed. A decision approved in another register MAY be linked here, but its status in this index MUST be reconciled to that record and its approval evidence cited.
 
@@ -528,6 +530,43 @@ Local execution preserves the source-privacy guarantee for Kritva itself. A prov
 #### Review Triggers
 
 Review this decision if a provider changes its terms or CLI contract, if a new provider is proposed, if any cloud-side agent execution is proposed, or if usage telemetry is proposed.
+
+### 5.8 SYS-ADR-008 — Direct Artifact Transfer
+
+**Status:** Direction approved by the product owner in a working session on 2026-10-19, conveyed by the owner's representative. Owner confirmation is pending in the pull request. The detailed design is Proposed and not reviewed. Nothing is implemented.  
+**Accountable owner:** System Architecture Owner, with Security Owner and Cloud Owner  
+**Disposition required before:** Before P2 BUILD & ARTIFACT artifact-transfer implementation starts  
+**Approval evidence:** Owner statement in the working session; no independent review recorded  
+**Scope:** How a validated `.krv` execution artifact reaches a reserved destination system  
+**Affected domains:** Frontend, Local Runtime, backend, cloud, database, security, Lab Agent
+
+#### Context
+
+The artifact, storage, cloud, API and Lab Agent documents describe the artifact being uploaded to cloud object storage and fetched from there by the Lab Agent. That bypasses the application server but still sends every artifact through the cloud, which loads cloud bandwidth and storage and keeps a cloud copy of the user's build output. The product owner requires that the cloud authenticate the user and identify the reserved System ID, and that the compiled artifact then transfer directly from the user's workstation to the destination system.
+
+#### Decision
+
+1. The execution artifact is transferred directly from the workstation to the destination system. The cloud Control Plane never receives, stores, relays or proxies its bytes.
+2. The Control Plane authenticates the user, checks the reservation, resolves the System ID, and issues a short-lived transfer grant bound to the user, reservation, destination system and artifact digest.
+3. The destination independently validates the grant and the artifact before the artifact becomes executable.
+4. If the direct path is unavailable the transfer fails with a clear error. There is no silent cloud fallback. Any cloud retention of artifacts would be a separate feature with its own decision.
+5. The cloud keeps metadata only: artifact identifier, digest, size, transfer status, grant records and audit events.
+6. Results, logs and media are not affected by this decision.
+
+#### Alternatives Considered
+
+- Keep cloud object storage for artifacts: rejected by the owner because it sends every artifact through the cloud.
+- Direct transfer with cloud fallback: not chosen; the owner selected direct only.
+
+#### Consequences
+
+- `ARTIFACT_ARCHITECTURE.md`, `SYSTEM_ARCHITECTURE.md`, `CLOUD_ARCHITECTURE.md`, `STORAGE_ARCHITECTURE.md`, `LAB_ARCHITECTURE.md`, `API_ARCHITECTURE.md`, `ARTIFACT_SERVICE.md`, `LAB_PROTOCOL.md`, `COMMANDS.md` and `THREAT_MODEL.md` carry a notice and must be revised to match. The affected sections are listed in `DIRECT_ARTIFACT_TRANSFER.md` Section 9.
+- The Lab Agent needs a transfer endpoint or equivalent connection, which adds a destination-side attack surface to the threat model.
+- Open items DT-OD-01 to DT-OD-04 (connectivity model, grant format, any cloud retention, capacity) must be decided before implementation.
+
+#### Review Triggers
+
+Review this decision if direct connectivity cannot be provided for a class of lab networks, if cloud artifact retention is proposed, or if the grant design changes the authentication model.
 
 ## 6. Domain Decision Register Index
 
