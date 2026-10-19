@@ -568,7 +568,7 @@ The artifact, storage, cloud, API and Lab Agent documents describe the artifact 
 
 - `ARTIFACT_ARCHITECTURE.md`, `SYSTEM_ARCHITECTURE.md`, `CLOUD_ARCHITECTURE.md`, `STORAGE_ARCHITECTURE.md`, `LAB_ARCHITECTURE.md`, `API_ARCHITECTURE.md`, `ARTIFACT_SERVICE.md`, `LAB_PROTOCOL.md`, `COMMANDS.md` and `THREAT_MODEL.md` carry a notice and must be revised to match. The affected sections are listed in `DIRECT_ARTIFACT_TRANSFER.md` Section 9.
 - The Lab Agent needs a transfer endpoint or equivalent connection, which adds a destination-side attack surface to the threat model.
-- Open items DT-OD-01 to DT-OD-04 (connectivity model, grant format, any cloud retention, capacity) must be decided before implementation.
+- Open items DT-OD-01 to DT-OD-05 (connectivity model, grant format, any cloud retention, capacity, offline revocation policy) must be decided before implementation. Revocation is not guaranteed to be immediate while a destination is disconnected.
 
 #### Review Triggers
 

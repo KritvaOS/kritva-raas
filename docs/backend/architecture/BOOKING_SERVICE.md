@@ -302,7 +302,7 @@ Status: owner direction approved in a working session on 2026-10-19 (conveyed by
 
 Booking start and end times, countdowns, and the Open action use cloud-authoritative timestamps. The Control Plane MUST give clients a way to derive the current cloud time (for example an offset carried on API responses) so that Studio can show a correct clock and countdown on a workstation whose clock is wrong. The mechanism is an open item for the API contract. A client countdown reaching zero is guidance only: the backend validates the reservation window, the user's authorization, and the destination's availability each time access is requested, and a cancelled or expired booking can never grant access.
 
-The booking list used by the Studio navigator (up to 10 previous and 10 upcoming bookings, ordered by start time, with history for older records) is served from this authoritative state. Its API shape is not defined yet and belongs in `docs/protocol/API_CONTRACT.md`.
+The booking list used by the Studio navigator (up to 10 previous and 10 upcoming bookings, with history for older records). The two lists are disjoint by state: upcoming holds future `CONFIRMED` and the `ACTIVE` booking, ordered by start time; previous holds terminal bookings, ordered by terminal-event time (`UI_SPECIFICATION.md` BK-NAV-03 and BK-NAV-04). Authorization at the start boundary uses authoritative time and booking rules, not a client countdown and not an assumption that a state-transition job has already run is served from this authoritative state. Its API shape is not defined yet and belongs in `docs/protocol/API_CONTRACT.md`.
 
 ## 16. Booking Window
 
