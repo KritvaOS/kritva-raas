@@ -7,13 +7,13 @@
 **Architecture reference:** `docs/architecture/PROTOCOL_ARCHITECTURE.md`  
 **Artifact manifest reference:** `docs/protocol/ARTIFACT_MANIFEST.md`
 
-> **Superseded artifact route (SYS-ADR-008).** The execution artifact is transferred directly from the user's workstation to the destination system. The cloud does not receive, store or relay it. Where this document describes artifact upload to, or fetch from, cloud object storage, that route is superseded by [DIRECT_ARTIFACT_TRANSFER.md](../architecture/DIRECT_ARTIFACT_TRANSFER.md). This document has not been revised to match yet; the affected sections are listed in Section 9 of that file. Results, logs and media are not affected.
+> **Partly revised for SYS-ADR-008 (direct artifact transfer).** Section 17 and the related message-table, deployment-state, timeout, test and checklist lines no longer describe `artifact_fetch` as the artifact route; see [DIRECT_ARTIFACT_TRANSFER.md](../architecture/DIRECT_ARTIFACT_TRANSFER.md). The replacement wire contract is not defined here and no protocol version change is made (DT-OD-01, DT-OD-02, DT-OD-05). SYS-ADR-008 is a direction pending owner confirmation, and nothing is implemented.
 
 ## 1. Purpose
 
 This document defines the normative communication contract between the Kritva RaaS Control Plane and a Lab Agent, and between the Lab Agent and the local Kritva Runtime.
 
-The protocol supports authenticated agent registration, health reporting, capability discovery, resource monitoring, artifact retrieval and verification, deployment, lifecycle control, execution status, log and telemetry delivery, result collection, reconnection, and safety-state reporting.
+The protocol supports authenticated agent registration, health reporting, capability discovery, resource monitoring, artifact delivery and verification, deployment, lifecycle control, execution status, log and telemetry delivery, result collection, reconnection, and safety-state reporting.
 
 The protocol MUST provide deterministic message semantics, explicit state transitions, bounded request lifetimes, idempotent control operations, and fail-safe handling of communication failures.
 
@@ -23,7 +23,7 @@ This document specifies:
 - registration, authentication, and session lifecycle
 - heartbeat and resource status
 - capability discovery and compatibility
-- artifact fetch, validation, and deployment
+- artifact delivery (direct transfer, contract open), validation, and deployment
 - start, stop, and cancel operations
 - execution status, logs, telemetry, and results
 - reconnect and delivery semantics
@@ -185,8 +185,8 @@ Protocol `1.0` defines the following message types.
 | `heartbeat_ack` | Control Plane → Agent | Confirm liveness and session |
 | `capabilities_report` | Agent → Control Plane | Advertise supported capabilities |
 | `resource_status` | Agent → Control Plane | Report current resource state |
-| `artifact_fetch` | Agent → Control Plane | Request an authorized artifact reference |
-| `artifact_fetch_ack` | Control Plane → Agent | Return artifact location and metadata |
+| `artifact_fetch` | Agent → Control Plane | Superseded (SYS-ADR-008): the Lab Agent does not fetch artifacts from the cloud. See Section 17 |
+| `artifact_fetch_ack` | Control Plane → Agent | Superseded (SYS-ADR-008). See Section 17 |
 | `deploy` | Control Plane → Agent | Request artifact validation and deployment |
 | `deploy_status` | Agent → Control Plane | Report deployment progress and outcome |
 | `start` | Control Plane → Agent | Request execution start |
@@ -443,30 +443,25 @@ A consumer MUST reject impossible values, including available memory greater tha
 
 The resource report MUST NOT include unrelated host files, process command lines, credentials, or other data not required by the operational contract.
 
-## 17. Artifact Fetch
+## 17. Artifact Delivery (Direct Transfer)
 
-The `artifact_fetch` message requests an authorized artifact reference.
+Under SYS-ADR-008 the execution artifact is delivered directly from the user's workstation to the Lab Agent. The Lab Agent does not send `artifact_fetch` and the Control Plane does not return a `download_uri` for an execution artifact. The earlier `artifact_fetch` and `artifact_fetch_ack` messages are superseded and MUST NOT be used for execution artifacts.
 
-Its payload MUST contain:
+The wire contract for the replacement is NOT defined in this version of the protocol. The message names, fields, grant claims, signing scheme, key rotation and transport authentication are open (DT-OD-02), the connectivity model is open (DT-OD-01), and offline cancellation and revocation behavior is open (DT-OD-05). No protocol version change is made here.
 
-| Field | Type | Constraint |
-|---|---|---|
-| `request_id` | string | Unique request identifier |
-| `artifact_id` | string | Valid artifact identifier |
-| `artifact_version` | string | Requested immutable version |
-| `purpose` | string | `deploy` or `validate` |
+Whatever contract is defined, it MUST satisfy `docs/architecture/DIRECT_ARTIFACT_TRANSFER.md`, in particular:
 
-The Control Plane MUST authorize the requesting agent and verify that the requested artifact is permitted for that agent's deployment context.
+- the Lab Agent MUST validate the grant, its own System ID, the permitted operation and expiry, and authenticate the connection, before accepting data;
+- the Lab Agent MUST enforce size and resource limits before allocating storage, and MUST receive into a non-executable staging area;
+- a replayed new transfer MUST be rejected while an authenticated continuation of the same transfer is allowed;
+- the artifact MUST become `READY` only after the staged validation of Section 18 has passed;
+- the grant MUST NOT appear in URLs, command-line arguments, logs, diagnostics or telemetry;
+- status reports to the Control Plane are metadata and do not prove validity;
+- the Control Plane MUST NOT receive, store or relay artifact bytes, and there is no cloud fallback.
 
-The `artifact_fetch_ack` payload MUST contain `request_id`, `accepted`, `reason_code`, and `artifact`.
+The Lab Agent MUST NOT accept an artifact from an unauthenticated source or from a source named only by an untrusted manifest.
 
-If accepted, `artifact` MUST contain `artifact_id`, `artifact_version`, `download_uri`, `manifest_sha256`, and `expires_at`.
-
-The URI MUST be delivered only over an authenticated channel and MUST use an approved transport. A short-lived download credential MAY be embedded in the URI only if deployment policy permits it and the credential is scoped and time-limited.
-
-If rejected, `artifact` MUST be `null` and `reason_code` MUST be non-null.
-
-The Lab Agent MUST NOT fetch arbitrary URLs supplied by an untrusted manifest. It MUST enforce the configured artifact source allowlist and redirect policy.
+Result and media retrieval (Section 31) is not affected.
 
 ## 18. Artifact Validation
 
@@ -488,7 +483,7 @@ Validation MUST include:
 
 The artifact manifest MUST conform to `docs/protocol/ARTIFACT_MANIFEST.md`.
 
-A successful download MUST NOT be treated as successful validation.
+A completed transfer MUST NOT be treated as successful validation.
 
 The Lab Agent MUST reject an artifact if any mandatory validation step fails.
 
@@ -525,7 +520,7 @@ Deployment state MUST be one of:
 
 - `REQUESTED`
 - `ACCEPTED`
-- `FETCHING`
+- `FETCHING` (names the artifact receipt stage; the name is under review for direct transfer)
 - `VALIDATING`
 - `DEPLOYING`
 - `DEPLOYED`
@@ -873,7 +868,7 @@ Every operation MUST have a bounded timeout or deadline determined by the comman
 |---|---|
 | Registration | Fail if negotiation does not complete within configured registration timeout |
 | Heartbeat | Mark session suspect after configured missed-heartbeat threshold |
-| Artifact fetch | Abort or fail when the request deadline expires |
+| Artifact receipt | Abort or fail when the transfer or grant deadline expires; partial data is removed or quarantined |
 | Validation | Return a timeout or validation failure if the deadline is exceeded |
 | Deployment | Report pending progress and a terminal timeout outcome according to policy |
 | Start | Return acceptance or rejection within the command acknowledgement timeout |
@@ -1008,7 +1003,7 @@ If the remote protocol is compatible but the local Runtime protocol is not, the 
 | LP-007 | Reconnect after expiry | New authentication and registration required |
 | LP-008 | Invalid capability report | Report rejected |
 | LP-009 | Impossible resource values | Report rejected |
-| LP-010 | Unauthorized artifact fetch | Request rejected |
+| LP-010 | Unauthorized artifact delivery (missing, expired, replayed or wrong-destination grant) | Transfer rejected |
 | LP-011 | Artifact signature invalid | Deployment rejected |
 | LP-012 | Artifact checksum mismatch | Deployment rejected |
 | LP-013 | Unsafe entrypoint path | Deployment rejected |
@@ -1074,7 +1069,7 @@ The owning milestone dossier MUST link to the required conformance evidence.
 
 ### 43.3 Artifacts and results
 
-- [ ] Artifact fetch is authorized and source-restricted.
+- [ ] Artifact delivery is authorized by a valid grant and source-restricted.
 - [ ] Manifest validation follows `docs/protocol/ARTIFACT_MANIFEST.md`.
 - [ ] Signatures and checksums are verified.
 - [ ] Platform, runtime, dependency, and capability checks are enforced.
@@ -1191,7 +1186,7 @@ The existence of this document MUST NOT be represented as proof that the protoco
 - Established the common message envelope and protocol version negotiation.
 - Defined registration, authentication, session, and heartbeat semantics.
 - Defined capability and resource reporting.
-- Defined artifact fetch, validation, and deployment behavior.
+- Defined artifact validation and deployment behavior. Artifact fetch is superseded by direct transfer (SYS-ADR-008); its replacement contract is open.
 - Defined start, stop, cancel, acknowledgement, and idempotency requirements.
 - Defined execution status, logs, telemetry, and result collection.
 - Established reconnect, timeout, and backpressure behavior.

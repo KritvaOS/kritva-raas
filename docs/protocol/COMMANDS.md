@@ -1,6 +1,6 @@
 # Kritva RaaS Command Catalogue
 
-> **Superseded artifact route (SYS-ADR-008).** The execution artifact is transferred directly from the user's workstation to the destination system. The cloud does not receive, store or relay it. Where this document describes artifact upload to, or fetch from, cloud object storage, that route is superseded by [DIRECT_ARTIFACT_TRANSFER.md](../architecture/DIRECT_ARTIFACT_TRANSFER.md). This document has not been revised to match yet; the affected sections are listed in Section 9 of that file. Results, logs and media are not affected.
+> **Partly revised for SYS-ADR-008 (direct artifact transfer).** `artifact.upload` (28.2), `artifact.download` (28.7) and `artifact.fetch` (35.7), and the `artifact.create` response (28.1), are marked superseded; see [DIRECT_ARTIFACT_TRANSFER.md](../architecture/DIRECT_ARTIFACT_TRANSFER.md). No replacement command or field is defined here; they are open (DT-OD-01, DT-OD-02, DT-OD-05). `artifact.package` and `artifact.inspect` (local) and `result.download` are unchanged. SYS-ADR-008 is a direction pending owner confirmation, and nothing is implemented.
 
 ## 1. Document Control
 
@@ -138,7 +138,7 @@ Examples:
 
     auth.login
     project.create
-    artifact.upload
+    artifact.create
     booking.create
     job.start
 
@@ -774,7 +774,7 @@ Build commands primarily execute at Boundary A.
 |---|---|
 | Direction | Studio → Control Plane |
 | Request | `ArtifactCreateRequest { project_id, name, version, manifest, digest, size }` |
-| Response | `ArtifactUploadSession { artifact_id, upload_url/session, expires_at }` |
+| Response | Registration result with `artifact_id`. The earlier `ArtifactUploadSession` is superseded; the replacement shape, including any transfer grant, is open (DT-OD-02) |
 | Mode | Sync |
 | Errors | `UNAUTHORIZED`, `FORBIDDEN`, `VALIDATION_FAILED`, `CONFLICT` |
 | Idempotency | Required |
@@ -785,9 +785,9 @@ Build commands primarily execute at Boundary A.
 
 | Property | Specification |
 |---|---|
-| Direction | Studio → Object Storage via authorized upload |
-| Request | `ArtifactUploadRequest { artifact_id, binary, digest, size }` |
-| Response | `ArtifactUploadResult { artifact_id, uploaded, digest }` |
+| Direction | Superseded (SYS-ADR-008). The artifact goes directly from Studio to the destination; there is no upload to the cloud |
+| Request | Superseded. The replacement command and its fields are open (DT-OD-02) |
+| Response | Superseded. Transfer status is reported by the destination as metadata |
 | Mode | Async |
 | Errors | `NOT_FOUND`, `ARTIFACT_INVALID`, `VALIDATION_FAILED`, `TIMEOUT` |
 | Idempotency | Required |
@@ -850,9 +850,9 @@ Build commands primarily execute at Boundary A.
 
 | Property | Specification |
 |---|---|
-| Direction | Studio/Lab Agent → Control Plane |
-| Request | `ArtifactDownloadRequest { artifact_id, purpose }` |
-| Response | `ArtifactDownload { url_or_stream, expires_at, digest }` |
+| Direction | Superseded for execution artifacts (SYS-ADR-008); not served unless cloud retention is separately decided (DT-OD-03) |
+| Request | `ArtifactDownloadRequest { artifact_id, purpose }` (historical) |
+| Response | `ArtifactDownload { url_or_stream, expires_at, digest }` (historical) |
 | Mode | Sync |
 | Errors | `UNAUTHORIZED`, `FORBIDDEN`, `NOT_FOUND`, `ARTIFACT_INVALID` |
 | Idempotency | Not Required |
@@ -1467,9 +1467,9 @@ They do not replace jobs or runs.
 
 | Property | Specification |
 |---|---|
-| Direction | Control Plane → Lab Agent |
-| Request | `ArtifactFetchRequest { agent_id, artifact_id, digest, destination_policy }` |
-| Response | `ArtifactFetchResult { artifact_id, downloaded, verified_digest }` |
+| Direction | Superseded (SYS-ADR-008). The Lab Agent does not fetch artifacts; it receives a direct transfer from the workstation under a grant |
+| Request | `ArtifactFetchRequest { agent_id, artifact_id, digest, destination_policy }` (historical; replacement open, DT-OD-02) |
+| Response | `ArtifactFetchResult { artifact_id, downloaded, verified_digest }` (historical) |
 | Mode | Async |
 | Errors | `UNAUTHORIZED`, `FORBIDDEN`, `NOT_FOUND`, `ARTIFACT_INVALID`, `SIGNATURE_INVALID`, `AGENT_OFFLINE`, `TIMEOUT` |
 | Idempotency | Required |
@@ -1757,7 +1757,7 @@ Another example:
 | Project | Control Plane | Project module |
 | Platform | Control Plane | Platform module |
 | Build | Local Runtime | Local Runtime |
-| Artifact | Control Plane | Artifact module/object storage |
+| Artifact | Control Plane (metadata); destination (validated copy) | Artifact module; not cloud object storage |
 | Booking | Control Plane | Booking module |
 | Credit | Control Plane | Credit ledger |
 | Job | Control Plane | Job module |
@@ -2018,7 +2018,7 @@ Phase 5 implements:
 - registration;
 - heartbeat;
 - resource discovery;
-- artifact retrieval;
+- artifact receipt (direct transfer; command open);
 - deployment;
 - job execution.
 
@@ -2026,7 +2026,7 @@ Primary commands:
 
     job.*
     agent.*
-    artifact.fetch
+    artifact.fetch   (superseded)
     deployment.*
     resource.*
 
@@ -2140,12 +2140,12 @@ No new core business command should bypass the established command model.
     build.result
 
     artifact.create
-    artifact.upload
+    artifact.upload   (superseded)
     artifact.get
     artifact.list
     artifact.validate
     artifact.delete
-    artifact.download
+    artifact.download   (superseded for execution artifacts)
 
     availability.query
     booking.quote
