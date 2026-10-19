@@ -297,7 +297,7 @@ Omit the `[<TASK-ID>]` suffix on this form, and never attach a task ID to a comm
 
 This is a software-only repository: it has no actuators and no hardware, so there are no physical safety gates here. The lab and robot side is an external boundary, and its safety is governed where it is built, not by tests in this repository.
 
-**Reporting a vulnerability:** follow [`SECURITY.md`](SECURITY.md); its reporting route is not yet verified as a dedicated private channel, and it says so. Never put details of an unfixed vulnerability in a public issue, pull request or commit message.
+**Reporting a vulnerability:** follow [SECURITY.md](SECURITY.md). It names GitHub private vulnerability reporting as the first route and gives a direct-contact fallback. The Security Owner reports having tested the reporting route on 18 October 2026 (D-068); that is ATTESTED, not independently verified, and nothing here promises a response time. Never put details of an unfixed vulnerability in a public issue, pull request or commit message.
 
 - Never commit secrets, private keys, tokens, passwords, certificates with sensitive material, production data or personal data. Use obviously fake placeholders and mark them as fake.
 - Do not copy a credential-shaped value into a document, issue, chat or log, even when reporting it. Name the file and line instead.
