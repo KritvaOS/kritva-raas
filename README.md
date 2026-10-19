@@ -50,6 +50,22 @@ RaaS is the service layer of KritvaOS. In the program's repository plan (PROPOSE
 
 The backend architecture documents are `docs/architecture/BACKEND_ARCHITECTURE.md`, `API_ARCHITECTURE.md` and `SECURITY_ARCHITECTURE.md` (with `SYSTEM_ARCHITECTURE.md` for the whole product), and the wire contracts are under `docs/protocol/`. Each of the four architecture documents declares its own status as Architecture Baseline. That is a design baseline: it states required and target behaviour, and it is not a completed implementation and not, by itself, an owner approval. This section summarises the rules every change must respect and marks which are implemented in `apps/backend` today. Anything not marked implemented is a requirement for future work.
 
+**Architecture documents by domain**
+
+The architecture is split by domain. Each domain keeps its documents in its own folder, and the system-wide documents in `docs/architecture/` tie them together. Only the backend has code today; every other row describes architecture and plans, not working software. Each file declares its own status, and a status word is not an approval or evidence of implementation.
+
+| Domain | Folder | Documents and what each is responsible for |
+|---|---|---|
+| System-wide | [`docs/architecture/`](docs/architecture/) | `SYSTEM_ARCHITECTURE` (the whole product), `APPLICATION_ARCHITECTURE`, `COMPONENT_ARCHITECTURE`, `DEPLOYMENT_ARCHITECTURE`, `DESKTOP_ARCHITECTURE` (Studio on the workstation), `LAB_ARCHITECTURE` (lab systems and robots), `PROTOCOL_ARCHITECTURE`, `ARTIFACT_ARCHITECTURE` (the `.krv` artifact and its lifecycle), `DIRECT_ARTIFACT_TRANSFER` (SYS-ADR-008 contract), `CODING_AGENT_INTEGRATION`, plus the system-level `API_`, `BACKEND_`, `CLOUD_`, `DATABASE_`, `DATA_` and `SECURITY_ARCHITECTURE` |
+| Frontend (Studio) | [`docs/frontend/architecture/`](docs/frontend/architecture/) | `FRONTEND_ARCHITECTURE` (Studio and Web Console as a whole), `STUDIO_ARCHITECTURE` (the Studio application and its screens), `LOCAL_RUNTIME_ARCHITECTURE` (the Rust Local Runtime that builds, packages and transfers on the workstation), `IPC_ARCHITECTURE` (messages between the Studio UI and the Local Runtime), `STATE_ARCHITECTURE` (client state and its ownership) |
+| UI | [`docs/ui/`](docs/ui/) | `UI_SPECIFICATION` (screens and behaviour), `UI_DESIGN_SYSTEM`, `ARTWORK_GUIDELINES`, `UI_MILESTONES`, `UI_ACCEPTANCE_CRITERIA`, `UI_REVIEW_CHECKLIST`, `DECISIONS` |
+| Cloud | [`docs/cloud/architecture/`](docs/cloud/architecture/) | `CLOUD_ARCHITECTURE` (deployable cloud resources and environments), `COMPUTE_`, `NETWORK_`, `STORAGE_`, `OBSERVABILITY_` and `SECURITY_ARCHITECTURE` (one document per infrastructure concern); deployment in `docs/cloud/deployment/`, operations in `docs/cloud/operations/` |
+| Backend | [`docs/backend/architecture/`](docs/backend/architecture/) | `BACKEND_ARCHITECTURE` (implementation structure and module wiring), `API_IMPLEMENTATION`, `SERVICE_ARCHITECTURE`, `JOB_ARCHITECTURE`, and one document each for the artifact, booking, credit and execution services |
+| Database | [`docs/database/architecture/`](docs/database/architecture/) | `DATABASE_ARCHITECTURE` (PostgreSQL implementation), `DATA_MODEL`, `DATA_OWNERSHIP`, `ENTITY_RELATIONSHIPS`; table definitions in `docs/database/schema/` |
+| Protocol and security | [`docs/protocol/`](docs/protocol/), [`docs/security/`](docs/security/) | Wire contracts (envelopes, responses, error codes, events, idempotency) and security requirements (threat model, authorization, tenant isolation, secrets and keys) |
+
+In the frontend, the Studio UI (what the user sees and does) and the Local Runtime (the workstation process that builds, packages and sends the artifact) are separate responsibilities that talk only through the IPC contract. Section 5 lists the files in each folder.
+
 **Control path and artifact path**
 
 The cloud Control Plane handles authentication, booking, System ID and authorization, and metadata. The execution artifact does not pass through it:
@@ -132,7 +148,10 @@ kritva-raas/
 │   ├── protocol/                API contract, envelopes, responses, error codes, events, idempotency
 │   ├── security/                threat model, authorization, tenant isolation, secrets and key management
 │   ├── ui/                      UI specification, design system, UI acceptance criteria
-│   ├── backend/ database/ cloud/ frontend/   per-domain architecture, development, planning and milestone dossiers
+│   ├── backend/                 architecture/ development/ planning/
+│   ├── database/                architecture/ planning/ schema/ (one file per table group)
+│   ├── frontend/                architecture/ development/ planning/ milestones/ (F-M01 to F-M07)
+│   ├── cloud/                   architecture/ deployment/ operations/ planning/ milestones/ (C-M01 to C-M04)
 │   ├── milestones/              program phase dossiers
 │   ├── development/             setup, workflow, branching, code review, testing, source header standard
 │   ├── tracking/                tracking rules and templates (being consolidated into planning/)
@@ -167,6 +186,52 @@ Rule of thumb: `docs/` says what the backend is and must do; `planning/` says wh
 | [`SECURITY.md`](SECURITY.md), [`AGENTS.md`](AGENTS.md), [`LICENSE`](LICENSE) | Security policy, agent rules, license | AUTHORITATIVE | owner decision |
 
 Rule of thumb: `docs/` says what the backend is and must do; `planning/` says what is being done about it and in what order.
+
+**Documentation domains in detail**
+
+Every row is a documentation folder. A file's label is the role it plays, the status it declares is in the file itself, and neither is an approval. "Edit by hand" means a person edits the file in a reviewed pull request; no file in these folders is generated.
+
+| Folder | Files | Responsibility |
+|---|---|---|
+| [`docs/frontend/architecture/`](docs/frontend/architecture/) | `FRONTEND_`, `STUDIO_`, `LOCAL_RUNTIME_`, `IPC_`, `STATE_ARCHITECTURE.md` | Frontend design baseline; each declares status Production Architecture Baseline. Not implemented |
+| [`docs/frontend/development/`](docs/frontend/development/) | `CODE_STYLE`, `DEVELOPMENT_SETUP`, `DEVELOPMENT_WORKFLOW`, `TESTING`, `RELEASE_PROCESS` | How frontend code is written, set up, handed off, tested and released (`CODE_STYLE` declares Engineering Baseline). Planned: no frontend code exists |
+| [`docs/frontend/planning/`](docs/frontend/planning/) | `FRONTEND_ROADMAP`, `FRONTEND_TASKS`, `DECISIONS` | Frontend sequencing, the task backlog across F-M01 to F-M07, and frontend decision records |
+| [`docs/frontend/milestones/`](docs/frontend/milestones/) | `F-M01-STUDIO-FOUNDATION`, `F-M02-PROJECTS`, `F-M03-BUILD-ARTIFACT`, `F-M04-BOOKING`, `F-M05-EXECUTION`, `F-M06-LIVE`, `F-M07-RESULTS` | One dossier per frontend milestone, each with the six files described below |
+| [`docs/ui/`](docs/ui/) | `UI_SPECIFICATION`, `UI_DESIGN_SYSTEM`, `ARTWORK_GUIDELINES`, `UI_MILESTONES`, `UI_ACCEPTANCE_CRITERIA`, `UI_REVIEW_CHECKLIST`, `DECISIONS` | What the Studio looks like and how it must behave, how it is reviewed, and the UI decisions |
+| [`docs/cloud/architecture/`](docs/cloud/architecture/) | `CLOUD_`, `COMPUTE_`, `NETWORK_`, `STORAGE_`, `OBSERVABILITY_`, `SECURITY_ARCHITECTURE.md` | Cloud infrastructure design, one file per concern. Several carry a SYS-ADR-008 notice because the cloud no longer holds execution artifacts |
+| [`docs/cloud/deployment/`](docs/cloud/deployment/) | `LOCAL_DEPLOYMENT`, `DEVELOPMENT`, `STAGING`, `PRODUCTION` | The planned deployment of each environment. Nothing is deployed |
+| [`docs/cloud/operations/`](docs/cloud/operations/) | `MONITORING`, `ALERTING`, `INCIDENT_RESPONSE`, `BACKUP`, `DISASTER_RECOVERY` | The planned operating procedures for the cloud service |
+| [`docs/cloud/planning/`](docs/cloud/planning/) | `CLOUD_ROADMAP`, `CLOUD_TASKS`, `DECISIONS` | Cloud sequencing (C-M01 to C-M04), task backlog and decision records |
+| [`docs/cloud/milestones/`](docs/cloud/milestones/) | `C-M01-FOUNDATION`, `C-M02-DEVELOPMENT`, `C-M03-STAGING`, `C-M04-PRODUCTION` | One dossier per cloud milestone, same six files |
+| [`docs/backend/`](docs/backend/) | `architecture/` (8), `development/` (5), `planning/` (3) | Backend implementation architecture, setup and workflow, roadmap, tasks and decisions. `apps/backend` is the code these describe |
+| [`docs/database/`](docs/database/) | `architecture/` (4), `planning/` (3), `schema/` (10) | PostgreSQL design, data model and ownership, roadmap and tasks, and one schema file per table group. No database code exists |
+| [`docs/development/`](docs/development/) | `INTERN_QUICKSTART`, `DEVELOPMENT_SETUP`, `DEVELOPMENT_WORKFLOW`, `BRANCHING_STRATEGY`, `CODE_REVIEW`, `TESTING_STRATEGY`, `RELEASE_PROCESS`, `SOURCE_HEADER_STANDARD` | Repository-wide contributor guidance |
+
+**Milestone dossier files**
+
+Each folder under `docs/frontend/milestones/` and `docs/cloud/milestones/` follows the same pattern. The pattern is a convention: the folders for other workstreams (for example `B-M01` to `B-M07` and `DB-M01` to `DB-M04`) are not required to have identical files, and a planned milestone is not an active one.
+
+| File | Responsibility | Is it an approval? |
+|---|---|---|
+| `MILESTONE.md` | Scope, objective, status (for example PLANNED) and exit conditions | No |
+| `TASKS.md` | The task list for the milestone | No: a listed task is not a started or finished one |
+| `ACCEPTANCE_CRITERIA.md` | The conditions that must hold for the milestone to be accepted | No: criteria are not evidence that they are met |
+| `REVIEW_CHECKLIST.md` | The checklist reviewers work through | No: a ticked checklist supports review and is not itself sign-off |
+| `GIT_COMMIT_STEP.md` | The branch and commit step done after the review gate | No |
+| `CHANGELOG.md` | The record of changes to the milestone dossier | No |
+
+Names are upper-case with underscores for documents. Milestone folders are named by prefix and number (`F-Mnn-NAME`, `C-Mnn-NAME`).
+
+**Documents that share a name**
+
+Four names appear in more than one folder. The system-level document sets the cross-domain view; the domain document gives detail for its own domain. Where they disagree, the conflict is raised in a review and is not settled by the broader-sounding file name. These scope assignments come from each file's own scope statement.
+
+| Name | System-level document | Domain document |
+|---|---|---|
+| `CLOUD_ARCHITECTURE` | `docs/architecture/`: the cloud's role and boundaries in the product | `docs/cloud/architecture/`: the deployable cloud resources, environments and infrastructure as code |
+| `SECURITY_ARCHITECTURE` | `docs/architecture/`: product-wide trust boundaries and security model | `docs/cloud/architecture/`: cloud and infrastructure security controls |
+| `BACKEND_ARCHITECTURE` | `docs/architecture/`: the Control Plane as a system | `docs/backend/architecture/`: backend implementation structure and module wiring |
+| `DEVELOPMENT_SETUP` | `docs/development/`: repository-wide environment (planned) | `docs/frontend/development/` for the frontend and `docs/backend/development/` for the backend |
 
 Who owns each folder and file group is defined in [`planning/PLANNING_AUTHORITY_MATRIX.md`](planning/PLANNING_AUTHORITY_MATRIX.md) (the ownership section is proposed and pending owner acceptance).
 
