@@ -2350,7 +2350,7 @@ Implement:
 Acceptance:
 
 - users cannot access another organization's artifacts;
-- a transfer grant is issued only for a reserved destination of the requesting user.
+- a transfer grant is issued only for a destination reserved for the requesting user, where "reserved destination" is as defined in DIRECT_ARTIFACT_TRANSFER.md; the eligibility rules, lifetime and claims are open (DT-OD-02).
 
 # 141.1 Transfer Grant Authentication Requirements (SYS-ADR-008)
 

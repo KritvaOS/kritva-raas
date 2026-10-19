@@ -185,6 +185,8 @@ An Artifact Version represents one immutable executable package.
 
 # 8. Artifact Lifecycle
 
+> **Historical state names (SYS-ADR-008).** UPLOADING and UPLOADED are historical names from the cloud storage design and are not to be implemented as written for execution artifacts. The replacement state names are not defined.
+
 Recommended Artifact Version lifecycle:
 
     CREATED
@@ -1050,6 +1052,8 @@ Recommended:
     INDEX (status, created_at)
 
 # 51. Validation State Machine
+
+> **Historical state names (SYS-ADR-008).** UPLOADING and UPLOADED below are historical and are not valid substitutes for the undefined direct transfer states.
 
 The aggregate validation state is:
 
@@ -2296,7 +2300,7 @@ Artifact reconciliation must detect:
     DB record + wrong object size
     DB record + digest mismatch
     object + missing DB record
-    UPLOADING object + stale session
+    UPLOADING object + stale session (historical; cloud storage design only)
     DELETING object + failed deletion
 
 Reconciliation must be safe and idempotent.
@@ -2568,7 +2572,7 @@ Phase 8 completes:
 - [ ] Validation evidence is retained.
 - [ ] Mandatory failures reject the Artifact Version.
 - [ ] Acceptance occurs only after all mandatory checks pass.
-- [ ] Metadata validation is authoritative at the Control Plane, and content validation is an authenticated destination report.
+- [ ] Metadata validation is authoritative at the Control Plane, and content validation is a destination report recorded as an assertion with provenance, not as proof.
 - [ ] Validation operations are idempotent.
 
 # 153. Acceptance Criteria — State Machine
@@ -2771,9 +2775,11 @@ The following must always remain true:
 > authoritative for the Artifact's business state, while the destination
 > holds the binary payload.**
 >
-> **Acceptance is a Control Plane trust decision over metadata and an
-> authenticated destination report. It requires successful
-> validation of package structure, manifest, checksum,
+> **Acceptance is recorded by the Control Plane. It is based on metadata
+> validation and on the destination's reported content validation, which is an
+> assertion with provenance and not proof of content validity. The policy for
+> how the Control Plane treats a destination report is not defined here and is
+> open (DT-OD-02). The checks include package structure, manifest, checksum,
 > signature, architecture, platform, runtime, SDK, capabilities and policy.
 > A client cannot mark an artifact as accepted.**
 >

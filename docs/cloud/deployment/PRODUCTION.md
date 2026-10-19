@@ -571,7 +571,7 @@ Identity includes:
 
 The baseline digest algorithm is SHA-256.
 
-Production artifacts must pass, with the Control Plane validating metadata and the destination validating content:
+Production `.krv` execution artifacts (not software release artifacts) must pass, with the Control Plane validating metadata and the destination validating content:
 
 - manifest validation;
 - checksum validation;

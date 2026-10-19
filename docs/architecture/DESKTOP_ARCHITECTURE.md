@@ -1941,7 +1941,7 @@ If the direct transfer fails:
       v
     Destination validation, then READY
 
-The artifact must not become available merely because a partial transfer exists. Resumption must not extend the grant validity, and an expired or revoked grant requires a new grant. There is no cloud fallback.
+The artifact must not become available merely because a partial transfer exists. Resumption must not extend the grant validity, and an expired or revoked grant requires a new grant (DIRECT_ARTIFACT_TRANSFER.md Section 5). An offline destination may not learn of a revocation, and immediate revocation is not claimed (DT-OD-05). There is no cloud fallback.
 
 ## 128. Network Interruption During Job
 

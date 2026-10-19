@@ -1164,7 +1164,7 @@ Core SLIs include:
 - Job start success;
 - Job completion success;
 - booking success;
-- artifact transfer success (from destination status reports; measurement design open);
+- artifact transfer success (the reporting source, denominator and failure semantics are not decided; cloud object storage metrics do not observe it);
 - result availability;
 - Lab availability;
 - realtime connection availability.
@@ -1181,7 +1181,7 @@ Initial values are examples and must be finalized after production measurement.
 | API successful requests | 99.9% |
 | API P95 latency | < 500 ms for normal APIs |
 | Job control availability | 99.9% |
-| Artifact transfer completion (example target; measurement design open) | 99.5% |
+| Artifact transfer completion (illustrative placeholder, not an approved target; no measurement design, eligible transfers, failure categories or denominator defined) | 99.5% |
 | Result availability | 99.5% |
 | Control Plane WebSocket availability | 99.5% |
 | Lab Agent cloud connectivity | 99.0% |

@@ -1466,7 +1466,7 @@ Preferred:
        v
     Atomic READY, then local deployment when authorized
 
-The Lab Agent should receive only artifacts for which a valid grant exists. READY does not authorize execution.
+This is the high-level sequence from DT-REQ-04 and DIRECT_ARTIFACT_TRANSFER.md Section 5, which own the normative validation requirements; implementation details, including the signing model, are open (DT-OD-02). The Lab Agent should receive only artifacts for which a valid grant exists. READY does not authorize execution.
 
 ## 90. Network Security Testing
 

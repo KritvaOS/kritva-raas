@@ -327,7 +327,7 @@ Security classification shall influence:
 | SEC-066 | PRI-0 | Signed artifacts shall have their signature verified before execution. | Establish artifact authenticity. | Cryptographic test | 3 |
 | SEC-067 | PRI-0 | Invalid signatures shall block execution. | Fail closed. | Negative test | 3 |
 | SEC-068 | PRI-0 | Revoked artifacts/signing identities shall be rejected. | Contain compromised artifacts. | Integration test | 8 |
-| SEC-069 | PRI-0 | Artifact content at the destination shall not be modified after successful validation, and READY shall be set atomically after staged, non-executable validation. | Preserve validated execution unit. | Destination integration test | 3 |
+| SEC-069 | PRI-0 | Artifact content at the destination shall not be modified after successful validation, and READY shall be set atomically after staged, non-executable validation; the enforcement mechanism (for example content addressing, permissions or a digest recheck before use) is open and a status flag alone is not sufficient. | Preserve validated execution unit. | Destination integration test | 3 |
 | SEC-070 | PRI-0 | Artifact metadata and transfer grants shall enforce organization/project authorization, and a destination shall reject content for a grant that does not match its organization, project, artifact identity and destination. | Prevent cross-tenant artifact access. | Security test | 3 |
 | SEC-071 | PRI-0 | Artifact deployment shall validate manifest against target Platform Version. | Prevent incompatible execution. | Integration test | 5 |
 | SEC-072 | PRI-0 | Required capabilities shall be validated before execution. | Prevent unauthorized hardware use. | Integration test | 5 |
@@ -602,7 +602,7 @@ The manifest itself shall be covered by the artifact integrity mechanism.
 
 The Control Plane validates registered metadata and authorization only. It does not hold artifact bytes and does not inspect artifact content. The destination validates the received content (checksum, signature where enabled, platform, capabilities) against the registered metadata. A destination report of READY is an authenticated assertion with provenance. It is not proof of content validity to the Control Plane, it is not authorization, and it is distinct from booking authorization, Job or Run state and physical safety. Execution authorization (Section 24) is evaluated separately and the Lab Agent enforces local policy independently.
 
-Security requirements for the transfer path (DT-REQ-01 to DT-REQ-08 in DIRECT_ARTIFACT_TRANSFER.md) include: grants that are short-lived, single-purpose and bound to organization, project, artifact identity and destination; replay and theft resistance; endpoint probing resistance; revocation and offline-staleness handling; protection and rotation of the grant issuer keys; and authenticated status reports. The grant claims, signing, key rotation and transport authentication (DT-OD-02), connectivity (DT-OD-01) and offline cancellation policy (DT-OD-05) are open and are not decided here. Threat scenarios are AS-036 to AS-044 in THREAT_MODEL.md.
+Security requirements for the transfer path (DT-REQ-01 to DT-REQ-08 in DIRECT_ARTIFACT_TRANSFER.md) include: grants that are short-lived, single-purpose and bound to organization, project, artifact identity and destination; replay and theft resistance; endpoint probing resistance; revocation and offline-staleness handling; protection and rotation of the grant issuer keys; and authenticated status reports. The grant claims, signing, key rotation and transport authentication (DT-OD-02), connectivity (DT-OD-01) and offline cancellation policy (DT-OD-05) are open and are not decided here. Signature verification before execution is an existing requirement (SEC-066, SEC-067 and DT-REQ-04); the signature format, trust model, key provisioning and rotation are open (DT-OD-02). The security properties listed here are requirements on a future contract and do not define it. Threat scenarios are AS-036 to AS-044 in THREAT_MODEL.md.
 
 # 12. Tenant Isolation Model
 
@@ -796,7 +796,7 @@ Minimum security event categories:
 - authorization.denied;
 - privilege.changed;
 - membership.changed;
-- artifact.uploaded (historical name; under SYS-ADR-008 it denotes metadata registration, and event names for grant issuance and status reports are not yet defined);
+- artifact.uploaded (historical name; superseded for execution artifacts and not reused for the new flow; replacement event names for registration, grant issuance and status reports are not defined);
 - artifact.validation_failed;
 - artifact.signature_failed;
 - artifact.revoked;
