@@ -1,5 +1,7 @@
 # Kritva RaaS Network Architecture
 
+> **Partly revised for SYS-ADR-008 (direct artifact transfer).** Sections 86 to 89 (request size, the artifact path), the sensitive operations, capacity and egress lists, the firewall policy and the acceptance items for the artifact path now describe the direct workstation-to-destination path and keep object storage for results and media; see [DIRECT_ARTIFACT_TRANSFER.md](../../architecture/DIRECT_ARTIFACT_TRANSFER.md). The connectivity options A to D (DT-OD-01) are compared in Section 87 and none is chosen; a relay that carries artifact bytes is not permitted. Remaining mentions of artifact upload in other sections are superseded where they refer to execution artifacts. SYS-ADR-008 is a direction pending owner confirmation, and nothing is implemented.
+
 ## 1. Document Control
 
 | Item | Value |
@@ -865,10 +867,10 @@ Typical cloud firewall policy:
     Edge -> API : ALLOW
     API -> PostgreSQL : ALLOW
     API -> Queue : ALLOW
-    API -> Object Storage : ALLOW
+    API -> Object Storage : ALLOW (results and media)
     Worker -> PostgreSQL : ALLOW
     Worker -> Queue : ALLOW
-    Worker -> Object Storage : ALLOW
+    Worker -> Object Storage : ALLOW (results and media)
     Lab Agent -> Lab Gateway : ALLOW
     Internet -> PostgreSQL : DENY
     Internet -> Queue : DENY
@@ -1382,7 +1384,7 @@ Limits should be differentiated by operation sensitivity.
 More restrictive controls should apply to:
 
 - login;
-- artifact upload;
+- artifact registration and transfer grant issuance;
 - Job creation;
 - Job start;
 - Job stop;
@@ -1393,33 +1395,46 @@ More restrictive controls should apply to:
 
 The edge must enforce request-size limits.
 
-Large files such as artifacts and results should use object storage rather than
-large API payloads.
+Large files such as results and media should use object storage rather than
+large API payloads. Execution artifacts are not carried by the API or by cloud object storage; they use the direct path in Section 87.
 
-## 87. Artifact Upload Network Flow
+## 87. Artifact Transfer Network Flow
 
 Preferred:
 
-    Studio
+    Studio (workstation)
        |
        v
-    API
+    API: register metadata, request transfer grant
        |
        v
-    Signed Upload Authorization
+    Short-lived transfer grant
        |
        v
-    Object Storage
+    Direct transfer to destination (Lab Agent)
        |
        v
-    Completion API
+    Destination staged validation, atomic READY
        |
        v
-    Validation Worker
+    Metadata status report to the API
 
-This reduces Control Plane bandwidth pressure.
+The API carries metadata and grants only, so artifact bytes do not use Control Plane bandwidth or cloud object storage. No relay may carry artifact bytes (DT-REQ-01, DT-REQ-05).
+
+The connectivity model is open (DT-OD-01). The candidates are compared below on network terms and none is chosen.
+
+| Option | Network prerequisites | NAT and firewall fit | Exposure | Operational complexity | Failure behavior |
+|---|---|---|---|---|---|
+| A. Direct endpoint over private connectivity (routed lab network, VPN or overlay) | Private connectivity between the workstation and the lab | Works where the private network spans both ends | Limited to the private network | Network provisioning and access control for each workstation | Categorized failure if the private path is down |
+| B. Restricted, directly reachable Lab Agent endpoint | Reachable address and firewall rules for the Lab Agent | Needs inbound rules at the lab | Internet-facing or broadly reachable service that must be assessed | Endpoint hardening and monitoring | Categorized failure if the endpoint is unreachable |
+| C. Lab Agent-initiated connection to a workstation listener | Workstation reachable from the lab | Fails behind typical workstation NAT or firewall | Listener on the workstation | Per-workstation setup | Categorized failure if the workstation is not reachable |
+| D. Peer-to-peer NAT traversal with a rendezvous service for connection metadata only | Rendezvous service for metadata, hole punching support | Works in many NAT cases and fails in some | Rendezvous metadata exposure | Rendezvous operation and traversal debugging | Categorized failure if no direct path forms; no relay fallback |
+
+The table is a comparison for the owner decision, not a recommendation. If no direct path can be set up, the result is a categorized failure and not a relay or cloud fallback.
 
 ## 88. Result Download Network Flow
+
+This flow applies to results and media, which stay on object storage.
 
 Preferred:
 
@@ -1436,25 +1451,22 @@ Preferred:
 
 Large result data should not flow through API instances unnecessarily.
 
-## 89. Lab Artifact Fetch
+## 89. Lab Artifact Receipt
 
 Preferred:
 
-    Lab Agent
+    Direct transfer received under a grant
        |
        v
-    Authorized Artifact Fetch
+    Staged, non-executable validation
        |
        v
-    Object Storage
+    Digest and signature verification
        |
        v
-    Digest Verification
-       |
-       v
-    Local Deployment
+    Atomic READY, then local deployment when authorized
 
-The Lab Agent should receive only artifacts authorized for the Job.
+The Lab Agent should receive only artifacts for which a valid grant exists. READY does not authorize execution.
 
 ## 90. Network Security Testing
 
@@ -1548,7 +1560,7 @@ failover and operational requirements are explicitly defined.
 Capacity must account for:
 
 - API traffic;
-- artifact uploads;
+- direct artifact transfers (outside cloud capacity; limited by the connectivity option, DT-OD-04);
 - result downloads;
 - WebSocket connections;
 - WebRTC sessions;
@@ -1565,7 +1577,6 @@ Network egress can become a major RaaS cost driver.
 Monitor:
 
 - video egress;
-- artifact download;
 - result download;
 - lab traffic;
 - cross-region traffic.
@@ -1783,8 +1794,8 @@ The exact cloud implementation is not part of domain logic.
 ## 113. Phase 2 Acceptance
 
 - [ ] Object storage uses controlled access.
-- [ ] Artifact upload path is validated.
-- [ ] Artifact fetch path is validated.
+- [ ] Direct artifact transfer path is validated for the chosen connectivity option (open, DT-OD-01).
+- [ ] No path carries artifact bytes through the cloud.
 - [ ] Private storage endpoints are used where supported.
 - [ ] Large payloads bypass the API where practical.
 
