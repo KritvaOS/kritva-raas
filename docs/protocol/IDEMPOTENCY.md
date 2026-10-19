@@ -1,5 +1,7 @@
 # Kritva RaaS Idempotency Specification
 
+> **Partly revised for SYS-ADR-008 (direct artifact transfer).** Sections 54 to 60, 122, 136, 159 and 173 now describe metadata registration, transfer replay versus continuation, and status report reconciliation instead of a cloud upload session; see [DIRECT_ARTIFACT_TRANSFER.md](../architecture/DIRECT_ARTIFACT_TRANSFER.md). `artifact.upload` is superseded and the replacement idempotency rules are open (DT-OD-02). Remaining mentions of artifact upload in retention and other tables are superseded where they refer to execution artifacts. SYS-ADR-008 is a direction pending owner confirmation, and nothing is implemented.
+
 ## 1. Document Control
 
 | Item | Value |
@@ -12,7 +14,7 @@
 | Realtime Transport | WebSocket |
 | Lab Transport | Secure Lab Protocol |
 | Persistence | PostgreSQL |
-| Durable Payload Storage | Object Storage |
+| Durable Payload Storage | Object Storage (results, logs and media; not execution artifacts) |
 | Queue | Managed/abstracted job queue |
 | Contract Location | `packages/contracts` |
 | Status | Production Architecture Baseline |
@@ -65,7 +67,7 @@ This specification covers:
 - failure handling;
 - database transactions;
 - queue dispatch;
-- artifact upload;
+- artifact registration and transfer grant issuance;
 - booking creation;
 - job start;
 - credit consumption;
@@ -891,7 +893,7 @@ The following baseline commands require idempotency keys:
 | `build.start` | Required |
 | `build.cancel` | Required |
 | `artifact.create` | Required |
-| `artifact.upload` | Required |
+| `artifact.upload` | Superseded (SYS-ADR-008); the idempotency rules for the replacement transfer operations are open (DT-OD-02) |
 | `artifact.delete` | Required |
 | `booking.create` | Required |
 | `booking.modify` | Required |
@@ -996,141 +998,60 @@ Deduplication:
 
 The mechanisms are related but not identical.
 
-# 54. Artifact Upload
+# 54. Artifact Registration and Transfer
 
-Artifact upload is a high-value idempotency operation because uploads may be
-large and may fail after storage has partially completed.
+Under SYS-ADR-008 the artifact bytes go directly from the workstation to the destination, so there is no cloud upload session or object storage step to make idempotent. Three operations have idempotency needs, and the rules below state requirements, not wire contracts (DT-OD-02):
 
-Flow:
+1. artifact metadata registration (Control Plane);
+2. transfer grant issuance and the transfer itself (workstation and destination);
+3. status reports from the destination (Control Plane).
 
-    Studio
-       |
-       | artifact.upload
-       | Idempotency-Key = K
-       v
-    Control Plane
-       |
-       v
-    Upload session
-       |
-       v
-    Object Storage
-       |
-       v
-    Digest validation
-       |
-       v
-    Artifact record
-       |
-       v
-    ACCEPTED
-
-# 55. Artifact Upload Identity
+# 55. Artifact Identity
 
 Artifact identity should include:
 
     artifact_id
     digest
 
-The idempotency key identifies the upload request.
+The idempotency key identifies the registration request. The digest identifies the immutable content. These must not be conflated.
 
-The digest identifies the immutable content.
+# 56. Registration Retry
 
-These must not be conflated.
+A retried registration with the same key and the same digest returns the same `artifact_id` and does not create a duplicate record.
 
-# 56. Artifact Upload Retry
+# 57. Registration Duplicate
 
-Example:
-
-    Upload K
-       |
-       v
-    70% transferred
-       |
-       X
-    network failure
-
-Studio retries:
-
-    same artifact
-    same Idempotency-Key
-    same digest
-
-The server should resume or safely reuse the upload session.
-
-# 57. Artifact Upload Duplicate
-
-If the original upload completed:
-
-    retry K
-       |
-       v
-    existing idempotency record
-       |
-       v
-    original artifact response
-
-No duplicate artifact should be created.
+If the original registration completed, a retry with the same key returns the original response. No duplicate artifact is created.
 
 # 58. Artifact Content Mismatch
 
-If:
-
-    same key
-    different digest
-
-the server must reject:
+If the same key arrives with a different digest, the server must reject it:
 
     IDEMPOTENCY_KEY_REUSED
 
-or an artifact-specific conflict code.
+or an artifact-specific conflict code. The client must generate a new key for a genuinely different artifact.
 
-The client must generate a new key for a genuinely different artifact upload.
+# 59. Transfer Replay and Continuation
 
-# 59. Artifact Upload Transaction
+A replayed new transfer and a legitimate continuation of an interrupted transfer must be told apart:
 
-Recommended:
+- a replayed new transfer under an already-used grant is rejected by the destination;
+- an authenticated continuation of the same transfer session, from the last verified offset, is accepted and is idempotent: duplicate chunks do not corrupt the staged data, and the final digest is verified after resumption;
+- "single use" does not mean rejecting every later request that carries the same grant.
 
-    Begin
-       |
-       v
-    Claim idempotency key
-       |
-       v
-    Validate upload session
-       |
-       v
-    Verify object digest
-       |
-       v
-    Create artifact metadata
-       |
-       v
-    Persist idempotency result
-       |
-       v
-    Commit
+Grant issuance may be retried by the client; a retry for the same registered artifact and destination must not issue an unbounded number of independent grants. The exact rule is open (DT-OD-02).
 
-Object storage completion may require a reconciliation mechanism because
-object storage is external to the database transaction.
+# 60. Status Report Idempotency and Reconciliation
 
-# 60. Artifact Storage Reconciliation
+Status reports from the destination are events. They must be idempotent: a repeated report does not change state twice, and a late or out-of-order report must not move the recorded state backwards.
 
-Possible uncertain state:
+If the destination is disconnected, the transfer state is pending or unreported, not confirmed. On reconnection the destination's state is reconciled idempotently with the recorded state. A status report is the destination's authenticated assertion, not independent proof of validity or execution success. Possible uncertain state:
 
-    Object exists
+    Destination holds a transfer
         +
-    DB record missing
+    Control Plane record missing or stale
 
-Reconciliation should identify and either:
-
-- associate the object;
-- mark it orphaned;
-- quarantine it;
-- delete it according to lifecycle policy.
-
-The API must not create duplicate artifacts simply because an earlier response
-was lost.
+Reconciliation associates the report with the registered artifact, or records it as unmatched for review. The API must not create duplicate artifact records because an earlier response or report was lost.
 
 # 61. Booking Creation
 
@@ -1477,7 +1398,7 @@ Suggested initial policy:
 | Operation | Suggested Retention |
 |---|---|
 | Project mutation | 24 hours |
-| Artifact creation/upload | 7 days |
+| Artifact registration | 7 days |
 | Booking creation | 7 days |
 | Booking modification/cancel | 7 days |
 | Credit consumption | 30 days |
@@ -2143,24 +2064,23 @@ Repeated cancellation should return the existing state.
 
 # 122. Artifact State Machine
 
-    CREATED
+Conceptual states, aligned with `docs/backend/architecture/ARTIFACT_SERVICE.md` Sections 28 and 29 (the exact set is open):
+
+    REGISTERED
        |
        v
-    UPLOADING
+    TRANSFERRING
        |
        v
-    UPLOADED
+    TRANSFERRED
        |
        v
     VALIDATING
        |
        v
-    ACCEPTED
-       |
-       v
-    READY
+    READY   (destination-reported)
 
-A retry must preserve artifact identity when it is the same logical upload.
+A retry must preserve artifact identity when it is the same logical registration or the same transfer session.
 
 # 123. Idempotency and Resource Locks
 
@@ -2366,11 +2286,11 @@ Retry:
     same operation_id
     same run_id
 
-# 136. Artifact Upload Example
+# 136. Artifact Registration Example
 
 Request:
 
-    POST /api/v1/artifacts/upload
+    POST /api/v1/artifacts
     Idempotency-Key: K
 
     {
@@ -2388,6 +2308,8 @@ Retry:
 Result:
 
     same artifact_id
+
+The request shape is conceptual. No artifact bytes are in the request.
 
 # 137. Key Reuse Example
 
@@ -2448,7 +2370,7 @@ Examples:
 
 - job marked processing but runtime is running;
 - credit marked processing but provider result is unknown;
-- artifact upload marked processing but object exists;
+- transfer marked in progress but the destination reports it complete or failed;
 - booking marked processing but resource allocation exists.
 
 # 141. Reconciliation Flow
@@ -2709,14 +2631,15 @@ Acceptance:
 
 Implement:
 
-- artifact upload idempotency;
+- artifact registration idempotency;
 - digest binding;
-- resumable upload;
-- storage reconciliation.
+- transfer replay and continuation rules;
+- status report reconciliation.
 
 Acceptance:
 
-- repeated upload cannot create duplicate artifact identities.
+- repeated registration cannot create duplicate artifact identities;
+- a replayed new transfer is rejected and an authenticated continuation is accepted.
 
 # 160. P3 CONTROL PLANE
 
@@ -2845,7 +2768,7 @@ Acceptance:
 17. Which external providers support native idempotency?
 18. What exact payment-provider reconciliation workflow is required?
 19. How should offline Lab Agents reconcile uncertain commands?
-20. How should artifact upload sessions interact with idempotency records?
+20. How should transfer sessions and grants interact with idempotency records (DT-OD-02)?
 21. Should WebSocket commands share the same idempotency store?
 22. Should local Tauri IPC use the same persistence abstraction?
 23. What exact idempotency metrics become production SLOs?
@@ -2920,14 +2843,15 @@ Acceptance:
 - [ ] Error codes are stable.
 - [ ] Response semantics are documented.
 
-# 173. Full Acceptance Criteria — Artifact Upload
+# 173. Full Acceptance Criteria — Artifact Registration and Transfer
 
-- [ ] Upload requires idempotency.
-- [ ] Artifact digest is validated.
+- [ ] Registration requires idempotency.
+- [ ] Artifact digest is recorded.
 - [ ] Same key returns same artifact.
 - [ ] Different digest with same key is rejected.
-- [ ] Partial uploads can recover safely.
-- [ ] Object storage uncertainty is reconciled.
+- [ ] A replayed new transfer is rejected; a continuation of the same transfer is accepted.
+- [ ] Status reports are idempotent and cannot move state backwards.
+- [ ] Disconnected destinations are shown as pending or unreported and reconciled.
 - [ ] Duplicate artifact metadata is prevented.
 - [ ] Artifact identity remains immutable.
 

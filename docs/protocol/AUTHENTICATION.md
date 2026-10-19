@@ -1,5 +1,7 @@
 # Kritva RaaS Protocol Authentication Specification
 
+> **Partly revised for SYS-ADR-008 (direct artifact transfer).** Section 141.1 (new), the artifact scope and validator-worker lines and Section 141 now reflect direct transfer; see [DIRECT_ARTIFACT_TRANSFER.md](../architecture/DIRECT_ARTIFACT_TRANSFER.md). Grant claims, signing, key rotation and transport authentication are open (DT-OD-02); offline revocation is open (DT-OD-05). SYS-ADR-008 is a direction pending owner confirmation, and nothing is implemented.
+
 ## 1. Document Control
 
 | Item | Value |
@@ -553,7 +555,7 @@ Recommended categories:
 | `bookings:read` | Read bookings |
 | `bookings:write` | Create/modify bookings |
 | `artifacts:read` | Read artifacts |
-| `artifacts:write` | Upload/manage artifacts |
+| `artifacts:write` | Register and manage artifact metadata. It does not authorize delivery of artifact bytes to a destination: that needs a transfer grant (Section 141.1) |
 | `jobs:read` | Read jobs |
 | `jobs:execute` | Start/stop execution |
 | `results:read` | Read results |
@@ -968,7 +970,7 @@ Example:
 
     worker-artifact-validator
         allowed:
-            artifacts:validate
+            artifacts:validate   (registered metadata only; the Control Plane holds no artifact content, SYS-ADR-008)
 
     worker-scheduler
         allowed:
@@ -2340,13 +2342,33 @@ Acceptance:
 Implement:
 
 - artifact scope validation;
-- upload authorization;
+- metadata registration authorization;
+- transfer grant issuance authorization (requirements in Section 141.1);
 - project ownership checks;
 - artifact access control.
 
 Acceptance:
 
-- users cannot access another organization's artifacts.
+- users cannot access another organization's artifacts;
+- a transfer grant is issued only for a reserved destination of the requesting user.
+
+# 141.1 Transfer Grant Authentication Requirements (SYS-ADR-008)
+
+Execution artifacts are delivered directly from the workstation to the destination Lab Agent, authorized by a transfer grant issued by the Control Plane (`docs/architecture/DIRECT_ARTIFACT_TRANSFER.md`). This section states what the authentication contract must cover. It does not choose claim names, a signing algorithm, key identifiers or a token format; those are open under DT-OD-02.
+
+| Requirement | What must be defined |
+|---|---|
+| Issuer and recipient | The destination knows which authority issued the grant and which System ID may accept it |
+| Trust and keys | How the destination verifies the signature and trusts the issuer's verification key, key custody, rotation, compromise handling, and what a disconnected destination does with stale trust information |
+| Issuance authorization | The Control Plane issues a grant only to the authenticated user for a valid reservation, destination, artifact digest, size and operation, and audits every issuance. A compromised issuer is a distinct trust dependency |
+| Transfer identity | A grant is bound to one transfer session, not reusable for arbitrary uploads |
+| Replay and continuation | A replayed new transfer is rejected; an authenticated, idempotent continuation of the same transfer is allowed. "Single use" does not mean rejecting every later request that carries the same grant |
+| Transport authentication | Workstation and destination authenticate each other independently of the grant signature |
+| Status reporter identity | The destination authenticates as its System ID when it reports status; the Control Plane records the report as an authenticated assertion with provenance, not as independently verified content validity |
+| Expiry and revocation | Expiry is enforced locally. Cancellation reaches a connected destination as the final protocol defines; a disconnected destination cannot know of it, and immediate revocation is not guaranteed (DT-OD-05) |
+| Secret handling | The grant never appears in URLs, command-line arguments, logs, diagnostics, telemetry, crash dumps or support bundles |
+
+The scopes of Section 30 are an input to issuance authorization, not a substitute for a grant.
 
 # 142. P3 CONTROL PLANE
 
@@ -2619,6 +2641,7 @@ Mitigation:
 - [ ] Execution scopes are restricted.
 - [ ] Financial scopes are restricted.
 - [ ] Artifact scopes are restricted.
+- [ ] Transfer grant issuance is authorized per reservation and destination (Section 141.1).
 - [ ] Scope checks are server-side.
 - [ ] Missing scopes produce stable errors.
 - [ ] Scope changes follow versioning policy.
