@@ -1,6 +1,6 @@
 # Kritva RaaS Storage Architecture
 
-> **Superseded artifact route (SYS-ADR-008).** The execution artifact is transferred directly from the user's workstation to the destination system. The cloud does not receive, store or relay it. Where this document describes artifact upload to, or fetch from, cloud object storage, that route is superseded by [DIRECT_ARTIFACT_TRANSFER.md](../../architecture/DIRECT_ARTIFACT_TRANSFER.md). This document has not been revised to match yet; the affected sections are listed in Section 9 of that file. Results, logs and media are not affected.
+> **Partly revised for SYS-ADR-008 (direct artifact transfer).** Sections 13 to 15, 18 and 20 to 28, the artifact lifecycle (70), backup (47), integrity (65), storage access (105) and the phase 2 and phase 6 checklists now state that execution artifacts are not stored in cloud object storage; see [DIRECT_ARTIFACT_TRANSFER.md](../../architecture/DIRECT_ARTIFACT_TRANSFER.md). Upload, multipart, signed-URL and completion sections (25, 26, 66, 67, 83 to 86, 133) apply to results, logs and media. Artifact cost, retention and deduplication (94, open item 6) are open (DT-OD-03). SYS-ADR-008 is a direction pending owner confirmation, and nothing is implemented.
 
 ## 1. Document Control
 
@@ -107,7 +107,7 @@ The architecture follows these principles:
 3. Queues are not storage authority.
 4. WebSocket is not storage authority.
 5. Database records reference objects rather than embedding large binaries.
-6. Accepted artifacts are immutable.
+6. Execution artifacts are not stored in cloud object storage (SYS-ADR-008); the artifact record is immutable once registered.
 7. Object access requires authorization.
 8. Signed URLs are short-lived and scoped.
 9. Encryption is required at rest and in transit.
@@ -170,7 +170,7 @@ The architecture has five conceptual storage classes:
 | Project | PostgreSQL |
 | Platform | PostgreSQL |
 | Artifact metadata | PostgreSQL |
-| Artifact binary | Object Storage |
+| Artifact binary | Not stored in the cloud. It goes directly from the workstation to the destination system (`DIRECT_ARTIFACT_TRANSFER.md`) |
 | Booking | PostgreSQL |
 | Credit ledger | PostgreSQL |
 | Job | PostgreSQL |
@@ -262,7 +262,6 @@ Object storage is used for large or immutable payloads.
 
 Primary categories include:
 
-- execution artifacts;
 - result files;
 - execution logs;
 - video recordings;
@@ -293,7 +292,6 @@ containers.
 
 Recommended:
 
-    raas-prod-artifacts
     raas-prod-results
     raas-prod-logs
     raas-prod-video
@@ -309,9 +307,9 @@ Development, staging and production must not share normal application data.
 
 Example:
 
-    raas-dev-artifacts
-    raas-staging-artifacts
-    raas-prod-artifacts
+    raas-dev-results
+    raas-staging-results
+    raas-prod-results
 
 The same principle applies to results, logs and media.
 
@@ -330,15 +328,7 @@ Access should occur through:
 
 ## 18. Object Key Layout
 
-Object keys should be deterministic and tenant-scoped.
-
-Example:
-
-    artifacts/
-      org/<org_id>/
-        project/<project_id>/
-          artifact/<artifact_id>/
-            <digest>.krv
+Object keys should be deterministic and tenant-scoped. There is no artifact key family, because the cloud holds no execution artifact.
 
 Results:
 
@@ -373,28 +363,28 @@ Object keys should:
 User-provided filenames may be stored as metadata rather than trusted path
 components.
 
-## 20. Artifact Storage
+## 20. Artifact Handling
 
-`.krv` artifacts are immutable execution packages.
-
-Storage flow:
+`.krv` artifacts are immutable execution packages. The cloud stores their metadata only.
 
     Local Build
         |
         v
-    .krv
+    .krv (on the workstation)
         |
         v
-    Upload
+    Register Metadata (digest, size, manifest) --> PostgreSQL
         |
         v
-    Object Storage
+    Transfer Grant
         |
         v
-    Validation
+    Direct Transfer to the Destination
         |
         v
-    ACCEPTED / READY
+    Destination Validation --> status (metadata) --> PostgreSQL
+
+Object storage is not on this path. Whether any cloud retention of artifacts is wanted (for example reproducibility or support) is open (DT-OD-03); if added, it is a separate feature with its own decision, not a fallback.
 
 ## 21. Artifact Identity
 
@@ -423,7 +413,6 @@ PostgreSQL should retain:
 - artifact ID;
 - project;
 - organization;
-- object key;
 - size;
 - content type;
 - digest;
@@ -432,44 +421,42 @@ PostgreSQL should retain:
 - architecture;
 - runtime compatibility;
 - SDK version;
-- lifecycle state.
+- lifecycle state;
+- transfer status per destination.
 
-## 24. Artifact Upload Flow
+It retains no object key for an artifact.
+
+## 24. Artifact Registration and Transfer Flow
 
 Preferred:
 
     Studio
       |
       v
-    Create Artifact Metadata
+    Register Artifact Metadata
       |
       v
-    Receive Upload Authorization
+    Receive Transfer Grant
       |
       v
-    Object Storage
+    Direct Transfer to the Destination
       |
       v
-    Upload Completion
+    Destination Validation (digest, manifest, signature, compatibility)
       |
       v
-    Digest Validation
-      |
-      v
-    Manifest Validation
-      |
-      v
-    Signature Validation
-      |
-      v
-    Compatibility Validation
+    Status Report to the Control Plane (metadata)
       |
       v
     READY
 
+The Control Plane records the status the destination reports. A status report does not prove the artifact is valid or that execution will succeed.
+
 ## 25. Signed Upload URLs
 
-Where supported, direct object upload should use short-lived signed URLs.
+Signed upload URLs apply to result, log and media files. They are not used for execution artifacts, which use a transfer grant for a direct transfer to the destination.
+
+Where supported, direct object upload of those files should use short-lived signed URLs.
 
 The application first authorizes the upload.
 
@@ -490,7 +477,9 @@ Signed URLs must:
 
 ## 27. Artifact Download
 
-Lab Agent or authorized user flow:
+The Lab Agent does not download execution artifacts from the cloud. An authorized user retrieving their own artifact uses the copy on their workstation. Signed downloads below apply to results, logs and media.
+
+Result download:
 
     Request Download
           |
@@ -505,21 +494,17 @@ Lab Agent or authorized user flow:
           |
           v
     Download
-          |
-          v
-    Digest Verification
 
 ## 28. Lab Artifact Access
 
-The Lab Agent must receive access only to artifacts required for an authorized
-Job.
+The Lab Agent accepts an artifact only under a transfer grant for its own System ID and for an authorized job. It does not read artifacts from cloud storage.
 
 Artifact access should be:
 
 - scoped;
 - time-limited;
 - auditable;
-- revocable where practical.
+- revocable where practical. While the destination is disconnected, revocation is not guaranteed to be immediate (DT-OD-05).
 
 ## 29. Result Storage
 
@@ -817,7 +802,7 @@ The exact combination depends on data criticality.
 
 ## 47. Artifact Backup
 
-Accepted production artifacts should have strong durability requirements.
+Execution artifacts are not backed up in the cloud (SYS-ADR-008). The durability requirements below apply to artifact metadata, results and other stored data classes. Whether any artifact retention is wanted is open (DT-OD-03).
 
 Recommended:
 
@@ -1052,7 +1037,7 @@ At download:
 
 - verify checksum where appropriate.
 
-For `.krv` artifacts, digest verification is mandatory before execution.
+For `.krv` artifacts, digest verification at the destination is mandatory before execution.
 
 ## 66. Multipart Upload
 
@@ -1060,7 +1045,6 @@ Large files should use multipart/resumable upload where supported.
 
 This applies particularly to:
 
-- large artifacts;
 - result files;
 - video;
 - telemetry archives.
@@ -1124,23 +1108,21 @@ Exact provider tier names are implementation-specific.
 
 Recommended:
 
-    CREATED
+    REGISTERED
        |
-    UPLOADING
+    TRANSFERRING
        |
-    UPLOADED
+    TRANSFERRED
        |
     VALIDATING
-       |
-    ACCEPTED
        |
     READY
        |
     REVOKED / EXPIRED
        |
-    DELETED
+    DELETED (metadata)
 
-Accepted artifacts should remain available according to policy.
+The state names are conceptual; the exact set is defined with the artifact service and protocol. The transfer and validation states describe the destination copy, as reported. Metadata is retained according to policy.
 
 ## 71. Result Lifecycle
 
@@ -1215,7 +1197,7 @@ Legal/customer retention requirements override normal deletion.
 
 ## 75. Artifact Deletion
 
-Accepted artifacts should not be physically deleted while referenced by:
+Artifact records should not be deleted while referenced by:
 
 - active Jobs;
 - historical Runs;
@@ -1326,7 +1308,7 @@ Reconciliation and controlled lifecycle operations resolve these cases.
 
 ## 83. Storage Transaction Pattern
 
-Preferred upload sequence:
+Preferred upload sequence (results, logs and media; not execution artifacts):
 
     Create DB Record
        |
@@ -1644,9 +1626,9 @@ All business state access goes through authorized services.
 
 Lab Agent may access:
 
-- authorized artifacts;
-- authorized deployment packages;
 - result upload destinations.
+
+The Lab Agent does not read execution artifacts or deployment packages from cloud storage; it receives the artifact by direct transfer.
 
 It must not receive broad bucket credentials.
 
@@ -1830,7 +1812,7 @@ No object should be deleted before successful verification.
 |---|---|
 | Phase 0 | Storage authority and interfaces |
 | Phase 1 | PostgreSQL and basic object storage |
-| Phase 2 | Artifact/result storage |
+| Phase 2 | Artifact metadata and result storage |
 | Phase 3 | Worker storage workflows and outbox |
 | Phase 4 | Credit/audit durability and quotas |
 | Phase 5 | Job/Run logs and execution results |
@@ -1857,12 +1839,11 @@ No object should be deleted before successful verification.
 
 ## 122. Phase 2 Acceptance
 
-- [ ] `.krv` artifacts use object storage.
+- [ ] `.krv` artifacts are not stored in cloud object storage (SYS-ADR-008).
 - [ ] Artifact metadata is in PostgreSQL.
 - [ ] Artifact digests are verified.
-- [ ] Signed upload URLs work.
-- [ ] Signed download URLs work.
-- [ ] Artifact immutability is enforced.
+- [ ] Signed upload and download URLs work for results and media.
+- [ ] Artifact record immutability is enforced.
 
 ## 123. Phase 3 Acceptance
 
@@ -1890,7 +1871,7 @@ No object should be deleted before successful verification.
 
 ## 126. Phase 6 Acceptance
 
-- [ ] Lab Agent can fetch authorized artifacts.
+- [ ] Lab Agent accepts an authorized direct artifact transfer.
 - [ ] Lab Agent can upload authorized results.
 - [ ] Access is short-lived/scoped.
 - [ ] Artifact digest verification works.
@@ -2038,11 +2019,10 @@ These questions do not change the fundamental authority and separation model.
 
 - [ ] `.krv` is the execution artifact.
 - [ ] Artifact metadata is stored in PostgreSQL.
-- [ ] Artifact binary is stored in object storage.
+- [ ] No artifact binary is stored in cloud object storage.
 - [ ] SHA-256 or equivalent digest is stored.
 - [ ] Accepted artifacts are immutable.
-- [ ] Signed uploads are used where appropriate.
-- [ ] Signed downloads are scoped.
+- [ ] Signed uploads and downloads are used for results and media where appropriate.
 - [ ] Lab Agent verifies artifact integrity.
 - [ ] Artifact retention is defined.
 

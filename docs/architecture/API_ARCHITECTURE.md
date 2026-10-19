@@ -1,6 +1,6 @@
 # Kritva RaaS API Architecture
 
-> **Superseded artifact route (SYS-ADR-008).** The execution artifact is transferred directly from the user's workstation to the destination system. The cloud does not receive, store or relay it. Where this document describes artifact upload to, or fetch from, cloud object storage, that route is superseded by [DIRECT_ARTIFACT_TRANSFER.md](DIRECT_ARTIFACT_TRANSFER.md). This document has not been revised to match yet; the affected sections are listed in Section 9 of that file. Results, logs and media are not affected.
+> **Partly revised for SYS-ADR-008 (direct artifact transfer).** Sections 22 to 24, 100, 132 to 134 and the related deliverable, risk, principle and checklist lines now describe metadata registration, a transfer grant and status reporting; see [DIRECT_ARTIFACT_TRANSFER.md](DIRECT_ARTIFACT_TRANSFER.md). Endpoint and state names are conceptual, and the grant operation is open. SYS-ADR-008 is a direction pending owner confirmation, and nothing is implemented.
 
 ## 1. Document Control
 
@@ -400,12 +400,11 @@ Representative endpoints:
     POST   /api/v1/artifacts/{artifact_id}/validate
     DELETE /api/v1/artifacts/{artifact_id}
 
-Binary upload should use object-storage upload authorization where appropriate.
+Execution artifact bytes are not sent to the API. The API registers metadata and issues a transfer grant (SYS-ADR-008); the grant operation and its shape are open and defined in the protocol documents. Large result and media files may still use object-storage URLs.
 
-## 23. Artifact Upload Flow
+## 23. Artifact Registration and Transfer Flow
 
-The API should avoid proxying large binaries through the application server when
-possible.
+The API never receives, proxies or stores execution artifact bytes.
 
 Flow:
 
@@ -415,23 +414,21 @@ Flow:
        v
     Control Plane
        |
-       | upload authorization
+       | transfer grant (reservation, destination, digest)
        v
-    Studio
-       |
-       | direct/object-storage upload
-       v
-    Object Storage
-       |
-       v
-    Validation Worker
-       |
-       v
-    Artifact Status
+    Studio ======== direct transfer ========> Lab Agent
+                                                 |
+                                                 v
+                                        Destination Validation
+                                                 |
+                                                 v
+    Control Plane <---- status report (metadata) ----+
 
-## 24. Artifact Download
+If the destination cannot be reached, the client receives a categorized error and no cloud fallback is offered.
 
-Artifact downloads should use authorized short-lived URLs or controlled streaming.
+## 24. Artifact Delivery and Retrieval
+
+Execution artifacts are not downloaded from the API. The Lab Agent receives the artifact by direct transfer, and a user keeps their own copy on their workstation. Authorized short-lived URLs or controlled streaming apply to results, logs and media.
 
 The API must not expose permanent public object-storage URLs.
 
@@ -1072,7 +1069,7 @@ Examples:
 - job start;
 - payment operations;
 - credit operations;
-- artifact registration/upload completion.
+- artifact registration and transfer grant issuance.
 
 ## 67. Idempotency Key
 
@@ -1146,7 +1143,7 @@ The client then observes state through REST or WebSocket.
 Do not hold an HTTP request open while:
 
 - waiting for a robot;
-- downloading an artifact;
+- transferring an artifact to a destination;
 - deploying;
 - running an experiment;
 - collecting long-duration results.
@@ -1550,7 +1547,7 @@ Studio desktop requests may use Tauri-specific mechanisms rather than browser CO
 
 The API must define request size limits.
 
-Large binaries should use object storage rather than bypassing request limits.
+Large result and media binaries should use object storage rather than bypassing request limits. Execution artifacts are sent directly to the destination, not through the API.
 
 ## 101. Timeout Policy
 
@@ -1943,44 +1940,40 @@ Such access must be:
 
 ## 132. Object Storage URLs
 
-When an API returns a download/upload URL:
+When an API returns a download or upload URL for a result, log or media file:
 
 - it should be short-lived;
 - scoped;
 - non-public;
 - tied to authorized object access.
 
-The API should not return permanent bucket credentials.
+The API should not return permanent bucket credentials. Execution artifacts do not use object storage URLs.
 
-## 133. Upload Completion
+## 133. Transfer Status Reporting
 
-For artifact upload, a completion operation may confirm:
+For an artifact transfer, the destination reports status, and the API records it. The record may include:
 
-- object exists;
-- expected size;
-- checksum;
-- artifact metadata.
+- transfer started, progress, completed or failed;
+- validation result;
+- destination System ID;
+- digest as verified by the destination.
 
-Example:
+A status report is metadata. It does not prove the artifact is valid or that execution will succeed. If the destination is disconnected the status is pending or unreported until it reconnects.
 
-    POST /api/v1/artifacts/{artifact_id}/complete
-
-This operation should be idempotent.
+The reporting operation must be idempotent. The `.../complete` operation of earlier drafts is superseded.
 
 ## 134. Artifact Validation Status
 
-Example states:
+Example states (conceptual; the exact set is open and must stay consistent with the artifact architecture):
 
-    CREATED
-    UPLOADING
-    UPLOADED
+    REGISTERED
+    TRANSFERRING
+    TRANSFERRED
     VALIDATING
     VALID
     INVALID
     REVOKED
     DELETED
-
-The exact lifecycle must remain consistent with the artifact architecture.
 
 ## 135. Booking State
 
@@ -2300,11 +2293,10 @@ Acceptance:
 Deliver:
 
 - artifact registration;
-- upload authorization;
-- upload completion;
-- validation;
-- artifact status;
-- artifact download authorization.
+- transfer grant issuance;
+- transfer status reporting;
+- validation status;
+- artifact status.
 
 Acceptance:
 
@@ -2428,7 +2420,7 @@ Acceptance:
 | Event loss | High | Durable state + reconciliation |
 | API abuse | High | Rate limiting + WAF |
 | Excessive polling | Medium | WebSocket events |
-| Large binary upload | High | Object storage |
+| Large binary upload | High | Results and media: object storage. Artifacts: direct transfer, no cloud path |
 | Long HTTP request | Medium | Async operations |
 | Authorization bypass | Critical | Central authorization |
 | Contract drift | High | OpenAPI + CI |
@@ -2558,7 +2550,7 @@ The following invariants must remain true:
 11. Pagination semantics are documented.
 12. Error codes are machine-readable.
 13. HTTP status and application error codes remain distinct.
-14. Large binaries use object storage.
+14. Large result and media binaries use object storage; execution artifacts are transferred directly.
 15. Public API does not expose raw robot control.
 16. Lab Protocol remains distinct from user-facing API.
 17. WebSocket subscriptions are authorization-controlled.
@@ -2680,7 +2672,7 @@ The following invariants must remain true:
 - [ ] Long-running operations return 202.
 - [ ] Resource lifecycle states are documented.
 - [ ] Invalid lifecycle transitions are rejected.
-- [ ] Large files use object storage.
+- [ ] Large result and media files use object storage.
 - [ ] Object-storage URLs are short-lived.
 
 ### WebSocket
@@ -2955,7 +2947,7 @@ The core architectural invariants are:
 5. Tenant isolation is mandatory.
 6. Side-effecting operations use idempotency where required.
 7. Long-running operations are asynchronous.
-8. Large artifacts use object storage.
+8. Execution artifacts are transferred directly to the destination, not through the API or object storage.
 9. API contracts are version-controlled.
 10. Breaking changes require deliberate versioning.
 11. WebSocket clients can recover through REST.
