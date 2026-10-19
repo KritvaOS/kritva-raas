@@ -1820,7 +1820,7 @@ Examples:
 - result archives;
 - recorded video.
 
-Object storage or dedicated streaming paths are preferred. `.krv` execution artifacts are transferred directly from the workstation to the destination, not through JSON API payloads or cloud object storage (SYS-ADR-008).
+For results, logs and media, object storage or dedicated streaming paths are preferred. `.krv` execution artifacts are transferred directly from the workstation to the destination, not through JSON API payloads or cloud object storage (SYS-ADR-008).
 
 ## 109. Protocol Boundaries and Authority
 

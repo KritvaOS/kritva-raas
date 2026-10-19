@@ -1230,7 +1230,7 @@ The Control Plane shall independently validate the registered metadata:
 - SDK compatibility;
 - capabilities.
 
-The destination shall validate the received content (checksum, signature, format, size, platform, capabilities) against the registered metadata, using staged, non-executable validation before READY. The destination result is reported to the Control Plane as an authenticated assertion.
+The destination shall validate the received content (checksum, signature where the signing model applies, format, size, platform, capabilities) against the registered metadata, using staged, non-executable validation before READY. The destination result is reported to the Control Plane as an authenticated assertion.
 
 Neither the Control Plane nor the destination can prove the absence of all source content from arbitrary binaries, so local scanning remains mandatory.
 

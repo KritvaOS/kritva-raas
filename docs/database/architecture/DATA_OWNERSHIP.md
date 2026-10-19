@@ -2077,7 +2077,7 @@ Kritva RaaS must preserve these ownership invariants:
 8. Lab and Robot state is operationally owned by the Lab domain.
 9. Customer source code remains local by default.
 10. Artifact metadata is owned by Artifact.
-11. Artifact binary content is held by the destination and not by the Control Plane or object storage.
+11. Artifact binary content is held by the destination and not by the Control Plane or object storage. This states where the bytes are held; it does not mean the Control Plane can attest to those bytes or that a destination report is proof of validity.
 12. Credit and ledger state is exclusively owned by Credit.
 13. Booking state is owned by Booking.
 14. Job and Run state is owned by Execution.
