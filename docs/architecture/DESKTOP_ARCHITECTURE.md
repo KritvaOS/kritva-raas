@@ -1,5 +1,7 @@
 # Kritva RaaS Desktop Architecture
 
+> **Partly revised for SYS-ADR-008 (direct artifact transfer).** The Studio now registers artifact metadata with the Control Plane and sends the `.krv` directly to the destination under a short-lived transfer grant; see [DIRECT_ARTIFACT_TRANSFER.md](DIRECT_ARTIFACT_TRANSFER.md). Sections 47, 50, 101, 102, 126, 127, 130, the ArtifactManager interface, the phase deliverables, the risk and acceptance items and the closing flow are revised. The connectivity model (DT-OD-01), grant fields and key handling (DT-OD-02), and offline cancellation (DT-OD-05) are open, so the Studio design here states what the Studio must do and not how the connection is made. Remaining mentions of upload name the point where information leaves the machine and are superseded where they refer to cloud object storage. SYS-ADR-008 is a direction pending owner confirmation, and nothing is implemented.
+
 ## 1. Document Control
 
 | Item | Value |
@@ -86,6 +88,7 @@ The Studio does not initially aim to:
 - replace the user's IDE;
 - host a complete cloud compiler;
 - upload source repositories to RaaS;
+- relay artifact bytes through the cloud, or hold a cloud copy of the artifact;
 - provide unrestricted shell access to plugins;
 - directly control physical robots;
 - connect directly to PostgreSQL;
@@ -798,7 +801,7 @@ The package builder should operate from an explicit runtime payload allowlist.
 
 ## 47. Source-Code Upload Boundary
 
-The Studio's remote upload API accepts:
+The Studio's remote registration and transfer accept:
 
     .krv
 
@@ -812,7 +815,7 @@ The UI should make this boundary explicit.
 
 ## 48. Artifact Validation
 
-Before upload, Studio validates:
+Before registration and transfer, Studio validates:
 
 - package structure;
 - manifest;
@@ -833,7 +836,7 @@ The Studio should never expose private signing keys through the React UI.
 
 Signing operations belong in the trusted native layer or controlled signing service.
 
-## 50. Artifact Upload Flow
+## 50. Artifact Transfer Flow
 
     Studio
        |
@@ -844,21 +847,25 @@ Signing operations belong in the trusted native layer or controlled signing serv
     Local Validation
        |
        v
-    artifact.create
+    Register metadata (artifact.create; the names after this step are not defined)
        |
        v
-    Upload Authorization
+    Transfer grant (short-lived, scoped)
        |
        v
-    Object Storage
+    Direct transfer to destination
        |
        v
-    artifact.upload/complete
+    Destination staged validation, atomic READY
        |
        v
-    Server Validation
+    Status report visible in Studio (metadata)
+
+The Studio never sends artifact bytes to the Control Plane or to cloud object storage. The Studio shows READY as an authenticated report from the destination. READY is not authorization to run. If no direct path can be set up, the Studio shows a categorized failure and offers no cloud fallback. Registration and transfer operation names, and the connectivity model, are open (DT-OD-01, DT-OD-02).
 
 ## 51. Remote API Client
+
+The API client handles registration, grants and status; it does not carry artifact bytes.
 
 The TypeScript API client should provide typed access to:
 
@@ -1598,7 +1605,7 @@ The Studio upload workflow should enforce:
         v
     Upload
 
-The UI should not offer a generic "Upload Folder" action for RaaS execution.
+The UI should not offer a generic "Upload Folder" action for RaaS execution, and the same check applies before transfer to the destination.
 
 ## 102. Artifact Upload UI
 
@@ -1610,8 +1617,8 @@ The artifact workflow should show:
 - architecture;
 - digest;
 - validation status;
-- upload progress;
-- server validation status.
+- transfer progress;
+- destination validation status (reported by the destination).
 
 ## 103. Build-to-Artifact Traceability
 
@@ -1905,36 +1912,36 @@ Build logs should be streamed incrementally.
 The UI should retain only a bounded in-memory window while optionally retaining the
 full log on disk.
 
-## 126. Large Artifact Upload
+## 126. Large Artifact Transfer
 
-Uploads should support:
+Direct transfers should support:
 
 - progress;
 - retry;
 - cancellation;
 - resumability where practical.
 
-The server must verify the final artifact digest.
+The destination must verify the final artifact digest against the registered metadata. Capacity limits are open (DT-OD-04).
 
-## 127. Network Interruption During Upload
+## 127. Network Interruption During Transfer
 
-If upload fails:
+If the direct transfer fails:
 
-    Upload
+    Transfer
       |
       v
     Network Failure
       |
       v
-    Retry / Resume
+    Retry / Resume under the grant, or a categorized failure
       |
       v
     Complete
       |
       v
-    Validate
+    Destination validation, then READY
 
-The artifact must not become available merely because an incomplete object exists.
+The artifact must not become available merely because a partial transfer exists. Resumption must not extend the grant validity, and an expired or revoked grant requires a new grant. There is no cloud fallback.
 
 ## 128. Network Interruption During Job
 
@@ -1960,8 +1967,8 @@ After restart:
 
 After restart:
 
-- incomplete upload sessions are detected;
-- upload can be resumed or restarted;
+- incomplete transfers are detected;
+- the transfer can be resumed under a valid grant or restarted with a new grant;
 - artifact registration remains consistent.
 
 ## 131. Desktop Crash During Remote Run
@@ -2221,7 +2228,8 @@ Conceptual operations:
     calculateDigest()
     sign()
     register()
-    upload()
+    requestTransferGrant()
+    transfer()
 
 The implementation must enforce source-exclusion policy.
 
@@ -2324,7 +2332,7 @@ Deliver:
 
 - API client;
 - WebSocket;
-- artifact upload;
+- artifact registration and direct transfer client;
 - server state synchronization.
 
 Acceptance:
@@ -2332,7 +2340,7 @@ Acceptance:
 - API integration works;
 - events update UI;
 - reconnect restores state;
-- artifact upload works.
+- artifact registration and direct transfer work for the chosen connectivity option (open, DT-OD-01).
 
 ## 156. P4 BOOKING & COMMERCIAL
 
@@ -2521,7 +2529,7 @@ Mitigation:
 18. How will toolchain environment configuration be stored?
 19. Which artifact signing model will be used?
 20. Will signing occur locally or remotely?
-21. What is the maximum artifact upload size?
+21. What is the maximum artifact transfer size (DT-OD-04)?
 22. What update framework will be selected?
 23. What update channel strategy will be used?
 24. What minimum supported backend version applies to each Studio release?
@@ -2625,7 +2633,7 @@ Mitigation:
 
 - [ ] Studio does not upload source directories.
 - [ ] Studio does not upload Git repositories.
-- [ ] Execution upload accepts `.krv`.
+- [ ] Execution registration and transfer accept `.krv`.
 - [ ] Source extension checks exist.
 - [ ] Package inspection exists.
 - [ ] Debug-symbol policy exists.
@@ -2858,7 +2866,7 @@ The final product workflow is:
     Validate
       |
       v
-    Upload Artifact
+    Register and Transfer Artifact
       |
       v
     Book Robot
