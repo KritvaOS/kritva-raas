@@ -1,5 +1,7 @@
 # B-M02 — Artifact
 
+> **Scope under review for SYS-ADR-008 (direct artifact transfer).** This record still describes the earlier route in which the `.krv` execution artifact is uploaded to the Control Plane and held in object storage. That route is superseded in direction: the workstation transfers the artifact directly to the destination and the cloud keeps metadata only; see [DIRECT_ARTIFACT_TRANSFER.md](../../../architecture/DIRECT_ARTIFACT_TRANSFER.md). Until this record is rewritten, the upload, object-storage and server-side byte-validation items below (KR-BE-2-005, 012, 014, 015, 027, 043 and 045, and the checksum and signature validation items that depend on server-side access to the bytes) are not authorized to start and are not to be read as current scope. The backend keeps metadata registration, authorization, artifact identity and versioning, and status records; it does not receive, store or inspect execution-artifact bytes. Results, logs, video and media are unaffected. The transfer wire contract is not defined here: grant fields, connectivity, retention, capacity and offline revocation (DT-OD-01 to DT-OD-05) are open and on hold. No task, estimate, status or acceptance criterion in this record has been changed, and no replacement task or estimate exists yet. The direction has the owner's stated agreement; the design is not reviewed.
+
 ## Milestone Dossier
 
 **Milestone ID:** B-M02-ARTIFACT  
