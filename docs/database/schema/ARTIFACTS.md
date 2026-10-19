@@ -1,5 +1,7 @@
 # Kritva RaaS Artifacts Schema
 
+> **Partly revised for SYS-ADR-008 (direct artifact transfer).** Execution artifacts are no longer stored in cloud object storage, so the `artifact.storage_objects` table, its states and DDL (Sections 35 to 38), the storage layout (57), the object authority text (59) and the upload and download interfaces (113, 114, 117) describe the superseded cloud storage design and are marked as such; see [DIRECT_ARTIFACT_TRANSFER.md](../../architecture/DIRECT_ARTIFACT_TRANSFER.md). They are not to be implemented for execution artifacts. The replacement records for transfer grants and destination status reports, and the replacement state names, are not defined here and are open. Artifact metadata, manifest, checksum and signature records are unchanged. Acceptance is revised to rest on metadata validation at the Control Plane plus an authenticated destination report; a client cannot mark an artifact accepted. Remaining mentions of upload and object storage are superseded where they refer to execution artifacts. Grant fields (DT-OD-02), connectivity (DT-OD-01), any cloud retention (DT-OD-03), capacity (DT-OD-04) and offline policy (DT-OD-05) are open. SYS-ADR-008 is a direction pending owner confirmation, and nothing is implemented.
+
 ## 1. Document Control
 
 | Item | Value |
@@ -25,7 +27,7 @@ This document defines the production-grade PostgreSQL schema and storage
 contract for Kritva RaaS executable artifacts.
 
 An Artifact is the validated, packaged execution unit produced from source
-code on the customer's local machine and uploaded to Kritva RaaS.
+code on the customer's local machine and transferred directly to the destination, with its metadata registered in Kritva RaaS.
 
 The architecture principle is:
 
@@ -59,7 +61,7 @@ The architecture principle is:
     Remote Robot / Simulator
 
 The Artifact schema stores metadata, validation evidence, integrity information,
-signatures, compatibility requirements and object-storage references.
+signatures, compatibility requirements and, for transfer, grant and destination status metadata. It holds no object-storage reference for the execution artifact.
 
 It does not store customer source code.
 
@@ -121,8 +123,9 @@ Those concerns remain in their respective domains.
 
 The Artifact architecture implements:
 
-> **Build locally, validate locally, package locally, upload only the
-> execution artifact, validate remotely, and execute remotely.**
+> **Build locally, validate locally, package locally, register metadata,
+> transfer only the execution artifact directly to the destination, validate
+> at the destination, and execute remotely.**
 
 The artifact boundary minimizes customer source-code exposure.
 
@@ -157,7 +160,7 @@ The Project provides the customer workspace.
 
 The Artifact domain owns Artifact metadata and lifecycle.
 
-Object storage owns the physical binary object.
+The destination owns the physical binary copy. The Control Plane and cloud object storage hold no execution artifact.
 
 # 7. Artifact Identity Model
 
@@ -214,8 +217,8 @@ Only `ACCEPTED` artifacts may normally be used for deployment.
 | State | Meaning |
 |---|---|
 | CREATED | Artifact version metadata registered |
-| UPLOADING | Object upload in progress |
-| UPLOADED | Upload completed, validation not complete |
+| UPLOADING | Historical name; under SYS-ADR-008 a direct transfer in progress (replacement state names open) |
+| UPLOADED | Historical name; under SYS-ADR-008 transfer completed at the destination and validation not complete (replacement state names open) |
 | VALIDATING | Validation pipeline executing |
 | ACCEPTED | Artifact passed required validation |
 | REJECTED | Artifact failed validation |
@@ -732,6 +735,8 @@ allowing legitimate key rotation.
 
 # 35. Storage Object Table
 
+> **Superseded for execution artifacts (SYS-ADR-008).** Sections 35 to 38 describe the cloud object-storage reference for an artifact. Execution artifacts are not stored in cloud object storage, so this table is not to be implemented for them. Whether any table is needed for destination copies, grants or status reports is open and is not defined here. The text below is kept as the superseded design and for results-style storage references elsewhere.
+
 The database does not store the binary `.krv` payload.
 
 `artifact.storage_objects` stores the object-storage reference.
@@ -1067,7 +1072,7 @@ The aggregate validation state is:
     |
     +--> RETIRED
 
-All mandatory validation records must pass before `ACCEPTED`.
+All mandatory validation records must pass before `ACCEPTED`. The Control Plane records metadata validation, and content validation is reported by the destination as an authenticated assertion with provenance. Neither is proof of content validity to the other, and READY at the destination is not authorization to execute.
 
 # 52. Required Validation Gate
 
@@ -1120,33 +1125,30 @@ Examples:
     ARTIFACT_INCOMPATIBLE
     ARTIFACT_REJECTED
 
-# 54. Artifact Upload Flow
+# 54. Artifact Transfer Flow
 
     Studio
       |
-    Create Artifact Version
+    Create Artifact Version (metadata)
       |
-    Request Upload
+    Request Transfer Grant
       |
-    Storage Object PENDING
+    Direct transfer to destination
       |
-    Upload .krv
+    Destination staged validation, atomic READY
       |
-    Storage Object AVAILABLE
+    Authenticated status report to the Control Plane
       |
-    Verify Size / Digest
-      |
-    Artifact Version UPLOADED
-      |
-    Validation Pipeline
+    Metadata validation recorded
       |
     ACCEPTED / REJECTED
 
+No storage object is created in cloud object storage. The grant and the report are metadata, and their record shapes are open.
+
 # 55. Artifact Upload Boundary
 
-The upload service receives:
+The registration service receives metadata only. The artifact package goes to the destination by direct transfer. The registration service receives:
 
-- artifact package;
 - manifest;
 - metadata;
 - digest;
@@ -1188,6 +1190,8 @@ It must not require:
 
 # 57. Artifact Storage Layout
 
+> **Superseded for execution artifacts (SYS-ADR-008).** There is no cloud object key for an execution artifact. The layout below is the superseded design.
+
 Logical object layout should avoid exposing customer source information.
 
 Conceptual key:
@@ -1202,7 +1206,7 @@ The exact object-store provider remains implementation-neutral.
 
 # 58. Storage Security
 
-Artifact objects must:
+Artifact copies at a destination must, where the destination policy applies:
 
 - use encryption at rest;
 - use TLS in transit;
@@ -1214,7 +1218,9 @@ Artifact objects must:
 
 # 59. Storage Object Authority
 
-Object storage owns binary bytes.
+> Superseded for execution artifacts (SYS-ADR-008). The destination owns the binary copy.
+
+Object storage owns binary bytes (superseded design).
 
 PostgreSQL owns:
 
@@ -1258,7 +1264,7 @@ Verification compares:
     Local declared digest
           |
           +
-    Uploaded object digest
+    Digest of the content received at the destination
           |
           v
     Expected == Actual
@@ -1499,7 +1505,7 @@ Controls must include:
 
 # 79. Artifact Download
 
-Artifact downloads must require authorization.
+The Control Plane does not serve artifact downloads (SYS-ADR-008). Retrieval from a destination, where permitted, must require authorization.
 
 A user must have:
 
@@ -1511,7 +1517,7 @@ The server must never expose storage credentials directly.
 
 # 80. Deployment Download
 
-Lab Agents should retrieve artifacts using short-lived, authorized access.
+Lab Agents receive artifacts by direct transfer under a short-lived, authorized grant and do not fetch them from cloud storage.
 
 The Lab Agent should not receive:
 
@@ -1953,6 +1959,8 @@ The resulting Version begins in:
 
 # 113. Upload Interface
 
+> Superseded for execution artifacts (SYS-ADR-008). The replacement grant interface is not defined (DT-OD-02).
+
 Conceptual:
 
     beginUpload(
@@ -1964,6 +1972,8 @@ returns an upload session or equivalent short-lived upload authorization.
 The service creates the Storage Object in `PENDING`.
 
 # 114. Upload Completion
+
+> Superseded for execution artifacts (SYS-ADR-008). Completion is reported by the destination as an authenticated assertion, and the report interface is not defined.
 
 Conceptual:
 
@@ -2217,7 +2227,7 @@ Security scanning implementation remains separate from relational schema.
 
 # 127. Local Artifact Validation
 
-Studio should validate before upload:
+Studio should validate before registration and transfer:
 
 - format;
 - manifest;
@@ -2229,7 +2239,7 @@ Studio should validate before upload:
 - checksum;
 - signature.
 
-Remote validation remains mandatory.
+Destination validation remains mandatory.
 
 Local validation is an optimization and early-error mechanism, not a trust
 boundary.
@@ -2558,7 +2568,7 @@ Phase 8 completes:
 - [ ] Validation evidence is retained.
 - [ ] Mandatory failures reject the Artifact Version.
 - [ ] Acceptance occurs only after all mandatory checks pass.
-- [ ] Validation is server-side authoritative.
+- [ ] Metadata validation is authoritative at the Control Plane, and content validation is an authenticated destination report.
 - [ ] Validation operations are idempotent.
 
 # 153. Acceptance Criteria — State Machine
@@ -2716,16 +2726,16 @@ The following must always remain true:
 5. Every Artifact belongs to exactly one Project.
 6. Artifact Organization and Project Organization must match.
 7. Artifact keys are unique within Project.
-8. Artifact binaries are stored outside PostgreSQL.
+8. Artifact binaries are stored outside PostgreSQL and outside cloud object storage.
 9. PostgreSQL stores authoritative Artifact metadata.
-10. Object storage stores authoritative binary bytes.
-11. Storage records identify the exact binary object.
+10. The destination holds the artifact bytes; the Control Plane holds none.
+11. Registered metadata identifies the exact binary by digest.
 12. Checksums provide cryptographic integrity evidence.
 13. Signatures provide authenticity evidence.
 14. Private signing keys are never stored in the Artifact database.
 15. Manifests are canonical and validated.
 16. Mandatory validation must pass before acceptance.
-17. Client-side validation does not replace server validation.
+17. Client-side validation does not replace Control Plane metadata validation or destination content validation.
 18. Compatibility is evaluated against authoritative Platform records.
 19. Architecture compatibility is mandatory where the target requires it.
 20. Runtime compatibility is validated.
@@ -2740,8 +2750,8 @@ The following must always remain true:
 29. Artifact access is tenant-authorized.
 30. Artifact downloads are auditable.
 31. Object-store credentials are never exposed to customers.
-32. Lab Agents use controlled artifact access.
-33. Artifact state and object state are reconciled.
+32. Lab Agents receive artifacts only under a valid transfer grant.
+33. Artifact state and the destination status report are reconciled.
 34. Cross-domain writes use application services.
 35. Critical Artifact operations are idempotent.
 36. PostgreSQL remains authoritative for Artifact business state.
@@ -2753,15 +2763,17 @@ The following must always remain true:
 > customer's local development environment and remote robotic execution.
 > Source code remains on the customer's machine. The customer builds and
 > tests locally, packages the application as a `.krv` artifact, signs it,
-> and uploads only the executable package required for remote execution.**
+> and transfers only the executable package required for remote execution
+> directly to the destination.**
 >
 > **The Artifact schema stores durable identity, version, manifest, checksum,
-> signature, compatibility, validation and storage metadata. PostgreSQL is
-> authoritative for the Artifact's business state, while object storage
-> holds the immutable binary payload.**
+> signature, compatibility, validation and transfer metadata. PostgreSQL is
+> authoritative for the Artifact's business state, while the destination
+> holds the binary payload.**
 >
-> **Acceptance is a server-side trust decision. It requires successful
-> validation of package structure, manifest, storage integrity, checksum,
+> **Acceptance is a Control Plane trust decision over metadata and an
+> authenticated destination report. It requires successful
+> validation of package structure, manifest, checksum,
 > signature, architecture, platform, runtime, SDK, capabilities and policy.
 > A client cannot mark an artifact as accepted.**
 >
@@ -2776,6 +2788,6 @@ The following must always remain true:
 > source-code hosting or remote build platform.**
 >
 > **This preserves the core Kritva RaaS architecture:
-> Build locally → package locally → upload the artifact → validate remotely
+> Build locally → package locally → transfer the artifact directly → validate at the destination
 > → book the resource → deploy → execute → observe → retain results, while
 > keeping customer source code outside the RaaS control plane.**
