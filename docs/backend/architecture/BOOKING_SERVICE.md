@@ -296,6 +296,14 @@ Example:
 User-facing interfaces may display local timezone values, but the backend
 must retain UTC as the canonical representation.
 
+## 15.1 Cloud-Authoritative Time for Clients
+
+Status: owner direction approved in a working session on 2026-10-19 (conveyed by the owner's representative); owner confirmation pending in the pull request; detailed design not reviewed; not implemented.
+
+Booking start and end times, countdowns, and the Open action use cloud-authoritative timestamps. The Control Plane MUST give clients a way to derive the current cloud time (for example an offset carried on API responses) so that Studio can show a correct clock and countdown on a workstation whose clock is wrong. The mechanism is an open item for the API contract. A client countdown reaching zero is guidance only: the backend validates the reservation window, the user's authorization, and the destination's availability each time access is requested, and a cancelled or expired booking can never grant access.
+
+The booking list used by the Studio navigator (up to 10 previous and 10 upcoming bookings, ordered by start time, with history for older records) is served from this authoritative state. Its API shape is not defined yet and belongs in `docs/protocol/API_CONTRACT.md`.
+
 ## 16. Booking Window
 
 A booking contains:

@@ -326,6 +326,28 @@ The standard Studio shell is:
     | Status / Connection / Build State                              |
     +---------------------------------------------------------------+
 
+## 11.1 Three-Panel Workspace
+
+Status: owner direction approved in a working session on 2026-10-19 (conveyed by the owner's representative); owner confirmation pending in the pull request; detailed design not reviewed; not implemented.
+
+Within the Studio shell the workspace is organized in three panels:
+
+| Panel | Content |
+|---|---|
+| Left | User profile, projects, saved sessions, systems, and bookings (the booking navigator in Section 50.1) |
+| Center | The active project: edit, build, validate, package, transfer, and execute |
+| Right | Video, images, logs, diagnostics, and execution status, shown when the user is authorized to see them |
+
+Requirements:
+
+- WS-01: each panel can be expanded to use the full workspace and restored, independently of the others.
+- WS-02: collapsing, expanding, or resizing a panel preserves the state of every panel (selection, scroll position, running views).
+- WS-03: selecting a booking or a session in the left panel updates the center panel and, where authorized, the right panel.
+- WS-04: panel controls are reachable by keyboard and have accessible labels.
+- WS-05: the layout remains usable within the supported Studio window sizes defined in Section 6.
+
+This extends the shell in Section 11 and does not replace it. The existing sidebar navigation remains the way to reach each screen.
+
 ## 12. Global Header
 
 The header contains:
@@ -372,6 +394,22 @@ The status bar displays contextual state such as:
 - current project.
 
 Errors should be actionable rather than merely indicated by color.
+
+## 14.1 Cloud Clock and Next-Booking Countdown
+
+Status: owner direction approved in a working session on 2026-10-19 (conveyed by the owner's representative); owner confirmation pending in the pull request; detailed design not reviewed; not implemented.
+
+The header shows the cloud-synchronized current time with a synchronization status, and the next reserved booking with a countdown.
+
+Requirements:
+
+- CLK-01: the displayed time is derived from the cloud-authoritative clock, not from the workstation clock alone. The UI shows when synchronization is lost or stale.
+- CLK-02: the header shows the next booking's System ID, start time, and a down-counting timer.
+- CLK-03: before the booking starts, the Open button is visible and disabled.
+- CLK-04: when the countdown reaches zero, the button changes to an enabled Open.
+- CLK-05: when the booking window ends, reservation-based access is closed and an expired state is shown. A physical robot is never stopped unsafely by a UI or timer event, and the UI does not claim a stopped state it has not confirmed.
+- CLK-06: a countdown that reaches zero only enables the button. Opening is authorized by the backend and the destination system (Section 50.2).
+- CLK-07: a booking that is cancelled, rescheduled, or changed refreshes the countdown from authoritative data.
 
 ## 15. Global UI States
 
@@ -1063,6 +1101,46 @@ Example:
     [Choose Another Platform]
 
 The UI must never display a false confirmed state.
+
+## 50.1 Booking Navigator
+
+Status: owner direction approved in a working session on 2026-10-19 (conveyed by the owner's representative); owner confirmation pending in the pull request; detailed design not reviewed; not implemented.
+
+The booking card lets the user browse up to 10 previous and 10 upcoming bookings with Previous and Next buttons.
+
+    RESERVED SYSTEM                                  Booking 3 of 10
+    System ID:    <system id>
+    Date:         <date>
+    Reservation:  <start> - <end>
+    Status:       Upcoming
+    Starts in:    <days, hh:mm:ss>
+
+    [Previous]            [Open]            [Next]
+    View: Upcoming bookings
+
+The layout above is illustrative. System IDs, times, and counts are examples, not data.
+
+| ID | Requirement |
+|---|---|
+| BK-NAV-01 | Previous shows the previous booking in the current list |
+| BK-NAV-02 | Next shows the next booking in the current list |
+| BK-NAV-03 | Up to 10 previous and 10 upcoming bookings are available. Previous bookings are the 10 most recent ended or cancelled ones. Upcoming bookings are up to 10 future or currently active ones, with the current booking identified |
+| BK-NAV-04 | Bookings are ordered by start time using cloud-authoritative timestamps |
+| BK-NAV-05 | Previous or Next is disabled when there is nothing further in that direction, and the position (for example 3 of 10) is shown |
+| BK-NAV-06 | Each booking shows System ID, date, start and end time, status, and a countdown where applicable |
+| BK-NAV-07 | Navigating between bookings does not reset or corrupt the countdown of any booking |
+| BK-NAV-08 | The display refreshes after a booking is created, rescheduled, cancelled, or its status changes. A rescheduled booking appears once, at its new time |
+| BK-NAV-09 | A cancelled booking stays visible in history and can never enable Open |
+| BK-NAV-10 | Empty states are explicit when there are no previous or no upcoming bookings |
+| BK-NAV-11 | A booking-history view allows finding records older than the 10 shown |
+
+Rescheduling, cancellation, refund, and credit adjustment follow the existing booking flow in Sections 44 to 50 and the cancellation policy. A refund or credit adjustment made by an administrator is an authorized, audited action and is shown in the booking and credit history.
+
+## 50.2 Open Action
+
+Status: owner direction approved in a working session on 2026-10-19 (conveyed by the owner's representative); owner confirmation pending in the pull request; detailed design not reviewed; not implemented.
+
+When the Open button is enabled (Section 14.1), pressing it asks the backend to verify the reservation, the user's authorization, and the destination system's availability before access is granted. The destination system validates the request independently. Network, authorization, and destination errors are shown as categorized, actionable messages (for example reservation not yet active, reservation expired, destination unreachable, access denied) and the UI never shows an open state it has not confirmed.
 
 ## 51. Credits Screen
 
