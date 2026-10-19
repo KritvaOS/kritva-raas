@@ -16,18 +16,18 @@
 | 36, 37 (simulated lab, complete local system) | PLANNED | |
 | 38 (end-to-end flow) | PLANNED | |
 | 39 to 45 (workspace commands, monorepo, packages) | PLANNED | Real commands are the `make` targets and the backend npm scripts in the README |
-| 46 to 50 (database, object storage, queue, logging, observability) | PLANNED | Section 47 predates SYS-ADR-008 and describes artifacts under storage operations; execution artifacts are not stored in cloud storage |
+| 46 to 50 (database, object storage, queue, logging, observability) | PLANNED | Section 47 is revised for SYS-ADR-008: it covers results, logs and media, and execution artifacts do not use object storage |
 | 51 to 60 (tests, formatting, builds, full verification) | PARTLY CURRENT | `make check` and the backend `npm test` exist; there is no full end-to-end suite, and the repository-root `make build`, `make test`, `make lint` and `make format` targets are placeholders that fail by design (see the README) |
 | 61, 62 (Git workflow, pre-commit) | PARTLY CURRENT | The current Git workflow, commit format and pull request text are in the README (Section 12), `AGENTS.md` and `planning/AGENT_RULES.md`, which win if they differ |
-| 63 to 73 (database rules, local authentication, authorization, tenancy, credits, booking, job, result) | PLANNED | Section 68 (local artifact flow) is SUPERSEDED for the upload step by SYS-ADR-008 |
-| 74 to 89 (troubleshooting) | PLANNED | Section 87 (artifact upload troubleshooting) is SUPERSEDED for execution artifacts by SYS-ADR-008 |
+| 63 to 73 (database rules, local authentication, authorization, tenancy, credits, booking, job, result) | PLANNED | Section 68 (local artifact flow) is revised for SYS-ADR-008: registration, then direct transfer (open) |
+| 74 to 89 (troubleshooting) | PLANNED | Section 87 is revised for SYS-ADR-008 (registration and transfer troubleshooting, no cloud fallback) |
 | 90 to 99 (security checklist, CI parity, containers, IDE, onboarding, health check) | PARTLY CURRENT | CI checks are listed in the README (Section 11); there are no development containers or `pnpm doctor` |
 | 100 to 109 (phase mapping and acceptance) | PLANNED | Phase labels follow an older phase model; the planning records own current phases |
 | 110 to 115, 117 to 121 (risks, performance, reproducibility, offline, dependency security, isolation, branches, pull requests, architecture changes, open questions) | PARTLY CURRENT | Read as intent; the README and planning records own current rules |
-| 116 (development artifact storage) | SUPERSEDED | The artifacts bucket is superseded for execution artifacts by SYS-ADR-008 |
+| 116 (development artifact storage) | PLANNED | Revised for SYS-ADR-008: no artifacts bucket; the simulated Lab Agent holds the received copy |
 | 122 to 136 (acceptance criteria, invariants, final workflow) | PLANNED | Acceptance records are in the planning folders, not here |
 
-SYS-ADR-008 (direct artifact transfer, `docs/architecture/DIRECT_ARTIFACT_TRANSFER.md`) is a direction approved but not implemented. Sections 47, 68, 87 and 116 have not been rewritten for it; this table only marks them.
+SYS-ADR-008 (direct artifact transfer, `docs/architecture/DIRECT_ARTIFACT_TRANSFER.md`) is a direction approved but not implemented. Sections 38, 47, 68, 87, 103, 116 and 128 are revised for it (artifact flow lines and the artifact acceptance items now say registration and direct transfer, and the transfer setup stays open, DT-OD-01). Other mentions of upload in this document are superseded where they refer to execution artifacts.
 
 ## 1. Purpose
 
@@ -925,7 +925,8 @@ The complete local test path is:
     Validate Artifact
          |
          v
-    Upload Artifact
+    Register Metadata and Transfer Directly
+    (SYS-ADR-008; planned, open)
          |
          v
     Book Simulated Resource
@@ -1079,7 +1080,7 @@ The flow is:
 
 # 47. Local Object Storage Access
 
-Large artifacts/results should follow:
+Large results, logs and media should follow:
 
     Studio
        |
@@ -1095,6 +1096,8 @@ Large artifacts/results should follow:
     Object Storage
 
 The Studio must not receive unrestricted storage credentials.
+
+Execution artifacts (`.krv`) do not use this path. Under SYS-ADR-008 the Control Plane holds artifact metadata only, and the artifact goes directly from the workstation to the destination (here, the simulated Lab Agent) under a short-lived transfer grant. See `docs/architecture/DIRECT_ARTIFACT_TRANSFER.md`. The local transfer setup is open (DT-OD-01) and nothing is implemented.
 
 # 48. Local Queue
 
@@ -1447,10 +1450,15 @@ Artifact development flow:
     Signature
       |
       v
-    Upload
+    Register Metadata
       |
       v
-    Validate
+    Direct Transfer to the Simulated Lab Agent
+      |
+      v
+    Validate at the Destination
+
+The Control Plane receives metadata only and never the artifact bytes (SYS-ADR-008). The transfer setup is open (DT-OD-01) and nothing is implemented.
 
 The local development environment should make the artifact contents inspectable
 without exposing source to remote services.
@@ -1808,7 +1816,9 @@ When access is denied, inspect:
 
 Authorization failures should be diagnosable without exposing secrets.
 
-# 87. Troubleshooting — Artifact Upload
+# 87. Troubleshooting — Artifact Registration and Transfer
+
+Under SYS-ADR-008 there is no cloud upload step. Check the metadata registration, the transfer grant and its expiry, whether the destination is reachable (the local connectivity model is open, DT-OD-01), and the destination's report. There is no cloud fallback, so an unreachable destination is a failed transfer and not a reason to look for a cloud copy.
 
 Check:
 
@@ -2118,7 +2128,7 @@ Phase 2 is complete when:
 - local build can execute;
 - `.krv` artifact can be generated;
 - artifact can be validated;
-- artifact can be uploaded;
+- artifact metadata can be registered and the artifact transferred directly to a destination (planned; connectivity open);
 - source does not leave the local build boundary.
 
 # 104. Phase 3 Acceptance
@@ -2306,14 +2316,16 @@ This metadata is essential for later remote compatibility validation.
 
 # 116. Development Artifact Storage
 
-Local development may use a disposable object-storage bucket.
+Execution artifacts are not stored in cloud or local object storage (SYS-ADR-008). The simulated Lab Agent holds the received copy in its own local staging area, and the Control Plane holds metadata only.
+
+Local development may use a disposable object-storage bucket for results, logs and media.
 
 Recommended logical separation:
 
-    kritva-local-artifacts
     kritva-local-results
+    kritva-local-logs
 
-Production buckets must never be used for development.
+Production buckets and production destinations must never be used for development.
 
 # 117. Development Database Isolation
 
@@ -2501,7 +2513,7 @@ These choices must remain consistent with the architectural decisions.
 - [ ] Signature is generated.
 - [ ] Artifact validation works.
 - [ ] Compatibility metadata is present.
-- [ ] Artifact upload works.
+- [ ] Artifact metadata registration and direct transfer to the simulated Lab Agent work (planned; connectivity open).
 - [ ] Source is excluded from normal artifact contents.
 - [ ] Local artifact storage is isolated from production.
 
