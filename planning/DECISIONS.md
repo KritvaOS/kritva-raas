@@ -201,7 +201,7 @@ No cross-domain decision should be inferred solely from the existence of this in
 | SYS-ADR-005 | Cross-domain compatibility and change coordination | Proposed | Frontend, backend, cloud, database | This document, Section 9 |
 | SYS-ADR-006 | System-wide operational evidence and acceptance traceability | Proposed | All domains | This document, Sections 8 and 10 |
 | SYS-ADR-007 | Coding-agent integration boundary (Claude Code, OpenAI Codex) | Proposed | Frontend, Local Runtime, backend, database, security | `docs/architecture/CODING_AGENT_INTEGRATION.md`; this document, Section 5.7 |
-| SYS-ADR-008 | Direct artifact transfer: control plane and artifact data plane separation | Direction approved (owner confirmation pending) | Frontend, Local Runtime, backend, cloud, database, security, Lab Agent | `docs/architecture/DIRECT_ARTIFACT_TRANSFER.md`; this document, Section 5.8 |
+| SYS-ADR-008 | Direct artifact transfer: control plane and artifact data plane separation | Direction approved; the six-point decision text confirmed by Sangeetha (Kritvaos) on 2026-10-19; disposition by the accountable owners pending | Frontend, Local Runtime, backend, cloud, database, security, Lab Agent | `docs/architecture/DIRECT_ARTIFACT_TRANSFER.md`; this document, Section 5.8 |
 
 These entries are proposed register placeholders, not evidence that the underlying decisions have been accepted. Each entry MUST be reviewed and either completed, rejected, or removed from the active index.
 
@@ -218,7 +218,7 @@ Every system-level decision in the index MUST carry an accountable owner, a requ
 | SYS-ADR-005 | System Architecture Owner, with Integration Owner | Accept, reject, or supersede | P2 BUILD & ARTIFACT exit (artifact manifest and protocol compatibility) | None recorded | `docs/protocol/COMPATIBILITY.md`; `docs/protocol/VERSIONING.md` | Proposed — not approved |
 | SYS-ADR-006 | QA Owner, with Release Owner | Accept, reject, or supersede | P0 FOUNDATION exit | None recorded | `docs/tracking/STATUS.md`; this document, Sections 8 and 10 | Proposed — not approved |
 | SYS-ADR-007 | System Architecture Owner, with Security Owner | Accept, reject, or supersede | Before F-M02 PROJECTS coding-agent implementation starts (P1 STUDIO) | None recorded | `docs/architecture/CODING_AGENT_INTEGRATION.md` | Proposed — not approved |
-| SYS-ADR-008 | System Architecture Owner, with Security Owner and Cloud Owner | Confirm the approved direction, then accept, reject, or supersede the detailed design | Before P2 BUILD & ARTIFACT artifact-transfer implementation starts | Owner direction conveyed in a working session on 2026-10-19; owner confirmation pending in the pull request | `docs/architecture/DIRECT_ARTIFACT_TRANSFER.md` | Direction approved, not implemented; detailed design not reviewed |
+| SYS-ADR-008 | System Architecture Owner, with Security Owner and Cloud Owner | Confirm the approved direction, then accept, reject, or supersede the detailed design | Before P2 BUILD & ARTIFACT artifact-transfer implementation starts | Owner direction conveyed in a working session on 2026-10-19; Sangeetha (Kritvaos) stated agreement with the six-point decision text the same day; her role as accountable owner is not recorded, and the System Architecture, Security and Cloud Owners have not recorded a disposition | `docs/architecture/DIRECT_ARTIFACT_TRANSFER.md` | Direction approved, not implemented; detailed design not reviewed |
 
 Baseline rule: the cross-domain architecture baseline MUST NOT be described as accepted, and the implementation plan MUST NOT be approved as a frozen implementation baseline, while any SYS-ADR entry whose gate has been reached remains Proposed. A decision approved in another register MAY be linked here, but its status in this index MUST be reconciled to that record and its approval evidence cited.
 
@@ -539,10 +539,10 @@ Review this decision if a provider changes its terms or CLI contract, if a new p
 
 ### 5.8 SYS-ADR-008 — Direct Artifact Transfer
 
-**Status:** Direction approved by the product owner in a working session on 2026-10-19, conveyed by the owner's representative. Owner confirmation is pending in the pull request. The detailed design is Proposed and not reviewed. Nothing is implemented.  
+**Status:** Direction approved by the product owner in a working session on 2026-10-19, conveyed by the owner's representative. On 2026-10-19 Sangeetha (Kritvaos) stated agreement with the six-point decision below, without change. Her role as accountable owner is not recorded here, and no disposition by the System Architecture, Security or Cloud Owner is recorded. The detailed design is Proposed and not reviewed. Open items DT-OD-01 to DT-OD-05 are not decided. Nothing is implemented.  
 **Accountable owner:** System Architecture Owner, with Security Owner and Cloud Owner  
 **Disposition required before:** Before P2 BUILD & ARTIFACT artifact-transfer implementation starts  
-**Approval evidence:** Owner statement in the working session; no independent review recorded  
+**Approval evidence:** Owner statement in the working session; written agreement from Sangeetha (Kritvaos) in the delivery session on 2026-10-19; no independent review recorded  
 **Scope:** How a validated `.krv` execution artifact reaches a reserved destination system  
 **Affected domains:** Frontend, Local Runtime, backend, cloud, database, security, Lab Agent
 

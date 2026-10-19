@@ -7,7 +7,7 @@
 | Document | Direct Artifact Transfer Architecture |
 | Path | `docs/architecture/DIRECT_ARTIFACT_TRANSFER.md` |
 | Project | Kritva RaaS |
-| Status | Direction approved by the product owner in a working session (2026-10-19), conveyed by the owner's representative; owner confirmation pending in the pull request. Architecture not yet reviewed in detail. Nothing here is implemented |
+| Status | Direction approved by the product owner in a working session (2026-10-19), conveyed by the owner's representative. Sangeetha (Kritvaos) stated agreement with the six-point decision on 2026-10-19; her role as accountable owner and any disposition by the System Architecture, Security and Cloud Owners are not recorded. Architecture not yet reviewed in detail. Nothing here is implemented |
 | Decision authority | `planning/DECISIONS.md` (SYS-ADR-008) |
 | Supersedes | The cloud object-storage upload and Lab Agent fetch flow for the execution artifact, in the documents listed in Section 9 |
 | Owning phases | P2 BUILD & ARTIFACT, P3 CONTROL PLANE, P5 LAB AGENT |
