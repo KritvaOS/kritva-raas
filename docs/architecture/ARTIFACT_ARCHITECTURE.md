@@ -1,6 +1,6 @@
 # Kritva RaaS Artifact Architecture
 
-> **Superseded artifact route (SYS-ADR-008).** The execution artifact is transferred directly from the user's workstation to the destination system. The cloud does not receive, store or relay it. Where this document describes artifact upload to, or fetch from, cloud object storage, that route is superseded by [DIRECT_ARTIFACT_TRANSFER.md](DIRECT_ARTIFACT_TRANSFER.md). This document has not been revised to match yet; the affected sections are listed in Section 9 of that file. Results, logs and media are not affected.
+> **Partly revised for SYS-ADR-008 (direct artifact transfer).** Sections 6, 33, 34, 38 to 41, 44 to 49 and 64 to 66 and the header table now describe direct workstation-to-destination transfer; see [DIRECT_ARTIFACT_TRANSFER.md](DIRECT_ARTIFACT_TRANSFER.md). Sections that still mention artifact upload, object storage, object keys or download from the cloud, and are superseded where they do: 3, 4, 7, 8, 23, 24, 54, 55, 67, 71 to 73, 75, 77 to 79, 81, 83, 85, 87, 88, 98, 102 to 105, 107, 110, 113, 116 to 118, 122, 125, 129, 132 and 136 to 138. Where they say "upload" in the source-privacy sense, the meaning still holds: source never leaves the workstation. SYS-ADR-008 is a direction pending owner confirmation, and nothing is implemented. Results, logs and media are not affected.
 
 ## 1. Document Control
 
@@ -11,9 +11,9 @@
 | Product | Kritva Robotics-as-a-Service (RaaS) |
 | Artifact | `.krv` execution artifact |
 | Artifact Authority | RaaS Control Plane |
-| Artifact Storage | Object Storage |
-| Artifact Metadata | PostgreSQL |
-| Artifact Validation | Local Studio + Control Plane |
+| Artifact Storage | Not stored in the cloud. The artifact is held on the user's workstation and, after a direct transfer, on the destination system (SYS-ADR-008) |
+| Artifact Metadata | PostgreSQL (identity, digest, size, state, ownership, transfer status, audit) |
+| Artifact Validation | Local Studio, Control Plane (registered metadata and authorization), and the destination (content) |
 | Artifact Execution | Lab Agent + Kritva Runtime |
 | Status | Architecture Baseline |
 
@@ -137,22 +137,22 @@ The RaaS execution boundary is:
     Local Validation
       |
       v
-    Upload
+    Register Metadata
     ----------------
           |
-          | HTTPS
+          | HTTPS (metadata only)
           v
     RAAS CONTROL PLANE
     -----------------
       |
       v
-    Artifact Validation
+    Authenticate, Authorize, Issue Transfer Grant
       |
       v
-    Object Storage
+    (grant) Direct Transfer: Workstation ===> Lab Agent
       |
       v
-    Lab Agent
+    Destination Validation
       |
       v
     Kritva Runtime
@@ -160,7 +160,8 @@ The RaaS execution boundary is:
       v
     Robot
 
-Source code does not cross the normal artifact upload boundary.
+The artifact bytes never pass through the Control Plane.
+Source code does not cross the artifact transfer boundary.
 
 ## 7. Source-Code Privacy Requirement
 
@@ -650,21 +651,21 @@ Local Studio:
     Verify
       |
       v
-    Upload
+    Register Metadata
 
-Control Plane:
+Control Plane (registered metadata only; it never holds the artifact bytes):
 
-    Upload
+    Register Metadata
       |
       v
-    Verify Signature
+    Check Declared Signer, Digest, Size
       |
       v
-    Register
+    Record
 
-Lab Agent:
+Lab Agent (destination):
 
-    Fetch
+    Receive (direct transfer)
       |
       v
     Verify Digest
@@ -675,18 +676,22 @@ Lab Agent:
       v
     Deploy
 
+The destination verification is the authoritative content check. A metadata record does not prove the artifact is valid.
+
 ## 34. Trust Boundary
 
-The artifact should not become trusted merely because it was uploaded.
+The artifact should not become trusted merely because it was transferred or because its metadata was registered.
 
-Trust is established only after:
+Trust is established only after, at the destination:
 
-- authenticated upload;
+- an authenticated connection and a valid transfer grant;
 - structural validation;
 - checksum validation;
 - signature validation;
 - policy validation;
 - compatibility validation.
+
+An unknown compatibility result must not silently become compatible.
 
 ## 35. Artifact Compatibility
 
@@ -729,7 +734,11 @@ An unknown compatibility result must not silently become compatible.
 
 ## 38. Artifact Validation Pipeline
 
-    Upload
+Validation is split between the registered metadata (Control Plane) and the artifact content (destination), because the Control Plane never receives the content.
+
+Control Plane, on metadata registration:
+
+    Register Metadata
       |
       v
     Authenticate
@@ -738,35 +747,42 @@ An unknown compatibility result must not silently become compatible.
     Authorization
       |
       v
-    File Type Validation
+    Metadata Validation (identity, declared digest, size, signer, compatibility claims)
       |
       v
-    Archive Structure
+    Policy Checks
       |
       v
-    Manifest Validation
+    REGISTERED
+
+Destination, on transfer (the staged order is defined in `DIRECT_ARTIFACT_TRANSFER.md` Section 5):
+
+    Authenticate and Validate Grant
       |
       v
-    Size / Policy Checks
+    Size / Resource Checks
+      |
+      v
+    Staged Receive (non-executable)
       |
       v
     Checksum
       |
       v
+    Archive Structure and Manifest
+      |
+      v
     Signature
       |
       v
-    Compatibility
+    Compatibility and Security Policy
       |
       v
-    Security Policy
-      |
-      v
-    ACCEPTED
+    READY
 
 ## 39. Local Validation
 
-Studio should validate before upload:
+Studio should validate before the transfer:
 
 - `.krv` structure;
 - manifest;
@@ -779,27 +795,34 @@ Studio should validate before upload:
 - runtime;
 - SDK.
 
-Local validation provides faster feedback and reduces unnecessary uploads.
+Local validation provides faster feedback and reduces failed transfers.
 
 ## 40. Server Validation
 
-The Control Plane independently validates all security-sensitive properties.
+The Control Plane independently validates every security-sensitive property that it can see: the registered metadata, the identity and authorization of the user, the reservation, the destination, and the declared digest and signer. It issues a transfer grant only after those checks.
 
-Client validation must never replace server validation.
+Because the Control Plane does not receive the artifact content (SYS-ADR-008), it cannot validate the content. Content validation is performed by the destination (Section 41). A metadata record or a grant is not evidence that the content is valid.
 
-The server must assume the Studio client may be compromised.
+Client validation must never replace the destination validation.
+
+The server and the destination must assume the Studio client may be compromised.
 
 ## 41. Lab Validation
 
-The Lab Agent performs final local checks before deployment:
+The Lab Agent is the authoritative content validator. Before an artifact can become `READY` it performs, in the staged order of `DIRECT_ARTIFACT_TRANSFER.md` Section 5:
 
+- grant and destination identity checks;
+- size and resource checks;
 - artifact digest;
+- manifest and package structure, including unsafe paths and links;
 - signature;
 - platform;
 - runtime;
 - available resources;
 - local policy;
 - resource state.
+
+A partly validated artifact is never executable.
 
 ## 42. Validation Result
 
@@ -835,111 +858,87 @@ Examples:
 - CAPABILITY_UNAVAILABLE;
 - POLICY_REJECTED.
 
-## 44. Artifact Upload Flow
+## 44. Artifact Transfer Flow
 
     Studio
       |
-      | artifact.create
+      | artifact.create (metadata only: digest, size, manifest)
       v
     Control Plane
       |
-      | authorize upload
+      | authenticate, authorize, check reservation and destination
       v
-    Upload Session
+    Transfer Grant
       |
       v
-    Object Storage
-      |
-      v
-    Artifact Registration
-      |
-      v
-    Validation Worker
-      |
-      v
-    Artifact Status
+    Studio ======== direct transfer ========> Lab Agent
+                                                |
+                                                v
+                                        Destination Validation
+                                                |
+                                                v
+    Control Plane <---- status report (metadata) ----+
 
-The upload authorization and artifact registration are separate logical steps.
+Metadata registration and transfer authorization are separate logical steps. The flow is defined in `DIRECT_ARTIFACT_TRANSFER.md`.
 
-## 45. Direct Object Upload
+## 45. Direct Transfer Path
 
-For large artifacts, the Control Plane may issue a short-lived upload authorization
-for object storage.
+The artifact bytes travel directly from the user's workstation to the destination system. The Control Plane issues the grant and receives status, but never receives, stores, relays or proxies the bytes. If the direct path is unavailable, the transfer fails with a categorized error. There is no cloud fallback.
 
-Conceptually:
+How the workstation reaches the destination (connectivity model) is an open item, DT-OD-01. This document does not choose one.
 
-    Studio
-      |
-      v
-    Create Artifact
-      |
-      v
-    Upload Authorization
-      |
-      v
-    Object Storage
-      |
-      v
-    Notify / Complete Upload
-      |
-      v
-    Validation
+Studio still never transfers source files.
 
-Studio still never uploads source files.
+## 46. Transfer Security
 
-## 46. Upload Security
-
-Upload authorization should be:
+The transfer grant should be:
 
 - short-lived;
-- artifact-specific;
-- tenant-scoped;
-- object-key-specific;
-- size-limited;
+- artifact-specific (bound to the digest);
+- tenant-, user-, reservation- and destination-scoped;
+- size-limited and operation-limited;
 - authenticated.
 
-The client must not be allowed to select arbitrary production object-storage paths.
+The client must not be able to direct the artifact to any destination other than the reserved one, and the destination must reject a grant that is not for its own System ID. The grant format, signing, replay handling and transport authentication are open (DT-OD-02) and are specified in the protocol documents, not here. The grant never appears in URLs, logs or telemetry.
 
-## 47. Artifact Object Key
+## 47. Artifact Identifier and Destination Location
 
-Object keys should not expose sensitive customer information.
+Artifact identifiers and any destination-side staging locations must not expose sensitive customer information. The Control Plane stores an artifact identifier and digest, not a storage object key, because it stores no artifact object.
 
-A conceptual key:
-
-    artifacts/{organization_id}/{artifact_id}/{digest}/artifact.krv
-
-The exact storage layout is provider-dependent.
+The exact destination staging layout belongs to the Lab Architecture. The client must not choose arbitrary destination paths.
 
 ## 48. Artifact Storage
 
-Object storage is authoritative for artifact binary content.
+The artifact binary is not stored in the cloud. The authoritative copies are the user's local build output and the validated copy on the destination system.
 
 PostgreSQL is authoritative for:
 
 - artifact metadata;
 - state;
 - ownership;
-- validation;
+- registration and transfer status;
 - lifecycle;
 - audit.
 
-## 49. Database/Object Storage Relationship
+Whether any cloud retention of artifacts is wanted (for example for reproducibility or support) is open (DT-OD-03). If it is ever added, it is a separate feature with its own decision and consent, not a fallback.
+
+## 49. Database and Destination Relationship
 
     PostgreSQL
       |
       +-- artifact_id
       +-- digest
+      +-- size
       +-- state
       +-- owner
-      +-- metadata
-      +-- object_key
+      +-- transfer status
       |
-      v
-    Object Storage
+      v   (metadata only)
+    Destination (Lab Agent)
       |
-      +-- artifact.krv
+      +-- validated artifact.krv (local staging)
 
-Neither system alone represents the complete artifact record.
+The Control Plane record and the destination copy are linked by the artifact identifier and digest. Neither alone represents the complete artifact record, and a metadata report does not prove artifact validity or execution success.
 
 ## 50. Artifact Immutability
 
@@ -1148,9 +1147,9 @@ A job should reference:
 
 The job should never resolve "latest artifact" dynamically at execution time.
 
-## 64. Artifact Download
+## 64. Artifact Delivery to the Destination
 
-The Lab Agent requests the exact artifact referenced by the job.
+The destination receives exactly the artifact referenced by the job, directly from the user's workstation, under a transfer grant.
 
 Conceptually:
 
@@ -1160,39 +1159,38 @@ Conceptually:
     artifact_id + digest
       |
       v
-    Control Plane
+    Control Plane (grant)
       |
       v
-    Object Storage
-      |
-      v
-    Lab Agent
+    Workstation ====> Lab Agent
 
-## 65. Download Authorization
+The Lab Agent does not fetch the artifact from the cloud.
 
-Artifact download should require:
+## 65. Transfer Authorization
 
-- authenticated Lab Agent;
-- valid lab identity;
-- valid job;
-- authorized resource;
-- artifact availability.
+Artifact delivery should require:
 
-A Lab Agent should not have unrestricted access to every customer's artifact.
+- an authenticated user;
+- a valid reservation for the destination;
+- a valid job and artifact reference;
+- an authorized resource;
+- a valid, unexpired transfer grant checked by the destination.
 
-## 66. Download Integrity
+A destination should not accept an artifact for another System ID, and a user should not be able to deliver to a destination they have not reserved.
 
-After download:
+## 66. Transfer Integrity
 
-    Download
+After the transfer:
+
+    Receive (staged)
       |
       v
     Compute SHA-256
       |
       v
-    Compare Expected Digest
+    Compare Authorized Digest
       |
-      +--> mismatch = reject
+      +--> mismatch = reject and delete
       |
       v
     Verify Signature

@@ -130,9 +130,9 @@ Each document below carries a notice pointing here. The detailed flow sections s
 
 | Document | Sections that describe the superseded route |
 |---|---|
-| `docs/architecture/ARTIFACT_ARCHITECTURE.md` | Upload authorization, object storage relationship, artifact download |
-| `docs/architecture/SYSTEM_ARCHITECTURE.md` | Studio to object storage access, object storage role for artifacts |
-| `docs/architecture/CLOUD_ARCHITECTURE.md` | Object storage as artifact store |
+| `docs/architecture/ARTIFACT_ARCHITECTURE.md` | Revised in part (core flow, trust, validation, storage, delivery sections). Remaining sections listed in the document's notice |
+| `docs/architecture/SYSTEM_ARCHITECTURE.md` | Revised in part (paths, trust model, ownership, risks, checklists). Command and event names that contain `upload` remain historical |
+| `docs/architecture/CLOUD_ARCHITECTURE.md` | Revised in part (object storage, transfer path, phase 2). Remaining mentions refer to metadata |
 | `docs/cloud/architecture/STORAGE_ARCHITECTURE.md` | Artifact binary store, upload flow |
 | `docs/architecture/LAB_ARCHITECTURE.md` | Artifact download from object storage |
 | `docs/architecture/API_ARCHITECTURE.md` | Artifact upload authorization and download |
@@ -140,3 +140,5 @@ Each document below carries a notice pointing here. The detailed flow sections s
 | `docs/protocol/LAB_PROTOCOL.md` | `artifact_fetch` and `artifact_fetch_ack` |
 | `docs/protocol/COMMANDS.md` | Artifact upload and fetch commands |
 | `docs/security/THREAT_MODEL.md` | Control Plane to object storage trust boundary for artifacts |
+
+Other documents that mention the superseded route and are not in the table above, found by a repository search on 2026-10-19 and not yet reviewed: `docs/security/TENANT_ISOLATION.md`, `docs/protocol/IDEMPOTENCY.md`, `docs/protocol/PROTOCOL_OVERVIEW.md`, `docs/protocol/AUTHENTICATION.md`, `docs/architecture/BACKEND_ARCHITECTURE.md`, `docs/architecture/APPLICATION_ARCHITECTURE.md`, `docs/architecture/DESKTOP_ARCHITECTURE.md`, `docs/database/schema/ARTIFACTS.md`, `docs/database/architecture/DATA_OWNERSHIP.md`, `docs/security/SOURCE_CODE_PRIVACY.md`, `docs/security/SECURITY_REQUIREMENTS.md`, `docs/cloud/architecture/NETWORK_ARCHITECTURE.md`, `docs/cloud/architecture/OBSERVABILITY_ARCHITECTURE.md`, `docs/cloud/deployment/`, and the F-M03 and B-M02 milestone folders and planning roadmaps and task lists. Milestone and task records change only with an authorized scope.

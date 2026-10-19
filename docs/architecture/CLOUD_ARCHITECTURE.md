@@ -1,6 +1,6 @@
 # Kritva RaaS Cloud Architecture
 
-> **Superseded artifact route (SYS-ADR-008).** The execution artifact is transferred directly from the user's workstation to the destination system. The cloud does not receive, store or relay it. Where this document describes artifact upload to, or fetch from, cloud object storage, that route is superseded by [DIRECT_ARTIFACT_TRANSFER.md](DIRECT_ARTIFACT_TRANSFER.md). This document has not been revised to match yet; the affected sections are listed in Section 9 of that file. Results, logs and media are not affected.
+> **Partly revised for SYS-ADR-008 (direct artifact transfer).** Sections 30 to 32, 35, 38, 83, 98, 114, the phase table and phase 2 now state that execution artifacts are not stored in or relayed by the cloud; see [DIRECT_ARTIFACT_TRANSFER.md](DIRECT_ARTIFACT_TRANSFER.md). Remaining mentions of artifacts in backup, lifecycle, capacity and monitoring lists refer to artifact metadata unless they say otherwise. SYS-ADR-008 is a direction pending owner confirmation, and nothing is implemented.
 
 ## 1. Document Control
 
@@ -382,8 +382,7 @@ Worker instances execute asynchronous jobs.
 
 Responsibilities may include:
 
-- artifact validation;
-- artifact processing;
+- artifact metadata processing (the cloud holds no artifact content);
 - scheduler tasks;
 - job dispatch;
 - result processing;
@@ -567,8 +566,8 @@ Object storage is the primary store for large unstructured data.
 
 Examples:
 
-- `.krv` artifacts;
 - videos;
+- images;
 - execution logs;
 - telemetry exports;
 - result files;
@@ -584,17 +583,16 @@ Examples:
 
     Studio / Lab Agent
           |
-          | Authorized transfer
+          | Authorized transfer (results, logs, media)
           v
       Object Storage
 
-The binary itself should not unnecessarily pass through the API server.
+The binary itself should not unnecessarily pass through the API server. Execution artifacts are not part of this path: they go directly from the workstation to the destination (`DIRECT_ARTIFACT_TRANSFER.md`).
 
 ## 32. Object Storage Buckets
 
 Logical separation should exist for:
 
-    artifacts
     results
     videos
     logs
@@ -637,34 +635,29 @@ Typical flow:
 
 The object storage URL itself is not an authorization mechanism.
 
-## 35. Artifact Upload Path
+## 35. Artifact Transfer Path
 
-Preferred flow:
+The cloud takes part in artifact delivery only as a control path. Preferred flow:
 
     Studio
       |
-      | artifact.create
+      | artifact.create (metadata only)
       v
     Control Plane
       |
       v
-    Upload Authorization
+    Transfer Grant
       |
       v
-    Studio
-      |
-      | HTTPS
-      v
-    Object Storage
-      |
-      v
-    Artifact Validation Worker
-      |
-      v
-    PostgreSQL
-      |
-      v
-    ACCEPTED / REJECTED
+    Studio ======== direct transfer ========> Lab Agent
+                                                |
+                                                v
+                                       Destination Validation
+                                                |
+                                                v
+    Control Plane / PostgreSQL <---- status (metadata)
+
+The cloud stores artifact metadata and transfer status. It never receives, stores or relays the artifact bytes, and there is no cloud fallback when the direct path is unavailable. The connectivity model (DT-OD-01) and any cloud retention (DT-OD-03) are open decisions. Results, logs and media keep the object storage design.
 
 ## 36. Result Upload Path
 
@@ -710,7 +703,7 @@ The queue should support:
         v
     Primary Queue
         |
-        +--> Artifact Worker
+        +--> Artifact Metadata Worker
         +--> Scheduler Worker
         +--> Job Worker
         +--> Result Worker
@@ -1433,16 +1426,16 @@ Object lifecycle rules should move or delete old objects according to policy.
 
 Examples:
 
-    Active Artifact
+    Active Result
         |
         v
-    Retained Artifact
+    Retained Result
         |
         v
-    Archived Artifact
+    Archived Result
         |
         v
-    Expired Artifact
+    Expired Result
 
 Retention must respect:
 
@@ -1700,16 +1693,15 @@ This reduces cloud source-code exposure and simplifies backend build infrastruct
 
 ## 98. Artifact IP Protection
 
-Artifacts may still contain proprietary binary IP.
+Artifacts may still contain proprietary binary IP. Because the cloud holds no artifact content (SYS-ADR-008), that exposure is reduced to metadata and to the direct path.
 
 Therefore:
 
-- access must be authorized;
-- object storage must be private;
-- download URLs must expire;
+- transfer grants must be short-lived and scoped to one destination;
 - artifact metadata must be protected;
-- audit records should track access;
-- Lab Agents should verify integrity.
+- audit records should track grants and transfers;
+- Lab Agents should verify integrity;
+- object storage for results and media must be private and its download URLs must expire.
 
 ## 99. Cloud API Protection
 
@@ -1883,8 +1875,8 @@ Capacity planning should track:
 
 - API requests;
 - concurrent users;
-- artifact uploads;
-- artifact sizes;
+- artifact registrations and transfer grants;
+- artifact sizes (for destination capacity, DT-OD-04);
 - jobs/day;
 - concurrent jobs;
 - result volume;
@@ -1935,7 +1927,7 @@ Performance goals include:
 
 ## 114. Large File Transfer
 
-Large artifacts, videos, and results should not unnecessarily traverse API instances.
+Large videos and results should not unnecessarily traverse API instances. Execution artifacts never traverse the cloud.
 
 Preferred:
 
@@ -2102,8 +2094,8 @@ Examples:
 The system should eventually support quotas for:
 
 - API requests;
-- artifact storage;
-- artifact size;
+- results and media storage;
+- artifact size (destination capacity);
 - job concurrency;
 - execution time;
 - result storage.
@@ -2253,7 +2245,7 @@ Mitigation:
 |---|---|---|
 | Phase 0 | Local/cloud foundation | Reproducible environment |
 | Phase 1 | Development cloud | Backend development |
-| Phase 2 | Artifact infrastructure | Artifact storage/validation |
+| Phase 2 | Artifact infrastructure | Artifact metadata and transfer grants |
 | Phase 3 | Control Plane deployment | Integrated RaaS backend |
 | Phase 4 | Booking/commercial infrastructure | Production-like transactions |
 | Phase 5 | Workers/lab connectivity | Remote execution |
@@ -2304,23 +2296,23 @@ Acceptance:
 - development environment is automated;
 - Studio can reach API;
 - asynchronous work executes;
-- artifacts can be stored.
+- artifact metadata can be stored.
 
 ## 140. P2 BUILD & ARTIFACT — Artifact Infrastructure
 
 Deliver:
 
-- production-like object storage;
-- signed upload flow;
-- artifact validation workers;
-- storage lifecycle;
-- checksum/integrity handling.
+- production-like object storage for results and media;
+- artifact metadata registration and transfer grant issuance;
+- artifact metadata workers;
+- storage lifecycle for results and media;
+- checksum and integrity metadata handling.
 
 Acceptance:
 
-- `.krv` upload works;
-- large artifacts bypass API payload path where appropriate;
-- invalid artifacts are rejected;
+- artifact metadata registration works;
+- a transfer grant is issued only for a valid reservation and destination;
+- no artifact bytes reach the cloud (`DIRECT_ARTIFACT_TRANSFER.md` DT-AT-01);
 - object access is private.
 
 ## 141. P3 CONTROL PLANE Infrastructure
@@ -2489,7 +2481,7 @@ Acceptance:
 
 ### Object Storage
 
-- [ ] Artifacts use object storage.
+- [ ] Artifacts are not stored in cloud object storage (SYS-ADR-008).
 - [ ] Results use object storage where appropriate.
 - [ ] Video uses object storage where appropriate.
 - [ ] Public access is disabled.
