@@ -397,7 +397,7 @@ Representative endpoints:
     POST   /api/v1/artifacts
     GET    /api/v1/artifacts
     GET    /api/v1/artifacts/{artifact_id}
-    POST   /api/v1/artifacts/{artifact_id}/validate
+    POST   /api/v1/artifacts/{artifact_id}/validate   (conceptual: Control Plane checks of metadata, registered signer, reservation and policy only; or a request for the destination's validation result, once defined. It never validates content the Control Plane does not hold)
     DELETE /api/v1/artifacts/{artifact_id}
 
 Execution artifact bytes are not sent to the API. The API registers metadata and issues a transfer grant (SYS-ADR-008); the grant operation and its shape are open and defined in the protocol documents. Large result and media files may still use object-storage URLs.
@@ -1958,22 +1958,24 @@ For an artifact transfer, the destination reports status, and the API records it
 - destination System ID;
 - digest as verified by the destination.
 
-A status report is metadata. It does not prove the artifact is valid or that execution will succeed. If the destination is disconnected the status is pending or unreported until it reconnects.
+A status report is metadata. It does not prove the artifact is valid or that execution will succeed. The Control Plane records the destination's authenticated assertion and its provenance (reporting System ID, transfer and artifact correlation); it does not represent it as independently verified. A compromised destination could report a false `READY`, which no status field can prevent. If the destination is disconnected the status is pending or unreported until it reconnects.
 
 The reporting operation must be idempotent. The `.../complete` operation of earlier drafts is superseded.
 
 ## 134. Artifact Validation Status
 
-Example states (conceptual; the exact set is open and must stay consistent with the artifact architecture):
+Example states (conceptual; the exact set is open). They align with `ARTIFACT_SERVICE.md` Sections 28 and 29:
 
     REGISTERED
     TRANSFERRING
     TRANSFERRED
     VALIDATING
-    VALID
-    INVALID
+    READY      (destination-reported; in earlier drafts VALID)
+    REJECTED   (destination-reported; in earlier drafts INVALID)
     REVOKED
     DELETED
+
+`READY` and `REJECTED` are the destination's reported outcome of content validation. The Control Plane records them with their provenance and does not present them as independently verified. `READY` does not mean the reservation is still active, a Job has started, or the robot is safe.
 
 ## 135. Booking State
 

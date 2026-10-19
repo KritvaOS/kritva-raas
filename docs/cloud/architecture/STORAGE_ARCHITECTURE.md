@@ -156,7 +156,8 @@ The architecture has five conceptual storage classes:
 | Class | Primary Store | Examples |
 |---|---|---|
 | Structured business state | PostgreSQL | bookings, Jobs, credits |
-| Binary payloads | Object Storage | `.krv`, result files |
+| Binary payloads (results, logs, media) | Object Storage | result files, logs, video. Not `.krv` |
+| Execution artifact (`.krv`) | User workstation and the validated copy on the destination | Not cloud storage (SYS-ADR-008) |
 | Operational logs | Log/Object Storage | execution logs |
 | Media | Object Storage/Media System | video recordings |
 | Transient work | Local/ephemeral | validation workspace |
@@ -2131,11 +2132,11 @@ These questions do not change the fundamental authority and separation model.
 The following invariants are mandatory:
 
 1. PostgreSQL is authoritative for structured business state.
-2. Object storage is authoritative for large binary payloads.
+2. Object storage is authoritative for large result, log and media payloads. Execution artifacts are not stored there (SYS-ADR-008).
 3. Queues are not storage authority.
 4. WebSocket is not storage authority.
 5. Large artifacts are not stored directly in PostgreSQL.
-6. Accepted `.krv` artifacts are immutable.
+6. Registered `.krv` artifact records are immutable.
 7. Artifact identity includes a cryptographic digest.
 8. Object storage is private by default.
 9. Anonymous object access is disabled.

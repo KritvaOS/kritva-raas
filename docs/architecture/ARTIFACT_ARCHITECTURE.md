@@ -1356,13 +1356,15 @@ ValidationResult contains:
 
 ## 77. Artifact API Operations
 
+> Superseded for execution artifacts (SYS-ADR-008): historical text, not an implementation contract. Do not implement an artifact upload, upload session or cloud download from this section.
+
 The API should support:
 
 - `artifact.create`
 - `artifact.upload`
 - `artifact.get`
 - `artifact.list`
-- `artifact.validate`
+- `artifact.validate` (Control Plane validation covers metadata and authorization only; content validation is the destination's)
 - `artifact.delete`
 - `artifact.download`
 
@@ -1374,11 +1376,15 @@ Future operations may include:
 
 ## 78. Artifact Create
 
+> Superseded for execution artifacts (SYS-ADR-008): historical text, not an implementation contract. Do not implement an artifact upload, upload session or cloud download from this section.
+
 `artifact.create` creates the server-side metadata and upload session.
 
 It should not automatically mark the artifact executable.
 
 ## 79. Artifact Upload
+
+> Superseded for execution artifacts (SYS-ADR-008): historical text, not an implementation contract. Do not implement an artifact upload, upload session or cloud download from this section.
 
 `artifact.upload` represents completion of the artifact transfer.
 
@@ -1406,6 +1412,8 @@ It must not result directly in `AVAILABLE`.
 It should not expose unnecessary storage internals.
 
 ## 81. Artifact Download
+
+> Superseded for execution artifacts (SYS-ADR-008): historical text, not an implementation contract. Do not implement an artifact upload, upload session or cloud download from this section.
 
 Download authorization is controlled.
 

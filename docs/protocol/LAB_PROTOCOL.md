@@ -461,9 +461,13 @@ Whatever contract is defined, it MUST satisfy `docs/architecture/DIRECT_ARTIFACT
 
 The Lab Agent MUST NOT accept an artifact from an unauthenticated source or from a source named only by an untrusted manifest.
 
+Superseded messages are not valid substitutes for the not-yet-defined direct-transfer contract. An implementation MUST NOT use them, or a cloud download URL, for execution artifacts, MUST NOT treat a legacy request as successful, and MUST NOT accept content on a Control Plane notification or a reported completion alone.
+
 Result and media retrieval (Section 31) is not affected.
 
 ## 18. Artifact Validation
+
+The staged order is defined in `docs/architecture/DIRECT_ARTIFACT_TRANSFER.md` Section 5 and is canonical until the wire contract is designed; the list below does not restate every staging and resource-limit step.
 
 Before deployment, the Lab Agent MUST ask the local Kritva Runtime to validate the artifact or invoke the approved shared validation implementation.
 
