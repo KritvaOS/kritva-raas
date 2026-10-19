@@ -1,6 +1,6 @@
 # kritva-raas
 
-> Kritva Robotic as a Service (RaaS): the consolidated plan and architecture for the RaaS frontend, backend, database and cloud domains, the backend application code, and the planning, security and governance records that control how the work is done. This is a private repository.
+> Kritva Robotic as a Service (RaaS): the consolidated plan and architecture for the RaaS frontend, backend, database and cloud domains, the backend application code, and the planning, security and governance records that control how the work is done. The repository is intended to be private; its GitHub setting is currently public as a recorded temporary exception (see the metadata table).
 
 | Property | Value |
 |---|---|
@@ -29,6 +29,19 @@ This is a software-only repository. Frontend, database and cloud have plans and 
 
 It does not own program-level decisions, the program baseline, approvals or program credit. Those live in kritva-program (section 10).
 
+### What the product is meant to do
+
+The list below is the target product, not a statement of what is built. Features and their status are tracked in the planning records, not here.
+
+1. A user creates or opens a project in Kritva Studio and selects a target platform.
+2. The user compiles, tests and validates locally, and packages the result as a `.krv` execution artifact. Source code never leaves the workstation.
+3. The user books an eligible system. The booking card shows the cloud-synchronized time and a countdown to the next booking, and lets the user browse up to 10 previous and 10 upcoming bookings.
+4. When the booking starts, the user opens the system. The countdown only enables the button; the backend and the destination system authorize access.
+5. The artifact travels directly from the workstation to the reserved system. The cloud does not receive or store it (section 3).
+6. The user watches logs, video and images, then reviews saved sessions and previous runs.
+
+The key capabilities are grouped as: develop and compile; package and transfer; book and connect; execute and monitor; save and review; manage usage, credits and access (including refunds and credit adjustments by an authorized administrator); and optional coding-agent help from Claude Code, OpenAI Codex or direct Anthropic API access, always on the user's own machine. The Studio workspace is planned as three panels (left: projects, sessions and bookings; center: the active project; right: video, images and logs), each independently expandable.
+
 ## 2. Position in the KritvaOS Ecosystem
 
 RaaS is the service layer of KritvaOS. In the program's repository plan (PROPOSED) it is sequenced after kritva-core and kritva-skill. That is program ordering only; no build or runtime dependency on either is specified here (section 7). RaaS is meant to report status to kritva-program, but it is a planning-only workstream there: not registered as a source, not a baseline source, with no program credit. The roster, order and required checks are owned by `v2/planning/repo-pipeline.json` in kritva-program, not by this README.
@@ -36,6 +49,17 @@ RaaS is the service layer of KritvaOS. In the program's repository plan (PROPOSE
 ## 3. Architecture
 
 The backend architecture documents are `docs/architecture/BACKEND_ARCHITECTURE.md`, `API_ARCHITECTURE.md` and `SECURITY_ARCHITECTURE.md` (with `SYSTEM_ARCHITECTURE.md` for the whole product), and the wire contracts are under `docs/protocol/`. Each of the four architecture documents declares its own status as Architecture Baseline. That is a design baseline: it states required and target behaviour, and it is not a completed implementation and not, by itself, an owner approval. This section summarises the rules every change must respect and marks which are implemented in `apps/backend` today. Anything not marked implemented is a requirement for future work.
+
+**Control path and artifact path**
+
+The cloud Control Plane handles authentication, booking, System ID and authorization, and metadata. The execution artifact does not pass through it:
+
+    Workstation (Studio, build, package)
+        |-- control API --> Cloud Control Plane (authenticate, book, authorize, grant)
+        |
+        '== direct transfer, with the grant ==> Destination system (validate, store, run)
+
+If the direct path is unavailable the transfer fails with a clear error; there is no cloud fallback. The decision is SYS-ADR-008 in `planning/DECISIONS.md` and the contract is [`docs/architecture/DIRECT_ARTIFACT_TRANSFER.md`](docs/architecture/DIRECT_ARTIFACT_TRANSFER.md). The direction is owner-approved with owner confirmation pending, the design is not reviewed, and nothing is implemented. Several other documents still describe the earlier cloud object-storage route; each carries a notice pointing to the new contract until it is revised.
 
 **Layers, from the outside in**
 
@@ -77,7 +101,9 @@ Read in this order. A label names a role, not an approval; where a document stat
 | 6 | [`apps/backend/README.md`](apps/backend/README.md) | REFERENCE | How the running backend is built and operated |
 | 7 | [`docs/README.md`](docs/README.md) | REFERENCE | The documentation index |
 | 8 | [`docs/REPOSITORY_STRUCTURE.md`](docs/REPOSITORY_STRUCTURE.md) | REFERENCE, PROPOSED, pending human review | Proposed repository structure and ownership map; the authority matrix remains authoritative |
-| 9 | [`docs/architecture/`](docs/architecture/) (the four architecture documents, section 3) | AUTHORITATIVE for the design baseline; status declared in each file: Architecture Baseline | The target architecture. Not proof that it is implemented, and not an owner approval |
+| 9 | [`docs/architecture/DIRECT_ARTIFACT_TRANSFER.md`](docs/architecture/DIRECT_ARTIFACT_TRANSFER.md) | PROPOSED (direction owner-approved, confirmation pending) | How the execution artifact reaches the destination system without passing through the cloud |
+| 10 | [`docs/ui/UI_SPECIFICATION.md`](docs/ui/UI_SPECIFICATION.md) | REFERENCE, PROPOSED sections | The Studio UI, including the three-panel workspace (11.1), cloud clock (14.1) and booking navigator (50.1) |
+| 11 | [`docs/architecture/`](docs/architecture/) (the four architecture documents, section 3) | AUTHORITATIVE for the design baseline; status declared in each file: Architecture Baseline | The target architecture. Not proof that it is implemented, and not an owner approval |
 
 ## 5. Repository Structure and File Responsibilities
 
