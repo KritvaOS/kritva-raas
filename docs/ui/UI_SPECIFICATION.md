@@ -1124,8 +1124,8 @@ The layout above is illustrative. System IDs, times, and counts are examples, no
 |---|---|
 | BK-NAV-01 | Previous shows the previous booking in the current list |
 | BK-NAV-02 | Next shows the next booking in the current list |
-| BK-NAV-03 | Up to 10 previous and 10 upcoming bookings are available. Previous bookings are the 10 most recent ended or cancelled ones. Upcoming bookings are up to 10 future or currently active ones, with the current booking identified |
-| BK-NAV-04 | Bookings are ordered by start time using cloud-authoritative timestamps |
+| BK-NAV-03 | Up to 10 previous and 10 upcoming bookings are available, in two disjoint sets by booking state. Upcoming: future `CONFIRMED` bookings and the currently `ACTIVE` booking, with the current booking identified. Previous (history): terminal bookings, that is `COMPLETED`, `CANCELLED`, `EXPIRED` and applicable `CONFLICTED` ones. A booking cancelled before its start time is previous, never upcoming |
+| BK-NAV-04 | Upcoming bookings are ordered by start time. Previous bookings are ordered by the time of their terminal event, most recent first, using cloud-authoritative timestamps. If the product owner chooses start time for both lists, that is recorded explicitly |
 | BK-NAV-05 | Previous or Next is disabled when there is nothing further in that direction, and the position (for example 3 of 10) is shown |
 | BK-NAV-06 | Each booking shows System ID, date, start and end time, status, and a countdown where applicable |
 | BK-NAV-07 | Navigating between bookings does not reset or corrupt the countdown of any booking |
