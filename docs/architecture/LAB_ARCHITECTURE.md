@@ -1,6 +1,6 @@
 # Kritva RaaS Lab Architecture
 
-> **Superseded artifact route (SYS-ADR-008).** The execution artifact is transferred directly from the user's workstation to the destination system. The cloud does not receive, store or relay it. Where this document describes artifact upload to, or fetch from, cloud object storage, that route is superseded by [DIRECT_ARTIFACT_TRANSFER.md](DIRECT_ARTIFACT_TRANSFER.md). This document has not been revised to match yet; the affected sections are listed in Section 9 of that file. Results, logs and media are not affected.
+> **Partly revised for SYS-ADR-008 (direct artifact transfer).** The responsibilities, execution boundary, authorization, receipt, integrity and revocation sections (31 to 36), network permissions (107), trust chain (110) and the related metric and failure lists now describe direct workstation-to-destination transfer; see [DIRECT_ARTIFACT_TRANSFER.md](DIRECT_ARTIFACT_TRANSFER.md). Result and media upload to object storage is unchanged. Grant fields, the connectivity model (DT-OD-01) and offline revocation (DT-OD-05) are open. SYS-ADR-008 is a direction pending owner confirmation, and nothing is implemented.
 
 ## 1. Document Control
 
@@ -80,7 +80,7 @@ This document covers:
 8. Resource discovery.
 9. Capability reporting.
 10. Platform identification.
-11. Artifact download.
+11. Artifact receipt (direct transfer from the user's workstation).
 12. Artifact validation.
 13. Deployment.
 14. Application execution.
@@ -243,7 +243,7 @@ A production lab may contain:
 | Actuators | Motion/output |
 | Camera System | Video |
 | Network | Local communication |
-| Local Storage | Artifact/cache/log storage |
+| Local Storage | Artifact staging, cache and log storage |
 
 The exact topology varies by robot platform.
 
@@ -258,7 +258,7 @@ Responsibilities include:
 - heartbeat;
 - capability discovery;
 - resource discovery;
-- artifact retrieval;
+- artifact receipt under a transfer grant;
 - artifact verification;
 - deployment coordination;
 - execution coordination;
@@ -642,7 +642,7 @@ A resource with a healthy robot but offline agent is not available for cloud exe
 
 ## 31. Artifact Execution Boundary
 
-The cloud sends an execution artifact, not customer source code.
+The user's workstation sends an execution artifact directly to the Lab Agent, not customer source code and not through the cloud (SYS-ADR-008).
 
 Normal flow:
 
@@ -656,7 +656,8 @@ Normal flow:
     Signed .krv
          |
          v
-    Cloud
+    Direct transfer to the Lab Agent (under a Control Plane grant;
+    the cloud does not receive or relay the artifact)
          |
          v
     Lab Agent
@@ -666,7 +667,7 @@ Normal flow:
 
 ## 32. Artifact Authorization
 
-Before an artifact reaches the Lab Agent, the Control Plane validates:
+Before the Control Plane issues a transfer grant for the Lab Agent, it validates:
 
 - user authorization;
 - organization ownership;
@@ -676,45 +677,53 @@ Before an artifact reaches the Lab Agent, the Control Plane validates:
 - architecture;
 - runtime compatibility;
 - artifact status;
-- signature;
-- checksum.
+- registered signer and declared checksum (metadata only; the Control Plane never sees the content).
 
-The Lab Agent must independently verify critical integrity information.
+The Lab Agent must independently verify the grant and all content integrity information. A grant does not make the content trusted.
 
-## 33. Artifact Download
+## 33. Artifact Receipt (Direct Transfer)
 
-The Lab Agent obtains an authorized artifact from object storage.
+The Lab Agent receives the artifact directly from the user's workstation. It does not obtain artifacts from object storage or the Control Plane.
 
-Preferred flow:
+Flow:
 
-    Lab Agent
-       |
-       | request artifact authorization
-       v
     Control Plane
        |
+       | transfer grant (to the workstation) and notice (to the Lab Agent)
        v
-    Short-lived object access
-       |
-       v
-    Object Storage
-       |
-       v
-    Lab Agent local cache
+    Workstation ======== direct transfer ========> Lab Agent
+                                                     |
+                                                     v
+                                          non-executable staging area
+                                                     |
+                                                     v
+                                          validation, then READY
+                                                     |
+                                                     v
+    Control Plane <---- status (metadata) ----------+
 
-The artifact should not require the Control Plane API to proxy the entire binary.
+The Lab Agent:
+
+- authenticates the connection and validates the grant, its own System ID, the permitted operation, expiry and reservation window before accepting data;
+- enforces the permitted size and available storage before allocating disk;
+- writes only to a uniquely identified, non-executable staging area, keeps durable received-offset state for resumption, and never executes staged content;
+- marks the artifact `READY` atomically, only after every check in `DIRECT_ARTIFACT_TRANSFER.md` Section 5 has passed;
+- deletes or quarantines partial data after expiry, cancellation or integrity failure;
+- never places the grant in logs, diagnostics or telemetry.
+
+The connectivity model between workstation and Lab Agent is open (DT-OD-01): a reachable endpoint, or a connection the Lab Agent initiates. Either way the cloud does not carry the bytes, and each option adds destination-side exposure that the threat model must cover. This document does not choose one.
 
 ## 34. Artifact Integrity
 
-After download, the Lab Agent must verify:
+After receipt, the Lab Agent must verify:
 
 - expected size;
-- checksum;
-- signature;
-- artifact format;
+- checksum against the authorized digest;
+- signature and its binding to the manifest and payload;
+- artifact format, including unsafe paths and links;
 - compatibility metadata.
 
-An integrity failure must prevent deployment.
+An integrity failure must prevent deployment, and the staged data is removed or quarantined.
 
 ## 35. Artifact Cache
 
@@ -734,10 +743,13 @@ Cached artifacts must not bypass authorization.
 
 ## 36. Artifact Revocation
 
-If artifacts can be revoked, the Lab Agent must check revocation/validity information
-before execution.
+If artifacts can be revoked, the Lab Agent must check revocation and validity information before execution.
 
-A previously downloaded artifact must not automatically remain executable forever.
+A previously received artifact must not automatically remain executable forever.
+
+While the Lab Agent is connected it enforces cancellation and revocation as the final protocol defines. While it is disconnected it can enforce only what it can verify locally: the signed grant expiry and the reservation window. It cannot know of a cancellation that has not reached it, and immediate revocation during a network partition is not guaranteed (DT-OD-05).
+
+An already running physical execution is never stopped unsafely because a reservation ended; the safe-stop and handoff procedure is separate from transfer authorization.
 
 ## 37. Deployment Model
 
@@ -1446,7 +1458,7 @@ Commands with side effects must be idempotent where practical.
 
 Examples:
 
-- artifact fetch;
+- artifact receipt;
 - deployment prepare;
 - deployment start;
 - job start;
@@ -1819,7 +1831,8 @@ Exact segmentation depends on the robot platform.
 The Lab Agent should have only required access to:
 
 - Control Plane endpoint;
-- object storage transfer endpoint;
+- object storage endpoint for results and media;
+- the direct artifact transfer path from the user's workstation (connectivity model open, DT-OD-01);
 - robot management interfaces;
 - runtime;
 - telemetry sources;
@@ -1860,10 +1873,10 @@ The intended trust chain is:
     Signed Artifact
       |
       v
-    Control Plane Validation
+    Control Plane (metadata and grant)
       |
       v
-    Object Storage
+    Direct Transfer
       |
       v
     Lab Agent Verification
@@ -2070,7 +2083,7 @@ Recommended metrics:
     agent_connection_state
     agent_resource_count
     agent_active_jobs
-    artifact_download_seconds
+    artifact_transfer_seconds
     deployment_duration
     job_start_duration
     job_failure_count
@@ -2098,7 +2111,7 @@ The Lab Agent must monitor local disk.
 
 Low disk space can prevent:
 
-- artifact download;
+- artifact receipt;
 - deployment;
 - logging;
 - result collection.
@@ -2158,7 +2171,7 @@ Suitable examples:
 
 - heartbeat;
 - metadata refresh;
-- artifact download;
+- artifact receipt (queued status reports);
 - telemetry upload.
 
 Execution start requires stronger idempotency and state verification.
@@ -2361,7 +2374,7 @@ A physical lab is production-ready only when:
 |---|---|---|
 | Phase 0 | Lab contract + mock agent | Software boundary |
 | Phase 1 | Local agent | Development integration |
-| Phase 2 | Artifact retrieval | Artifact-to-lab path |
+| Phase 2 | Artifact receipt | Direct workstation-to-lab path |
 | Phase 3 | Deployment/runtime | Remote execution foundation |
 | Phase 4 | Resource/booking integration | Resource allocation |
 | Phase 5 | Job execution | End-to-end execution |
@@ -2763,7 +2776,7 @@ The following invariants must remain true:
 ### Artifact
 
 - [ ] Artifact authorization exists.
-- [ ] Artifact download is supported.
+- [ ] Direct artifact receipt under a transfer grant is supported.
 - [ ] Artifact checksum is verified.
 - [ ] Artifact signature is verified.
 - [ ] Artifact format is verified.
