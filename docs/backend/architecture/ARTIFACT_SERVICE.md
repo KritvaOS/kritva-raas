@@ -597,7 +597,7 @@ Conceptual states (the exact set is open and may be consolidated):
     EXPIRED
     DELETED
 
-`READY` means the destination reports the artifact eligible for authorized execution. The earlier `UPLOADING`, `UPLOADED` and `ACCEPTED` states described a cloud upload and are superseded. The transfer and validation states describe the destination copy, as reported.
+`READY` means the destination reports the artifact eligible for authorized execution. It is an assertion by the destination, recorded with its provenance, not independent proof. It does not mean the reservation is still active, a Job has started or the robot is safe: artifact readiness, current booking authorization, deployment, Job and Run state, and physical safety state stay distinct, and authorization is rechecked at the operation that needs it. The earlier `UPLOADING`, `UPLOADED` and `ACCEPTED` states described a cloud upload and are superseded. The transfer and validation states describe the destination copy, as reported.
 
 ## 29. Artifact State Machine
 

@@ -1,6 +1,6 @@
 # Kritva RaaS Command Catalogue
 
-> **Partly revised for SYS-ADR-008 (direct artifact transfer).** `artifact.upload` (28.2), `artifact.download` (28.7) and `artifact.fetch` (35.7), and the `artifact.create` response (28.1), are marked superseded; see [DIRECT_ARTIFACT_TRANSFER.md](../architecture/DIRECT_ARTIFACT_TRANSFER.md). No replacement command or field is defined here; they are open (DT-OD-01, DT-OD-02, DT-OD-05). `artifact.package` and `artifact.inspect` (local) and `result.download` are unchanged. SYS-ADR-008 is a direction pending owner confirmation, and nothing is implemented.
+> **Partly revised for SYS-ADR-008 (direct artifact transfer).** `artifact.upload` (28.2), `artifact.download` (28.7) and `artifact.fetch` (35.7), and the `artifact.create` response (28.1), are marked superseded; see [DIRECT_ARTIFACT_TRANSFER.md](../architecture/DIRECT_ARTIFACT_TRANSFER.md). Superseded commands are not valid substitutes for the not-yet-defined direct-transfer contract and must not be used for execution artifacts. No replacement command or field is defined here; they are open (DT-OD-01, DT-OD-02, DT-OD-05). `artifact.package` and `artifact.inspect` (local) and `result.download` are unchanged. SYS-ADR-008 is a direction pending owner confirmation, and nothing is implemented.
 
 ## 1. Document Control
 
@@ -1482,7 +1482,7 @@ They do not replace jobs or runs.
 |---|---|
 | Direction | Control Plane → Lab Agent |
 | Request | `DeploymentPrepareRequest { job_id, artifact_id, resource_id, configuration }` |
-| Response | `DeploymentPreparation { deployment_id, validated, diagnostics[] }` |
+| Response | `DeploymentPreparation { deployment_id, validated, diagnostics[] }`. `validated` is destination-reported evidence only; it is not an authorization and does not replace the destination's checks at the point of use |
 | Mode | Async |
 | Errors | `NOT_FOUND`, `ARTIFACT_INCOMPATIBLE`, `RESOURCE_UNAVAILABLE`, `AGENT_OFFLINE`, `VALIDATION_FAILED` |
 | Idempotency | Required |

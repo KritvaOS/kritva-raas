@@ -1,6 +1,6 @@
 # Kritva RaaS Threat Model
 
-> **Partly revised for SYS-ADR-008 (direct artifact transfer).** Trust boundary TB-09, the artifact data flow (16), STRIDE for the direct path (25.1), attack scenarios AS-036 to AS-040 and the affected control, scenario and phase lines now cover the direct workstation-to-destination path; see [DIRECT_ARTIFACT_TRANSFER.md](../architecture/DIRECT_ARTIFACT_TRANSFER.md). Residual risk depends on the open connectivity model (DT-OD-01) and offline revocation policy (DT-OD-05). This is a documentation update, not a completed security review or acceptance. SYS-ADR-008 is a direction pending owner confirmation, and nothing is implemented.
+> **Partly revised for SYS-ADR-008 (direct artifact transfer).** Trust boundary TB-09, the artifact data flow (16), STRIDE for the direct path (25.1), attack scenarios AS-036 to AS-044 and the affected control, scenario and phase lines now cover the direct workstation-to-destination path; see [DIRECT_ARTIFACT_TRANSFER.md](../architecture/DIRECT_ARTIFACT_TRANSFER.md). Residual risk depends on the open connectivity model (DT-OD-01) and offline revocation policy (DT-OD-05). This is a documentation update, not a completed security review or acceptance. SYS-ADR-008 is a direction pending owner confirmation, and nothing is implemented.
 
 ## 1. Purpose
 
@@ -578,7 +578,10 @@ Threats include:
 - partial or unvalidated data becoming executable;
 - stale authorization: a destination that is offline cannot learn of a cancellation;
 - abuse of a rendezvous or signaling service, or a relay that carries artifact bytes, which would also violate DT-REQ-01;
-- the grant leaking into logs, diagnostics, telemetry, URLs or command lines.
+- the grant leaking into logs, diagnostics, telemetry, crash dumps, tracing, support bundles, URLs or command lines;
+- tampering with transfer-session or resume state (offsets, concurrent resumes, duplicate or reordered chunks, partial-file substitution, reuse of a transfer identity);
+- option-specific exposure: private-network or VPN trust (A), an Internet-facing endpoint and firewall exposure (B), a workstation listener (C), rendezvous and NAT-traversal manipulation (D). Each is assessed before DT-OD-01 is decided;
+- a compromised grant issuer, workstation or destination (AS-041 to AS-044).
 
 Controls (requirements, not yet designed in detail):
 
@@ -592,6 +595,8 @@ Controls (requirements, not yet designed in detail):
 - fail closed when authorization cannot be verified locally;
 - categorized failure with no cloud fallback;
 - audit records for grants, transfers and rejections;
+- logging controls that are testable: no grant or credential in logs, URLs, command lines, tracing, diagnostics or support bundles, with controlled redaction and restricted access to audit data;
+- final digest verification and durable, correctly scoped resume state;
 - an explicit offline revocation policy (DT-OD-05). Until it is decided, immediate revocation during a network partition is not claimed.
 
 Residual risk: a connected destination enforces cancellation; a disconnected one enforces only the signed expiry and reservation window. A physical execution already in progress is never stopped unsafely because of a reservation ending.
@@ -1879,6 +1884,87 @@ Read, alter or withhold the artifact, or silently reintroduce a cloud copy.
 
 Tampered content is rejected, and no path carries the bytes through the cloud (DT-AT-01, DT-AT-03, DT-AT-05).
 
+## AS-041: Compromised Control Plane or Grant Issuer
+
+### Attack
+
+An attacker with access to the Control Plane or its grant signing authority issues a valid grant for the wrong user, reservation, System ID or artifact.
+
+### Objective
+
+Place an artifact on a destination without a legitimate booking.
+
+### Mitigations
+
+- grant issuance policy enforced in the Control Plane and audited;
+- signing key custody, rotation and trust distribution to destinations (design open, DT-OD-02);
+- destination verification of the grant and of the artifact content; the destination's signature and policy checks remain independent of the grant;
+- local safety independent of cloud authorization.
+
+### Residual Risk
+
+Destination validation protects against a tampered artifact, not against a valid-looking grant from a compromised issuer. The issuer is a distinct trust dependency.
+
+## AS-042: Compromised Workstation, Studio or Local Runtime
+
+### Attack
+
+Malware on the workstation steals a grant, substitutes the artifact after local validation, alters the target System ID, or abuses the transfer client.
+
+### Objective
+
+Deliver an unvalidated or different artifact, or misdirect a transfer.
+
+### Mitigations
+
+- local validation and the Studio UI are not treated as a security boundary;
+- destination-side grant, destination and content checks;
+- grant binding to digest, System ID, size and operation.
+
+### Residual Risk
+
+A fully compromised workstation can misuse its own valid grant for the reserved destination within the grant's scope and expiry.
+
+## AS-043: Destination Reports False Validation
+
+### Attack
+
+A compromised Lab Agent reports `READY`, a digest it did not verify, a stale status, or replays an earlier report.
+
+### Objective
+
+Make the Control Plane and users believe an unsafe or unvalidated artifact is ready.
+
+### Mitigations
+
+- authenticated reporter identity and System ID, transfer and artifact correlation, idempotent events and audit provenance (future protocol);
+- the Control Plane records an assertion and never presents it as independently verified;
+- `READY` is kept distinct from current booking authorization, Job and Run state and physical safety, and authorization is rechecked at the operation that needs it.
+
+### Residual Risk
+
+The Control Plane cannot independently prove content was validated, because it never receives the bytes.
+
+## AS-044: Signing Key Rotation, Compromise and Trust Bootstrap
+
+### Attack
+
+A grant or artifact signing key is compromised, or a disconnected destination holds stale trust information.
+
+### Objective
+
+Have forged or revoked material accepted.
+
+### Mitigations
+
+- revocation of old keys and trust store updates (design open, DT-OD-02);
+- a defined stale-trust policy for a disconnected destination, tied to DT-OD-05;
+- audit of key use and rotation.
+
+### Residual Risk
+
+Cannot be assessed until the key architecture is decided.
+
 # 63. Security Control Matrix
 
 | Threat Area | Primary Control | Secondary Control |
@@ -2127,7 +2213,7 @@ Focus:
 
 - rogue Lab Agent;
 - compromised Lab Agent;
-- direct transfer endpoint exposure, grant replay and hostile artifacts (AS-036 to AS-040);
+- direct transfer endpoint exposure, grant replay and hostile artifacts (AS-036 to AS-044);
 - robot command manipulation;
 - network isolation;
 - safety communication failure;
