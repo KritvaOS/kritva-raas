@@ -1,5 +1,7 @@
 # Kritva RaaS Staging Environment Deployment
 
+> **Partly revised for SYS-ADR-008 (direct artifact transfer).** Object storage namespaces, the end-to-end flow and the artifact performance test now describe registration and direct transfer. See [DIRECT_ARTIFACT_TRANSFER.md](../../architecture/DIRECT_ARTIFACT_TRANSFER.md). The Staging transfer setup is open (DT-OD-01). References to application or release artifacts (software builds promoted between environments) are unchanged; this change concerns `.krv` execution artifacts only. Grant fields (DT-OD-02), connectivity (DT-OD-01), any cloud retention (DT-OD-03), capacity (DT-OD-04) and offline policy (DT-OD-05) are open. SYS-ADR-008 is a direction pending owner confirmation, and nothing is implemented.
+
 ## 1. Document Control
 
 | Item | Value |
@@ -283,7 +285,6 @@ Staging storage must be isolated.
 
 Recommended logical namespaces:
 
-    raas-staging-artifacts
     raas-staging-results
     raas-staging-logs
     raas-staging-video
@@ -686,10 +687,10 @@ The primary E2E scenario is:
     Build / Package Locally
       |
       v
-    Upload .krv
+    Register and Transfer .krv
       |
       v
-    Validate Artifact
+    Destination Validates Artifact
       |
       v
     Quote Credits
@@ -1059,12 +1060,12 @@ Test:
 - small artifact;
 - typical artifact;
 - large artifact;
-- concurrent uploads;
-- validation throughput;
+- concurrent transfers (limits open, DT-OD-04);
+- validation throughput at the destination;
 - digest calculation;
-- object storage throughput.
+- object storage throughput (results and media).
 
-Large artifact data must not be embedded in normal API envelopes.
+Large artifact data must not be embedded in normal API envelopes and does not pass through the API or cloud object storage.
 
 ## 58. WebSocket Performance Test
 

@@ -1,5 +1,7 @@
 # Kritva RaaS Observability Architecture
 
+> **Partly revised for SYS-ADR-008 (direct artifact transfer).** Object storage metrics, the artifact upload success indicator and the artifact transfer SLO now describe the direct transfer and destination status reports. See [DIRECT_ARTIFACT_TRANSFER.md](../../architecture/DIRECT_ARTIFACT_TRANSFER.md). Metric names and the measurement design for transfers are not defined here. References to application or release artifacts (software builds promoted between environments) are unchanged; this change concerns `.krv` execution artifacts only. Grant fields (DT-OD-02), connectivity (DT-OD-01), any cloud retention (DT-OD-03), capacity (DT-OD-04) and offline policy (DT-OD-05) are open. SYS-ADR-008 is a direction pending owner confirmation, and nothing is implemented.
+
 ## 1. Document Control
 
 | Item | Value |
@@ -694,6 +696,8 @@ Monitor:
 
 ## 41. Object Storage Metrics
 
+These metrics apply to results, logs and media. Execution artifacts are not stored in cloud object storage, and direct transfers are not visible to cloud object storage metrics.
+
 Monitor:
 
 - request rate;
@@ -1160,7 +1164,7 @@ Core SLIs include:
 - Job start success;
 - Job completion success;
 - booking success;
-- artifact upload success;
+- artifact transfer success (from destination status reports; measurement design open);
 - result availability;
 - Lab availability;
 - realtime connection availability.
@@ -1177,7 +1181,7 @@ Initial values are examples and must be finalized after production measurement.
 | API successful requests | 99.9% |
 | API P95 latency | < 500 ms for normal APIs |
 | Job control availability | 99.9% |
-| Artifact upload completion | 99.5% |
+| Artifact transfer completion (example target; measurement design open) | 99.5% |
 | Result availability | 99.5% |
 | Control Plane WebSocket availability | 99.5% |
 | Lab Agent cloud connectivity | 99.0% |

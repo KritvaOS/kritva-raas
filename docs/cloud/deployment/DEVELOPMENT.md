@@ -1,5 +1,7 @@
 # Kritva RaaS Development Environment Deployment
 
+> **Partly revised for SYS-ADR-008 (direct artifact transfer).** Object storage namespaces, data policy, acceptance items and invariants no longer list the `.krv` artifact as an object storage payload; the Development environment tests registration and direct transfer to a Development Lab Agent or simulator. See [DIRECT_ARTIFACT_TRANSFER.md](../../architecture/DIRECT_ARTIFACT_TRANSFER.md). The Development transfer setup is open (DT-OD-01). References to application or release artifacts (software builds promoted between environments) are unchanged; this change concerns `.krv` execution artifacts only. Grant fields (DT-OD-02), connectivity (DT-OD-01), any cloud retention (DT-OD-03), capacity (DT-OD-04) and offline policy (DT-OD-05) are open. SYS-ADR-008 is a direction pending owner confirmation, and nothing is implemented.
+
 ## 1. Document Control
 
 | Item | Value |
@@ -314,7 +316,6 @@ Development object storage must be isolated from production.
 
 Logical buckets or equivalent namespaces include:
 
-    raas-dev-artifacts
     raas-dev-results
     raas-dev-logs
     raas-dev-video
@@ -448,7 +449,7 @@ is shared.
 | Synthetic robot data | Allowed |
 | Synthetic telemetry | Allowed |
 | Developer source code | Local by default |
-| `.krv` artifacts | Allowed |
+| `.krv` artifacts | Allowed (metadata registered with the Control Plane; bytes go directly to the Development destination) |
 | Test results | Allowed |
 | Logs | Allowed if sanitized |
 | Security test data | Controlled |
@@ -474,8 +475,8 @@ The core RaaS development model remains:
 
 > Build locally, execute remotely.
 
-The Development Control Plane should receive `.krv` artifacts rather than
-requiring developers to upload project source code.
+The Development Control Plane should receive `.krv` artifact metadata rather than
+requiring developers to upload project source code; the `.krv` itself goes directly to the destination.
 
 Exceptions may exist for backend development where source code is necessarily
 built by CI, but customer robotics source code is not required by the RaaS
@@ -873,7 +874,7 @@ The Mock Lab Agent should support:
 - heartbeat;
 - capabilities;
 - resource inventory;
-- artifact fetch;
+- artifact receipt by direct transfer (replaces artifact fetch);
 - deployment;
 - start;
 - stop;
@@ -1515,8 +1516,8 @@ Deliver:
 
 Acceptance:
 
-- [ ] artifact upload works;
-- [ ] object storage works;
+- [ ] artifact registration and direct transfer work (connectivity open);
+- [ ] object storage works for results, logs and media;
 - [ ] compatibility validation works.
 
 ## 84. Phase 3 Development
@@ -1772,11 +1773,11 @@ These questions do not invalidate the approved architecture.
 ## Artifact
 
 - [ ] Artifact metadata is created.
-- [ ] Artifact upload works.
-- [ ] Digest validation works.
+- [ ] Artifact registration and direct transfer work.
+- [ ] Digest validation works at the destination.
 - [ ] Manifest validation works.
 - [ ] Compatibility validation works.
-- [ ] Object storage access is authorized.
+- [ ] Transfer grant issuance is authorized.
 - [ ] Lab Agent verifies artifact integrity.
 
 ## Booking and Credits
@@ -1910,7 +1911,7 @@ The Development environment must preserve these invariants:
 1. Development is separate from Production.
 2. Development infrastructure is managed as code.
 3. PostgreSQL remains authoritative.
-4. Object storage holds large binary objects.
+4. Object storage holds large result, log and media objects, and not execution artifacts.
 5. Queue remains transport, not state authority.
 6. REST remains durable state authority.
 7. WebSocket remains realtime notification transport.

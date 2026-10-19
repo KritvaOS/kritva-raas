@@ -1,5 +1,7 @@
 # Kritva RaaS Production Environment Deployment
 
+> **Partly revised for SYS-ADR-008 (direct artifact transfer).** The controlled paths, object storage contents, artifact storage section, controlled file access examples and the storage checklist now distinguish `.krv` execution artifacts, which are not held in cloud storage, from results, logs and media. See [DIRECT_ARTIFACT_TRANSFER.md](../../architecture/DIRECT_ARTIFACT_TRANSFER.md). Immutability of accepted artifacts and rollback text refer to artifact identity and registered metadata. References to application or release artifacts (software builds promoted between environments) are unchanged; this change concerns `.krv` execution artifacts only. Grant fields (DT-OD-02), connectivity (DT-OD-01), any cloud retention (DT-OD-03), capacity (DT-OD-04) and offline policy (DT-OD-05) are open. SYS-ADR-008 is a direction pending owner confirmation, and nothing is implemented.
+
 ## 1. Document Control
 
 | Item | Value |
@@ -263,7 +265,7 @@ Expected public endpoints include:
 - REST API;
 - WebSocket;
 - authentication endpoints;
-- controlled artifact upload/download paths;
+- artifact registration and transfer grant paths;
 - controlled result download paths.
 
 PostgreSQL, queue, internal workers and robot networks must not be publicly
@@ -548,7 +550,6 @@ The confirmed booking transaction is authoritative.
 
 Production object storage holds:
 
-- `.krv` artifacts;
 - result files;
 - logs;
 - video;
@@ -560,7 +561,8 @@ Storage must be private by default.
 
 ## 32. Artifact Storage
 
-Accepted artifacts are immutable.
+Execution artifacts are not stored in cloud storage (SYS-ADR-008); the destination holds the copy and the Control Plane holds metadata. Accepted artifacts are immutable by identity and digest.
+
 
 Identity includes:
 
@@ -569,7 +571,7 @@ Identity includes:
 
 The baseline digest algorithm is SHA-256.
 
-Production artifacts must pass:
+Production artifacts must pass, with the Control Plane validating metadata and the destination validating content:
 
 - manifest validation;
 - checksum validation;
@@ -583,11 +585,11 @@ Large files are not embedded in protocol envelopes.
 
 Access uses short-lived, scoped authorization.
 
-Examples:
+Examples (results, logs and media only; execution artifacts use a transfer grant):
 
 - signed upload URL;
 - signed download URL;
-- controlled proxy.
+- controlled proxy that does not carry artifact bytes.
 
 Authorization must be checked before issuing access.
 
@@ -1822,10 +1824,10 @@ Security review should cover:
 
 ### Storage
 
-- [ ] Artifact storage is private.
+- [ ] No execution artifact is stored in cloud storage.
 - [ ] Result storage is private.
 - [ ] Signed access is scoped.
-- [ ] Artifact digests are validated.
+- [ ] Artifact digests are validated at the destination.
 - [ ] Accepted artifacts are immutable.
 - [ ] Lifecycle policies are active.
 - [ ] Storage reconciliation is active.
