@@ -193,4 +193,17 @@ Milestone: F-M04 — Booking
 - [ ] Dark theme works.
 - [ ] Responsive layouts work within supported Studio sizes.
 
+
+## 6.14 Booking Navigator and Cloud Clock
+
+Status: owner direction approved in a working session on 2026-10-19 (conveyed by the owner's representative); owner confirmation pending in the pull request; detailed design not reviewed; not implemented. Task breakdown for these criteria is not yet defined; no task identifiers are added here.
+
+- [ ] The user can browse up to 10 previous and 10 upcoming bookings with Previous and Next.
+- [ ] Navigation boundaries, position indicator, and empty states behave as in `docs/ui/UI_SPECIFICATION.md` Section 50.1.
+- [ ] Countdowns are correct for the selected booking and are not reset by navigation.
+- [ ] The header shows cloud-synchronized time and the next-booking countdown.
+- [ ] Open is enabled only when the countdown reaches zero, and opening is still authorized by the backend and destination.
+- [ ] Cancelled bookings never enable Open; rescheduled bookings appear once.
+- [ ] Booking changes refresh the display from authoritative data.
+
 ---

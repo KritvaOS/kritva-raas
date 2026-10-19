@@ -996,6 +996,36 @@ Booking UI must satisfy:
 - [ ] cancellation policy;
 - [ ] authoritative state refresh.
 
+# 55.1 Booking Navigator, Cloud Clock and Workspace Acceptance
+
+Status: owner direction approved in a working session on 2026-10-19 (conveyed by the owner's representative); owner confirmation pending in the pull request; detailed design not reviewed; not implemented. The criteria below are not yet satisfied or tested.
+
+Booking navigator (UI_SPECIFICATION Section 50.1):
+
+- [ ] Previous and Next move within the current list and are disabled at its ends.
+- [ ] No more than 10 previous and 10 upcoming bookings are navigable, and the position is shown.
+- [ ] Bookings are ordered by cloud-authoritative start time.
+- [ ] Selecting another booking does not reset or corrupt the countdown of the selected or any other booking.
+- [ ] A rescheduled booking appears once at its new time.
+- [ ] A cancelled booking remains in history and never enables Open.
+- [ ] Empty states are shown when there are no previous or upcoming bookings.
+- [ ] The display refreshes after create, reschedule, cancel, and status changes.
+
+Cloud clock and Open (Sections 14.1 and 50.2):
+
+- [ ] The header shows cloud-synchronized time and its synchronization status.
+- [ ] The Open button is disabled before the booking starts and enabled when the countdown reaches zero.
+- [ ] A workstation with a wrong local clock does not enable Open early or late.
+- [ ] Pressing Open with an invalid, cancelled, or expired reservation, or without authorization, is refused by the backend and the UI shows the reason.
+- [ ] Reaching the end of a booking window closes reservation-based access and shows an expired state without stating that a robot has stopped unless that is confirmed.
+- [ ] Network and destination errors are categorized and actionable.
+
+Three-panel workspace (Section 11.1):
+
+- [ ] Each panel can be expanded and restored independently.
+- [ ] Panel state is preserved across expand, collapse, and resize.
+- [ ] Panel controls are keyboard accessible and labelled.
+
 # 56. Credit Acceptance
 
 Credit UI must satisfy:
