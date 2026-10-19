@@ -1,6 +1,6 @@
 # Kritva RaaS System Architecture
 
-> **Superseded artifact route (SYS-ADR-008).** The execution artifact is transferred directly from the user's workstation to the destination system. The cloud does not receive, store or relay it. Where this document describes artifact upload to, or fetch from, cloud object storage, that route is superseded by [DIRECT_ARTIFACT_TRANSFER.md](DIRECT_ARTIFACT_TRANSFER.md). This document has not been revised to match yet; the affected sections are listed in Section 9 of that file. Results, logs and media are not affected.
+> **Partly revised for SYS-ADR-008 (direct artifact transfer).** The artifact path, trust model, data ownership, risks and checklists now describe direct workstation-to-destination transfer; see [DIRECT_ARTIFACT_TRANSFER.md](DIRECT_ARTIFACT_TRANSFER.md). Diagrams that show object storage beside the Control Plane remain correct for results, logs and media only; where they imply artifact storage there, they are superseded. Command and event names that contain `upload` are historical, and the command set is open. SYS-ADR-008 is a direction pending owner confirmation, and nothing is implemented.
 
 ## 1. Document Control
 
@@ -15,7 +15,7 @@
 | Primary Consumers | Studio, Backend, Cloud, Lab, Robot Runtime teams |
 | Protocol Baseline | RaaS Protocol v1 |
 | API Baseline | REST `/api/v1/` |
-| Execution Model | Build locally, upload artifact, execute remotely |
+| Execution Model | Build locally, transfer the artifact directly to the reserved destination, execute remotely |
 | Deployment Model | Cloud Control Plane + Lab Agent + Robot |
 | Primary Product Statement | Build locally. Book remotely. Run on real robots. |
 
@@ -122,7 +122,7 @@ The system shall:
 5. Allow users to discover supported robotic platforms.
 6. Allow users to book robotic resources.
 7. Allow users to reserve execution time.
-8. Allow users to upload execution artifacts.
+8. Allow users to deliver execution artifacts directly to a reserved destination system.
 9. Allow authorized artifacts to execute remotely.
 10. Provide live execution visibility.
 11. Provide telemetry, logs, events, and results.
@@ -357,7 +357,7 @@ implicitly.
 | Studio Local Runtime | Build/package/local execution support | User | Local workspace |
 | Control Plane | Business and execution orchestration | RaaS | PostgreSQL |
 | PostgreSQL | Transactional business state | RaaS | Authoritative |
-| Object Storage | Binary artifacts and large data | RaaS | Binary object authority |
+| Object Storage | Results, logs, video, images and other large data. It does not hold execution artifacts (SYS-ADR-008) | RaaS | Binary object authority for those data |
 | Queue | Asynchronous work delivery | RaaS | Transient |
 | Lab Agent | Controlled lab boundary | Lab | Lab resource state |
 | Kritva Runtime | Robot application runtime | Robot | Runtime state |
@@ -378,7 +378,7 @@ It provides:
 - local build initiation;
 - artifact management;
 - booking;
-- artifact upload;
+- artifact registration and direct transfer to the destination;
 - run control;
 - live execution view;
 - telemetry;
@@ -698,9 +698,10 @@ The physical safety boundary is intentionally outside normal cloud authorization
 | Studio ↔ Local Runtime | Tauri IPC | Bidirectional | Local operations |
 | Studio → Control Plane | HTTPS | Request | API commands |
 | Control Plane → Studio | WebSocket | Event | State/events |
-| Studio ↔ Object Storage | HTTPS signed access | Controlled | Artifact transfer |
+| Studio ↔ Object Storage | HTTPS signed access | Controlled | Result and media download (not artifacts) |
+| Studio → Lab Agent | Direct transfer under a Control Plane transfer grant (connectivity model open, DT-OD-01) | Direct, no cloud relay | Execution artifact delivery |
 | Control Plane ↔ PostgreSQL | Private DB protocol | Internal | Transactional state |
-| Control Plane ↔ Object Storage | Provider adapter | Internal | Binary storage |
+| Control Plane ↔ Object Storage | Provider adapter | Internal | Binary storage for results, logs and media |
 | Control Plane ↔ Queue | Queue protocol | Internal | Async work |
 | Control Plane ↔ Lab Agent | Secure Lab Protocol | Bidirectional | Execution orchestration |
 | Lab Agent ↔ Runtime | Local secure transport | Bidirectional | Deployment/control |
@@ -835,15 +836,33 @@ The exact schema is defined by the Artifact Architecture and protocol contracts.
 
 ## 17. Artifact Trust Model
 
-Artifact acceptance is a layered process.
+Artifact acceptance is a layered process split between the Control Plane (registered metadata) and the destination (content). The Control Plane never receives the artifact bytes.
 
-    Upload
+Control Plane:
+
+    Register Metadata
       |
       v
     Authentication
       |
       v
     Authorization
+      |
+      v
+    Metadata and Signer Validation
+      |
+      v
+    Booking validation
+      |
+      v
+    Resource validation
+      |
+      v
+    Transfer Grant
+
+Destination (Lab Agent), in the staged order of `DIRECT_ARTIFACT_TRANSFER.md` Section 5:
+
+    Grant and Identity
       |
       v
     File integrity
@@ -861,15 +880,9 @@ Artifact acceptance is a layered process.
     Security/policy validation
       |
       v
-    Booking validation
-      |
-      v
-    Resource validation
-      |
-      v
-    Execution authorization
+    READY
 
-Failure at any mandatory stage prevents deployment.
+Failure at any mandatory stage prevents deployment. A metadata registration or a grant does not prove that the content is valid.
 
 ## 18. Build-Locally Principle
 
@@ -974,8 +987,8 @@ Representative commands include:
     platform.capabilities
     platform.compatibility
 
-    artifact.create
-    artifact.upload
+    artifact.create          (registers metadata only)
+    artifact.upload          (superseded by the direct transfer grant; names open)
     artifact.get
     artifact.list
     artifact.validate
@@ -1021,7 +1034,7 @@ Commands use a common conceptual envelope.
         "protocol_version": "1.0",
         "request_id": "req-12345",
         "timestamp": "2026-10-08T12:00:00Z",
-        "command": "artifact.upload",
+        "command": "artifact.upload",  // superseded name; command set open, see protocol documents
         "actor": {
             "type": "user",
             "id": "user-001"
@@ -1080,7 +1093,7 @@ Events communicate state transitions and operational facts.
 
 Examples include:
 
-    artifact.uploaded
+    artifact.uploaded        (superseded: transfer status events, names open)
     artifact.validating
     artifact.accepted
 
@@ -1614,7 +1627,7 @@ Examples:
 
 - user can access only permitted projects;
 - organization members can access organization resources according to role;
-- users can upload only authorized artifacts;
+- users can transfer artifacts only to destinations they have reserved;
 - users can book only permitted platforms;
 - users can consume only authorized credits;
 - users can control only their authorized jobs;
@@ -1761,7 +1774,7 @@ These policies must be platform-specific where necessary.
 |---|---|---|
 | Source code | User | Local |
 | Local build logs | User | Local |
-| `.krv` artifact | User/RaaS execution service | Object storage |
+| `.krv` artifact | User | User workstation and the validated copy on the destination; not cloud object storage |
 | Project metadata | RaaS | PostgreSQL |
 | Booking | RaaS | PostgreSQL |
 | Credit ledger | RaaS | PostgreSQL |
@@ -2366,31 +2379,25 @@ High-rate telemetry must not overload PostgreSQL.
 
 ## 83. Artifact Transfer Optimization
 
-Artifact upload may use direct object-storage upload.
+The artifact is transferred directly from the workstation to the destination system, so no artifact data is routed through the API server or cloud storage.
 
 A conceptual flow is:
 
     Studio
       |
-      | request upload
+      | register metadata
       v
     Control Plane
       |
-      | signed upload authorization
+      | transfer grant (and notice to the destination)
       v
-    Studio
-      |
-      | HTTPS
-      v
-    Object Storage
-      |
-      | completion notification
-      v
-    Control Plane
+    Studio ======== direct transfer ========> Lab Agent
+                                                |
+                                                | validation, then status (metadata)
+                                                v
+                                         Control Plane
 
-This avoids routing large artifact data through the API server.
-
-The Control Plane remains authoritative for artifact metadata and acceptance.
+The Control Plane remains authoritative for artifact metadata and transfer status. The destination is authoritative for content validation. Capacity and bandwidth assumptions are open (DT-OD-04).
 
 ## 84. Result Download Optimization
 
@@ -2947,12 +2954,12 @@ The primary mitigation is architectural rather than contractual.
 
 The standard system does not request source code.
 
-Only an execution artifact is uploaded.
+Only an execution artifact is transferred, and only directly to the reserved destination.
 
 Additional mitigation:
 
-- direct-to-object upload;
-- short-lived upload credentials;
+- no cloud copy of the artifact;
+- short-lived transfer grants;
 - encryption;
 - strict access control;
 - artifact retention policies;
@@ -2961,7 +2968,7 @@ Additional mitigation:
 
 ## 112. Risk: Artifact Compromise
 
-An uploaded artifact may be malicious or corrupted.
+A transferred artifact may be malicious or corrupted.
 
 Controls include:
 
@@ -3028,7 +3035,7 @@ Mitigation:
 
 ## 117. Risk: Incompatible Artifact
 
-An artifact built against one platform may be uploaded for another.
+An artifact built against one platform may be sent to another.
 
 Mitigation:
 
@@ -3117,7 +3124,8 @@ Administrative flow:
 | Studio ↔ Local Runtime | Tauri IPC |
 | Studio ↔ Control Plane | REST/OpenAPI |
 | Studio ↔ Event Service | WebSocket |
-| Studio ↔ Object Storage | Signed HTTPS |
+| Studio ↔ Object Storage | Signed HTTPS (results and media only) |
+| Studio ↔ Lab Agent | Direct artifact transfer under a grant |
 | Control Plane ↔ Database | Repository interfaces |
 | Control Plane ↔ Storage | ObjectStorage interface |
 | Control Plane ↔ Queue | JobQueue interface |
@@ -3162,7 +3170,7 @@ Protect source code and reduce remote build complexity.
 
 Decision:
 
-Upload `.krv` execution artifacts rather than source code.
+Transfer `.krv` execution artifacts, directly to the destination, rather than source code (SYS-ADR-008).
 
 Rationale:
 
@@ -3192,7 +3200,7 @@ Strong consistency and mature relational semantics.
 
 Decision:
 
-Store artifacts, results, videos, and large logs in object storage.
+Store results, videos, images and large logs in object storage. Execution artifacts are not stored in cloud object storage (SYS-ADR-008).
 
 Rationale:
 
@@ -3554,9 +3562,9 @@ decision process:
 - [ ] Manifest is generated.
 - [ ] Checksum is generated.
 - [ ] Signature is generated.
-- [ ] Artifact uploads successfully.
-- [ ] Server validates artifact.
-- [ ] Source code is not uploaded during standard execution.
+- [ ] Artifact transfers successfully to the destination.
+- [ ] The destination validates the artifact and the Control Plane validates its metadata.
+- [ ] Source code is not transferred during standard execution.
 
 ### Phase 3
 
@@ -3635,7 +3643,7 @@ are demonstrably true:
 - [ ] A user can test locally.
 - [ ] A user can generate a `.krv` artifact locally.
 - [ ] The source repository remains on the user's workstation during the normal flow.
-- [ ] The artifact can be uploaded without uploading the source repository.
+- [ ] The artifact can be transferred without transferring the source repository.
 - [ ] The Control Plane validates artifact identity and compatibility.
 - [ ] The user can select a supported robotic platform.
 - [ ] The user can obtain an availability result.
@@ -3682,7 +3690,7 @@ are demonstrably true:
 
       Build locally.
       Book remotely.
-      Upload the artifact.
+      Send the artifact to the destination.
       Run on real robots.
       Observe live.
       Analyze results.
