@@ -1,5 +1,7 @@
 # Kritva RaaS Cloud Architecture
 
+> **Superseded artifact route (SYS-ADR-008).** The execution artifact is transferred directly from the user's workstation to the destination system. The cloud does not receive, store or relay it. Where this document describes artifact upload to, or fetch from, cloud object storage, that route is superseded by [DIRECT_ARTIFACT_TRANSFER.md](DIRECT_ARTIFACT_TRANSFER.md). This document has not been revised to match yet; the affected sections are listed in Section 9 of that file. Results, logs and media are not affected.
+
 ## 1. Document Control
 
 | Item | Value |
