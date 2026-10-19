@@ -71,6 +71,7 @@ Security claims in this document are limited to what the listed controls can enf
 | CA-REQ-10 | Provider failure, including a missing CLI, expired sign-in, outage, unsupported version or crash, is isolated and never breaks normal Studio operation. |
 | CA-REQ-11 | Consent can be withdrawn at any time, and withdrawal takes effect on active sessions (Section 8.4). |
 | CA-REQ-12 | In a Kritva-launched session, the only MCP server Kritva connects is the Kritva Studio MCP server. Provider configuration that adds tools is isolated where the provider allows it, and disclosed where it does not (Section 5.8). |
+| CA-REQ-13 | Studio MAY offer direct Anthropic API access as a separate provider kind beside the CLI providers (Section 5.10), under the same consent, staging, apply, MCP tool and policy rules. It is optional and never required for any Studio, build, booking or execution function. |
 
 ## 3. Architecture Overview
 
@@ -263,6 +264,27 @@ Adapters map provider-specific failures to:
 `LAUNCH_FAILED`, `NOT_INSTALLED`, `AUTH_EXPIRED`, `UNSUPPORTED_VERSION`, `CAPABILITY_MISMATCH`, `MODE_UNSUPPORTED`, `PROVIDER_REFUSED`, `QUOTA_OR_RATE_LIMIT`, `TRANSPORT_FAILED`, `PROTOCOL_MISMATCH`, `PARTIAL_OUTPUT`, `TIMEOUT`, `CANCELLED`, `STOPPED_BY_POLICY`, `POLICY_DENIED`, `POLICY_UNCONFIGURED`, `POLICY_UNAVAILABLE`, `TIER_UNAVAILABLE`, `WORKSPACE_ESCAPE`.
 
 The provider's original message is kept, redacted, for display.
+
+### 5.10 Direct Anthropic API Provider (proposed extension)
+
+Status: owner direction approved in a working session on 2026-10-19 (conveyed by the owner's representative); owner confirmation pending in the pull request; the design below is a proposed extension, not reviewed, and nothing is implemented.
+
+The adapters in Sections 5.1 to 5.9 drive a provider CLI that the user has installed and signed in to. The owner also wants direct access to the Anthropic API as a second, separate provider kind (`providerKind: API`). It differs from a CLI provider in ways the contract above does not cover, so it is specified here as an extension and the CLI rules are left unchanged.
+
+| Topic | Rule for the API provider |
+|---|---|
+| Where it runs | In the Rust Local Runtime on the developer's machine. The Control Plane never calls the API, never relays prompts, and never sees source, prompts, responses or keys. This keeps the source-privacy guarantee for Kritva itself |
+| Egress | The only network destination is the Anthropic API endpoint, shown in the egress inventory (Section 4). The user consents per project and provider before any request, with disclosure that selected project content is sent to Anthropic |
+| Credentials | An API key supplied by the user is held in the operating-system credential store by the Local Runtime only. It is never sent to the Control Plane or the React layer, never logged, and never placed in project files or artifacts. This is a narrow exception to the CLI rule in Section 5.2 that Studio never stores provider credentials; it needs SYS-ADR-007 to be amended before implementation (decision F) |
+| Isolation | There is no agent process to sandbox, so isolation tiers A to C do not apply. Instead the Local Runtime performs every file read and write itself, only inside the per-session staging workspace, and exposes only the Kritva Studio MCP tools of Section 7 |
+| Permission modes | `READ_ONLY` and `PROPOSE` only, as in Section 5.3. Changes reach the working tree only through the explicit, journaled apply |
+| Agent loop | Open decision G: who owns the tool-use loop, context assembly, truncation and cost limits. The loop must not weaken any gate: build, test, privacy-scan, validation and signing apply to its output |
+| Cost | Charged by Anthropic to the key's owner. Kritva credits are never used. Studio shows usage it can measure, and an organization policy can set a per-session limit |
+| Models | Which models are offered, how they are pinned, and how a model change is handled is open decision H |
+| Data handling | Anthropic's retention and training terms for the key's account apply and must be disclosed in the consent text (open decision B for this provider) |
+| Policy | The organization policy of Section 8 can disable the API provider independently of the CLI providers, and can restrict it to an organization-managed key (open decision F) |
+
+Capability descriptor additions for this kind: `providerKind` (`CLI` or `API`), `modelPolicy`, `maxContextTokens`, and `usageReporting`. Fields that name a CLI (`cliVersionRange`, `isolationTier`, `configIsolation`) are not applicable.
 
 ## 6. Studio IPC Surface
 
@@ -493,5 +515,8 @@ Open:
 | C | Resumable sessions in the first release | Not in the first release unless recovery tests CAT-08 pass for resume | Frontend architecture lead | F-M02 PROJECTS exit (P1) |
 | D | Supported CLI version ranges and verified isolation tier per OS and provider | Record in the compatibility matrix from CAT-03 results | Local Runtime lead, with security lead | Release of each provider and OS combination; no combination ships unresolved |
 | E | Validation of the resource estimate (about 1 FTE more in each of P1 and P2) against named owners (RESOURCE_PLAN Section 23.2) | Confirm before P1 starts | Engineering manager, with finance | P1 STUDIO start |
+| F | Key custody for the API provider: user-supplied key in the OS credential store only, or also an organization-managed key; amendment of the SYS-ADR-007 credential rule | User-supplied key in the OS credential store only for the first release | Security lead, with Local Runtime lead | Before any API-provider implementation |
+| G | Ownership of the agent loop, context assembly and cost limits for the API provider | Local Runtime owns the loop, with a per-session cost limit and no tools outside Section 7 | Local Runtime lead, with frontend architecture lead | Before any API-provider implementation |
+| H | Models offered by the API provider and how they are pinned and changed | Pin explicitly, announce changes, never switch silently | Product owner, with Local Runtime lead | Release of the API provider |
 
 Owners are roles until named people are assigned in RESOURCE_PLAN Section 23.2. A provider and OS combination is not released while decision B or D is open for it.
