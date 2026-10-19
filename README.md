@@ -247,7 +247,7 @@ Every change passes the same gates in this order. A failure at any gate stops th
 
 ## 12. Git Workflow and Review
 
-The controlling form for task commits is this repository's own contract, set out below and in the increment's `planning/backend/increments/B-INC-001-SECURE-FOUNDATION/GIT_COMMIT_STEP.md`; the checks actually enforced are the workflows listed in section 11. The Kritva commit standard in kritva-program is NOT adopted here (PD-019 in kritva-program) and is advisory reference only until the owner opts this repository in. The `Tasks:` and `Task:` footer rules are compatible with it.
+The controlling form for task commits is this repository's own contract, set out below and in the increment's `planning/backend/increments/B-INC-001-SECURE-FOUNDATION/GIT_COMMIT_STEP.md`; the checks actually enforced are the workflows listed in section 11. The Kritva commit standard in kritva-program (D-053) is adopted here under D-070, which completes PD-019: `commit-message-check` also runs `scripts/security/check_commit_format.py` on every commit in a pull request. This repository's task-commit contract extends it: the `type(backend): summary [TASK-ID]` header and the `Tasks:` footer satisfy the standard, and the extra `Acceptance:`, `Tests:`, `Security-Gates:` and `Evidence:` trailers are kept.
 
 **Method**
 
