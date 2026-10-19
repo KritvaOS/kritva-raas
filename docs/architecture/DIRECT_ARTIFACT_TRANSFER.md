@@ -133,10 +133,10 @@ Each document below carries a notice pointing here. The detailed flow sections s
 | `docs/architecture/ARTIFACT_ARCHITECTURE.md` | Revised in part (core flow, trust, validation, storage, delivery sections). Remaining sections listed in the document's notice |
 | `docs/architecture/SYSTEM_ARCHITECTURE.md` | Revised in part (paths, trust model, ownership, risks, checklists). Command and event names that contain `upload` remain historical |
 | `docs/architecture/CLOUD_ARCHITECTURE.md` | Revised in part (object storage, transfer path, phase 2). Remaining mentions refer to metadata |
-| `docs/cloud/architecture/STORAGE_ARCHITECTURE.md` | Artifact binary store, upload flow |
+| `docs/cloud/architecture/STORAGE_ARCHITECTURE.md` | Revised in part (artifact handling, lifecycle, access, checklists). Upload and signed-URL sections now apply to results and media |
 | `docs/architecture/LAB_ARCHITECTURE.md` | Artifact download from object storage |
-| `docs/architecture/API_ARCHITECTURE.md` | Artifact upload authorization and download |
-| `docs/backend/architecture/ARTIFACT_SERVICE.md` | Upload session, controlled fetch authorization |
+| `docs/architecture/API_ARCHITECTURE.md` | Revised in part (artifact API, flow, status reporting). Grant operation open |
+| `docs/backend/architecture/ARTIFACT_SERVICE.md` | Revised in part (registration, grant binding, transfer states, failure modes). Later upload sections remain, listed in the notice |
 | `docs/protocol/LAB_PROTOCOL.md` | `artifact_fetch` and `artifact_fetch_ack` |
 | `docs/protocol/COMMANDS.md` | Artifact upload and fetch commands |
 | `docs/security/THREAT_MODEL.md` | Control Plane to object storage trust boundary for artifacts |

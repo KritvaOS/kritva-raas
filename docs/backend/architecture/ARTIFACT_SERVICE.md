@@ -1,6 +1,6 @@
 # Kritva RaaS Artifact Service
 
-> **Superseded artifact route (SYS-ADR-008).** The execution artifact is transferred directly from the user's workstation to the destination system. The cloud does not receive, store or relay it. Where this document describes artifact upload to, or fetch from, cloud object storage, that route is superseded by [DIRECT_ARTIFACT_TRANSFER.md](../../architecture/DIRECT_ARTIFACT_TRANSFER.md). This document has not been revised to match yet; the affected sections are listed in Section 9 of that file. Results, logs and media are not affected.
+> **Partly revised for SYS-ADR-008 (direct artifact transfer).** The header table and Sections 2, 22 to 29, 38 to 41, 44, 47, 51, 53 and 65 to 68 and the upload and download checklists now describe metadata registration, transfer grants and destination validation; see [DIRECT_ARTIFACT_TRANSFER.md](../../architecture/DIRECT_ARTIFACT_TRANSFER.md). Later sections that mention uploads, upload sessions, signed download URLs, object-storage reconciliation or upload transactions (including 79, 108 to 111 and the metrics, risks and open questions) are superseded where they refer to execution artifacts. Endpoint, state and error names are conceptual. Grant fields, connectivity (DT-OD-01) and offline revocation (DT-OD-05) are open. SYS-ADR-008 is a direction pending owner confirmation, and nothing is implemented.
 
 ## 1. Document Control
 
@@ -12,15 +12,15 @@
 | Repository | `KritvaOS/kritva-raas` |
 | Primary Service | Artifact Service |
 | Artifact Format | `.krv` |
-| Storage | PostgreSQL metadata + Object Storage binary |
-| Validation Authority | Artifact Service |
-| Execution Validation | Artifact Service + Lab Agent |
+| Storage | PostgreSQL metadata only. The binary is not stored in the cloud (SYS-ADR-008) |
+| Validation Authority | Artifact Service for registered metadata and authorization; the destination (Lab Agent) for content |
+| Execution Validation | Lab Agent, with the Artifact Service and Job Service authorizing |
 | Access Model | Organization and resource scoped |
 | Integrity | Digest/checksum |
 | Authenticity | Digital signature |
 | API | REST `/api/v1/` |
 | Realtime | WebSocket events |
-| Source Policy | Upload execution artifact, not source tree |
+| Source Policy | Transfer the execution artifact directly to the destination, not the source tree |
 
 ## 2. Purpose
 
@@ -32,7 +32,7 @@ development environment and the remote RaaS execution infrastructure.
 
 The primary architectural principle is:
 
-> **Build locally. Package locally. Upload the execution artifact. Execute remotely.**
+> **Build locally. Package locally. Transfer the execution artifact directly to the destination. Execute remotely.**
 
 The Artifact Service therefore manages the artifact rather than the customer's
 source repository.
@@ -480,39 +480,35 @@ Possible error:
 This is a protection mechanism, not an absolute guarantee against source
 embedding inside arbitrary binaries.
 
-## 22. Upload Architecture
+## 22. Registration and Transfer Architecture
 
 Recommended flow:
 
     Studio
       |
-      | POST artifact metadata
+      | POST artifact metadata (no bytes)
       v
     Artifact Service
       |
-      | upload authorization
+      | authenticate, authorize, check reservation and destination
       v
-    Object Storage
-      |
-      | upload
-      v
-    Completion
+    Transfer Grant
       |
       v
-    Artifact Service
+    Studio ======== direct transfer ========> Lab Agent
+                                                |
+                                                | validation
+                                                v
+    Artifact Service <---- status report (metadata) ----+
       |
       v
-    Validation
-      |
-      v
-    ACCEPTED / REJECTED
+    READY / REJECTED (as reported)
 
-The binary should not necessarily traverse the Control Plane application
-process.
+The Artifact Service never receives, stores or relays the artifact binary (SYS-ADR-008). Grant contents, signing and replay handling are open (DT-OD-02) and belong in the protocol documents.
 
-## 23. Upload Initiation
+## 23. Registration Initiation
 
-The client first requests artifact registration/upload authorization.
+The client first requests artifact registration.
 
 Conceptual request:
 
@@ -527,94 +523,54 @@ Conceptual request:
         "platform_id": "humanoid-a"
     }
 
-The server returns an upload session or controlled upload URL.
+The server records the metadata and returns the artifact identifier. A transfer grant is requested separately, for a reserved destination. The request shape is conceptual, and the grant operation and its fields are not defined here.
 
-## 24. Upload Session
+## 24. Transfer Grant Binding
 
-An upload session may contain:
-
-    upload_id
-    artifact_id
-    object_key
-    expires_at
-    expected_size
-    expected_digest
-    upload_url
-
-The session must be bound to:
+A transfer grant is bound to:
 
 - authenticated principal;
 - organization;
 - project;
-- artifact;
-- expected content constraints.
+- reservation;
+- destination System ID;
+- artifact identifier and digest;
+- maximum size and permitted operation;
+- a short expiry.
 
-## 25. Download URLs
+It replaces the earlier upload session. No object key or upload URL is issued for execution artifacts. Claim names, signing and replay handling are open (DT-OD-02).
 
-Artifact binaries should normally be downloaded through controlled,
-short-lived URLs.
+## 25. Artifact Retrieval
 
-Conceptual:
+The Artifact Service does not serve execution artifact binaries. A user retrieves their own artifact from their workstation. The `download` endpoint of earlier drafts applies only if a cloud retention feature is separately decided (DT-OD-03).
 
-    GET /api/v1/artifacts/{artifact_id}/download
-                    |
-                    v
-              Authorization
-                    |
-                    v
-              Signed URL
-                    |
-                    v
-              Object Storage
+## 26. Lab Agent Delivery
 
-The URL must:
-
-- expire;
-- be scoped to the artifact;
-- not expose permanent credentials;
-- not bypass organization authorization.
-
-## 26. Lab Agent Downloads
-
-The Lab Agent may receive a controlled artifact fetch authorization.
+The Lab Agent does not fetch artifacts from the cloud. It accepts a direct transfer from the user's workstation under a transfer grant for its own System ID.
 
     Control Plane
          |
          v
-    Artifact Authorization
+    Transfer Grant (and notice to the Lab Agent)
          |
          v
-    Lab Agent
-         |
-         v
-    Object Storage
-         |
-         v
-    Artifact
+    Workstation ====> Lab Agent
 
-The Lab Agent must not receive unrestricted object-storage credentials.
+The Lab Agent receives no object-storage credentials for artifacts.
 
-## 27. Upload Completion
+## 27. Transfer Completion
 
-The client informs the service that upload has completed.
+The destination reports transfer and validation status. The Artifact Service must not treat a client claim of completion as proof, and a status report is metadata, not proof that the content is valid.
 
-The service must not trust the client claim alone.
+Destination flow (staged order in `DIRECT_ARTIFACT_TRANSFER.md` Section 5):
 
-Completion flow:
-
-    Upload Complete
+    Receive (staged, non-executable)
          |
          v
-    Verify Object Exists
+    Verify Size and Digest
          |
          v
-    Verify Size
-         |
-         v
-    Calculate/Verify Digest
-         |
-         v
-    Validate Manifest
+    Validate Manifest and Package Structure
          |
          v
     Validate Signature
@@ -623,45 +579,40 @@ Completion flow:
     Validate Compatibility
          |
          v
-    ACCEPTED
+    READY (reported to the Artifact Service)
 
-## 28. Upload State
+If no report arrives, the state stays pending or unreported and is reconciled when the destination reconnects.
 
-Recommended states:
+## 28. Transfer State
 
-    CREATED
-    UPLOADING
-    UPLOADED
+Conceptual states (the exact set is open and may be consolidated):
+
+    REGISTERED
+    TRANSFERRING
+    TRANSFERRED
     VALIDATING
-    ACCEPTED
-    REJECTED
     READY
+    REJECTED
     REVOKED
     EXPIRED
     DELETED
 
-`READY` means the artifact is eligible for authorized execution.
-
-The exact state vocabulary may be consolidated if implementation experience
-shows that `ACCEPTED` and `READY` do not need separate semantics.
+`READY` means the destination reports the artifact eligible for authorized execution. The earlier `UPLOADING`, `UPLOADED` and `ACCEPTED` states described a cloud upload and are superseded. The transfer and validation states describe the destination copy, as reported.
 
 ## 29. Artifact State Machine
 
-    CREATED
+    REGISTERED
        |
        v
-    UPLOADING
+    TRANSFERRING
        |
        v
-    UPLOADED
+    TRANSFERRED
        |
        v
     VALIDATING
        |
        +------> REJECTED
-       |
-       v
-    ACCEPTED
        |
        v
     READY
@@ -673,13 +624,13 @@ shows that `ACCEPTED` and `READY` do not need separate semantics.
        v
     DELETED
 
-Terminal deletion must not remove required audit records.
+Terminal deletion must not remove required audit records. A report from the destination moves the recorded state; the recorded state is not a guarantee of the destination's current state while it is disconnected.
 
 ## 30. Validation Pipeline
 
-The canonical validation order is:
+The canonical content validation order, performed by the destination (the Artifact Service validates only registered metadata), is:
 
-    Upload
+    Transfer (staged)
       |
       v
     Transport / Size
@@ -838,47 +789,25 @@ This permits historical interpretation of acceptance decisions.
 
 ## 38. Artifact Storage
 
-PostgreSQL stores metadata.
+PostgreSQL stores metadata and transfer status.
 
-Object storage stores the binary.
+The binary is not stored in the cloud. The authoritative copies are the user's workstation and the validated copy on the destination.
 
     Artifact Service
          |
-         +-------------------+
-         |                   |
-         v                   v
-    PostgreSQL          Object Storage
-    metadata            .krv binary
+         v
+    PostgreSQL
+    metadata + transfer status
 
-The database must never become the primary large-binary store.
+The database must never become a binary store.
 
-## 39. Object Key
+## 39. Identifiers
 
-Object keys should be opaque and non-user-controlled.
-
-Example:
-
-    artifacts/
-      org-001/
-        artifact-01HXYZ/
-          content.krv
-
-The exact physical layout may be provider-specific.
-
-Users must not be able to choose arbitrary object-storage paths.
+There is no object key for an execution artifact. Artifact identifiers are opaque and non-user-controlled. Users must not choose destination paths.
 
 ## 40. Object Storage Security
 
-Object storage should be:
-
-- private by default;
-- encrypted at rest;
-- inaccessible through public bucket listing;
-- accessed through controlled credentials;
-- monitored;
-- lifecycle-managed.
-
-Public artifact buckets are prohibited for production artifacts.
+Object storage is not used for execution artifacts. For results, logs and media it should be private by default, encrypted at rest, inaccessible through public bucket listing, accessed through controlled credentials, monitored, and lifecycle-managed.
 
 ## 41. Storage Metadata
 
@@ -887,7 +816,6 @@ Artifact metadata should include:
 - artifact ID;
 - project ID;
 - organization ID;
-- object key;
 - size;
 - digest;
 - digest algorithm;
@@ -901,7 +829,8 @@ Artifact metadata should include:
 - creation time;
 - acceptance time;
 - expiration time;
-- revocation time.
+- revocation time;
+- transfer status per destination.
 
 ## 42. Database Authority
 
@@ -937,19 +866,7 @@ Repositories must not expose raw SQL to application services.
 
 ## 44. Object Storage Interface
 
-Conceptual:
-
-    ObjectStorage
-        createUpload(...)
-        completeUpload(...)
-        headObject(...)
-        getDownloadUrl(...)
-        getObject(...)
-        deleteObject(...)
-        copyObject(...)
-        verifyObject(...)
-
-The interface must hide provider-specific APIs.
+Not used for execution artifacts. The interface applies to results, logs and media and is defined in `docs/cloud/architecture/STORAGE_ARCHITECTURE.md`.
 
 ## 45. Validation Interface
 
@@ -991,9 +908,9 @@ Representative endpoints:
     POST   /api/v1/artifacts
     GET    /api/v1/artifacts
     GET    /api/v1/artifacts/{artifact_id}
-    POST   /api/v1/artifacts/{artifact_id}/complete
+    POST   /api/v1/artifacts/{artifact_id}/complete   (superseded; transfer status is reported by the destination)
     POST   /api/v1/artifacts/{artifact_id}/validate
-    GET    /api/v1/artifacts/{artifact_id}/download
+    GET    /api/v1/artifacts/{artifact_id}/download   (superseded; not served unless DT-OD-03 is decided)
     DELETE /api/v1/artifacts/{artifact_id}
 
 Administrative endpoints may include:
@@ -1053,19 +970,16 @@ Read access does not imply:
 - deletion access;
 - revocation access.
 
-## 51. Download Access
+## 51. Retrieval Access
 
-Downloading requires:
+The service does not serve artifact binaries (Section 25). Reading artifact metadata requires:
 
 - artifact exists;
 - artifact is accessible;
 - artifact is not deleted;
-- artifact policy permits download;
 - user/agent is authorized.
 
-Revoked artifacts should normally not be downloadable for execution.
-
-Administrative forensic download may be separately authorized.
+Revoked artifacts should normally not be delivered or executed.
 
 ## 52. Execution Access
 
@@ -1095,7 +1009,7 @@ A Lab Agent must be authorized based on:
 - Run;
 - platform compatibility.
 
-A Lab Agent should not be able to enumerate arbitrary organization artifacts.
+A Lab Agent accepts only a transfer made under a valid grant for its own System ID. It cannot enumerate organization artifacts and has no cloud artifact store to read.
 
 ## 54. Multi-Tenancy
 
@@ -1270,15 +1184,16 @@ and:
 
 Orphan deletion requires a safety window.
 
-## 65. Upload Failure Modes
+## 65. Transfer Failure Modes
 
 Possible failures:
 
 - invalid authentication;
 - project access denied;
-- upload URL expired;
-- object storage unavailable;
-- upload interrupted;
+- no valid reservation or destination;
+- transfer grant expired;
+- destination unreachable (a categorized error; no cloud fallback);
+- transfer interrupted;
 - checksum mismatch;
 - malformed package;
 - invalid manifest;
@@ -1286,39 +1201,23 @@ Possible failures:
 - incompatible platform;
 - artifact too large.
 
-## 66. Upload Recovery
+## 66. Transfer Recovery
 
-Interrupted uploads should be recoverable when the storage provider supports
-multipart/resumable uploads.
+Interrupted transfers resume from the last verified offset while the grant is valid, otherwise they restart under a new grant (`DIRECT_ARTIFACT_TRANSFER.md` Sections 5 and 6). Partial data is deleted or quarantined after expiry, cancellation or integrity failure.
 
-The upload session must have an expiration time.
+## 67. Partial Transfers
 
-Expired sessions must not become accepted artifacts.
-
-## 67. Partial Uploads
-
-A partial object must never become executable.
+A partial artifact must never become executable.
 
 Artifact state remains:
 
-    UPLOADING
+    TRANSFERRING
 
-until verified completion.
+until the destination completes verified validation.
 
-## 68. Storage Failure
+## 68. Metadata Store Failure
 
-If object storage is unavailable:
-
-    Upload
-      |
-      v
-    Storage Error
-      |
-      v
-    ARTIFACT_UPLOAD_INCOMPLETE /
-    INFRA_STORAGE_UNAVAILABLE
-
-The API must not report successful artifact acceptance.
+If the metadata store is unavailable, registration and grant issuance fail with an infrastructure error and the API must not report a successful registration. Object storage is not on the artifact path.
 
 ## 69. Digest Failure
 
@@ -2331,20 +2230,18 @@ Harden:
 - [ ] Key rotation is supported by architecture.
 - [ ] Revocation can invalidate compromised artifacts.
 
-### Upload
+### Registration and Transfer
 
-- [ ] Upload requires authentication.
-- [ ] Upload requires project authorization.
-- [ ] Upload is organization scoped.
-- [ ] Upload size is limited.
-- [ ] Upload sessions expire.
-- [ ] Partial uploads cannot execute.
-- [ ] Upload completion is independently verified.
-- [ ] Object existence is checked.
-- [ ] Object size is checked.
-- [ ] Object digest is checked.
-- [ ] Upload failure is recoverable.
-- [ ] Direct object-storage upload is supported where appropriate.
+- [ ] Registration requires authentication.
+- [ ] Registration requires project authorization.
+- [ ] Registration is organization scoped.
+- [ ] Artifact size is limited.
+- [ ] Transfer grants expire.
+- [ ] Partial transfers cannot execute.
+- [ ] Transfer completion is independently verified at the destination.
+- [ ] Size and digest are checked at the destination.
+- [ ] Transfer failure is recoverable or categorized.
+- [ ] No artifact bytes reach the cloud.
 
 ### Package Security
 
@@ -2395,11 +2292,11 @@ Harden:
 ### Download
 
 - [ ] Downloads require authorization.
-- [ ] Download URLs are short-lived.
-- [ ] Download URLs are artifact scoped.
-- [ ] Download URLs do not expose storage credentials.
+- [ ] Transfer grants are short-lived.
+- [ ] Transfer grants are artifact and destination scoped.
+- [ ] Transfer grants do not appear in URLs or logs.
 - [ ] Revoked artifacts cannot be used for new execution.
-- [ ] Lab Agent download is controlled.
+- [ ] Lab Agent acceptance of a transfer is controlled by the grant.
 - [ ] Download activity is auditable where required.
 
 ### Lifecycle
