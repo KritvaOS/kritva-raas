@@ -1,11 +1,13 @@
 # Kritva RaaS Security Requirements
 
+> **Partly revised for SYS-ADR-008 (direct artifact transfer).** The artifact requirements SEC-065, SEC-069, SEC-070, SEC-075, SEC-086, SEC-103, SEC-127, SEC-135, SEC-143 and SEC-190, the artifact security model (Section 11), the audit events, the security interface and data ownership (Sections 44 and 45), object storage (Section 47) and the checklists are revised to the direct transfer model; see [DIRECT_ARTIFACT_TRANSFER.md](../architecture/DIRECT_ARTIFACT_TRANSFER.md). Execution artifacts do not pass through cloud object storage. The Control Plane validates registered metadata and authorization, and the destination validates content. Requirements for the transfer grant, the grant issuer, and the destination status report are listed in DT-REQ-01 to DT-REQ-08 and are open items (DT-OD-01 to DT-OD-05); this document does not choose a connectivity option, grant format, or key scheme. Remaining mentions of artifact upload or an artifact store in other sections are superseded where they refer to execution artifacts. SYS-ADR-008 is a direction pending owner confirmation, and nothing is implemented.
+
 ## 1. Purpose
 
 This document defines the production-grade security requirements for Kritva RaaS.
 
 Kritva RaaS enables users to build robotics applications locally, package executable
-artifacts, book robotic resources, upload artifacts, execute applications on virtual
+artifacts, book robotic resources, register artifact metadata, transfer artifacts directly to the destination, execute applications on virtual
 or physical robots, and retrieve results.
 
 The security architecture must protect:
@@ -321,17 +323,17 @@ Security classification shall influence:
 | SEC-062 | PRI-0 | Artifact metadata shall include architecture. | Prevent incompatible execution. | Contract test | 3 |
 | SEC-063 | PRI-0 | Artifact metadata shall include KritvaOS/runtime compatibility. | Prevent unsupported execution. | Compatibility test | 3 |
 | SEC-064 | PRI-0 | Artifact metadata shall include SDK compatibility. | Prevent API/runtime mismatch. | Compatibility test | 3 |
-| SEC-065 | PRI-0 | Artifact checksum shall be verified after upload. | Detect corruption or tampering. | Integration test | 3 |
+| SEC-065 | PRI-0 | The destination shall verify the received artifact checksum against the registered metadata before the artifact is marked READY. | Detect corruption or tampering where the content is held. | Integration test (DT-AT-01 to DT-AT-08) | 3 |
 | SEC-066 | PRI-0 | Signed artifacts shall have their signature verified before execution. | Establish artifact authenticity. | Cryptographic test | 3 |
 | SEC-067 | PRI-0 | Invalid signatures shall block execution. | Fail closed. | Negative test | 3 |
 | SEC-068 | PRI-0 | Revoked artifacts/signing identities shall be rejected. | Contain compromised artifacts. | Integration test | 8 |
-| SEC-069 | PRI-0 | Artifact content shall not be modified after successful validation. | Preserve validated execution unit. | Storage/integration test | 3 |
-| SEC-070 | PRI-0 | Artifact storage shall enforce organization/project authorization. | Prevent cross-tenant artifact access. | Security test | 3 |
+| SEC-069 | PRI-0 | Artifact content at the destination shall not be modified after successful validation, and READY shall be set atomically after staged, non-executable validation. | Preserve validated execution unit. | Destination integration test | 3 |
+| SEC-070 | PRI-0 | Artifact metadata and transfer grants shall enforce organization/project authorization, and a destination shall reject content for a grant that does not match its organization, project, artifact identity and destination. | Prevent cross-tenant artifact access. | Security test | 3 |
 | SEC-071 | PRI-0 | Artifact deployment shall validate manifest against target Platform Version. | Prevent incompatible execution. | Integration test | 5 |
 | SEC-072 | PRI-0 | Required capabilities shall be validated before execution. | Prevent unauthorized hardware use. | Integration test | 5 |
 | SEC-073 | PRI-0 | Artifact entrypoint shall be explicitly declared. | Prevent ambiguous execution. | Validation test | 3 |
 | SEC-074 | PRI-1 | Artifact expiration shall be enforceable where policy requires it. | Limit stale artifact execution. | Policy test | 8 |
-| SEC-075 | PRI-0 | Artifact download shall require authorization. | Protect executable IP. | API test | 3 |
+| SEC-075 | PRI-0 | Artifact transfer shall require a short-lived, scoped transfer grant issued after authorization, and the Control Plane shall not serve artifact bytes. | Protect executable IP. | API test | 3 |
 | SEC-076 | PRI-1 | Artifact provenance shall be retained for security investigation. | Support incident analysis. | Audit review | 7 |
 
 ## 8.5 Tenant Isolation Requirements
@@ -344,7 +346,7 @@ Security classification shall influence:
 | SEC-083 | PRI-0 | API path parameters shall never override authenticated tenant context without authorization. | Prevent IDOR attacks. | Security test | 1 |
 | SEC-084 | PRI-0 | Cross-organization object references shall be rejected unless explicitly authorized. | Prevent data crossing tenants. | Integration test | 2 |
 | SEC-085 | PRI-0 | Project membership shall be organization-consistent. | Prevent membership boundary bypass. | DB + integration test | 2 |
-| SEC-086 | PRI-0 | Artifact access shall enforce organization ownership. | Protect IP. | Integration test | 3 |
+| SEC-086 | PRI-0 | Artifact metadata access and grant issuance shall enforce organization ownership. | Protect IP. | Integration test | 3 |
 | SEC-087 | PRI-0 | Booking access shall enforce organization ownership. | Protect resource and financial state. | Integration test | 4 |
 | SEC-088 | PRI-0 | Credit wallets and ledgers shall be organization-scoped. | Prevent financial leakage. | DB + integration test | 4 |
 | SEC-089 | PRI-0 | Results and experiments shall be organization-scoped. | Protect experiment data. | Integration test | 7 |
@@ -360,7 +362,7 @@ Security classification shall influence:
 | SEC-100 | PRI-0 | Cloud services shall never be the sole physical safety mechanism. | Network/cloud failure must not create unsafe motion. | Architecture review | 6 |
 | SEC-101 | PRI-0 | Physical emergency stop shall remain local to the robot/lab safety system. | Ensure immediate safety response. | Human safety review | 6 |
 | SEC-102 | PRI-0 | Lab Agent shall enforce local execution policy before robot deployment. | Protect against cloud-side mistakes. | Integration test | 6 |
-| SEC-103 | PRI-0 | Lab Agent shall reject artifacts incompatible with its assigned platform. | Prevent unsafe deployment. | Negative test | 6 |
+| SEC-103 | PRI-0 | Lab Agent shall reject artifacts incompatible with its assigned platform, validating received content against registered metadata. | Prevent unsafe deployment. | Negative test | 6 |
 | SEC-104 | PRI-0 | Physical robot execution shall require explicit resource allocation. | Prevent concurrent control. | Integration test | 6 |
 | SEC-105 | PRI-0 | Resource allocation shall prevent conflicting active bookings. | Prevent competing control sessions. | Concurrency test | 4 |
 | SEC-106 | PRI-0 | Robot state FAULT shall block normal job execution. | Prevent operation of known-fault hardware. | Integration test | 6 |
@@ -384,7 +386,7 @@ Security classification shall influence:
 | SEC-124 | PRI-0 | Cryptographic keys shall not be embedded in application binaries. | Prevent key extraction. | Binary inspection | 3 |
 | SEC-125 | PRI-0 | Secrets shall not be written to normal application logs. | Prevent accidental disclosure. | Log test | 7 |
 | SEC-126 | PRI-0 | Database credentials shall use least privilege. | Limit database compromise. | IAM review | 2 |
-| SEC-127 | PRI-0 | Object storage access shall use scoped identities. | Limit storage compromise. | IAM review | 3 |
+| SEC-127 | PRI-0 | Object storage access (results, logs and media) shall use scoped identities. | Limit storage compromise. | IAM review | 3 |
 | SEC-128 | PRI-1 | Personal data shall be minimized. | Reduce privacy exposure. | Data review | 8 |
 | SEC-129 | PRI-1 | Data retention shall be defined by data class. | Prevent indefinite unnecessary retention. | Policy review | 8 |
 | SEC-130 | PRI-1 | User data export shall preserve tenant boundaries. | Support data portability safely. | Integration test | 8 |
@@ -392,7 +394,7 @@ Security classification shall influence:
 | SEC-132 | PRI-1 | Financial and audit records shall be retained according to applicable policy. | Preserve required evidence. | Retention test | 8 |
 | SEC-133 | PRI-0 | Backup data shall receive protection equivalent to production data. | Backups contain sensitive information. | Backup review | 8 |
 | SEC-134 | PRI-1 | Production data shall not be copied to Development without approved sanitization. | Prevent uncontrolled data exposure. | Environment review | 2 |
-| SEC-135 | PRI-0 | Object-storage signed URLs shall be short-lived and scoped. | Reduce leaked-link impact. | Integration test | 7 |
+| SEC-135 | PRI-0 | Object-storage signed URLs (results and media) shall be short-lived and scoped. | Reduce leaked-link impact. | Integration test | 7 |
 
 ## 8.8 Logging and Audit Requirements
 
@@ -401,7 +403,7 @@ Security classification shall influence:
 | SEC-140 | PRI-0 | Authentication events shall be logged. | Detect account attacks. | Log test | 7 |
 | SEC-141 | PRI-0 | Authorization failures shall be logged. | Detect access attempts. | Log test | 7 |
 | SEC-142 | PRI-0 | Administrative actions shall be audited. | Preserve privileged accountability. | Audit test | 7 |
-| SEC-143 | PRI-0 | Artifact upload, validation, signing, revocation, and execution shall be auditable. | Protect execution boundary. | Audit test | 7 |
+| SEC-143 | PRI-0 | Artifact registration, grant issuance, transfer, destination validation, status report, signing, revocation, and execution shall be auditable. | Protect execution boundary. | Audit test | 7 |
 | SEC-144 | PRI-0 | Booking and resource-allocation security events shall be auditable. | Protect physical resources. | Audit test | 7 |
 | SEC-145 | PRI-0 | Credit-affecting operations shall be auditable. | Protect financial state. | Audit test | 7 |
 | SEC-146 | PRI-0 | Robot deployment and execution authorization shall be auditable. | Safety and accountability. | Audit test | 7 |
@@ -445,7 +447,7 @@ Architecture: `docs/architecture/CODING_AGENT_INTEGRATION.md`. Decision: SEC-ADR
 | SEC-187 | PRI-0 | The Kritva Studio MCP server shall be local-only and shall not expose signing, upload, booking, credit, Job, Run, robot, Control Plane mutation, out-of-workspace filesystem or generic shell operations. | Prevent prompt injection from causing financial, publishing or physical effects. | MCP negative tests + prompt-injection fixture | P2 BUILD & ARTIFACT |
 | SEC-188 | PRI-1 | Organization coding-agent policy changes shall require an organization administrator, shall be versioned and shall be audited; the policy API shall reject content fields. | Governed, traceable use. | API + audit tests | P3 CONTROL PLANE |
 | SEC-189 | PRI-1 | Studio provider credentials shall remain in the provider CLI's own store; Studio shall not read, store or forward them. | Avoid holding third-party credentials. | Code review + test | P1 STUDIO |
-| SEC-190 | PRI-0 | Every Kritva-controlled egress path (API, WebSocket, telemetry, crash reports, update checks, support bundles, log export, artifact upload) shall exclude coding-agent content, each with a negative test. | Make the source-privacy guarantee provable. | Egress negative tests | P1 STUDIO |
+| SEC-190 | PRI-0 | Every Kritva-controlled egress path (API, WebSocket, telemetry, crash reports, update checks, support bundles, log export, artifact transfer and status report) shall exclude coding-agent content, each with a negative test. | Make the source-privacy guarantee provable. | Egress negative tests | P1 STUDIO |
 | SEC-191 | PRI-0 | Consent withdrawal, provider or tool disablement, mode reduction and policy expiry shall deny new tool calls immediately and stop active sessions within 10 seconds. | Governance changes take effect deterministically. | Policy and consent tests during active sessions | P1 STUDIO |
 | SEC-192 | PRI-0 | MCP tools shall have published schemas with size limits; agents shall select only saved build profiles and test targets; approvals shall be bound to request, arguments, staging content hash and the version hash of the referenced build profile or test-target definition. | Bound side effects of build, test and package. | MCP schema, approval-binding and malicious-build fixtures | P2 BUILD & ARTIFACT |
 | SEC-193 | PRI-0 | The MCP loopback transport, where used, shall bind to loopback only, require a per-session token and reject replayed requests. | Prevent other local processes from using Studio tools. | Transport tests | P2 BUILD & ARTIFACT |
@@ -548,9 +550,17 @@ The artifact boundary is:
         v
     .krv Artifact
         |
-        | HTTPS/TLS
+        | Register metadata (Control Plane)
         v
-    Artifact Store
+    Authorization + Transfer Grant (short-lived, scoped)
+        |
+        | Direct transfer, workstation to destination
+        | (connectivity open: DT-OD-01)
+        v
+    Destination: staged, non-executable content validation
+        |
+        v
+    Atomic READY + metadata status report
         |
         v
     Compatibility Validation
@@ -589,6 +599,10 @@ The artifact manifest shall identify at minimum:
     }
 
 The manifest itself shall be covered by the artifact integrity mechanism.
+
+The Control Plane validates registered metadata and authorization only. It does not hold artifact bytes and does not inspect artifact content. The destination validates the received content (checksum, signature where enabled, platform, capabilities) against the registered metadata. A destination report of READY is an authenticated assertion with provenance. It is not proof of content validity to the Control Plane, it is not authorization, and it is distinct from booking authorization, Job or Run state and physical safety. Execution authorization (Section 24) is evaluated separately and the Lab Agent enforces local policy independently.
+
+Security requirements for the transfer path (DT-REQ-01 to DT-REQ-08 in DIRECT_ARTIFACT_TRANSFER.md) include: grants that are short-lived, single-purpose and bound to organization, project, artifact identity and destination; replay and theft resistance; endpoint probing resistance; revocation and offline-staleness handling; protection and rotation of the grant issuer keys; and authenticated status reports. The grant claims, signing, key rotation and transport authentication (DT-OD-02), connectivity (DT-OD-01) and offline cancellation policy (DT-OD-05) are open and are not decided here. Threat scenarios are AS-036 to AS-044 in THREAT_MODEL.md.
 
 # 12. Tenant Isolation Model
 
@@ -782,7 +796,7 @@ Minimum security event categories:
 - authorization.denied;
 - privilege.changed;
 - membership.changed;
-- artifact.uploaded;
+- artifact.uploaded (historical name; under SYS-ADR-008 it denotes metadata registration, and event names for grant issuance and status reports are not yet defined);
 - artifact.validation_failed;
 - artifact.signature_failed;
 - artifact.revoked;
@@ -979,6 +993,8 @@ Download URLs shall be:
 - non-guessable.
 
 # 26. Secure Download Flow
+
+This flow applies to results, logs and media held in object storage. Execution artifacts are not downloaded from cloud storage (SYS-ADR-008).
 
     User
       |
@@ -1232,7 +1248,7 @@ Phase 3 shall establish:
 - checksum validation;
 - signature validation;
 - artifact authorization;
-- secure artifact storage;
+- secure artifact transfer and destination validation (SYS-ADR-008);
 - artifact provenance.
 
 No invalid artifact shall reach execution.
@@ -1338,6 +1354,8 @@ No ambiguous third state shall result in permission.
         target_resource
     ) -> ValidationResult
 
+The Control Plane evaluates this interface over registered metadata only. The destination evaluates the same checks over the received content, and its result is reported as an authenticated assertion. The interface is conceptual and not a defined API.
+
 Validation shall include:
 
 - identity;
@@ -1371,7 +1389,7 @@ The Lab Agent shall independently enforce local policy.
 | Membership | Organization |
 | Project access | Project |
 | Artifact metadata | Artifact |
-| Artifact binary | Artifact/Object Storage |
+| Artifact binary | Workstation (source of transfer) and destination (staged and READY copy); not held by the Control Plane or cloud object storage |
 | Booking authorization | Booking |
 | Credit authorization | Credit |
 | Job authorization | Execution |
@@ -1408,7 +1426,8 @@ Object storage shall:
 - prevent public listing;
 - prevent public writes;
 - use scoped service identities;
-- use immutable or versioned artifact storage where appropriate;
+- hold results, logs and media only; execution artifacts are not stored in cloud object storage (SYS-ADR-008, and DT-OD-03 covers any proposed cloud retention);
+- use immutable or versioned storage for results where appropriate;
 - verify checksums;
 - support lifecycle policies;
 - support deletion/retention policies;
@@ -1557,7 +1576,7 @@ The following require explicit decisions before final Production security sign-o
 1. Which external identity provider(s) will be supported?
 2. Which MFA methods will be mandatory for administrators?
 3. Will enterprise SSO/SAML/OIDC be supported in the initial commercial release?
-4. What exact artifact signing infrastructure will be used?
+4. What exact artifact signing infrastructure will be used, and what is the grant claim, signing and key rotation scheme for transfer grants (DT-OD-02)?
 5. Will signing keys use HSM/KMS-backed protection?
 6. What vulnerability severity thresholds will block releases?
 7. What exact audit retention period is required?
@@ -1608,6 +1627,7 @@ The following require explicit decisions before final Production security sign-o
 - [ ] Remote execution accepts `.krv` artifacts.
 - [ ] Source is not persisted in PostgreSQL.
 - [ ] Source is not automatically copied to object storage.
+- [ ] Execution artifacts are not stored in cloud object storage.
 - [ ] Logs do not expose source.
 - [ ] Errors do not echo source.
 - [ ] Production debugging does not expose source.
@@ -1617,7 +1637,9 @@ The following require explicit decisions before final Production security sign-o
 
 - [ ] Artifact identity is immutable.
 - [ ] Manifest is validated.
-- [ ] Checksum is validated.
+- [ ] Checksum is validated at the destination against registered metadata.
+- [ ] Transfer grants are short-lived, scoped and authenticated.
+- [ ] READY is set only after staged, non-executable validation and is treated as an assertion.
 - [ ] Signature is validated.
 - [ ] Invalid signatures block execution.
 - [ ] Revoked signing identities block execution.
@@ -1635,11 +1657,11 @@ The following require explicit decisions before final Production security sign-o
 - [ ] Repository queries are tenant scoped.
 - [ ] Cross-tenant object access fails.
 - [ ] Project membership is tenant consistent.
-- [ ] Artifact access is tenant isolated.
+- [ ] Artifact metadata and grant issuance are tenant isolated.
 - [ ] Booking access is tenant isolated.
 - [ ] Credit state is tenant isolated.
 - [ ] Results are tenant isolated.
-- [ ] Object storage is tenant scoped.
+- [ ] Object storage (results, logs and media) is tenant scoped.
 - [ ] Cross-tenant adversarial tests pass.
 
 ## 57.6 Lab and Robot Safety
