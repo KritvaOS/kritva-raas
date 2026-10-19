@@ -1,5 +1,7 @@
 # Kritva RaaS Protocol Overview
 
+> **Partly revised for SYS-ADR-008 (direct artifact transfer).** The artifact flow, command and event examples, Section 91, boundaries, phase lines and checklists now describe direct workstation-to-destination transfer; see [DIRECT_ARTIFACT_TRANSFER.md](../architecture/DIRECT_ARTIFACT_TRANSFER.md). `artifact.upload`, `artifact.download` and `artifact.fetch` are superseded and no replacement name is defined (DT-OD-02); the `ARTIFACT_ACCEPTED` response example and the `artifact.accepted` event example are historical. SYS-ADR-008 is a direction pending owner confirmation, and nothing is implemented.
+
 ## 1. Document Control
 
 | Item | Value |
@@ -352,7 +354,7 @@ The Lab Channel supports:
 - heartbeat;
 - capabilities;
 - resource discovery;
-- artifact retrieval;
+- artifact receipt (direct transfer; contract open);
 - deployment;
 - job control;
 - resource allocation;
@@ -466,7 +468,7 @@ Commands are imperative.
 Examples:
 
     booking.create
-    artifact.upload
+    artifact.create
     job.create
     job.start
     job.stop
@@ -529,7 +531,7 @@ Logical command envelope:
         "protocol_version": "1.0",
         "request_id": "req-12345",
         "timestamp": "2026-10-08T00:00:00Z",
-        "command": "artifact.upload",
+        "command": "artifact.create",
         "actor": {
             "type": "user",
             "id": "user-001"
@@ -744,7 +746,7 @@ Examples:
     auth.login
     project.create
     platform.list
-    artifact.upload
+    artifact.create
     booking.create
     credit.balance
     job.start
@@ -759,8 +761,8 @@ Events use:
 
 Examples:
 
-    artifact.uploaded
-    artifact.accepted
+    artifact.uploaded   (historical; superseded, names open)
+    artifact.accepted   (historical; destination-reported readiness replaces it, names open)
     booking.confirmed
     job.running
     job.completed
@@ -922,7 +924,7 @@ Examples:
 
 - booking creation;
 - job creation;
-- artifact completion;
+- artifact registration and transfer grant issuance;
 - credit operations;
 - payment operations;
 - resource allocation.
@@ -980,8 +982,7 @@ Example:
 
 Long-running operations include:
 
-- artifact validation;
-- artifact processing;
+- artifact metadata processing and destination validation (reported);
 - booking allocation;
 - job start;
 - deployment;
@@ -998,7 +999,7 @@ Examples:
 - booking state in PostgreSQL;
 - job state in PostgreSQL;
 - run state in PostgreSQL;
-- artifact state in PostgreSQL/object storage metadata.
+- artifact metadata and destination-reported transfer state in PostgreSQL.
 
 Events do not replace durable state.
 
@@ -1107,12 +1108,12 @@ The principal command inventory includes:
 ### Artifacts
 
     artifact.create
-    artifact.upload
+    artifact.upload   (superseded, SYS-ADR-008)
     artifact.get
     artifact.list
-    artifact.validate
+    artifact.validate   (metadata and authorization only)
     artifact.delete
-    artifact.download
+    artifact.download   (superseded for execution artifacts)
 
 ### Booking
 
@@ -1172,7 +1173,7 @@ The Lab Channel reserves:
     agent.capabilities
     agent.resources
     agent.configure
-    artifact.fetch
+    artifact.fetch   (superseded, SYS-ADR-008)
     deployment.prepare
     deployment.start
     deployment.stop
@@ -1486,11 +1487,11 @@ physical safety mechanism.
     .krv Artifact
        |
        v
-    Upload
+    Direct transfer to the destination
 
 Source code does not cross Boundary B as source.
 
-## 91. Data Flow — Artifact Upload
+## 91. Data Flow — Artifact Registration and Direct Transfer
 
     .krv
        |
@@ -1498,19 +1499,21 @@ Source code does not cross Boundary B as source.
     Local Validation
        |
        v
-    artifact.create
+    artifact.create (metadata only)
        |
        v
-    Upload Authorization
+    Transfer Grant
        |
        v
-    Object Storage
+    Direct transfer: Workstation ====> Lab Agent
        |
        v
-    Artifact Validation
+    Destination Validation
        |
        v
-    artifact.accepted
+    Status report (metadata) to the Control Plane
+
+The Control Plane never receives the artifact bytes. The replacement command and message names are open (DT-OD-02). Superseded commands are not valid substitutes and must not be used for execution artifacts.
 
 ## 92. Data Flow — Booking
 
@@ -1551,7 +1554,7 @@ Source code does not cross Boundary B as source.
     Lab Agent
        |
        v
-    Artifact Fetch
+    Artifact receipt (direct transfer; READY before deployment)
        |
        v
     Deployment
@@ -1814,11 +1817,10 @@ Large binaries should not be transferred through ordinary JSON API payloads.
 
 Examples:
 
-- `.krv` artifacts;
 - result archives;
 - recorded video.
 
-Object storage or dedicated streaming paths are preferred.
+Object storage or dedicated streaming paths are preferred. `.krv` execution artifacts are transferred directly from the workstation to the destination, not through JSON API payloads or cloud object storage (SYS-ADR-008).
 
 ## 109. Protocol Boundaries and Authority
 
@@ -2050,7 +2052,7 @@ Performance tests should measure:
 
 - REST latency;
 - WebSocket event latency;
-- artifact upload throughput;
+- artifact transfer throughput (destination side; DT-OD-04);
 - command processing latency;
 - Lab Channel latency;
 - event throughput;
@@ -2136,7 +2138,7 @@ Exact production values are operational configuration.
 |---|---|---|
 | Phase 0 | Protocol foundation | Contracts and conventions |
 | Phase 1 | Desktop/API | Studio communication |
-| Phase 2 | Artifact | `.krv` transfer |
+| Phase 2 | Artifact | `.krv` direct transfer (contract open) |
 | Phase 3 | Control Plane | Domain API |
 | Phase 4 | Commercial | Booking and credits |
 | Phase 5 | Lab | Remote execution |
@@ -2184,14 +2186,14 @@ Acceptance:
 Deliver:
 
 - artifact commands;
-- upload;
-- validation;
+- metadata registration and transfer grant;
+- destination validation reporting;
 - status;
 - compatibility metadata.
 
 Acceptance:
 
-- `.krv` uploads;
+- `.krv` is delivered directly to the destination;
 - digest is preserved;
 - validation is observable;
 - source remains local.
@@ -2234,7 +2236,7 @@ Deliver:
 - Lab Channel;
 - agent registration;
 - resource discovery;
-- artifact fetch;
+- artifact receipt (direct transfer);
 - deployment;
 - job lifecycle.
 
@@ -2509,7 +2511,7 @@ Mitigation:
 - [ ] Heartbeat exists.
 - [ ] Capability discovery exists.
 - [ ] Secure transport exists.
-- [ ] Artifact fetch is defined.
+- [ ] Artifact delivery (direct transfer) is defined. Open: DT-OD-01, DT-OD-02, DT-OD-05.
 - [ ] Deployment is defined.
 - [ ] Job lifecycle is defined.
 - [ ] Resource locking is defined.
@@ -2575,7 +2577,7 @@ Mitigation:
 ### Data Flows
 
 - [ ] Local build flow is defined.
-- [ ] Artifact upload flow is defined.
+- [ ] Artifact registration and direct transfer flow is defined.
 - [ ] Booking flow is defined.
 - [ ] Credit flow is defined.
 - [ ] Execution flow is defined.
@@ -2703,7 +2705,7 @@ The resulting protocol model supports the complete Kritva RaaS lifecycle:
     Package .krv
          |
          v
-    Upload Artifact
+    Send Artifact to the Destination
          |
          v
     Book Robot
