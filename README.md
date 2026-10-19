@@ -233,7 +233,7 @@ Every change passes the same gates in this order. A failure at any gate stops th
        make status-gen-check # checks status/status.json against the planning records
 
    `make status-report` is read-only and shows status differences between records and views. Both `make check` and the report prove that documents and records agree with each other. They do not prove a decision was approved, a gate closed or a task accepted.
-5. **In CI.** The workflows in `.github/workflows/` run on every push and pull request: `docs-check`, `source-header-check`, `secret-scan` (gitleaks), `commit-message-check` and `status-report`. Which checks are required on `main` is set in the repository ruleset; see `AGENTS.md`. Do not add allowlist entries to silence the secret scan; propose them to the owner with the reason.
+5. **In CI.** The workflows in `.github/workflows/` run on every push and pull request: `docs-check`, `source-header-check`, `secret-scan` (gitleaks), `commit-message-check` and `status-report`; the `readme-check` workflow (D-067) runs the README checker's tests and the README check on pull requests and on pushes to `main`, and is not a required check yet. Which checks are required on `main` is set in the repository ruleset; see `AGENTS.md`. Do not add allowlist entries to silence the secret scan; propose them to the owner with the reason.
 6. **Review.** Use `planning/REVIEW_CHECKLIST.md`. An AI review is recorded as an AI review, never as independent human review, and each reviewer's claim is verified against the files before it is applied.
 7. **Acceptance.** Only the Backend Technical Lead accepts a task or approves a decision, in the canonical record, after the governing criteria are met and evidence is recorded.
 
