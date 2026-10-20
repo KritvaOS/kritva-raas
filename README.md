@@ -56,7 +56,7 @@ The architecture is split by domain. Each domain keeps its documents in its own 
 
 | Domain | Folder | Documents and what each is responsible for |
 |---|---|---|
-| System-wide | [`docs/architecture/`](docs/architecture/) | `SYSTEM_ARCHITECTURE` (the whole product), `APPLICATION_ARCHITECTURE`, `COMPONENT_ARCHITECTURE`, `DEPLOYMENT_ARCHITECTURE`, `DESKTOP_ARCHITECTURE` (Studio on the workstation), `LAB_ARCHITECTURE` (lab systems and robots), `PROTOCOL_ARCHITECTURE`, `ARTIFACT_ARCHITECTURE` (the `.krv` artifact and its lifecycle), `DIRECT_ARTIFACT_TRANSFER` (SYS-ADR-008 contract), `CODING_AGENT_INTEGRATION`, plus the system-level `API_`, `BACKEND_`, `CLOUD_`, `DATABASE_`, `DATA_` and `SECURITY_ARCHITECTURE` |
+| System-wide | [`docs/architecture/`](docs/architecture/) | `KRITVA_RAAS_ARCHITECTURE_OVERVIEW` (the consolidated overview and artwork index; start here), `SYSTEM_ARCHITECTURE` (the whole product), `APPLICATION_ARCHITECTURE`, `COMPONENT_ARCHITECTURE`, `DEPLOYMENT_ARCHITECTURE`, `DESKTOP_ARCHITECTURE` (Studio on the workstation), `LAB_ARCHITECTURE` (lab systems and robots), `PROTOCOL_ARCHITECTURE`, `ARTIFACT_ARCHITECTURE` (the `.krv` artifact and its lifecycle), `DIRECT_ARTIFACT_TRANSFER` (SYS-ADR-008 contract), `CODING_AGENT_INTEGRATION`, plus the system-level `API_`, `BACKEND_`, `CLOUD_`, `DATABASE_`, `DATA_` and `SECURITY_ARCHITECTURE` |
 | Frontend (Studio) | [`docs/frontend/architecture/`](docs/frontend/architecture/) | `FRONTEND_ARCHITECTURE` (Studio and Web Console as a whole), `STUDIO_ARCHITECTURE` (the Studio application and its screens), `LOCAL_RUNTIME_ARCHITECTURE` (the Rust Local Runtime that builds, packages and transfers on the workstation), `IPC_ARCHITECTURE` (messages between the Studio UI and the Local Runtime), `STATE_ARCHITECTURE` (client state and its ownership) |
 | UI | [`docs/ui/`](docs/ui/) | `UI_SPECIFICATION` (screens and behaviour), `UI_DESIGN_SYSTEM`, `ARTWORK_GUIDELINES`, `UI_MILESTONES`, `UI_ACCEPTANCE_CRITERIA`, `UI_REVIEW_CHECKLIST`, `DECISIONS` |
 | Cloud | [`docs/cloud/architecture/`](docs/cloud/architecture/) | `CLOUD_ARCHITECTURE` (deployable cloud resources and environments), `COMPUTE_`, `NETWORK_`, `STORAGE_`, `OBSERVABILITY_` and `SECURITY_ARCHITECTURE` (one document per infrastructure concern); deployment in `docs/cloud/deployment/`, operations in `docs/cloud/operations/` |
@@ -105,7 +105,7 @@ These are the contract from `API_ARCHITECTURE.md` and `docs/protocol/`. The tran
 
 ## 4. Documents to Read First
 
-New contributors and interns start with [`docs/development/INTERN_QUICKSTART.md`](docs/development/INTERN_QUICKSTART.md) (rows 12 and 13 below), then read in the order below. A label names a role, not an approval; where a document states its own status, it is shown.
+New contributors and interns start with [`docs/development/INTERN_QUICKSTART.md`](docs/development/INTERN_QUICKSTART.md) (rows 13 and 14 below), then read in the order below. A label names a role, not an approval; where a document states its own status, it is shown.
 
 | # | Document | Label, status | What it answers |
 |---|---|---|---|
@@ -119,9 +119,10 @@ New contributors and interns start with [`docs/development/INTERN_QUICKSTART.md`
 | 8 | [`docs/REPOSITORY_STRUCTURE.md`](docs/REPOSITORY_STRUCTURE.md) | REFERENCE, PROPOSED, pending human review | Proposed repository structure and ownership map; the authority matrix remains authoritative |
 | 9 | [`docs/architecture/DIRECT_ARTIFACT_TRANSFER.md`](docs/architecture/DIRECT_ARTIFACT_TRANSFER.md) | PROPOSED (direction owner-approved, confirmation pending) | How the execution artifact reaches the destination system without passing through the cloud |
 | 10 | [`docs/ui/UI_SPECIFICATION.md`](docs/ui/UI_SPECIFICATION.md) | REFERENCE, PROPOSED sections | The Studio UI, including the three-panel workspace (11.1), cloud clock (14.1) and booking navigator (50.1) |
-| 11 | [`docs/architecture/`](docs/architecture/) (the four architecture documents, section 3) | AUTHORITATIVE for the design baseline; status declared in each file: Architecture Baseline | The target architecture. Not proof that it is implemented, and not an owner approval |
-| 12 | [`docs/development/INTERN_QUICKSTART.md`](docs/development/INTERN_QUICKSTART.md) | REFERENCE, PROPOSED (a reading guide; its commands are marked UNVERIFIED until run) | What exists today, how to set up the backend, which task to pick, and how to commit and open a pull request |
-| 13 | [`docs/development/DEVELOPMENT_SETUP.md`](docs/development/DEVELOPMENT_SETUP.md) | REFERENCE for the planned environment, not runnable today (its status table says which sections apply now) | The planned full local environment: Studio, database, object storage, queue and simulated lab |
+| 11 | [`docs/architecture/KRITVA_RAAS_ARCHITECTURE_OVERVIEW.md`](docs/architecture/KRITVA_RAAS_ARCHITECTURE_OVERVIEW.md) | REFERENCE (a navigation overview), PROPOSED; declares itself a target baseline whose implementation status must be verified independently | One page tying the components, responsibilities, workflows, trust boundaries, fleet model and failure behaviour together, with an index of the architecture artwork. Read it before the detailed architecture documents |
+| 12 | [`docs/architecture/`](docs/architecture/) (the four architecture documents, section 3) | AUTHORITATIVE for the design baseline; status declared in each file: Architecture Baseline | The target architecture. Not proof that it is implemented, and not an owner approval |
+| 13 | [`docs/development/INTERN_QUICKSTART.md`](docs/development/INTERN_QUICKSTART.md) | REFERENCE, PROPOSED (a reading guide; its commands are marked UNVERIFIED until run) | What exists today, how to set up the backend, which task to pick, and how to commit and open a pull request |
+| 14 | [`docs/development/DEVELOPMENT_SETUP.md`](docs/development/DEVELOPMENT_SETUP.md) | REFERENCE for the planned environment, not runnable today (its status table says which sections apply now) | The planned full local environment: Studio, database, object storage, queue and simulated lab |
 
 ## 5. Repository Structure and File Responsibilities
 

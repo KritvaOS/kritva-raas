@@ -5,8 +5,7 @@
 **Status:** Consolidated target architecture; implementation status must
 be verified independently\
 **Repository:** `KritvaOS/kritva-raas`\
-**Suggested path:**
-`docs/architecture/KRITVA_RAAS_ARCHITECTURE_OVERVIEW.md`\
+**Path:** `docs/architecture/KRITVA_RAAS_ARCHITECTURE_OVERVIEW.md`\
 **Audience:** Product, software, cloud, frontend, backend, robotics
 integration, security, and intern engineering teams
 
