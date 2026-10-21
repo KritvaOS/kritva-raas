@@ -182,3 +182,9 @@ The owner asked whether milestones, tasks, effort estimates and status need re-a
 - **Program-side actions (kritva-program repo, not here):** keep RaaS as PLANNING_ONLY unless the owner authorizes baseline and source onboarding; PD-016 (SEC-GATE-001 disposition) is the readiness blocker; PD-004 and PD-008 stay with their recorded status.
 - **Generation lesson:** run `gen_status.py` on a clean checkout of `origin/main` (a detached worktree). Run on an unpushed branch it writes `NOT_SYNCED` for every task.
 
+## Consolidated architecture overview (PR #92 and its README link, 20-10-2026)
+
+- **PR #92** adds `docs/architecture/KRITVA_RAAS_ARCHITECTURE_OVERVIEW.md`, a consolidated navigation overview and artwork index from the architecture overview discussion (slides 0 to 15, baseline v0.2). It declares itself a target baseline whose implementation status must be verified independently; it is not an approval and not evidence of implementation. Its first commit failed `commit-message-check` (no scope, no Tasks footer); the message was rewritten to the commit contract.
+- **README link (follow-up PR):** README Section 3 names the overview first in the system-wide row; Section 4 lists it as row 11 (REFERENCE, PROPOSED) and the later rows move to 12 to 14, so the quickstart and setup rows are now 13 and 14. The overview's draft "Suggested path" line became "Path".
+- **Not done:** the overview is not yet listed in the transfer document's affected-documents table, and nothing in it has been reviewed against the detailed architecture documents; where they differ, the approved detailed documents and contracts take precedence, as the overview itself says.
+
