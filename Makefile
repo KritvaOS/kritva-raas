@@ -20,6 +20,18 @@
 # Project Configuration
 #------------------------------------------------------------------------------
 
+# Kritva Makefile standard (kritva-program v2/planning/standards/MAKEFILE_STANDARD.md): `make` or `make help` lists the targets.
+# A target is documented by `name: ## text` on its rule line; `##@ Name` starts a help group.
+# An unimplemented gate exits 3 (NOT_IMPLEMENTED). It is never a pass.
+.DEFAULT_GOAL := help
+.PHONY: help
+
+##@ Help
+help: ## Show this list
+	@awk 'BEGIN { FS = ":.*##"; printf "\nUsage: make <target> [VAR=value ...]\n" } \
+	  /^##@/ { g = substr($$0, 5); next } \
+	  /^[a-zA-Z0-9_.-]+:[^=].*##/ { if (g != "") { printf "\n%s\n", g; g = "" }; sub(/^ +/, "", $$2); printf "  %-24s %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
+
 PROJECT_NAME := kritva-raas
 
 SCRIPT_DIR := scripts
@@ -31,24 +43,11 @@ PYTHON := python3
 # Default Target
 #------------------------------------------------------------------------------
 
-.DEFAULT_GOAL := help
-
 #------------------------------------------------------------------------------
 # Help
 #
 # Targets containing "##" are automatically displayed by "make help".
 #------------------------------------------------------------------------------
-
-.PHONY: help
-
-help: ## Show available development commands
-	@echo ""
-	@echo "Kritva RaaS - Development Commands"
-	@echo "=================================="
-	@echo ""
-	@grep -E '^[a-zA-Z0-9_-]+:.*##' $(MAKEFILE_LIST) | \
-		awk 'BEGIN {FS=":.*## "}; {printf "  %-20s %s\n", $$1, $$2}'
-	@echo ""
 
 #------------------------------------------------------------------------------
 # Source Header Check
@@ -57,6 +56,7 @@ help: ## Show available development commands
 # The checker decides which tracked files require a header
 # (docs/development/SOURCE_HEADER_STANDARD.md).
 #------------------------------------------------------------------------------
+##@ Source Header Check
 
 .PHONY: header-test header-check
 
@@ -74,6 +74,7 @@ header-check: ## Validate KritvaOS source headers (strict, tracked files)
 #
 # Same commands as .github/workflows/docs-check.yml.
 #------------------------------------------------------------------------------
+##@ Documentation and Planning Traceability
 
 .PHONY: docs-check readme-check traceability-check approvals-test approvals-check planning-root-test status-test status-report status-gen-test status-gen-check
 
@@ -83,6 +84,9 @@ docs-check: ## Validate documentation structure, phases and milestones
 
 readme-check: ## Check README.md against the Kritva README standard (structure, metadata, local links)
 	$(PYTHON) $(SCRIPT_DIR)/docs/check_readme.py README.md
+
+.PHONY: check-readme
+check-readme: readme-check ## Standard name for readme-check
 
 traceability-check: ## Validate backend increment dossier traceability
 	@echo "[traceability] Validating backend increment traceability..."
@@ -124,6 +128,7 @@ approvals-check: ## Validate backend decision-approval packages
 #
 # The Git pre-commit hook stays lightweight and runs only the header check.
 #------------------------------------------------------------------------------
+##@ Repository Validation
 
 .PHONY: check
 
@@ -134,6 +139,7 @@ check: header-test header-check docs-check traceability-check approvals-test app
 #------------------------------------------------------------------------------
 # Git Hooks
 #------------------------------------------------------------------------------
+##@ Git Hooks
 
 .PHONY: hooks-install
 
@@ -150,6 +156,7 @@ hooks-install: ## Enable the repository Git hooks (.githooks/pre-commit)
 # These targets fail deliberately so that nothing reports a build or test
 # result that did not happen. They are not part of "make check".
 #------------------------------------------------------------------------------
+##@ Application Build, Test, Lint and Format
 
 .PHONY: build test lint format format-check
 
@@ -173,6 +180,7 @@ format-check: ## Check application formatting (not configured yet; fails)
 #------------------------------------------------------------------------------
 # Clean
 #------------------------------------------------------------------------------
+##@ Clean
 
 .PHONY: clean
 
@@ -183,6 +191,7 @@ clean: ## Remove Python caches created by the repository tools
 #------------------------------------------------------------------------------
 # Information
 #------------------------------------------------------------------------------
+##@ Information
 
 .PHONY: info
 
@@ -196,3 +205,32 @@ info: ## Show project and tool configuration
 	@echo "Python        : $(PYTHON)"
 	@echo "Hooks path    : $$(git config --get core.hooksPath || echo '(not set)')"
 	@echo ""
+
+##@ Gates (unimplemented gates exit 3)
+define not_implemented
+	@echo "NOT_IMPLEMENTED: $(1) has no tests yet; this is not a pass"; exit 3
+endef
+
+.PHONY: test-unit
+test-unit: ## Unit tests (NOT_IMPLEMENTED: exits 3)
+	$(call not_implemented,test-unit)
+
+.PHONY: test-integration
+test-integration: ## Integration tests (NOT_IMPLEMENTED: exits 3)
+	$(call not_implemented,test-integration)
+
+.PHONY: test-regression
+test-regression: ## Regression tests (NOT_IMPLEMENTED: exits 3)
+	$(call not_implemented,test-regression)
+
+.PHONY: acceptance
+acceptance: ## Acceptance gate (NOT_IMPLEMENTED: exits 3)
+	$(call not_implemented,acceptance)
+
+##@ Git
+.PHONY: git_sync
+git_sync: ## Switch to main, fast-forward from origin, prune, delete merged local branches
+	@git switch main
+	@git pull --ff-only --prune
+	@git branch --format='%(refname:short)' | grep -vx main | xargs -r git branch -d
+	@git log --oneline -3
