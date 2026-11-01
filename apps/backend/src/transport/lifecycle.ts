@@ -9,7 +9,7 @@
 // Module      : HTTP Transport
 // Layer       : API
 //
-// Requirements: KR-BE-1-004, B-INC-001-AC-06
+// Requirements: KR-BE-1-004, KR-BE-1-009, B-INC-001-AC-06
 // API         : startHttpServer, installShutdownHandlers
 //
 // Author      : KritvaOS
@@ -44,6 +44,8 @@ export interface StartOptions {
   // 0 asks the operating system for a free port (used by tests).
   readonly port: number;
   readonly shutdownGraceMs?: number;
+  // Called once, before the server stops accepting connections, when stop() first runs. Used to start draining.
+  readonly onStopping?: () => void;
 }
 
 export async function startHttpServer(app: FastifyInstance, options: StartOptions): Promise<RunningHttpServer> {
@@ -59,12 +61,20 @@ export async function startHttpServer(app: FastifyInstance, options: StartOption
   let stopping: Promise<void> | undefined;
   const stop = (): Promise<void> => {
     stopping ??= (async () => {
+      // A failing notification must not keep the server from stopping. The error is raised after cleanup.
+      let notifyError: unknown;
+      try {
+        options.onStopping?.();
+      } catch (error) {
+        notifyError = error ?? new Error("onStopping failed");
+      }
       const timer = setTimeout(() => app.server.closeAllConnections(), graceMs);
       try {
         await app.close();
       } finally {
         clearTimeout(timer);
       }
+      if (notifyError !== undefined) throw notifyError;
     })();
     return stopping;
   };

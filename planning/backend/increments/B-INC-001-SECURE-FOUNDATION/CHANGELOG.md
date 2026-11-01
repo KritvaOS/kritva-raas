@@ -87,6 +87,21 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-11-01 — KR-BE-1-009 health and readiness endpoints
+
+- **State:** IN REVIEW (implementation delivered; not accepted)
+- **Tasks:** KR-BE-1-009 (In Review)
+- **Increment ACs:** B-INC-001-AC-11 (partly evidenced; not satisfied)
+- **Program acceptance:** Not applicable
+- **Tests:** BTS-008 (20 new tests, suite 102, fake required checks only; run on Node.js 24.21.0 with npm 10.9.9 in the sandbox, recorded pin is npm 11.19.0; no controlled evidence against a real dependency)
+- **Security gates:** SEC-GATE-008 (not closed; responses carry no reason or configuration, secret-typed settings do not exist yet)
+- **Findings/risks:** Shutdown closes the listener at once, so the draining 503 is unit-tested but not observable over a socket. `SERVICE_UNAVAILABLE` is added to the transport error registry and needs an owner decision. The 2000 ms check timeout is provisional and validated at build time. The timeout bounds the request wait, not the operation; checks must be non-blocking; a cancellation and concurrency policy is required before a real check is registered
+- **Files changed:** `apps/backend/src/transport/health.ts` (new), `error-contract.ts`, `http-server.ts`, `lifecycle.ts`, `src/run.ts`, `tests/transport/health.test.ts` (new), `lifecycle.test.ts`, `tests/run.test.ts`, `README.md`, `TASKS.md`, `BACKEND_CHANGELOG.md` (PB-055)
+- **Commit:** Pending until this change is merged
+- **Evidence:** Test output posted with the pull request
+- **Reviewer role:** Backend Technical Lead (not yet reviewed)
+- **Decision and follow-up:** Owner to decide the `SERVICE_UNAVAILABLE` registry entry and whether a drain delay belongs in the shutdown design. Not Accepted
+
 ### 2026-10-11 — Follow-up audit fixes: router errors and RESPONSES.md examples
 
 - **State:** IN REVIEW (fixes delivered; tasks not accepted)
