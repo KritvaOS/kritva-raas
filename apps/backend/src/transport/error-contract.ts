@@ -9,7 +9,7 @@
 // Module      : HTTP Transport
 // Layer       : API
 //
-// Requirements: KR-BE-1-004, KR-BE-1-007, B-INC-001-AC-06, B-INC-001-AC-08
+// Requirements: KR-BE-1-004, KR-BE-1-007, KR-BE-1-009, B-INC-001-AC-06, B-INC-001-AC-08
 // API         : Internal functions; the error body is the full envelope of decisions/KR-BE-1-007-response-contract.md
 //
 // Author      : KritvaOS
@@ -39,6 +39,7 @@ export const ERRORS = {
   unauthorized: { httpStatus: 401, status: "UNAUTHORIZED", code: "AUTH_REQUIRED", message: "Please sign in to continue.", retryable: false },
   forbidden: { httpStatus: 403, status: "FORBIDDEN", code: "AUTHZ_DENIED", message: "You do not have permission to perform this operation.", retryable: false },
   rateLimited: { httpStatus: 429, status: "UNAVAILABLE", code: "RATE_LIMIT_EXCEEDED", message: "Too many requests. Please try again later.", retryable: true },
+  serviceUnavailable: { httpStatus: 503, status: "UNAVAILABLE", code: "SERVICE_UNAVAILABLE", message: "The service is temporarily unavailable. Please try again shortly.", retryable: true },
   internal: { httpStatus: 500, status: "FAILED", code: "INTERNAL_ERROR", message: "An unexpected error occurred. Please try again.", retryable: true },
 } as const satisfies Record<string, ErrorSpec>;
 

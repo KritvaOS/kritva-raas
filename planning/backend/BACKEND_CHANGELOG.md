@@ -1403,6 +1403,32 @@ Reason: step 7b of `PLANNING_MIGRATION_PLAN.md`, using the disposition in `TRACK
 | Unchanged | Every real task status and identifier, other tracking files, checkers, links |
 | Review | Written by Claude. No independent human review |
 
+## 3BB. PB-055 — Health and Readiness Endpoints (KR-BE-1-009)
+
+| Field | Value |
+|---|---|
+| Change ID | PB-055 |
+| Date | 2026-11-01 |
+| Status | Proposed |
+| Owner role | Backend Engineer; Backend Technical Lead accountable |
+| Follows | PB-054 |
+
+Reason: `KR-BE-1-009` depends on `KR-BE-1-003` and `KR-BE-1-004`, both implemented and In Review, and needs no secret-handling approval. The scope was aligned with ChatGPT on 2026-11-01 before coding: no startup state machine, because `run.ts` validates configuration before the port opens; injectable required checks, because BTS-008 requires the dependency-unavailable behavior to be tested; canonical paths and the PB-043 envelope.
+
+| Item | Disposition |
+|---|---|
+| Endpoints | `GET /health/live` and `GET /health/ready`, outside `/api/v1` (`BACKEND_ARCHITECTURE.md` Section 75), both with `Cache-Control: no-store` and the full envelope. Success codes `SERVICE_LIVE` and `SERVICE_READY` are defined here because no endpoint contract defines them yet |
+| Semantics | Liveness: 200 while the process answers; it does not read readiness, checks or shutdown. Readiness: 200 only when not draining and every required check returns `true`; otherwise 503 `SERVICE_UNAVAILABLE`, `retryable: true`, no reason, check name or error text |
+| Checks | `ReadinessCheck = () => boolean | Promise<boolean>`, injected through `buildHttpServer({ readiness: { checks } })`. Only `true` counts. A false, thrown, rejected, non-boolean or timed-out result is unavailable. Provisional timeout 2000 ms per check, checks run in parallel. None is registered in production because no dependency exists. `checkTimeoutMs` is validated when the server is built (positive safe integer up to 2147483647) and each check must be a function. Limits: the timeout bounds the request wait, not the operation, which is not cancelled; a check must be non-blocking; every request, `HEAD` included, runs every check again with no caching or concurrency limit. A cancellation mechanism and a concurrency policy are required before a real check is registered |
+| Draining | `lifecycle.ts` calls an optional `onStopping` once when `stop()` first runs; `run.ts` uses it to start draining. If the callback throws, the server still stops and `stop()` rejects with that error afterwards. The flag is read again after the checks, so shutdown that begins during a check cannot produce a stale 200 |
+| Contract | `serviceUnavailable` (503, `UNAVAILABLE`, `SERVICE_UNAVAILABLE`, retryable) added to `error-contract.ts`, matching `ERROR_CODES.md` Section 25.8. **Owner decision required:** that registry entry is a contract extension (`ERROR_CODES.md` lists the code under a phase label from the superseded phase model) and was not approved before this change |
+| Tests | 18 health tests, 2 lifecycle tests and 2 assertions in `run.test.ts`; suite 102 (82 before). A run on Node.js 24.21.0 with npm 10.9.9 in the sandbox passed; the recorded pin is npm 11.19.0, so that run is evidence only. Eight targeted mutation checks (no re-read of draining, truthy accepted as ready, no timeout, draining ignored, no timeout validation, unguarded `onStopping`, HEAD routes off, sparse-array check not caught) each made a test fail; they show those regressions are detected, not that the code is complete. CI was not run |
+| Not done | A real dependency check (none exists); metrics; retries or background monitoring; a drain delay. Shutdown closes the listener at once, so a probe sees a refused connection and the draining 503 cannot be observed over a socket today. A drain delay would be a lifecycle and deployment decision |
+| Not satisfied | `B-INC-001-AC-11` (BTS-008 has fake-check evidence only). `SEC-GATE-008` is not closed: secret-typed settings do not exist and the malformed-setting evidence is not tied to this revision for the gate |
+| Independence | Written by Claude with ChatGPT scope alignment. A ChatGPT code review on 2026-11-01 returned CHANGES REQUESTED; each finding was checked against the code. Fixed: timeout validation, `onStopping` exception safety, HEAD behavior tested and documented, late rejection after timeout tested, limits of the check contract documented. A second review of the revised patch returned APPROVE FOR OWNER AUTHORIZATION with one low-priority edge case (an empty slot in the checks array passes `every()`); the fix is `Array.from` before validation. The reviewer's stated consequence, readiness success, was wrong: the empty slot makes readiness fail closed with 503 Success codes and the registry entry stay owner decisions. ChatGPT reviewed pasted code, not the repository; the human owner has not reviewed it |
+| Task status | In Review. Not Accepted |
+| Not changed | Dependencies, lockfile, CI, configuration settings |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

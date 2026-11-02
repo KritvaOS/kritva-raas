@@ -9,7 +9,7 @@
 // Module      : Application Composition
 // Layer       : Service
 //
-// Requirements: KR-BE-1-003, KR-BE-1-004, B-INC-001-AC-04
+// Requirements: KR-BE-1-003, KR-BE-1-004, KR-BE-1-009, B-INC-001-AC-04
 // API         : start(env, signals, log, onExit)
 //
 // Author      : KritvaOS
@@ -17,6 +17,7 @@
 //==============================================================================
 
 import { ConfigError, loadConfig, type Environment } from "./config/config.js";
+import { createReadinessState } from "./transport/health.js";
 import { buildHttpServer } from "./transport/http-server.js";
 import {
   HttpStartupError,
@@ -41,11 +42,14 @@ export async function start(
 ): Promise<RunningHttpServer | undefined> {
   try {
     const config = loadConfig(env);
-    const app = buildHttpServer({ bodyLimitBytes: config.http.bodyLimitBytes });
+    // Readiness starts when the port opens, so it is never true with bad settings. Shutdown makes it false first.
+    const readiness = createReadinessState();
+    const app = buildHttpServer({ bodyLimitBytes: config.http.bodyLimitBytes, readiness: { state: readiness } });
     const server = await startHttpServer(app, {
       host: config.http.host,
       port: config.http.port,
       shutdownGraceMs: config.http.shutdownGraceMs,
+      onStopping: () => readiness.beginDraining(),
     });
     installShutdownHandlers(server, signals, (error) => {
       if (error) {

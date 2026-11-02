@@ -9,7 +9,7 @@
 // Module      : Application Composition Test
 // Layer       : Service
 //
-// Requirements: KR-BE-1-003, BTS-002, BTS-003
+// Requirements: KR-BE-1-003, KR-BE-1-009, BTS-002, BTS-003
 // API         : No callable API; tests of configuration and startup
 //
 // Author      : KritvaOS
@@ -70,6 +70,8 @@ test("valid configuration starts the server, answers requests and stops on a sig
   });
   await new Promise((r) => setTimeout(r, 200));
   assert.equal(await status(port, "/api/v1/none"), 404);
+  assert.equal(await status(port, "/health/live"), 200);
+  assert.equal(await status(port, "/health/ready"), 200);
   signals.emit("SIGTERM");
   assert.equal(await exited, 0);
   assert.deepEqual(lines, [`info: The HTTP server is listening on 127.0.0.1:${port}.`, "info: The HTTP server stopped."]);

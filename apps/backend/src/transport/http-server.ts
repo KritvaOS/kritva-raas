@@ -9,7 +9,7 @@
 // Module      : HTTP Transport
 // Layer       : API
 //
-// Requirements: KR-BE-1-004, KR-BE-1-005, KR-BE-1-006, KR-BE-1-007, KR-BINC-001-003, B-INC-001-AC-06, B-INC-001-AC-08
+// Requirements: KR-BE-1-004, KR-BE-1-005, KR-BE-1-006, KR-BE-1-007, KR-BE-1-009, KR-BINC-001-003, B-INC-001-AC-06, B-INC-001-AC-08
 // API         : buildHttpServer(options); route groups are mounted under /api/v1
 //
 // Author      : KritvaOS
@@ -19,6 +19,7 @@
 import Fastify, { type FastifyInstance, type FastifyReply, type FastifyRequest } from "fastify";
 import { API_V1_PREFIX, mountApiV1, validateRouteGroups, type RouteGroup } from "./api-v1.js";
 import { ERRORS, classifyError, errorBody } from "./error-contract.js";
+import { registerHealthRoutes, type HealthOptions } from "./health.js";
 import { ensureRequestId, registerRequestContext } from "./request-context.js";
 
 export { API_V1_PREFIX };
@@ -29,6 +30,8 @@ export interface HttpServerOptions {
   // Route groups mounted under /api/v1 (see api-v1.ts). Domain modules supply groups later; none exist yet.
   readonly groups?: readonly RouteGroup[];
   readonly bodyLimitBytes?: number;
+  // Required readiness checks and the draining state behind GET /health/ready (health.ts). Both are optional.
+  readonly readiness?: HealthOptions;
 }
 
 function pathMatcher(url: string): RegExp {
@@ -92,6 +95,10 @@ export function buildHttpServer(options: HttpServerOptions = {}): FastifyInstanc
     }
     return reply.code(404).send(errorBody(ERRORS.notFound, [], id));
   });
+
+  // Health routes sit outside /api/v1 (BACKEND_ARCHITECTURE.md Section 75) and are registered after the onRoute
+  // hook so a wrong method on them answers 405 like any other route.
+  registerHealthRoutes(app, options.readiness);
 
   mountApiV1(app, groups);
   return app;

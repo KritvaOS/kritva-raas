@@ -9,7 +9,7 @@
 // Module      : HTTP Transport Test
 // Layer       : API
 //
-// Requirements: KR-BE-1-004, BTS-007, BTS-032
+// Requirements: KR-BE-1-004, KR-BE-1-009, BTS-007, BTS-032
 // API         : No callable API; tests of the HTTP transport
 //
 // Author      : KritvaOS
@@ -53,6 +53,21 @@ test("the server starts on an OS-assigned port, answers a request and stops", as
   assert.equal(res.status, 404);
   assert.equal(JSON.parse(res.body).code, "RESOURCE_NOT_FOUND");
   await server.stop();
+  await assert.rejects(get(server.port, "/api/v1/none"));
+});
+
+test("stop calls onStopping once, before the server stops accepting connections", async () => {
+  const calls: string[] = [];
+  const server = await startHttpServer(buildHttpServer(), { host: HOST, port: 0, onStopping: () => calls.push("stopping") });
+  assert.deepEqual(calls, []);
+  await Promise.all([server.stop(), server.stop()]);
+  await server.stop();
+  assert.deepEqual(calls, ["stopping"]);
+});
+
+test("a throwing onStopping does not keep the server from stopping, and stop reports the error after cleanup", async () => {
+  const server = await startHttpServer(buildHttpServer(), { host: HOST, port: 0, onStopping: () => { throw new Error("notify failed"); } });
+  await assert.rejects(server.stop(), /notify failed/);
   await assert.rejects(get(server.port, "/api/v1/none"));
 });
 
