@@ -1475,6 +1475,31 @@ Reason: implements decisions 1 to 4 of `decisions/KR-BE-1-009-readiness-check-po
 | Review | Written by Claude. ChatGPT reviewed the plan and the pasted code on 2026-11-05 and returned CHANGES REQUESTED (a failing injected clock could turn a probe into a 500; four tests missing); each point was checked against the code and fixed. It did not review the repository or CI and did not run the tests; no human reviewer has reviewed it |
 | Not changed | Dependencies, lockfile, CI, the response contract, the request-context code |
 
+## 3BE. PB-058 — Request Correlation (KR-BE-1-008)
+
+| Field | Value |
+|---|---|
+| Change ID | PB-058 |
+| Date | 2026-11-05 |
+| Status | Proposed |
+| Owner role | Backend Engineer; Backend Technical Lead accountable |
+| Follows | PB-057 |
+
+Reason: implements `decisions/KR-BE-1-008-correlation-policy.md` (PB-056), approved by owner direction on 2026-11-05 and recorded under the Backend Technical Lead role at the owner's direction, with no separate confirmation from the person named in that role. The explicit authorization to start the task while `KR-BE-1-005` is In Review is recorded in that policy.
+
+| Item | Disposition |
+|---|---|
+| Identifier | `RequestContext` carries `correlationId` beside `requestId`; the request ID behavior is unchanged (server generated, client value ignored) |
+| Validation | A client value is accepted only as a string of 8 to 64 characters from `A-Za-z0-9._-`, used as sent. Anything else is replaced by `cor-<uuid>`: absent, empty, too short, too long, non-ASCII, control or CRLF characters, and a repeated header (the joined value fails the pattern). The request is never rejected for its correlation header |
+| Reflection | `X-Correlation-ID` on every application-generated response for a request that enters the Fastify lifecycle (success, 404, 405, 413, 500, router errors through `ensureRequestId`, health, `HEAD`). Never in a body. A request rejected by the HTTP parser is outside the guarantee |
+| Accessor | `correlationIdOf(request)` for `KR-BE-1-041`. No logger is added, the unvalidated header is never logged, and nothing is propagated downstream |
+| Tests | 153 `node:test` cases (134 before): resolver and replacement table, uniqueness, header reflection on every response kind over a real socket, injection and duplicate-header cases, concurrent isolation including two requests with the same valid client value, draining 503 carrying the header. Run on Node.js 24.21.0 with npm 10.9.9 in the sandbox; the recorded pin is npm 11.19.0, so that run is evidence only |
+| Not done | Log fields (`KR-BE-1-041`), trusted-gateway handling, outbound propagation, any use beyond diagnostics; CI not run |
+| Not satisfied | `B-INC-001-AC-07` is partly evidenced (principal and tenant are identity tasks). `B-INC-001-AC-10` and `BTS-009` are not touched. `SEC-GATE-009` is not closed |
+| Task status | `KR-BE-1-008` is In Review. Not Accepted |
+| Review | Written by Claude. No human reviewer has reviewed it |
+| Not changed | Dependencies, lockfile, CI, the response envelope |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

@@ -19,11 +19,14 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
+  CLIENT_CORRELATION_ID_PATTERN,
+  GENERATED_CORRELATION_ID_PATTERN,
   REQUEST_ID_PATTERN,
   RequestContextMissingError,
   createRequestContext,
   currentRequestContext,
   requireRequestContext,
+  resolveCorrelationId,
   runWithRequestContext,
 } from "../../src/shared/request-context.js";
 
@@ -79,4 +82,35 @@ test("a nested run uses the inner context and restores the outer one", () => {
     runWithRequestContext(inner, () => assert.equal(currentRequestContext(), inner));
     assert.equal(currentRequestContext(), outer);
   });
+});
+
+test("a context has a request ID and a different correlation ID, and neither is derived from the other", () => {
+  const context = createRequestContext();
+  assert.match(context.requestId, REQUEST_ID_PATTERN);
+  assert.match(context.correlationId, GENERATED_CORRELATION_ID_PATTERN);
+  assert.notEqual(context.requestId, context.correlationId);
+  assert.notEqual(context.requestId.slice(4), context.correlationId.slice(4), "independent random values");
+});
+
+test("generated correlation IDs are unique", () => {
+  const ids = new Set(Array.from({ length: 5000 }, () => createRequestContext().correlationId));
+  assert.equal(ids.size, 5000);
+});
+
+test("a valid client correlation ID is used exactly as sent, with its case preserved", () => {
+  for (const id of ["client-req-12345", "AbC.dEf_123-xyz", "a".repeat(8), "Z".repeat(64)]) {
+    assert.equal(createRequestContext(id).correlationId, id);
+    assert.equal(resolveCorrelationId(id), id);
+  }
+  assert.ok(Object.isFrozen(createRequestContext("client-req-12345")));
+});
+
+test("anything that is not exactly one valid string is replaced, never used", () => {
+  const replaced: unknown[] = [undefined, null, "", "short", "a".repeat(65), "has space", "abc/defgh", "abcdefgh\n", "abcdefg\u00e9",
+    "abcdefg\u0661", ["client-req-12345"], ["a", "b"], 12345678, {}, true, "first-valid-id, second-valid-id"];
+  for (const value of replaced) {
+    const id = resolveCorrelationId(value);
+    assert.match(id, GENERATED_CORRELATION_ID_PATTERN, JSON.stringify(value));
+    assert.ok(!CLIENT_CORRELATION_ID_PATTERN.test(id) || id.startsWith("cor-"));
+  }
 });
