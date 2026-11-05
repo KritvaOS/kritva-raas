@@ -9,7 +9,7 @@
 // Module      : Configuration
 // Layer       : Service
 //
-// Requirements: KR-BE-1-003, B-INC-001-AC-04
+// Requirements: KR-BE-1-003, KR-BE-1-009, B-INC-001-AC-04
 // API         : loadConfig(env); ConfigError
 //
 // Author      : KritvaOS
@@ -28,6 +28,7 @@ export interface AppConfig {
     readonly host: string;
     readonly port: number;
     readonly shutdownGraceMs: number;
+    readonly shutdownDrainMs: number;
     readonly bodyLimitBytes: number;
   };
 }
@@ -59,12 +60,15 @@ interface IntegerRule {
 
 const PORT: IntegerRule = { name: "KRITVA_HTTP_PORT", min: 1, max: 65535 };
 const GRACE: IntegerRule = { name: "KRITVA_HTTP_SHUTDOWN_GRACE_MS", min: 0, max: 300_000, fallback: 10_000 };
+// How long the service stays up and reports itself not ready before it closes (owner decision of 2026-11-05: 5000 ms).
+// 0 closes at once. The longest shutdown is this value plus the grace period.
+const DRAIN: IntegerRule = { name: "KRITVA_HTTP_SHUTDOWN_DRAIN_MS", min: 0, max: 300_000, fallback: 5_000 };
 const BODY: IntegerRule = { name: "KRITVA_HTTP_BODY_LIMIT_BYTES", min: 1, max: 104_857_600, fallback: 1_048_576 };
 const HOST_NAME = "KRITVA_HTTP_HOST";
 // Loopback by default. Listening on every interface has to be asked for by setting the host explicitly.
 const HOST_FALLBACK = "127.0.0.1";
 
-const KNOWN = new Set([PORT.name, GRACE.name, BODY.name, HOST_NAME]);
+const KNOWN = new Set([PORT.name, GRACE.name, DRAIN.name, BODY.name, HOST_NAME]);
 // A DNS name: at most 253 characters in dot-separated labels of 1 to 63 letters, digits or hyphens, where a label
 // neither starts nor ends with a hyphen. No empty label, no trailing dot, no underscore.
 const LABEL = /^[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?$/;
@@ -117,6 +121,7 @@ export function loadConfig(env: Environment): AppConfig {
       host: readHost(env, issues),
       port: readInteger(env, PORT, issues),
       shutdownGraceMs: readInteger(env, GRACE, issues),
+      shutdownDrainMs: readInteger(env, DRAIN, issues),
       bodyLimitBytes: readInteger(env, BODY, issues),
     },
   };

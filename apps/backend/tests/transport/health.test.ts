@@ -24,8 +24,9 @@ import { REQUEST_ID_PATTERN } from "../../src/shared/request-context.js";
 
 const SENTINEL = "SENTINEL-DB-PASSWORD-7c1e";
 
+// The tests of the earlier behavior expect fresh results, so the reuse period is off unless a test asks for it.
 function app(readiness?: HealthOptions) {
-  return buildHttpServer(readiness === undefined ? {} : { readiness });
+  return buildHttpServer({ readiness: { resultCacheMs: 0, ...readiness } });
 }
 
 const ok: ReadinessCheck = () => true;
@@ -203,4 +204,284 @@ test("a check that rejects after the timeout has passed does not cause an unhand
   } finally {
     process.off("unhandledRejection", onUnhandled);
   }
+});
+
+// ---------------------------------------------------------------------------------------------------------------
+// Cancellation, shared runs, reuse of outcomes and unsettled checks (decision record KR-BE-1-009-readiness-check-policy.md)
+
+const sleep = (ms: number): Promise<void> => new Promise((resolve) => { setTimeout(resolve, ms); });
+const ready = (server: ReturnType<typeof app>) => server.inject({ method: "GET", url: "/health/ready" });
+
+function manualClock(start = 0) {
+  let t = start;
+  return { now: () => t, set: (value: number) => { t = value; } };
+}
+
+test("a check receives an AbortSignal that is not aborted while the check answers in time", async () => {
+  let received: AbortSignal | undefined;
+  const check: ReadinessCheck = (signal) => { received = signal; return true; };
+  assert.equal((await ready(app({ checks: [check] }))).statusCode, 200);
+  assert.ok(received instanceof AbortSignal);
+  assert.equal(received.aborted, false);
+});
+
+test("each check receives its own signal", async () => {
+  const seen: AbortSignal[] = [];
+  const check: ReadinessCheck = (signal) => { seen.push(signal); return true; };
+  await ready(app({ checks: [check, check] }));
+  assert.equal(seen.length, 2);
+  assert.notEqual(seen[0], seen[1]);
+});
+
+test("the signal is aborted when the timeout fires, and the request ends with 503", async () => {
+  let aborted = false;
+  const check: ReadinessCheck = (signal) => new Promise<boolean>(() => { signal.addEventListener("abort", () => { aborted = true; }); });
+  const res = await ready(app({ checks: [check], checkTimeoutMs: 30 }));
+  assert.equal(res.statusCode, 503);
+  assert.equal(aborted, true);
+});
+
+test("a late success after the timeout never changes the answer already given", async () => {
+  const late: ReadinessCheck = async () => { await sleep(80); return true; };
+  const res = await ready(app({ checks: [late], checkTimeoutMs: 20 }));
+  assert.equal(res.statusCode, 503);
+  await sleep(120);
+});
+
+test("shutdown aborts active checks and the request ends at once with 503 even if the check ignores the signal", async () => {
+  const state = createReadinessState();
+  let signalSeen: AbortSignal | undefined;
+  const ignoring: ReadinessCheck = (signal) => { signalSeen = signal; return new Promise<boolean>(() => undefined); };
+  const server = app({ state, checks: [ignoring], checkTimeoutMs: 5000 });
+  const started = Date.now();
+  const pending = ready(server);
+  await sleep(30);
+  state.beginDraining();
+  const res = await pending;
+  assert.equal(res.statusCode, 503);
+  assert.ok(Date.now() - started < 1500, "the request must not wait for the check timeout");
+  assert.equal(signalSeen?.aborted, true);
+});
+
+test("beginDraining is idempotent and aborts the drain signal once", () => {
+  const state = createReadinessState();
+  let aborts = 0;
+  state.signal.addEventListener("abort", () => { aborts += 1; });
+  assert.equal(state.signal.aborted, false);
+  state.beginDraining();
+  state.beginDraining();
+  assert.equal(state.draining, true);
+  assert.equal(state.signal.aborted, true);
+  assert.equal(aborts, 1);
+});
+
+test("fifty concurrent probes share one run: each check is called exactly once", async () => {
+  let calls = 0;
+  const check: ReadinessCheck = async () => { calls += 1; await sleep(40); return true; };
+  const server = app({ checks: [check] });
+  const responses = await Promise.all(Array.from({ length: 50 }, () => ready(server)));
+  assert.ok(responses.every((r) => r.statusCode === 200));
+  assert.equal(calls, 1);
+});
+
+test("HEAD and GET probes that arrive together share the run", async () => {
+  let calls = 0;
+  const check: ReadinessCheck = async () => { calls += 1; await sleep(30); return true; };
+  const server = app({ checks: [check] });
+  const [get, head] = await Promise.all([ready(server), server.inject({ method: "HEAD", url: "/health/ready" })]);
+  assert.equal(get.statusCode, 200);
+  assert.equal(head.statusCode, 200);
+  assert.equal(calls, 1);
+});
+
+test("a finished run is reused for 1000 ms and then run again, for successes and for failures", async () => {
+  for (const outcome of [true, false]) {
+    const clock = manualClock();
+    let calls = 0;
+    const check: ReadinessCheck = () => { calls += 1; return outcome; };
+    const server = app({ checks: [check], resultCacheMs: 1000, now: clock.now });
+    assert.equal((await ready(server)).statusCode, outcome ? 200 : 503);
+    clock.set(999);
+    assert.equal((await ready(server)).statusCode, outcome ? 200 : 503);
+    assert.equal(calls, 1, "inside the window the outcome is reused");
+    clock.set(1000);
+    await ready(server);
+    assert.equal(calls, 2, "after the window the checks run again");
+  }
+});
+
+test("the reuse period is counted from the end of the run", async () => {
+  const clock = manualClock();
+  let calls = 0;
+  const check: ReadinessCheck = async () => { calls += 1; clock.set(500); return true; };
+  const server = app({ checks: [check], resultCacheMs: 1000, now: clock.now });
+  await ready(server);
+  clock.set(1499);
+  await ready(server);
+  assert.equal(calls, 1, "the run ended at 500, so the outcome is still reused at 1499");
+  clock.set(1500);
+  await ready(server);
+  assert.equal(calls, 2);
+});
+
+test("the default reuse period is 1000 ms and it can be turned off with 0", async () => {
+  let calls = 0;
+  const check: ReadinessCheck = () => { calls += 1; return true; };
+  const reused = buildHttpServer({ readiness: { checks: [check] } });
+  await ready(reused);
+  await ready(reused);
+  assert.equal(calls, 1);
+  calls = 0;
+  const fresh = app({ checks: [check] });
+  await ready(fresh);
+  await ready(fresh);
+  assert.equal(calls, 2);
+});
+
+test("reused outcomes never produce a 200 once shutdown has begun, and the checks are not run", async () => {
+  const state = createReadinessState();
+  let calls = 0;
+  const check: ReadinessCheck = () => { calls += 1; return true; };
+  const server = app({ state, checks: [check], resultCacheMs: 60_000 });
+  assert.equal((await ready(server)).statusCode, 200);
+  state.beginDraining();
+  const res = await ready(server);
+  assert.equal(res.statusCode, 503);
+  assert.equal(res.json().code, "SERVICE_UNAVAILABLE");
+  assert.equal(calls, 1);
+});
+
+test("a check that timed out and keeps running is not started again until it settles, and then it is", async () => {
+  let calls = 0;
+  const slow: ReadinessCheck = async () => { calls += 1; await sleep(120); return true; };
+  const server = app({ checks: [slow], checkTimeoutMs: 20 });
+  assert.equal((await ready(server)).statusCode, 503);
+  assert.equal(calls, 1);
+  assert.equal((await ready(server)).statusCode, 503);
+  assert.equal(calls, 1, "the unfinished operation is not started a second time");
+  await sleep(200);
+  assert.equal(calls, 1);
+  assert.equal((await ready(server)).statusCode, 503);
+  assert.equal(calls, 2, "after the operation settled the check is invoked again (and times out again)");
+});
+
+test("a check that recovers after settling gives 200 again", async () => {
+  let calls = 0;
+  const check: ReadinessCheck = async (signal) => {
+    calls += 1;
+    if (calls === 1) { await sleep(60); return false; }
+    void signal;
+    return true;
+  };
+  const server = app({ checks: [check], checkTimeoutMs: 20 });
+  assert.equal((await ready(server)).statusCode, 503);
+  await sleep(120);
+  assert.equal((await ready(server)).statusCode, 200);
+  assert.equal(calls, 2);
+});
+
+test("other checks still run while one check is unsettled", async () => {
+  let stuckCalls = 0;
+  let okCalls = 0;
+  const stuck: ReadinessCheck = () => { stuckCalls += 1; return new Promise<boolean>(() => undefined); };
+  const fine: ReadinessCheck = () => { okCalls += 1; return true; };
+  const server = app({ checks: [stuck, fine], checkTimeoutMs: 20 });
+  assert.equal((await ready(server)).statusCode, 503);
+  assert.equal((await ready(server)).statusCode, 503);
+  assert.equal(stuckCalls, 1);
+  assert.equal(okCalls, 2);
+});
+
+test("a check that never settles keeps readiness at 503 for every later probe and is never started again", async () => {
+  let calls = 0;
+  const never: ReadinessCheck = () => { calls += 1; return new Promise<boolean>(() => undefined); };
+  const server = app({ checks: [never], checkTimeoutMs: 20 });
+  for (let i = 0; i < 5; i += 1) assert.equal((await ready(server)).statusCode, 503);
+  assert.equal(calls, 1);
+});
+
+test("concurrent probes against a check that ignores its signal do not accumulate runs", async () => {
+  let calls = 0;
+  const never: ReadinessCheck = () => { calls += 1; return new Promise<boolean>(() => undefined); };
+  const server = app({ checks: [never], checkTimeoutMs: 20 });
+  const first = await Promise.all(Array.from({ length: 20 }, () => ready(server)));
+  assert.ok(first.every((r) => r.statusCode === 503));
+  const second = await Promise.all(Array.from({ length: 20 }, () => ready(server)));
+  assert.ok(second.every((r) => r.statusCode === 503));
+  assert.equal(calls, 1);
+});
+
+test("a check that throws or rejects is not treated as unsettled: it is invoked on every run", async () => {
+  let calls = 0;
+  const throwing: ReadinessCheck = () => { calls += 1; throw new Error(SENTINEL); };
+  const server = app({ checks: [throwing] });
+  assert.equal((await ready(server)).statusCode, 503);
+  assert.equal((await ready(server)).statusCode, 503);
+  assert.equal(calls, 2);
+});
+
+test("an invalid reuse period or clock stops the server from being built, and the bounds are accepted", () => {
+  for (const value of [-1, Number.NaN, 1.5, 60_001, Number.POSITIVE_INFINITY]) {
+    assert.throws(() => app({ resultCacheMs: value }), RangeError, `reuse period ${String(value)} must be rejected`);
+  }
+  assert.doesNotThrow(() => app({ resultCacheMs: 0 }));
+  assert.doesNotThrow(() => app({ resultCacheMs: 60_000 }));
+  assert.throws(() => app({ now: "clock" as unknown as () => number }), TypeError);
+});
+
+test("draining that begins while reused outcomes are being read still gives 503, never a stale 200", async () => {
+  const state = createReadinessState();
+  let begin = false;
+  // The clock is read when the reused outcomes are looked up, so shutdown can be made to begin at exactly that moment.
+  const now = (): number => { if (begin) state.beginDraining(); return 0; };
+  const server = app({ state, checks: [() => true], resultCacheMs: 60_000, now });
+  assert.equal((await ready(server)).statusCode, 200);
+  begin = true;
+  assert.equal((await ready(server)).statusCode, 503);
+});
+
+test("a clock that throws when the reused outcomes are read does not change the answer: the checks run again", async () => {
+  let boom = false;
+  let calls = 0;
+  const now = (): number => { if (boom) throw new Error("clock failed"); return 0; };
+  const server = app({ checks: [() => { calls += 1; return true; }], resultCacheMs: 60_000, now });
+  assert.equal((await ready(server)).statusCode, 200);
+  boom = true;
+  const res = await ready(server);
+  assert.equal(res.statusCode, 200);
+  assert.equal(calls, 2);
+});
+
+test("a clock that throws or returns a number that is not finite never makes a probe fail, and nothing is reused", async () => {
+  for (const now of [(): number => { throw new Error("clock failed"); }, (): number => Number.NaN, (): number => Number.POSITIVE_INFINITY]) {
+    let calls = 0;
+    const server = app({ checks: [() => { calls += 1; return true; }], resultCacheMs: 60_000, now });
+    assert.equal((await ready(server)).statusCode, 200);
+    assert.equal((await ready(server)).statusCode, 200, "single-flight is not left stuck by the clock failure");
+    assert.equal(calls, 2, "nothing was recorded for reuse, so the checks ran each time");
+  }
+});
+
+test("after a timed-out check settles, the reused failure stays until its period ends, then the check is invoked again", async () => {
+  const clock = manualClock();
+  let calls = 0;
+  const check: ReadinessCheck = async () => { calls += 1; await sleep(60); return true; };
+  const server = app({ checks: [check], checkTimeoutMs: 20, resultCacheMs: 1000, now: clock.now });
+  assert.equal((await ready(server)).statusCode, 503);
+  await sleep(120);
+  assert.equal(calls, 1, "the operation has settled");
+  clock.set(500);
+  assert.equal((await ready(server)).statusCode, 503);
+  assert.equal(calls, 1, "the reused failure is still served inside its period, so the check is not invoked");
+  clock.set(1000);
+  await ready(server);
+  assert.equal(calls, 2, "after the period the check is invoked again");
+});
+
+test("the timeout timer is cleared when the check answers early: the signal is not aborted later", async () => {
+  let received: AbortSignal | undefined;
+  const check: ReadinessCheck = (signal) => { received = signal; return true; };
+  assert.equal((await ready(app({ checks: [check], checkTimeoutMs: 40 }))).statusCode, 200);
+  await sleep(120);
+  assert.equal(received?.aborted, false);
 });

@@ -20,6 +20,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { EventEmitter } from "node:events";
 import { request, type IncomingMessage } from "node:http";
+import { createReadinessState } from "../../src/transport/health.js";
 import { buildHttpServer } from "../../src/transport/http-server.js";
 import { HttpStartupError, installShutdownHandlers, startHttpServer } from "../../src/transport/lifecycle.js";
 
@@ -131,4 +132,89 @@ test("removing the handlers leaves no listener", async () => {
   assert.equal(source.listenerCount("SIGTERM"), 0);
   assert.equal(source.listenerCount("SIGINT"), 0);
   await server.stop();
+});
+
+// ---------------------------------------------------------------------------------------------------------------
+// Shutdown drain (decision record KR-BE-1-009-readiness-check-policy.md, decision 4)
+
+function drainingApp(state = createReadinessState(), delayMs = 150) {
+  return buildHttpServer({
+    readiness: { state, resultCacheMs: 0 },
+    groups: [{ name: "slow", prefix: "/slow", register: (api) => {
+      api.get("/", async () => { await new Promise((r) => setTimeout(r, delayMs)); return { done: true }; });
+    } }],
+  });
+}
+
+test("during the drain the listener stays open: readiness answers 503 over a real socket, other routes are still served", async () => {
+  const state = createReadinessState();
+  const server = await startHttpServer(drainingApp(state), { host: HOST, port: 0, shutdownDrainMs: 400, shutdownGraceMs: 5000, onStopping: () => state.beginDraining() });
+  assert.equal((await get(server.port, "/health/ready")).status, 200);
+  const stopping = server.stop();
+  await new Promise((r) => setTimeout(r, 80));
+  const ready = await get(server.port, "/health/ready");
+  assert.equal(ready.status, 503);
+  assert.equal(JSON.parse(ready.body).code, "SERVICE_UNAVAILABLE");
+  assert.equal((await get(server.port, "/health/live")).status, 200);
+  assert.equal((await get(server.port, "/api/v1/none")).status, 404);
+  assert.equal((await get(server.port, "/api/v1/slow")).status, 200);
+  await stopping;
+  await assert.rejects(get(server.port, "/health/ready"));
+});
+
+test("stop takes at least the drain period, and onStopping runs at the start of it", async () => {
+  const events: string[] = [];
+  const server = await startHttpServer(buildHttpServer(), { host: HOST, port: 0, shutdownDrainMs: 250, onStopping: () => events.push("stopping") });
+  const started = Date.now();
+  const stopping = server.stop();
+  assert.deepEqual(events, ["stopping"]);
+  assert.equal((await get(server.port, "/api/v1/none")).status, 404, "still accepting connections");
+  await stopping;
+  assert.ok(Date.now() - started >= 240, "stop waited for the drain period");
+});
+
+test("the grace period starts after the drain: a request that starts during the drain finishes even with a short grace", async () => {
+  const state = createReadinessState();
+  const server = await startHttpServer(drainingApp(state, 200), { host: HOST, port: 0, shutdownDrainMs: 400, shutdownGraceMs: 60, onStopping: () => state.beginDraining() });
+  const stopping = server.stop();
+  await new Promise((r) => setTimeout(r, 50));
+  const res = await get(server.port, "/api/v1/slow");
+  assert.equal(res.status, 200, "a grace period counted from the start of the drain would have closed this request");
+  await stopping;
+});
+
+test("a second signal during the drain is ignored and does not shorten it", async () => {
+  const server = await startHttpServer(buildHttpServer(), { host: HOST, port: 0, shutdownDrainMs: 300 });
+  const source = new EventEmitter();
+  const started = Date.now();
+  const stopped = new Promise<void>((resolve) => { installShutdownHandlers(server, source, () => resolve()); });
+  source.emit("SIGTERM");
+  await new Promise((r) => setTimeout(r, 50));
+  source.emit("SIGINT");
+  source.emit("SIGTERM");
+  await stopped;
+  assert.ok(Date.now() - started >= 290);
+});
+
+test("a drain of 0 stops at once, as before", async () => {
+  const server = await startHttpServer(buildHttpServer(), { host: HOST, port: 0, shutdownDrainMs: 0 });
+  const started = Date.now();
+  await server.stop();
+  assert.ok(Date.now() - started < 1000);
+});
+
+test("a throwing onStopping with a drain period still drains, closes the server, and surfaces the error afterwards", async () => {
+  const state = createReadinessState();
+  const server = await startHttpServer(drainingApp(state), {
+    host: HOST, port: 0, shutdownDrainMs: 250,
+    onStopping: () => { state.beginDraining(); throw new Error("notify failed"); },
+  });
+  const started = Date.now();
+  const stopping = server.stop();
+  const outcome = stopping.then(() => "resolved", (e: unknown) => String((e as Error).message));
+  await new Promise((r) => setTimeout(r, 60));
+  assert.equal((await get(server.port, "/health/ready")).status, 503, "readiness is draining although the hook threw");
+  assert.equal(await outcome, "notify failed");
+  assert.ok(Date.now() - started >= 240, "the drain period was not skipped");
+  await assert.rejects(get(server.port, "/health/ready"));
 });

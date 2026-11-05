@@ -66,7 +66,7 @@ test("valid configuration starts the server, answers requests and stops on a sig
   const { lines, log } = recorder();
   const signals = new EventEmitter();
   const exited = new Promise<number>((resolve) => {
-    void start({ KRITVA_HTTP_PORT: String(port) }, signals, log, resolve);
+    void start({ KRITVA_HTTP_PORT: String(port), KRITVA_HTTP_SHUTDOWN_DRAIN_MS: "0" }, signals, log, resolve);
   });
   await new Promise((r) => setTimeout(r, 200));
   assert.equal(await status(port, "/api/v1/none"), 404);
@@ -77,9 +77,28 @@ test("valid configuration starts the server, answers requests and stops on a sig
   assert.deepEqual(lines, [`info: The HTTP server is listening on 127.0.0.1:${port}.`, "info: The HTTP server stopped."]);
 });
 
+test("with a drain period a real connection sees readiness 503 and liveness 200 during shutdown, then the process stops", async () => {
+  const port = await freePort();
+  const { log } = recorder();
+  const signals = new EventEmitter();
+  const exited = new Promise<number>((resolve) => {
+    void start({ KRITVA_HTTP_PORT: String(port), KRITVA_HTTP_SHUTDOWN_DRAIN_MS: "500" }, signals, log, resolve);
+  });
+  await new Promise((r) => setTimeout(r, 200));
+  assert.equal(await status(port, "/health/ready"), 200);
+  const started = Date.now();
+  signals.emit("SIGTERM");
+  await new Promise((r) => setTimeout(r, 100));
+  assert.equal(await status(port, "/health/ready"), 503);
+  assert.equal(await status(port, "/health/live"), 200);
+  assert.equal(await exited, 0);
+  assert.ok(Date.now() - started >= 450, "the process waited for the drain period");
+  await assert.rejects(status(port, "/health/ready"));
+});
+
 test("a port already in use exits 1 with the error code only", async () => {
   const port = await freePort();
-  const first = await start({ KRITVA_HTTP_PORT: String(port) }, new EventEmitter(), recorder().log, () => undefined);
+  const first = await start({ KRITVA_HTTP_PORT: String(port), KRITVA_HTTP_SHUTDOWN_DRAIN_MS: "0" }, new EventEmitter(), recorder().log, () => undefined);
   assert.ok(first);
   const { lines, log } = recorder();
   const codes: number[] = [];
@@ -109,7 +128,7 @@ test("the entry point exits 1 and names the setting when the port is not configu
 
 test("the entry point serves requests and exits 0 on SIGTERM", async () => {
   const port = await freePort();
-  const child = runMain({ KRITVA_HTTP_PORT: String(port) });
+  const child = runMain({ KRITVA_HTTP_PORT: String(port), KRITVA_HTTP_SHUTDOWN_DRAIN_MS: "0" });
   const deadline = Date.now() + 5000;
   while (!child.output().includes("listening") && Date.now() < deadline) await new Promise((r) => setTimeout(r, 25));
   assert.match(child.output(), new RegExp(`listening on 127\\.0\\.0\\.1:${port}`));

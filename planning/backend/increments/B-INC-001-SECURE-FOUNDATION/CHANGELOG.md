@@ -87,6 +87,21 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-11-05 — KR-BE-1-009 health follow-up: cancellation, shared runs, shutdown drain
+
+- **State:** IN REVIEW (implementation delivered; not accepted)
+- **Tasks:** KR-BE-1-009 (In Review)
+- **Increment ACs:** B-INC-001-AC-11 (partly evidenced; not satisfied)
+- **Program acceptance:** Not applicable
+- **Tests:** BTS-008 (suite 134, 102 before; fake required checks only; run on Node.js 24.21.0 with npm 10.9.9 in the sandbox, recorded pin is npm 11.19.0; no controlled evidence against a real dependency)
+- **Security gates:** SEC-GATE-008 (not closed)
+- **Findings/risks:** A check that never settles keeps readiness at 503 until restart (owner-confirmed fail closed). A second signal during the drain is ignored. The longest shutdown is drain plus grace (15 s with the defaults) and the platform termination period is unknown. The database check requirements and connection strategy are Proposed for the database task
+- **Files changed:** `apps/backend/src/transport/health.ts`, `lifecycle.ts`, `src/config/config.ts`, `src/run.ts`, `tests/transport/health.test.ts`, `lifecycle.test.ts`, `tests/run.test.ts`, `tests/config/config.test.ts`, `apps/backend/README.md`, `TASKS.md`, `BACKEND_CHANGELOG.md` (PB-057)
+- **Commit:** Pending until this change is merged
+- **Evidence:** Test output posted with the pull request
+- **Reviewer role:** Backend Technical Lead (not yet reviewed)
+- **Decision and follow-up:** Database Technical Lead decides the check semantics and connection strategy in the database task; Cloud/Infrastructure Owner supplies the termination period. Not Accepted
+
 ### 2026-11-01 — KR-BE-1-009 health and readiness endpoints
 
 - **State:** IN REVIEW (implementation delivered; not accepted)

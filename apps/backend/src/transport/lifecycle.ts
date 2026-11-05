@@ -34,8 +34,8 @@ export class HttpStartupError extends Error {
 export interface RunningHttpServer {
   readonly host: string;
   readonly port: number;
-  // Idempotent. Stops accepting connections, lets in-flight requests finish, and after the grace period
-  // closes connections that are still open.
+  // Idempotent. Starts draining, keeps serving for the drain period, then stops accepting connections, lets
+  // in-flight requests finish, and after the grace period closes connections that are still open.
   stop(): Promise<void>;
 }
 
@@ -44,7 +44,11 @@ export interface StartOptions {
   // 0 asks the operating system for a free port (used by tests).
   readonly port: number;
   readonly shutdownGraceMs?: number;
-  // Called once, before the server stops accepting connections, when stop() first runs. Used to start draining.
+  // How long the listener stays open after stop() first runs, so a load balancer can notice that readiness answers
+  // 503 and stop sending traffic. Application routes are still served during this period. Default 0: no delay. The
+  // grace period starts after it, so the longest stop is drain plus grace. A second signal does not shorten it.
+  readonly shutdownDrainMs?: number;
+  // Called once, before the drain period starts, when stop() first runs. Used to start draining.
   readonly onStopping?: () => void;
 }
 
@@ -58,6 +62,7 @@ export async function startHttpServer(app: FastifyInstance, options: StartOption
   }
   const bound = app.server.address() as AddressInfo;
   const graceMs = options.shutdownGraceMs ?? DEFAULT_SHUTDOWN_GRACE_MS;
+  const drainMs = options.shutdownDrainMs ?? 0;
   let stopping: Promise<void> | undefined;
   const stop = (): Promise<void> => {
     stopping ??= (async () => {
@@ -68,6 +73,9 @@ export async function startHttpServer(app: FastifyInstance, options: StartOption
       } catch (error) {
         notifyError = error ?? new Error("onStopping failed");
       }
+      // The listener stays open while the service reports itself not ready. Nothing here ends early: a second signal
+      // is ignored by installShutdownHandlers, as before.
+      if (drainMs > 0) await new Promise<void>((resolve) => { setTimeout(resolve, drainMs); });
       const timer = setTimeout(() => app.server.closeAllConnections(), graceMs);
       try {
         await app.close();
