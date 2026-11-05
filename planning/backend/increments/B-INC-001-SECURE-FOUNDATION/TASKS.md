@@ -152,6 +152,7 @@ A task must not be marked Accepted solely because files or code exist. Required 
 - **Linked AC:** B-INC-001-AC-07, B-INC-001-AC-10.
 - **Linked tests:** BTS-005, BTS-006, BTS-009.
 - **Linked security gates:** SEC-GATE-009.
+- **Decision record:** [`decisions/KR-BE-1-008-correlation-policy.md`](decisions/KR-BE-1-008-correlation-policy.md) (PB-056): correlation policy approved by owner direction on 2026-11-05, with the explicit authorization to start this task while `KR-BE-1-005` is In Review. Nothing is implemented yet; the task is not started in code and not Accepted.
 
 ### KR-BE-1-009 — Implement health/readiness endpoints
 
@@ -165,7 +166,7 @@ A task must not be marked Accepted solely because files or code exist. Required 
 - **Linked AC:** B-INC-001-AC-11.
 - **Linked tests:** BTS-008.
 - **Linked security gates:** SEC-GATE-008.
-- **Status:** In Review (`BACKEND_CHANGELOG.md` PB-055). `GET /health/live` and `GET /health/ready` (outside `/api/v1`) in `src/transport/health.ts`, using the full response envelope. Liveness is 200 while the process answers. Readiness is 200 only when the service is not draining and every injected required check returns `true`; a false, thrown, rejected, non-boolean or timed-out check, or a draining service, gives 503 `SERVICE_UNAVAILABLE` with no reason in the body. No required check exists yet (no database), so BTS-008 is exercised with fake checks only. The check timeout bounds the request wait, not the operation, checks must be non-blocking, and a cancellation and concurrency policy is required before a real check is registered. Configuration is still validated before the port opens, so invalid configuration never reaches readiness. `B-INC-001-AC-11` is not satisfied, BTS-008 has no controlled evidence against a real dependency, and `SEC-GATE-008` is not closed. Adding `SERVICE_UNAVAILABLE` to the transport registry needs an owner decision. Not Accepted.
+- **Status:** In Review (`BACKEND_CHANGELOG.md` PB-055). `GET /health/live` and `GET /health/ready` (outside `/api/v1`) in `src/transport/health.ts`, using the full response envelope. Liveness is 200 while the process answers. Readiness is 200 only when the service is not draining and every injected required check returns `true`; a false, thrown, rejected, non-boolean or timed-out check, or a draining service, gives 503 `SERVICE_UNAVAILABLE` with no reason in the body. No required check exists yet (no database), so BTS-008 is exercised with fake checks only. The check timeout bounds the request wait, not the operation, checks must be non-blocking, and a cancellation and concurrency policy is required before a real check is registered. Configuration is still validated before the port opens, so invalid configuration never reaches readiness. `B-INC-001-AC-11` is not satisfied, BTS-008 has no controlled evidence against a real dependency, and `SEC-GATE-008` is not closed. The response codes were accepted by the owner on 2026-11-04. The cancellation, concurrency and drain policy is in [`decisions/KR-BE-1-009-readiness-check-policy.md`](decisions/KR-BE-1-009-readiness-check-policy.md) (PB-056), not yet implemented. Not Accepted.
 
 ### KR-BE-1-041 — Implement structured backend logging
 

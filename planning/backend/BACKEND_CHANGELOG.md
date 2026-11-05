@@ -1429,6 +1429,27 @@ Reason: `KR-BE-1-009` depends on `KR-BE-1-003` and `KR-BE-1-004`, both implement
 | Task status | In Review. Not Accepted |
 | Not changed | Dependencies, lockfile, CI, configuration settings |
 
+## 3BC. PB-056 — Readiness Check Policy and Correlation Policy Records (KR-BE-1-009 follow-up, KR-BE-1-008)
+
+| Field | Value |
+|---|---|
+| Change ID | PB-056 |
+| Date | 2026-11-05 |
+| Status | Proposed |
+| Owner role | Backend Technical Lead |
+| Follows | PB-055 |
+
+Reason: PB-055 left a cancellation mechanism, a concurrency policy and the shutdown drain open, and `KR-BE-1-007-response-contract.md` decision 3 left the correlation policy to `KR-BE-1-008`. The owner gave direction on 2026-11-04 and 2026-11-05 and asked that it be recorded under the Backend Technical Lead role (Dinesh Annayya). The earlier readiness policy proposal, delivered as the package `claude-patches-kr-be-1-009-check-policy` but never merged, is superseded by this entry and must not be applied.
+
+| Item | Disposition |
+|---|---|
+| Added | `decisions/KR-BE-1-008-correlation-policy.md` (Approved by owner direction): two identifiers, the 8 to 64 character allowlist, replace rather than reject, `cor-<uuid>`, `X-Correlation-ID` response header, no envelope field, no outbound propagation, and the explicit authorization to start `KR-BE-1-008` while `KR-BE-1-005` is In Review |
+| Added | `decisions/KR-BE-1-009-readiness-check-policy.md` (Proposed as a whole): per-decision dispositions. Approved by owner direction: per-check cancellation, the 2000 ms constant, single-flight with a 1000 ms outcome cache and the fail-closed stuck-check rule, the 5000 ms drain default with routes served during the drain, and the three response codes. Still Proposed or Pending: database check requirements and connection strategy (Database Technical Lead), diagnostics (`KR-BE-1-041`), the termination budget (Cloud/Infrastructure Owner) |
+| Changed | `docs/protocol/API_CONTRACT.md`: Section 13 states the approved correlation policy and that current runtime behavior stays authoritative until `KR-BE-1-008` is delivered; new Section 52.1 documents the health endpoints, separating implemented behavior from approved behavior not yet implemented |
+| Not decided | Everything marked Proposed or Pending above; the deployment platform and its termination grace period; any change to the second-signal behavior |
+| Unchanged | Source code, tests, dependencies, CI, every task status, `KR-BE-1-005` (not accepted by the authorization), `B-INC-001-AC-07`, `AC-10` and `AC-11` (not satisfied), `SEC-GATE-008` and `SEC-GATE-009` (not closed) |
+| Review | Written by Claude with ChatGPT design review. The decisions are the repository owner's, recorded under the Backend Technical Lead role at his direction; no confirmation from the person named in that role is recorded and no independent human review took place |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:
