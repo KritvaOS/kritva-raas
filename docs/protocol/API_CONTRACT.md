@@ -506,7 +506,7 @@ The envelope MUST contain `protocol_version`, `request_id`, `timestamp`, `status
 
 Clients MUST NOT parse `message` to decide behavior. Error messages MUST NOT contain credentials, private keys, access tokens, sensitive stack traces, internal exception text or submitted values.
 
-`X-Correlation-ID` (Section 12) remains a request header. The envelope has no correlation field, and a client-supplied correlation identifier is currently ignored. Whether and how a validated correlation identifier is accepted and reflected is decided with `KR-BE-1-008`.
+`X-Correlation-ID` (Section 12) remains a request header and the envelope has no correlation field. The server accepts a client-supplied `X-Correlation-ID` that has 8 to 64 characters, each one of `A-Z`, `a-z`, `0-9`, `.`, `_` and `-`; an absent, empty, invalid or repeated value is replaced by a server-generated `cor-<uuid>` identifier and the request is not rejected. The effective identifier is returned in the `X-Correlation-ID` response header and is never placed in the response body. This policy was approved by the owner on 2026-11-05 (decision record `KR-BE-1-008-correlation-policy.md`) and is implemented by `KR-BE-1-008`; until that task is delivered, the current runtime behavior (a client correlation identifier is ignored and not returned) remains authoritative.
 
 ## 19. Standard HTTP status codes
 
@@ -1728,6 +1728,19 @@ A temporary dependency outage SHOULD result in `503 Service Unavailable` or anot
 The server SHOULD include `Retry-After` when a reliable retry delay is available.
 
 The server MUST NOT claim a durable mutation succeeded if the required authoritative commit failed.
+
+### 52.1 Health and readiness endpoints
+
+The health endpoints sit outside `/api/v1`. They answer `GET` and `HEAD`; any other method receives `405`. Every response uses the full envelope of Section 13 (a `HEAD` response has no body), carries `Cache-Control: no-store`, and discloses no configuration value, dependency name, check name or error text.
+
+| Endpoint | Meaning | Success | Failure |
+|---|---|---|---|
+| `GET /health/live` | The process can respond. It reads no dependency, no readiness state and no shutdown state | `200`, `status` `SUCCESS`, `code` `SERVICE_LIVE` | None while the process answers |
+| `GET /health/ready` | Traffic should be sent to this instance: it is not draining and every required readiness check reports available | `200`, `status` `SUCCESS`, `code` `SERVICE_READY` | `503`, `status` `UNAVAILABLE`, `code` `SERVICE_UNAVAILABLE`, `retryable` true, no reason |
+
+Implemented (`KR-BE-1-009`, PB-055): readiness is `503` when the service is draining or any required check returns anything other than `true`, throws, rejects or does not answer within the check timeout of 2000 ms; checks run in parallel; the draining state is read again after the checks. No required check is registered yet because the backend has no database, so these rules have been exercised with test checks only.
+
+Approved, not yet implemented (decision record `KR-BE-1-009-readiness-check-policy.md`, decisions 1 to 4; to be delivered by the `KR-BE-1-009` follow-up, PB-057): each check receives an `AbortSignal` that is aborted at its timeout and when shutdown begins; at most one readiness run is in flight and concurrent probes share it; the outcomes of a finished run are reused for 1000 ms while the draining state is still read for every response; a check that timed out is not invoked again until its operation settles; on shutdown the service answers `503` on `/health/ready` and keeps serving for `KRITVA_HTTP_SHUTDOWN_DRAIN_MS` (default 5000) before closing. Until that follow-up is delivered, the implemented behavior above is authoritative.
 
 ## 53. Endpoint availability and capability discovery
 
