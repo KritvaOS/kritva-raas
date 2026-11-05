@@ -122,7 +122,7 @@ test("no context is left active after a request", async () => {
   await a.close();
 });
 
-test("a client-supplied X-Request-ID, X-Correlation-ID or newline-bearing value is ignored and never echoed", async () => {
+test("a client-supplied X-Request-ID is ignored and never echoed, and a valid X-Correlation-ID does not change that", async () => {
   const a = app();
   const res = await a.inject({
     method: "GET",
@@ -133,7 +133,7 @@ test("a client-supplied X-Request-ID, X-Correlation-ID or newline-bearing value 
   assert.match(id, REQUEST_ID_PATTERN);
   assert.notEqual(id, "attacker-chosen-id");
   assert.ok(!res.body.includes("attacker-chosen-id"));
-  assert.equal(res.headers["x-correlation-id"], undefined);
+  assert.equal(res.headers["x-correlation-id"], "corr-123", "an accepted correlation value is returned as sent");
   const long = await a.inject({ method: "GET", url: "/api/v1/probe", headers: { "x-request-id": "x".repeat(5000) } });
   assert.match(String(long.headers["x-request-id"]), REQUEST_ID_PATTERN);
   await a.close();

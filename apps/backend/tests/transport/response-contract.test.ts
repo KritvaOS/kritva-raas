@@ -19,7 +19,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import type { InjectOptions } from "fastify";
-import { REQUEST_ID_PATTERN } from "../../src/shared/request-context.js";
+import { GENERATED_CORRELATION_ID_PATTERN, REQUEST_ID_PATTERN } from "../../src/shared/request-context.js";
 import { buildHttpServer, handleFrameworkError } from "../../src/transport/http-server.js";
 import { ensureRequestId, requestIdOf } from "../../src/transport/request-context.js";
 import { RequestContextMissingError } from "../../src/shared/request-context.js";
@@ -226,7 +226,20 @@ test("ensureRequestId attaches one ID to the request and the header and returns 
   assert.equal(headers["x-request-id"], id);
   assert.equal(request.requestContext?.requestId, id);
   assert.equal(ensureRequestId(request, reply), id);
-  assert.equal(Object.keys(headers).length, 1);
+  assert.equal(Object.keys(headers).length, 2, "the request ID and the correlation ID headers");
+  assert.match(String(headers["x-correlation-id"]), GENERATED_CORRELATION_ID_PATTERN);
+  assert.equal(request.requestContext?.correlationId, headers["x-correlation-id"]);
+});
+
+test("ensureRequestId keeps a valid client correlation ID and replaces an invalid one", () => {
+  for (const [sent, kept] of [["client-corr-001", true], ["bad id!", false], ["short", false]] as const) {
+    const headers: Record<string, string> = {};
+    const request = { requestContext: null, headers: { "x-correlation-id": sent } } as unknown as Parameters<typeof ensureRequestId>[0];
+    const reply = { header: (name: string, value: string) => { headers[name] = value; return reply; } } as unknown as Parameters<typeof ensureRequestId>[1];
+    ensureRequestId(request, reply);
+    if (kept) assert.equal(headers["x-correlation-id"], sent);
+    else assert.match(String(headers["x-correlation-id"]), GENERATED_CORRELATION_ID_PATTERN);
+  }
 });
 
 test("requestIdOf throws when no context was created", () => {

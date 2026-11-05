@@ -87,6 +87,21 @@ Runtime, language, package manager, HTTP framework, migration tooling, and secre
 | Security review | Not reviewed |
 | Increment acceptance | Not accepted |
 
+### 2026-11-05 — KR-BE-1-008 request correlation
+
+- **State:** IN REVIEW (implementation delivered; not accepted)
+- **Tasks:** KR-BE-1-008 (In Review)
+- **Increment ACs:** B-INC-001-AC-07 (partly evidenced; not satisfied), B-INC-001-AC-10 (not touched)
+- **Program acceptance:** Not applicable
+- **Tests:** BTS-005, BTS-006 (suite 153, 134 before; run on Node.js 24.21.0 with npm 10.9.9 in the sandbox, recorded pin is npm 11.19.0), BTS-009 (not touched)
+- **Security gates:** SEC-GATE-009 (not closed; nothing is logged by this task)
+- **Findings/risks:** Parser-level rejections cannot carry the header. Principal and tenant are not in the context yet. Log fields and downstream propagation wait for `KR-BE-1-041` and the first downstream integration
+- **Files changed:** `apps/backend/src/shared/request-context.ts`, `src/transport/request-context.ts`, `tests/shared/request-context.test.ts`, `tests/transport/request-context.test.ts`, `tests/transport/response-contract.test.ts`, `tests/transport/correlation.test.ts`, `apps/backend/README.md`, `TASKS.md`, `BACKEND_CHANGELOG.md` (PB-058), `status/status.json`
+- **Commit:** Pending until this change is merged
+- **Evidence:** Test output posted with the pull request
+- **Reviewer role:** Backend Technical Lead (not yet reviewed)
+- **Decision and follow-up:** Policy in `decisions/KR-BE-1-008-correlation-policy.md`. Not Accepted
+
 ### 2026-11-05 — KR-BE-1-009 health follow-up: cancellation, shared runs, shutdown drain
 
 - **State:** IN REVIEW (implementation delivered; not accepted)

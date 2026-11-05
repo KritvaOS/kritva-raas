@@ -152,7 +152,8 @@ A task must not be marked Accepted solely because files or code exist. Required 
 - **Linked AC:** B-INC-001-AC-07, B-INC-001-AC-10.
 - **Linked tests:** BTS-005, BTS-006, BTS-009.
 - **Linked security gates:** SEC-GATE-009.
-- **Decision record:** [`decisions/KR-BE-1-008-correlation-policy.md`](decisions/KR-BE-1-008-correlation-policy.md) (PB-056): correlation policy approved by owner direction on 2026-11-05, with the explicit authorization to start this task while `KR-BE-1-005` is In Review. Nothing is implemented yet; the task is not started in code and not Accepted.
+- **Decision record:** [`decisions/KR-BE-1-008-correlation-policy.md`](decisions/KR-BE-1-008-correlation-policy.md) (PB-056): correlation policy approved by owner direction on 2026-11-05, with the explicit authorization to start this task while `KR-BE-1-005` is In Review.
+- **Status:** In Review (`BACKEND_CHANGELOG.md` PB-058). A separate `correlationId` sits in the `RequestContext` beside `requestId`. A client `X-Correlation-ID` of 8 to 64 characters from `A-Za-z0-9._-` is used as sent; an absent, empty, malformed or repeated header is replaced by a generated `cor-<uuid>`, and the request is never rejected because of it. The effective value is returned in the `X-Correlation-ID` header on every application-generated response, including 404, 405, 413, 500, router errors, health and `HEAD`, and is never in a body. `correlationIdOf` is the accessor `KR-BE-1-041` can use later. No logger and no outbound propagation. 153 `node:test` cases in the suite (134 before). B-INC-001-AC-07 is partly evidenced and not satisfied; B-INC-001-AC-10 and BTS-009 are not touched because they need `KR-BE-1-041`; `SEC-GATE-009` is not closed. No independent review. Not Accepted.
 
 ### KR-BE-1-009 — Implement health/readiness endpoints
 
