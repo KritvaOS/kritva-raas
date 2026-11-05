@@ -49,6 +49,7 @@ export async function start(
       host: config.http.host,
       port: config.http.port,
       shutdownGraceMs: config.http.shutdownGraceMs,
+      shutdownDrainMs: config.http.shutdownDrainMs,
       onStopping: () => readiness.beginDraining(),
     });
     installShutdownHandlers(server, signals, (error) => {

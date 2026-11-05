@@ -1450,6 +1450,31 @@ Reason: PB-055 left a cancellation mechanism, a concurrency policy and the shutd
 | Unchanged | Source code, tests, dependencies, CI, every task status, `KR-BE-1-005` (not accepted by the authorization), `B-INC-001-AC-07`, `AC-10` and `AC-11` (not satisfied), `SEC-GATE-008` and `SEC-GATE-009` (not closed) |
 | Review | Written by Claude with ChatGPT design review. The decisions are the repository owner's, recorded under the Backend Technical Lead role at his direction; no confirmation from the person named in that role is recorded and no independent human review took place |
 
+## 3BD. PB-057 — Health Cancellation, Shared Runs and Shutdown Drain (KR-BE-1-009 follow-up)
+
+| Field | Value |
+|---|---|
+| Change ID | PB-057 |
+| Date | 2026-11-05 |
+| Status | Proposed |
+| Owner role | Backend Engineer; Backend Technical Lead accountable |
+| Follows | PB-056 |
+
+Reason: implements decisions 1 to 4 of `decisions/KR-BE-1-009-readiness-check-policy.md` (owner direction of 2026-11-04 and 2026-11-05, recorded under the Backend Technical Lead role at the owner's direction). The design was reviewed by ChatGPT before coding.
+
+| Item | Disposition |
+|---|---|
+| Cancellation | `ReadinessCheck = (signal: AbortSignal) => boolean | Promise<boolean>`. Each check gets its own signal combined from the drain signal and its own timeout. `ReadinessState` exposes `signal`, aborted once by `beginDraining()` (idempotent). The request stops waiting at the abort whether or not the check honors it. With one shared timeout value the per-check signals fire at the same moment as a shared one would; they differ in identity, and the design matters once timeouts differ |
+| Shared runs and reuse | At most one run in flight per process, shared by concurrent probes (`HEAD` included). Outcomes of a finished run are reused for 1000 ms from the end of the run (`resultCacheMs`, 0 to 60000, injectable monotonic clock `now`), successes and failures alike. The draining state is read for every response, including after reused outcomes. The 60000 bound is an engineering limit on the option, not an owner decision. A clock that throws or returns a number that is not finite only disables the reuse for that read or write; it never changes the answer (found in the ChatGPT code review). After a timed-out check settles, its reused failure stays until the period ends and only then is the check invoked again; this is intended and tested |
+| Unsettled checks | Each check has its own flag, cleared only when its operation settles. A timed-out operation that keeps running is not started again, other checks still run, a late answer never changes a result already given, and a check that never settles keeps readiness at 503 until restart (confirmed fail closed) |
+| Drain | New setting `KRITVA_HTTP_SHUTDOWN_DRAIN_MS` (integer 0 to 300000, default 5000, 0 closes at once). `stop()`: `onStopping` (draining begins), the listener stays open for the drain period with routes served, then the grace timer starts, then close. Longest shutdown is drain plus grace. A second signal during the drain is ignored (documented limitation) |
+| Tests | 134 `node:test` cases (102 before): readiness cancellation and reuse and unsettled-check tests in `health.test.ts`, six drain tests in `lifecycle.test.ts` (one of them a throwing `onStopping` with a non-zero drain) (listener open and readiness 503 over a real socket, minimum duration, grace counted after the drain, second signal, drain 0), one real-process-style drain test in `run.test.ts`, config tests for the new setting. Existing tests that start or stop a server set the drain to 0 so they do not wait 5 s. Run on Node.js 24.21.0 with npm 10.9.9 in the sandbox; the recorded pin is npm 11.19.0, so that run is evidence only. Mutation checks: 17 targeted mutations each made a test fail or hang (no draining re-read, truthy accepted, flag never set, flag cleared when the wait ends, no shared run, no reuse, reuse counted from the start, failures not reused, drain does not abort the signal, runner ignores the drain, timeout never aborts, no reuse validation, drain wait removed, grace counted before the drain, `onStopping` removed, a failing clock not contained, the timeout timer not cleared). One guard is not observable from outside and has no test: a run cut short by shutdown is not stored for reuse, which cannot change an answer because every later answer is 503 |
+| Not done | No database or other real check; no database statement timeout, pool or migration check (decisions 5 and 6, Proposed); no change to second-signal behavior; the termination budget is not validated (Cloud/Infrastructure Owner pending); CI not run |
+| Not satisfied | `B-INC-001-AC-11` (fake checks only; BTS-008 has no controlled evidence against a real dependency). `SEC-GATE-008` is not closed |
+| Task status | `KR-BE-1-009` stays In Review. Not Accepted |
+| Review | Written by Claude. ChatGPT reviewed the plan and the pasted code on 2026-11-05 and returned CHANGES REQUESTED (a failing injected clock could turn a probe into a 500; four tests missing); each point was checked against the code and fixed. It did not review the repository or CI and did not run the tests; no human reviewer has reviewed it |
+| Not changed | Dependencies, lockfile, CI, the response contract, the request-context code |
+
 ## 4. Future Entries
 
 Future changes must be added as separate entries and include:

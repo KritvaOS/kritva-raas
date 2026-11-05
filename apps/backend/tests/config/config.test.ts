@@ -34,7 +34,7 @@ function failure(env: Record<string, string>): ConfigError {
 
 test("only the port is required and the other settings take explicit defaults", () => {
   const config = loadConfig({ KRITVA_HTTP_PORT: "8080" });
-  assert.deepEqual(config, { http: { host: "127.0.0.1", port: 8080, shutdownGraceMs: 10000, bodyLimitBytes: 1048576 } });
+  assert.deepEqual(config, { http: { host: "127.0.0.1", port: 8080, shutdownGraceMs: 10000, shutdownDrainMs: 5000, bodyLimitBytes: 1048576 } });
 });
 
 test("every setting can be supplied", () => {
@@ -42,9 +42,10 @@ test("every setting can be supplied", () => {
     KRITVA_HTTP_HOST: "::1",
     KRITVA_HTTP_PORT: "65535",
     KRITVA_HTTP_SHUTDOWN_GRACE_MS: "0",
+    KRITVA_HTTP_SHUTDOWN_DRAIN_MS: "300000",
     KRITVA_HTTP_BODY_LIMIT_BYTES: "2048",
   });
-  assert.deepEqual(config.http, { host: "::1", port: 65535, shutdownGraceMs: 0, bodyLimitBytes: 2048 });
+  assert.deepEqual(config.http, { host: "::1", port: 65535, shutdownGraceMs: 0, shutdownDrainMs: 300000, bodyLimitBytes: 2048 });
 });
 
 test("valid hostnames are accepted as the host", () => {
@@ -67,8 +68,8 @@ test("a missing port is rejected and named", () => {
 
 test("an empty value is rejected, including for a setting that has a default", () => {
   assert.deepEqual(failure({ KRITVA_HTTP_PORT: "" }).issues, [{ setting: "KRITVA_HTTP_PORT", problem: "empty" }]);
-  const error = failure({ KRITVA_HTTP_PORT: "80", KRITVA_HTTP_HOST: "", KRITVA_HTTP_SHUTDOWN_GRACE_MS: "" });
-  assert.deepEqual(error.issues.map((i) => i.setting).sort(), ["KRITVA_HTTP_HOST", "KRITVA_HTTP_SHUTDOWN_GRACE_MS"]);
+  const error = failure({ KRITVA_HTTP_PORT: "80", KRITVA_HTTP_HOST: "", KRITVA_HTTP_SHUTDOWN_GRACE_MS: "", KRITVA_HTTP_SHUTDOWN_DRAIN_MS: "" });
+  assert.deepEqual(error.issues.map((i) => i.setting).sort(), ["KRITVA_HTTP_HOST", "KRITVA_HTTP_SHUTDOWN_DRAIN_MS", "KRITVA_HTTP_SHUTDOWN_GRACE_MS"]);
 });
 
 test("malformed numbers are rejected", () => {
@@ -83,6 +84,17 @@ test("numbers outside the allowed range are rejected", () => {
   }
   assert.equal(failure({ KRITVA_HTTP_PORT: "80", KRITVA_HTTP_BODY_LIMIT_BYTES: "0" }).issues[0]?.problem, "out of range");
   assert.equal(failure({ KRITVA_HTTP_PORT: "80", KRITVA_HTTP_SHUTDOWN_GRACE_MS: "300001" }).issues[0]?.problem, "out of range");
+});
+
+test("the shutdown drain defaults to 5000 ms, accepts 0, and rejects malformed and out-of-range values", () => {
+  assert.equal(loadConfig({ KRITVA_HTTP_PORT: "80" }).http.shutdownDrainMs, 5000);
+  assert.equal(loadConfig({ KRITVA_HTTP_PORT: "80", KRITVA_HTTP_SHUTDOWN_DRAIN_MS: "0" }).http.shutdownDrainMs, 0);
+  for (const bad of ["300001", "99999999999999999999"]) {
+    assert.deepEqual(failure({ KRITVA_HTTP_PORT: "80", KRITVA_HTTP_SHUTDOWN_DRAIN_MS: bad }).issues, [{ setting: "KRITVA_HTTP_SHUTDOWN_DRAIN_MS", problem: "out of range" }], bad);
+  }
+  for (const bad of ["-1", "1.5", "5s", " 5", "0x5"]) {
+    assert.deepEqual(failure({ KRITVA_HTTP_PORT: "80", KRITVA_HTTP_SHUTDOWN_DRAIN_MS: bad }).issues, [{ setting: "KRITVA_HTTP_SHUTDOWN_DRAIN_MS", problem: "malformed" }], bad);
+  }
 });
 
 test("a malformed host is rejected", () => {
